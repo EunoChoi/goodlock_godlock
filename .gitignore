@@ -1,0 +1,8 @@
+narang.pem
+
+node_modules
+uploads
+.env
+
+/build
+.DS_Store
