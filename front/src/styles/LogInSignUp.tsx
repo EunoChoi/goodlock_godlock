@@ -39,8 +39,8 @@ const LogInSignUp = {
     top: 0;
     right: 0;
     @media screen and (max-width: 720px) {
-      width: 92vw;
-      height: auto;
+      width: 100vw;
+      height: 100vh;
       padding: 60px 50px;
 
       position: static;

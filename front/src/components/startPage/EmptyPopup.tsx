@@ -51,8 +51,11 @@ const EmptyPopup: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, childre
 export default EmptyPopup;
 
 const CancelBtn = styled.button`
+  position: fixed;
+  bottom: 10px;
+
   padding-top: 12px;
-  color: white;
+  color: black;
 `;
 const WelcomeText = styled.div`
   width: calc(100vw - 500px);

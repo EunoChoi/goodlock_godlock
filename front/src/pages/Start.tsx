@@ -102,6 +102,7 @@ const StartSubText = styled.span`
   margin-bottom: 16px;
   @media screen and (max-width: 720px) {
     font-size: 32px;
+    width: 80vw;
   }
 `;
 const GoButton = styled.button`
