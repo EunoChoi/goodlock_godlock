@@ -48,7 +48,8 @@ const SignUp = ({ setToggle }: Props) => {
         // alert(res.data);
       })
       .catch((res) => {
-        toast.error(res.response.data);
+        console.log(res);
+        toast.error(res?.response?.data);
         // alert(res.response.data);
       });
   };
