@@ -15,9 +15,10 @@ db.sequelize.sync().then(() => {
 }).catch(console.error);
 
 app.use(cors({
-    origin: true,
+    origin: "*",
     credentials: true
 }));
+
 //이미지 업로드를 위한 미들웨어
 app.use(express.static("./uploads"));
 
