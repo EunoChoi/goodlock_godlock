@@ -29,7 +29,7 @@ const BG = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 1.3em;
-  font-weight: 600;
+  /* font-weight: 600; */
   span {
     color: rgba(0, 0, 0, 0.6);
     margin-bottom: 24px;
@@ -37,7 +37,7 @@ const BG = styled.div`
   button {
     color: rgba(0, 0, 0, 0.6);
     font-size: 0.9em;
-    font-weight: 600;
+    /* font-weight: 600; */
   }
 
   .scroll {

@@ -493,11 +493,13 @@ const OnlyText = styled.div`
       align-items: center;
       > span {
         padding: 5px;
-        font-size: 1.3em;
+        font-size: 24px;
+        color: rgba(0, 0, 0, 0.5);
       }
       > span:first-child {
-        font-weight: 600;
-        font-size: 1.5em;
+        /* font-weight: 600; */
+        color: rgba(0, 0, 0, 0.7);
+        font-size: 32px;
       }
     }
     > div:nth-child(3) {
@@ -553,13 +555,14 @@ const ImageText = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
+        span {
+          color: rgba(0, 0, 0, 0.8);
+        }
       }
       span {
         padding: 8px;
         font-size: 1.1em;
-      }
-      span:first-child {
-        font-weight: 800;
+        color: rgba(0, 0, 0, 0.5);
       }
     }
     > div:nth-child(2) {

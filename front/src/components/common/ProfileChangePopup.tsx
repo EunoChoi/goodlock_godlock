@@ -149,7 +149,7 @@ const ButtonArea = styled.div`
     justify-content: center;
     align-items: center;
 
-    font-weight: 600;
+    /* font-weight: 600; */
     font-size: 18px;
     color: rgba(0, 0, 0, 0.7);
     span {
@@ -190,7 +190,8 @@ const PopupBox = styled.div`
 
   > span {
     font-size: 24px;
-    font-weight: 600;
+    color: rgba(0, 0, 0, 0.8);
+    /* font-weight: 600; */
     margin-top: 50px;
   }
   @media screen and (max-width: 720px) {

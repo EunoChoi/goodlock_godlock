@@ -251,7 +251,7 @@ const LeftWrapper = styled.div`
   top: 0px;
 
   /* min-width: 350px; */
-  max-width: 400px;
+  width: 400px;
   height: 100vh;
 
   background: rgb(246, 214, 229);
@@ -265,6 +265,9 @@ const RightWrapper = styled.div`
   margin-left: 400px;
 
   flex-grow: 1;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+
   background-color: rgba(0, 0, 0, 0.02);
 
   /* @media screen and (max-width: 720px) {

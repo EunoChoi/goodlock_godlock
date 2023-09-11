@@ -68,7 +68,7 @@ const WelcomeText = styled.div`
   /* white-space: pre; */
   font-size: 2em;
   color: white;
-  font-weight: 600;
+  /* font-weight: 600; */
   span {
     padding: 12px;
   }

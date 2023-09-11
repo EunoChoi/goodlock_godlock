@@ -375,7 +375,7 @@ const Post = ({ postProps }: any) => {
                   }, 0);
                 }}
               >
-                더 불러오기 [{postProps?.Comments.length - commentLoadLength}]
+                더 보기 [{postProps?.Comments.length - commentLoadLength}]
               </button>
             </More>
           )}
@@ -398,7 +398,7 @@ const More = styled.div`
     border-radius: 30px;
     /* width: 50px; */
     font-size: 14px;
-    font-weight: 800;
+    /* font-weight: 800; */
 
     background-color: rgba(0, 0, 0, 0.1);
     color: rgba(0, 0, 0, 0.6);
@@ -469,12 +469,15 @@ const PostInfoWrapper = styled.div`
     justify-content: center;
     align-items: center;
     span {
-      font-weight: 600;
+      /* font-weight: 600; */
       font-size: 1.2em;
     }
     button {
       margin-left: 10px;
     }
+  }
+  > span:last-child {
+    color: rgba(0, 0, 0, 0.6);
   }
 `;
 
@@ -516,7 +519,7 @@ const ToggleButton = styled.button`
     margin-left: 4px;
     margin-right: 12px;
     font-size: 1.3em;
-    font-weight: 600;
+    /* font-weight: 600; */
     /* color: grey; */
   }
 `;

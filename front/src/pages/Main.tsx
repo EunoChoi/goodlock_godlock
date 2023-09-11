@@ -285,7 +285,7 @@ const Pill = styled.div`
   border-radius: 100px;
 
   font-size: 18px;
-  font-weight: 600;
+  /* font-weight: 600; */
 
   display: flex;
   align-items: center;
@@ -308,7 +308,7 @@ const Pill2 = styled.div<{ toggle: number }>`
   border-radius: 100px;
 
   font-size: 18px;
-  font-weight: 600;
+  /* font-weight: 600; */
 
   display: flex;
   align-items: center;
@@ -343,9 +343,9 @@ const WelcomeWrapper = styled.div`
     align-items: center;
     margin-left: 2px;
     font-size: 32px;
-    font-weight: 600;
+    /* font-weight: 600; */
     line-height: 36px;
-    color: #464b53;
+    color: rgba(0, 0, 0, 0.8);
     text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
     > div {
       margin-left: 12px;
@@ -354,8 +354,8 @@ const WelcomeWrapper = styled.div`
   }
   > span:nth-child(3) {
     font-size: 20px;
-    font-weight: 400;
-    color: grey;
+    /* font-weight: 400; */
+    color: rgba(0, 0, 0, 0.5);
 
     margin: 32px 0;
     margin-bottom: 0;
@@ -366,17 +366,5 @@ const WelcomeWrapper = styled.div`
     width: 92vw;
     /* padding: 0 12px; */
     padding-top: 60px;
-  }
-`;
-const PostTitle = styled.div`
-  font-size: 1.6em;
-  font-weight: 600;
-  color: gray;
-  margin: 30px 0px;
-  text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  @media screen and (max-width: 720px) {
-    color: white;
-    color: rgba(0, 0, 0, 0.4);
-    margin-top: 80px;
   }
 `;

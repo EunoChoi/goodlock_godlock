@@ -198,7 +198,6 @@ const PostInputHelp = styled.div`
   width: calc(100vw - 500px);
   height: 100vh;
   font-size: 1.7em;
-  font-weight: white;
   color: white;
 
   display: flex;
@@ -214,7 +213,7 @@ const FlexButton = styled.button`
 
   padding: 0px 8px;
   color: rgba(0, 0, 0, 0.7);
-  font-weight: 600;
+  /* font-weight: 600; */
   font-size: 1.1em;
   span {
     padding-left: 5px;

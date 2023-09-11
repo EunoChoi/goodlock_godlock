@@ -23,6 +23,6 @@ const LoadingWrapper = styled.div`
     /* margin-top: 30px; */
     color: #d7dbef;
     font-size: 3em;
-    font-weight: 800;
+    /* font-weight: 800; */
   }
 `;
