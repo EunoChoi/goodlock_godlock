@@ -16,6 +16,15 @@ const GlobalStyle = createGlobalStyle`
     /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
     font-family: Pretendard-SemiBold, system-ui, -apple-system;
   }
+  
+  html{
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+  /* @media screen and (max-width: 720px){
+    html{
+      background: rgba(246, 214, 229, 1);
+    }
+  } */
   span, div{
     /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
     font-family: Pretendard-SemiBold, system-ui, -apple-system;

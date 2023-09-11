@@ -267,7 +267,7 @@ const RightWrapper = styled.div`
   flex-grow: 1;
   -webkit-box-flex: 1;
 
-  background-color: rgba(0, 0, 0, 0.02);
+  /* background-color: rgba(0, 0, 0, 0.02); */
 
   /* @media screen and (max-width: 720px) {
     position: static;

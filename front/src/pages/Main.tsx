@@ -154,7 +154,11 @@ const Main = () => {
               <InfiniteScroll
                 // scrollableTarget="scrollWrapper"
                 hasMore={noticePosts.hasNextPage || false}
-                loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
+                loader={
+                  <LoadingIcon>
+                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                  </LoadingIcon>
+                }
                 next={() => noticePosts.fetchNextPage()}
                 dataLength={noticePosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
@@ -175,7 +179,11 @@ const Main = () => {
               <InfiniteScroll
                 // scrollableTarget="profileScrollWrapper"
                 hasMore={likedPosts.hasNextPage || false}
-                loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
+                loader={
+                  <LoadingIcon>
+                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                  </LoadingIcon>
+                }
                 next={() => likedPosts.fetchNextPage()}
                 dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
@@ -201,7 +209,11 @@ const Main = () => {
           <InfiniteScroll
             // scrollableTarget="scrollWrapper"
             hasMore={infoPosts.hasNextPage || false}
-            loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
+            loader={
+              <LoadingIcon>
+                <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+              </LoadingIcon>
+            }
             next={() => infoPosts.fetchNextPage()}
             dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
           >
@@ -224,7 +236,11 @@ const Main = () => {
           <InfiniteScroll
             // scrollableTarget="scrollWrapper"
             hasMore={communityPosts.hasNextPage || false}
-            loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
+            loader={
+              <LoadingIcon>
+                <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+              </LoadingIcon>
+            }
             next={() => communityPosts.fetchNextPage()}
             dataLength={communityPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
           >
@@ -237,6 +253,11 @@ const Main = () => {
 };
 
 export default Main;
+const LoadingIcon = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const SubMain = styled.div`
   animation: ${Animation.smoothAppear} 0.7s;
 `;

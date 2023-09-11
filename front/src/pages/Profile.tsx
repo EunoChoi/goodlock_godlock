@@ -498,7 +498,11 @@ const Profile = () => {
                 <InfiniteScroll
                   scrollableTarget="profileScrollWrapper"
                   hasMore={myInfoPosts.hasNextPage || false}
-                  loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
+                  loader={
+                    <LoadingIcon>
+                      <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    </LoadingIcon>
+                  }
                   next={() => myInfoPosts.fetchNextPage()}
                   dataLength={myInfoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
@@ -537,6 +541,10 @@ const Profile = () => {
 };
 
 export default Profile;
+const LoadingIcon = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 const EmptyNoti = styled.div`
   width: 100%;

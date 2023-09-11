@@ -374,7 +374,11 @@ const UserInfo = () => {
                 <InfiniteScroll
                   scrollableTarget="userInfoScrollWrapper"
                   hasMore={infoPosts.hasNextPage || false}
-                  loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
+                  loader={
+                    <LoadingIcon>
+                      <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    </LoadingIcon>
+                  }
                   next={() => infoPosts.fetchNextPage()}
                   dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
@@ -394,7 +398,11 @@ const UserInfo = () => {
                 <InfiniteScroll
                   scrollableTarget="userInfoScrollWrapper"
                   hasMore={commPosts.hasNextPage || false}
-                  loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
+                  loader={
+                    <LoadingIcon>
+                      <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    </LoadingIcon>
+                  }
                   next={() => commPosts.fetchNextPage()}
                   dataLength={commPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
@@ -414,7 +422,11 @@ const UserInfo = () => {
                 <InfiniteScroll
                   scrollableTarget="userInfoScrollWrapper"
                   hasMore={likedPosts.hasNextPage || false}
-                  loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
+                  loader={
+                    <LoadingIcon>
+                      <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    </LoadingIcon>
+                  }
                   next={() => likedPosts.fetchNextPage()}
                   dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
@@ -432,6 +444,10 @@ const UserInfo = () => {
 };
 
 export default UserInfo;
+const LoadingIcon = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 const EmptyNoti = styled.div`
   width: 100%;
