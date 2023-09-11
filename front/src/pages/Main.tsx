@@ -131,7 +131,17 @@ const Main = () => {
       )}
       {type === 1 && (
         <>
-          <PostTitle>모집공고</PostTitle>
+          <WelcomeWrapper>
+            <span>모집공고</span>
+            <span></span>
+            <span>모집공고 설명 ---- </span>
+
+            <RowWrapper>
+              <Pill>모두</Pill>
+              <Pill>마감 공고 제외</Pill>
+              <Pill>검색</Pill>
+            </RowWrapper>
+          </WelcomeWrapper>
           <InfiniteScroll
             scrollableTarget="scrollWrapper"
             hasMore={infoPosts.hasNextPage || false}
@@ -145,7 +155,16 @@ const Main = () => {
       )}
       {type === 2 && (
         <>
-          <PostTitle>소통</PostTitle>
+          <WelcomeWrapper>
+            <span>소통</span>
+            <span></span>
+            <span>소통 게시글 설명 ---- </span>
+
+            <RowWrapper>
+              <Pill>모두</Pill>
+              <Pill>검색</Pill>
+            </RowWrapper>
+          </WelcomeWrapper>
           <InfiniteScroll
             scrollableTarget="scrollWrapper"
             hasMore={communityPosts.hasNextPage || false}
