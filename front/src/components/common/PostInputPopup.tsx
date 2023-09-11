@@ -49,6 +49,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
         queryClient.invalidateQueries(["myCommPosts"]);
         queryClient.invalidateQueries(["myInfoPosts"]);
         setIsPostInputOpen(false);
+        toast.success("게시글 등록이 완료되었습니다.");
         window.scrollTo({
           top: 0,
           left: 0,

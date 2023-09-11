@@ -66,6 +66,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
       queryClient.invalidateQueries(["myCommPosts"]);
       queryClient.invalidateQueries(["myInfoPosts"]);
       setPostEdit(false);
+      toast.success("게시글 수정이 완료되었습니다.");
     },
     onError: (err: CustomError) => {
       toast.warning(err.response?.data);

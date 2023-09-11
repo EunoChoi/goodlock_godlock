@@ -639,7 +639,6 @@ const List = styled.div`
 
   flex-grow: 1;
   -webkit-box-flex: 1;
-  -ms-flex: 1;
 
   overflow-y: scroll;
 `;
@@ -740,6 +739,7 @@ const InfoTitle = styled.div`
   }
 `;
 const InfoValue = styled.div`
+  display: -webkit-box;
   display: flex;
   align-items: center;
   width: 100%;
@@ -748,9 +748,9 @@ const InfoValue = styled.div`
   margin-top: 8px;
 
   input {
+    width: 50%;
     flex-grow: 1;
     -webkit-box-flex: 1;
-    -ms-flex: 1;
 
     border: none;
     outline-style: none;
