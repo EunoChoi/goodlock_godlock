@@ -13,7 +13,7 @@ interface AppLayoutProps {
   children: React.ReactNode;
 }
 
-const EmptyPopup: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, children }: AppLayoutProps) => {
+const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, children }: AppLayoutProps) => {
   const [animation, setAnimation] = useState(ANIMATION_APPEAR);
 
   const isMobile = useMediaQuery({ maxWidth: 720 });
@@ -48,13 +48,12 @@ const EmptyPopup: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, childre
   );
 };
 
-export default EmptyPopup;
+export default PopupBox;
 
 const CancelBtn = styled.button`
   position: fixed;
-  bottom: 10px;
-
-  padding-top: 12px;
+  top: 10px;
+  left: 10px;
   color: black;
 `;
 const WelcomeText = styled.div`

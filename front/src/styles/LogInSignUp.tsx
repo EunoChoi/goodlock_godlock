@@ -59,7 +59,7 @@ const LogInSignUp = {
     justify-content: center;
     align-items: center;
 
-    animation: ${Animation.smoothAppear} 1s;
+    animation: ${Animation.smoothAppear} 0.6s;
   `,
   Form: styled.form`
     display: flex;
@@ -94,6 +94,7 @@ const LogInSignUp = {
     margin-top: 28px;
 
     font-size: 16px;
+    flex-shrink: 0;
   `,
   Input: styled.input`
     width: 100%;
