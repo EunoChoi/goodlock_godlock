@@ -42,7 +42,6 @@ const InputWrapper = styled.div`
     border-radius: 5px;
 
     width: 90%;
-    /* height: auto; */
   }
 `;
 
@@ -63,13 +62,14 @@ const TextArea = styled.textarea`
   }
   &::placeholder {
     text-align: center;
-    padding: 50% 0px;
+    padding: 60px 0px;
     font-size: 1.5em;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.3);
   }
   @media screen and (max-width: 720px) {
     height: 500px;
+    height: 30vh;
     border-radius: 5px;
     padding: 20px;
   }
@@ -79,7 +79,7 @@ const ButtonArea = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 50px;
+  height: 70px;
   width: 100%;
   flex-shrink: 0;
   /* background-color: rgb(255, 192, 62); */
@@ -92,6 +92,7 @@ const ButtonArea = styled.div`
   @media screen and (max-width: 720px) {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+    height: 50px;
   }
 `;
 
