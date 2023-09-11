@@ -13,11 +13,7 @@ import { useRef } from "react";
 //mui
 import MenuIcon from "@mui/icons-material/Menu";
 
-interface props {
-  top: number;
-}
-
-const Header = ({ top }: props) => {
+const Header = () => {
   const isMobile = useMediaQuery({ maxWidth: 720 });
   const [mountToggle, setMountToggle] = useState(false);
 
@@ -38,7 +34,16 @@ const Header = ({ top }: props) => {
         <MobileHeaderWrapper mountToggle={mountToggle}>
           <HeaderFixedWrapper>
             <RowDiv>
-              <HeaderLogoMobile onClick={() => setMountToggle(false)}>
+              <HeaderLogoMobile
+                onClick={() => {
+                  setMountToggle(false);
+                  window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: "smooth"
+                  });
+                }}
+              >
                 <Link to="/main/0">NARANG</Link>
               </HeaderLogoMobile>
               <HeaderMenuButton
@@ -99,15 +104,7 @@ const RowDiv = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-const MobileTitle = styled.div<{ top: number; mountToggle: boolean }>`
-  color: white;
-  color: rgba(0, 0, 0, 0.4);
-  font-weight: 600;
-  margin: 6px;
-  font-size: 18px;
-  display: ${(props) => props.top === 0 && "none"};
-  display: ${(props) => props.mountToggle && "none"};
-`;
+
 const PcHeaderWrapper = styled.div<{ mountToggle: boolean }>`
   z-index: 999;
   display: flex;

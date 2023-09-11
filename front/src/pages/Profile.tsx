@@ -17,6 +17,9 @@ import AppLayout from "../components/AppLayout";
 import Post from "../components/common/Post";
 import ProfileChangePopup from "../components/common/ProfileChangePopup";
 
+//style
+import Animation from "../styles/Animation";
+
 //mui
 import { Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -469,20 +472,20 @@ const Profile = () => {
         {mainCat === 2 && (
           <ContentArea>
             <SubCat myPostType={subCat + 1}>
-              <Button
+              <button
                 onClick={() => {
                   setSubCat(0);
                 }}
               >
                 <span>모집 공고</span>
-              </Button>
-              <Button
+              </button>
+              <button
                 onClick={() => {
                   setSubCat(1);
                 }}
               >
                 <span>소통</span>
-              </Button>
+              </button>
             </SubCat>
             <Posts id="profileScrollWrapper">
               {subCat === 0 && myInfoPosts?.data?.pages[0].length === 0 && (
@@ -574,7 +577,9 @@ const SubCat = styled.div<{ myPostType: number }>`
   justify-content: center;
   align-items: center;
   button {
-    padding: 0px 16px;
+    transition: all ease-in-out 0.7s;
+
+    padding: 4px 16px;
     border-radius: 20px;
     margin: 5px;
     flex-shrink: 0;
@@ -788,10 +793,13 @@ const MainCat = styled.div<{ selectedMenu: number }>`
   height: 100px;
   width: 100%;
   overflow-x: scroll;
+
   * {
     flex-shrink: 0;
   }
   button {
+    transition: all ease-in-out 0.5s;
+
     text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
     font-size: 1.6em;
     font-weight: 600;
@@ -807,9 +815,15 @@ const MainCat = styled.div<{ selectedMenu: number }>`
     button {
       font-size: 1.3em;
     }
+    button:nth-child(${(props) => props.selectedMenu + 1}) {
+      color: rgba(0, 0, 0, 0.55);
+      font-size: 1.4em;
+    }
   }
 `;
 const ContentArea = styled.div`
+  animation: ${Animation.smoothAppear} 0.7s;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -847,6 +861,9 @@ const Posts = styled.div`
   overflow: auto;
   * {
     flex-shrink: 0;
+  }
+  > div {
+    animation: ${Animation.smoothAppear} 0.7s;
   }
 `;
 const ProfilePicWrapper = styled.div`

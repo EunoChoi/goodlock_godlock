@@ -7,7 +7,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 
 import { useMediaQuery } from "react-responsive";
-import { useRef, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
@@ -22,6 +21,8 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 //component
 import UserProfile from "./common/UserProfile";
 import InputPopup from "./common/PostInputPopup";
+
+import Animation from "../styles/Animation";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -58,35 +59,20 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       // alert(err.response?.data);
     }
   });
-  const scrollRef = useRef<null | HTMLDivElement>(null);
 
-  const [top, setTop] = useState<number>(0);
-  useEffect(() => {
-    const handleScroll = () => {
-      const el = scrollRef.current;
-      setTop(el?.scrollTop ? el?.scrollTop : 0);
-    };
-    const element = scrollRef.current;
-    element?.addEventListener("scroll", handleScroll);
-    return () => {
-      element?.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
   return (
     <>
-      {isPostInputOpen && <InputPopup scrollRef={scrollRef} setIsPostInputOpen={setPostInputOpen} />}
+      {isPostInputOpen && <InputPopup setIsPostInputOpen={setPostInputOpen} />}
       {isMobile ? (
         <MobileWrapper>
-          <Header top={top} />
-          <Children id="scrollWrapper" ref={scrollRef}>
-            {children}
-          </Children>
+          <Header />
+          <Children>{children}</Children>
           {isMain && (
             <MobileButtonWrapper>
               <button
                 color="inherit"
                 onClick={() =>
-                  scrollRef.current?.scrollTo({
+                  window.scrollTo({
                     top: 0,
                     left: 0,
                     behavior: "smooth"
@@ -117,13 +103,11 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       ) : (
         <PcWrapper>
           <LeftWrapper>
-            <Header top={top} />
+            <Header />
             <UserProfile />
           </LeftWrapper>
           <RightWrapper>
-            <Children id="scrollWrapper" ref={scrollRef}>
-              {children}
-            </Children>
+            <Children id="scrollWrapper">{children}</Children>
           </RightWrapper>
           <SideWrapper>
             <TopButtons>
@@ -161,7 +145,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                 <Button
                   color="inherit"
                   onClick={() => {
-                    scrollRef.current?.scrollTo({
+                    window.scrollTo({
                       top: 0,
                       left: 0,
                       behavior: "smooth"
@@ -229,6 +213,8 @@ const MobileButtonWrapper = styled.div`
 `;
 
 const Children = styled.div`
+  animation: ${Animation.smoothAppear} 0.7s;
+
   min-height: 100vh;
   height: auto;
 

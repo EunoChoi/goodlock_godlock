@@ -15,7 +15,6 @@ import styled from "styled-components";
 import { useMediaQuery } from "react-responsive";
 
 interface props {
-  scrollRef: any;
   setIsPostInputOpen: (b: boolean) => void;
 }
 interface postDataType {
@@ -24,7 +23,7 @@ interface postDataType {
   images: string[];
 }
 
-const InputPopup = ({ scrollRef, setIsPostInputOpen }: props) => {
+const InputPopup = ({ setIsPostInputOpen }: props) => {
   const queryClient = useQueryClient();
   const BACK_SERVER = process.env.REACT_APP_BACK_URL;
   const params = useParams();
@@ -50,7 +49,7 @@ const InputPopup = ({ scrollRef, setIsPostInputOpen }: props) => {
         queryClient.invalidateQueries(["myCommPosts"]);
         queryClient.invalidateQueries(["myInfoPosts"]);
         setIsPostInputOpen(false);
-        scrollRef.current?.scrollTo({
+        window.scrollTo({
           top: 0,
           left: 0,
           behavior: "smooth"
