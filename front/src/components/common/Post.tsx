@@ -212,7 +212,7 @@ const Post = ({ postProps }: any) => {
             </Link>
           )}
           <span>{postProps?.User?.nickname}</span>
-          {!isMyPost &&
+          {/* {!isMyPost &&
             (isFollowed ? (
               <Button
                 variant="outlined"
@@ -244,7 +244,6 @@ const Post = ({ postProps }: any) => {
                 size="small"
                 onClick={() => {
                   confirmAlert({
-                    // title: "",
                     message: "팔로우 하시겠습니까?",
                     buttons: [
                       {
@@ -261,7 +260,7 @@ const Post = ({ postProps }: any) => {
               >
                 follow
               </Button>
-            ))}
+            ))} */}
         </div>
         <span>{moment(postProps?.createdAt).fromNow()}</span>
       </PostInfoWrapper>
