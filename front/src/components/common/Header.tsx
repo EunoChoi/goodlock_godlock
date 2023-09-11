@@ -19,26 +19,23 @@ interface props {
 
 const Header = ({ top }: props) => {
   const isMobile = useMediaQuery({ maxWidth: 720 });
-
   const [mountToggle, setMountToggle] = useState(false);
-
-  // const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data));
 
   const { type } = useParams();
   let currentPage = type ? parseInt(type) : -1;
   if (window.location.pathname.split("/")[1] === "profile") currentPage = 3;
-  const titleArr = ["메인", "모집공고", "소통", "프로필"];
 
   useEffect(() => {
     if (!isMobile) {
       setMountToggle(false);
     }
   }, [isMobile]);
+
   return (
     <>
       {isMobile ? (
         //mobile header
-        <MobileHeaderWrapper mountToggle={mountToggle} top={top}>
+        <MobileHeaderWrapper mountToggle={mountToggle}>
           <HeaderFixedWrapper>
             <RowDiv>
               <HeaderLogoMobile onClick={() => setMountToggle(false)}>
@@ -52,9 +49,6 @@ const Header = ({ top }: props) => {
                 <MenuIcon fontSize="large" />
               </HeaderMenuButton>
             </RowDiv>
-            <MobileTitle top={top} mountToggle={mountToggle}>
-              {titleArr[currentPage]}
-            </MobileTitle>
           </HeaderFixedWrapper>
           {mountToggle && (
             <HeaderExtendedWrapper currentPage={currentPage + 1}>
@@ -131,7 +125,7 @@ const PcHeaderWrapper = styled.div<{ mountToggle: boolean }>`
   height: 200px;
 `;
 
-const MobileHeaderWrapper = styled.div<{ mountToggle: boolean; top: number }>`
+const MobileHeaderWrapper = styled.div<{ mountToggle: boolean }>`
   position: fixed;
   z-index: 999;
   top: 0px;
@@ -146,9 +140,9 @@ const MobileHeaderWrapper = styled.div<{ mountToggle: boolean; top: number }>`
   width: 100vw;
   text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
 
-  background-color: ${(props) => props.top !== 0 && "rgba(255, 255, 255, 0.6)"};
-  box-shadow: ${(props) => props.top !== 0 && "0px 5px 5px rgba(0, 0, 0, 0.2)"};
-  backdrop-filter: ${(props) => props.top !== 0 && "blur(20px)"};
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
 
   background-color: ${(props) => props.mountToggle && "rgba(255, 255, 255, 0.6)"};
   box-shadow: ${(props) => props.mountToggle && "0px 5px 5px rgba(0, 0, 0, 0.2)"};

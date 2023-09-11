@@ -149,7 +149,7 @@ const Main = () => {
 
           {toggle === 0 && (
             <InfiniteScroll
-              scrollableTarget="scrollWrapper"
+              // scrollableTarget="scrollWrapper"
               hasMore={noticePosts.hasNextPage || false}
               loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
               next={() => noticePosts.fetchNextPage()}
@@ -166,7 +166,7 @@ const Main = () => {
           {toggle === 2 && (
             //관심 공고
             <InfiniteScroll
-              scrollableTarget="profileScrollWrapper"
+              // scrollableTarget="profileScrollWrapper"
               hasMore={likedPosts.hasNextPage || false}
               loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
               next={() => likedPosts.fetchNextPage()}
@@ -191,7 +191,7 @@ const Main = () => {
             </RowWrapper>
           </WelcomeWrapper>
           <InfiniteScroll
-            scrollableTarget="scrollWrapper"
+            // scrollableTarget="scrollWrapper"
             hasMore={infoPosts.hasNextPage || false}
             loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
             next={() => infoPosts.fetchNextPage()}
@@ -214,7 +214,7 @@ const Main = () => {
             </RowWrapper>
           </WelcomeWrapper>
           <InfiniteScroll
-            scrollableTarget="scrollWrapper"
+            // scrollableTarget="scrollWrapper"
             hasMore={communityPosts.hasNextPage || false}
             loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
             next={() => communityPosts.fetchNextPage()}
