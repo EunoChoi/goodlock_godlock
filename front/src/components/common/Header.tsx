@@ -109,7 +109,8 @@ const MobileTitle = styled.div<{ top: number; mountToggle: boolean }>`
   color: white;
   color: rgba(0, 0, 0, 0.4);
   font-weight: 600;
-  margin: 10px;
+  margin: 6px;
+  font-size: 18px;
   display: ${(props) => props.top === 0 && "none"};
   display: ${(props) => props.mountToggle && "none"};
 `;
@@ -140,8 +141,7 @@ const MobileHeaderWrapper = styled.div<{ mountToggle: boolean; top: number }>`
   align-items: start;
 
   padding: 4px 16px;
-  font-size: 1.3em;
-  font-weight: 600;
+
   height: auto;
   width: 100vw;
   text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
@@ -176,7 +176,7 @@ const HeaderExtendedWrapper = styled.div<{ currentPage: number | undefined }>`
   * {
     padding: 7px;
   }
-  font-size: 1em;
+  font-size: 20px;
   font-weight: 600;
   color: white;
   color: rgba(0, 0, 0, 0.4);
@@ -201,7 +201,7 @@ const HeaderLogoMobile = styled.span`
   color: white;
   color: rgba(0, 0, 0, 0.6);
 
-  font-size: 1.4em;
+  font-size: 28px;
   font-weight: 600;
 `;
 

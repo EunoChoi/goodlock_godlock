@@ -95,76 +95,128 @@ const PostZoom = ({ postProps, setZoom }: props) => {
       {
         //dasktop + only text
         !isMobile && isOnlyText && (
-          <>
-            <OnlyText onClick={(e) => e.stopPropagation()}>
+          <OnlyText onClick={(e) => e.stopPropagation()}>
+            <div>
+              {postProps?.User?.profilePic ? (
+                <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                  <ProfilePic width={150} alt="userProfilePic" src={`${BACK_SERVER}/${postProps?.User?.profilePic}`} />
+                </Link>
+              ) : (
+                <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                  <ProfilePic
+                    width={150}
+                    alt="userProfilePic"
+                    src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                  />
+                </Link>
+              )}
               <div>
-                {postProps?.User?.profilePic ? (
-                  <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                    <ProfilePic
-                      width={150}
-                      alt="userProfilePic"
-                      src={`${BACK_SERVER}/${postProps?.User?.profilePic}`}
-                    />
-                  </Link>
-                ) : (
-                  <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                    <ProfilePic
-                      width={150}
-                      alt="userProfilePic"
-                      src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                    />
-                  </Link>
-                )}
-                <div>
-                  <span>{postProps.User.nickname}</span>
-                  <span>{postProps.User.email}</span>
-                </div>
-                <div>
-                  <Like>
-                    <button
-                      onClick={() => {
-                        if (!isLiked) {
-                          like.mutate();
-                        } else {
-                          disLike.mutate();
-                        }
-                      }}
-                    >
-                      {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
-                      <span>{postProps?.Likers?.length}</span>
-                    </button>
-                  </Like>
-                  <span>{moment(postProps?.createdAt).fromNow()}</span>
-                </div>
+                <span>{postProps.User.nickname}</span>
+                <span>{postProps.User.email}</span>
               </div>
               <div>
-                <Content>{postProps.content}</Content>
+                <Like>
+                  <button
+                    onClick={() => {
+                      if (!isLiked) {
+                        like.mutate();
+                      } else {
+                        disLike.mutate();
+                      }
+                    }}
+                  >
+                    {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
+                    <span>{postProps?.Likers?.length}</span>
+                  </button>
+                </Like>
+                <span>{moment(postProps?.createdAt).fromNow()}</span>
               </div>
-            </OnlyText>
+            </div>
+            <div>
+              <Content>{postProps.content}</Content>
+            </div>
             <CancelBtn onClick={() => setZoom(false)}>
               <CancelIcon fontSize="large" />
             </CancelBtn>
-          </>
+          </OnlyText>
         )
       }
       {
         //desktop + image + text
         !isMobile && !isOnlyText && (
-          <>
-            <ImageText onClick={(e) => e.stopPropagation()}>
+          <ImageText onClick={(e) => e.stopPropagation()}>
+            <div>
+              {postProps.Images?.length === 1 && <Image src={`${BACK_SERVER}/${postProps.Images[0].src}`} />}
+              {postProps.Images?.length >= 2 && (
+                <Carousel indicators={true} autoPlay={false} animation="fade">
+                  {postProps.Images?.map((v: Image, i: number) => (
+                    <ImageBox key={i}>
+                      <Image src={`${BACK_SERVER}/${v?.src}`} />
+                    </ImageBox>
+                  ))}
+                </Carousel>
+              )}
+            </div>
+            <div>
               <div>
-                {postProps.Images?.length === 1 && <Image src={`${BACK_SERVER}/${postProps.Images[0].src}`} />}
-                {postProps.Images?.length >= 2 && (
-                  <Carousel indicators={true} autoPlay={false} animation="fade">
-                    {postProps.Images?.map((v: Image, i: number) => (
-                      <ImageBox key={i}>
-                        <Image src={`${BACK_SERVER}/${v?.src}`} />
-                      </ImageBox>
-                    ))}
-                  </Carousel>
-                )}
+                <div>
+                  {postProps?.User?.profilePic ? (
+                    <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                      <ProfilePicSM
+                        width={150}
+                        alt="userProfilePic"
+                        src={`${BACK_SERVER}/${postProps?.User?.profilePic}`}
+                      />
+                    </Link>
+                  ) : (
+                    <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                      <ProfilePicSM
+                        width={150}
+                        alt="userProfilePic"
+                        src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                      />
+                    </Link>
+                  )}
+                  <span>{postProps.User.nickname}</span>
+                </div>
+
+                <span>{moment(postProps?.createdAt).fromNow()}</span>
               </div>
-              <div>
+              <Content>{postProps.content}</Content>
+              <Like>
+                <button
+                  onClick={() => {
+                    if (!isLiked) {
+                      like.mutate();
+                    } else {
+                      disLike.mutate();
+                    }
+                  }}
+                >
+                  {isLiked ? (
+                    <FavoriteIcon style={{ color: "red" }} fontSize="large" />
+                  ) : (
+                    <FavoriteBorderIcon fontSize="large" />
+                  )}
+                  <span>{postProps?.Likers?.length}</span>
+                </button>
+              </Like>
+            </div>
+            <CancelBtn onClick={() => setZoom(false)}>
+              <CancelIcon fontSize="large" />
+            </CancelBtn>
+          </ImageText>
+        )
+      }
+      {
+        //mobile
+        isMobile && (
+          <Mobile onClick={(e) => e.stopPropagation()}>
+            <CancelBtn onClick={() => setZoom(false)}>
+              <CancelIcon fontSize="large" />
+            </CancelBtn>
+            {postProps.Images?.length === 0 && (
+              <TextBox key="텍스트페이지">
                 <div>
                   <div>
                     {postProps?.User?.profilePic ? (
@@ -189,7 +241,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
 
                   <span>{moment(postProps?.createdAt).fromNow()}</span>
                 </div>
-                <Content>{postProps.content}</Content>
+                <div>{postProps.content}</div>
                 <Like>
                   <button
                     onClick={() => {
@@ -200,132 +252,70 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       }
                     }}
                   >
-                    {isLiked ? (
-                      <FavoriteIcon style={{ color: "red" }} fontSize="large" />
-                    ) : (
-                      <FavoriteBorderIcon fontSize="large" />
-                    )}
+                    {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
                     <span>{postProps?.Likers?.length}</span>
                   </button>
                 </Like>
-              </div>
-            </ImageText>
-            <CancelBtn onClick={() => setZoom(false)}>
-              <CancelIcon fontSize="large" />
-            </CancelBtn>
-          </>
-        )
-      }
-      {
-        //mobile
-        isMobile && (
-          <>
-            <Mobile onClick={(e) => e.stopPropagation()}>
-              {postProps.Images?.length === 0 && (
-                <TextBox key="텍스트페이지">
-                  <div>
-                    <div>
-                      {postProps?.User?.profilePic ? (
-                        <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                          <ProfilePicSM
-                            width={150}
-                            alt="userProfilePic"
-                            src={`${BACK_SERVER}/${postProps?.User?.profilePic}`}
-                          />
-                        </Link>
-                      ) : (
-                        <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                          <ProfilePicSM
-                            width={150}
-                            alt="userProfilePic"
-                            src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                          />
-                        </Link>
-                      )}
-                      <span>{postProps.User.nickname}</span>
-                    </div>
-
-                    <span>{moment(postProps?.createdAt).fromNow()}</span>
-                  </div>
-                  <div>{postProps.content}</div>
-                  <Like>
-                    <button
-                      onClick={() => {
-                        if (!isLiked) {
-                          like.mutate();
-                        } else {
-                          disLike.mutate();
-                        }
-                      }}
-                    >
-                      {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
-                      <span>{postProps?.Likers?.length}</span>
-                    </button>
-                  </Like>
-                </TextBox>
-              )}
-              {postProps.Images?.length !== 0 && (
-                <div>
-                  <Carousel indicators={true} autoPlay={false} animation="fade">
-                    {arr.map((v, i) => {
-                      if (i === 0) {
-                        return (
-                          <TextBox key="텍스트페이지">
+              </TextBox>
+            )}
+            {postProps.Images?.length !== 0 && (
+              <div>
+                <Carousel indicators={true} autoPlay={false} animation="fade">
+                  {arr.map((v, i) => {
+                    if (i === 0) {
+                      return (
+                        <TextBox key="텍스트페이지">
+                          <div>
                             <div>
-                              <div>
-                                {postProps?.User?.profilePic ? (
-                                  <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                                    <ProfilePicSM
-                                      width={150}
-                                      alt="userProfilePic"
-                                      src={`${BACK_SERVER}/${postProps?.User?.profilePic}`}
-                                    />
-                                  </Link>
-                                ) : (
-                                  <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                                    <ProfilePicSM
-                                      width={150}
-                                      alt="userProfilePic"
-                                      src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                                    />
-                                  </Link>
-                                )}
-                                <span>{postProps.User.nickname}</span>
-                              </div>
-
-                              <span>{moment(postProps?.createdAt).fromNow()}</span>
+                              {postProps?.User?.profilePic ? (
+                                <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                                  <ProfilePicSM
+                                    width={150}
+                                    alt="userProfilePic"
+                                    src={`${BACK_SERVER}/${postProps?.User?.profilePic}`}
+                                  />
+                                </Link>
+                              ) : (
+                                <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                                  <ProfilePicSM
+                                    width={150}
+                                    alt="userProfilePic"
+                                    src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                                  />
+                                </Link>
+                              )}
+                              <span>{postProps.User.nickname}</span>
                             </div>
-                            <div>{postProps.content}</div>
-                            <Like>
-                              <button
-                                onClick={() => {
-                                  if (!isLiked) {
-                                    like.mutate();
-                                  } else {
-                                    disLike.mutate();
-                                  }
-                                }}
-                              >
-                                {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
-                                <span>{postProps?.Likers?.length}</span>
-                              </button>
-                            </Like>
-                          </TextBox>
-                        );
-                      } else {
-                        return (
-                          <ImageBox key={i}>{<Image src={`${BACK_SERVER}/${postProps.Images[i - 1].src}`} />}</ImageBox>
-                        );
-                      }
-                    })}
-                  </Carousel>
-                </div>
-              )}
-            </Mobile>
-            <CancelBtn onClick={() => setZoom(false)}>
-              <CancelIcon fontSize="large" />
-            </CancelBtn>
-          </>
+
+                            <span>{moment(postProps?.createdAt).fromNow()}</span>
+                          </div>
+                          <div>{postProps.content}</div>
+                          <Like>
+                            <button
+                              onClick={() => {
+                                if (!isLiked) {
+                                  like.mutate();
+                                } else {
+                                  disLike.mutate();
+                                }
+                              }}
+                            >
+                              {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
+                              <span>{postProps?.Likers?.length}</span>
+                            </button>
+                          </Like>
+                        </TextBox>
+                      );
+                    } else {
+                      return (
+                        <ImageBox key={i}>{<Image src={`${BACK_SERVER}/${postProps.Images[i - 1].src}`} />}</ImageBox>
+                      );
+                    }
+                  })}
+                </Carousel>
+              </div>
+            )}
+          </Mobile>
         )
       }
     </PostZoomBG>
@@ -335,7 +325,18 @@ const PostZoom = ({ postProps, setZoom }: props) => {
 export default PostZoom;
 
 const CancelBtn = styled.button`
-  color: white;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+
+  z-index: 1000;
+
+  color: black;
+  @media screen and (max-width: 720px) {
+    top: 10px;
+    left: 50%;
+    transform: translate(-50%);
+  }
 `;
 const Content = styled.div`
   display: flex;
@@ -377,7 +378,7 @@ const ProfilePicSM = styled.img`
   border-radius: 100px;
   background-color: white;
 
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
 
   object-fit: cover;
 `;
@@ -390,6 +391,8 @@ const TextBox = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
+
+  padding-top: 50px;
   > div:first-child {
     width: 100%;
     display: flex;
@@ -407,7 +410,7 @@ const TextBox = styled.div`
     }
   }
   > div:nth-child(2) {
-    height: calc(80vh - 190px);
+    height: calc(80vh - 200px);
     width: 100%;
     white-space: pre-wrap;
     line-height: 1.3em;
@@ -458,6 +461,7 @@ const PostZoomBG = styled.div`
   }
 `;
 const OnlyText = styled.div`
+  position: relative;
   width: 70vw;
   height: 90vh;
 
@@ -512,6 +516,7 @@ const OnlyText = styled.div`
 `;
 
 const ImageText = styled.div`
+  position: relative;
   width: 90vw;
   height: 90vh;
 
@@ -573,6 +578,7 @@ const ImageText = styled.div`
 `;
 
 const Mobile = styled.div`
+  position: relative;
   width: 90vw;
   height: 80vh;
 

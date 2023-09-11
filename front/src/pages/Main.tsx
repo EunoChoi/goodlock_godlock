@@ -79,6 +79,16 @@ const Main = () => {
       }
     }
   );
+  const likedPosts = useInfiniteQuery(
+    ["likedPosts"],
+    ({ pageParam = 1 }) =>
+      Axios.get("post/liked", { params: { type: 0, pageParam, tempDataNum: 5 } }).then((res) => res.data),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.length === 0 ? undefined : allPages.length + 1;
+      }
+    }
+  );
 
   return (
     <AppLayout>
@@ -95,7 +105,7 @@ const Main = () => {
             <span>오늘도 행복한 하루를 만들어 보아요 :)</span>
 
             <RowWrapper>
-              <Pill>????</Pill>
+              <Pill>추가 기능</Pill>
             </RowWrapper>
 
             <RowWrapper>
@@ -155,14 +165,22 @@ const Main = () => {
           )}
           {toggle === 2 && (
             //관심 공고
-            <></>
+            <InfiniteScroll
+              scrollableTarget="profileScrollWrapper"
+              hasMore={likedPosts.hasNextPage || false}
+              loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
+              next={() => likedPosts.fetchNextPage()}
+              dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+            >
+              {likedPosts?.data?.pages.map((p) => p.map((v: postProps, i: number) => <Post key={i} postProps={v} />))}
+            </InfiniteScroll>
           )}
         </MainEl>
       )}
       {type === 1 && (
         <MainEl>
           <WelcomeWrapper>
-            <span>모집공고 게시판</span>
+            <span>모집공고</span>
             <span></span>
             <span>모집공고 설명글</span>
 
@@ -186,7 +204,7 @@ const Main = () => {
       {type === 2 && (
         <MainEl>
           <WelcomeWrapper>
-            <span>소통 게시판</span>
+            <span>소통</span>
             <span></span>
             <span>소통 게시글 설명글</span>
 
@@ -234,6 +252,7 @@ const RowWrapper = styled.div`
   align-items: center;
 
   padding: 5px;
+  padding-left: 2px;
 
   width: 100%;
   overflow-x: scroll;
@@ -249,34 +268,43 @@ const Pill = styled.div`
   padding: 8px 16px;
   margin-top: 40px;
   margin-bottom: 16px;
-  margin-right: 12px;
+  margin-right: 8px;
+  border-radius: 100px;
+
   font-size: 18px;
   font-weight: 600;
 
   display: flex;
   align-items: center;
 
-  border-radius: 100px;
-  background-color: rgba(255, 255, 255, 0.5);
   color: #464b53;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  background-color: #e0d9eb;
+  @media screen and (max-width: 720px) {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
 `;
 const Pill2 = styled.div<{ toggle: number }>`
   margin-right: 8px;
-  padding: 8px 16px;
+  padding: 6px 16px;
   margin-top: 40px;
   margin-bottom: 16px;
-  margin-right: 12px;
+  margin-right: 8px;
+  border-radius: 100px;
+
   font-size: 18px;
   font-weight: 600;
 
   display: flex;
   align-items: center;
 
-  border-radius: 100px;
-  background-color: rgba(255, 255, 255, 0.5);
   color: #464b53;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+
+  background-color: #e0d9eb;
+  @media screen and (max-width: 720px) {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
 
   &:nth-child(${(props) => props.toggle + 1}) {
     background-color: #d5dbf1;
@@ -298,7 +326,7 @@ const WelcomeWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 5px;
+    margin-left: 2px;
     font-size: 32px;
     font-weight: 600;
     line-height: 36px;
@@ -316,7 +344,7 @@ const WelcomeWrapper = styled.div`
 
     margin: 32px 0;
     margin-bottom: 0;
-    margin-left: 5px;
+    margin-left: 2px;
     text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
   }
   @media screen and (max-width: 720px) {

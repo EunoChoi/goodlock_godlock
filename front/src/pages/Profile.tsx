@@ -173,15 +173,15 @@ const Profile = () => {
       <>
         {isImagePopupOpen && <ProfileChangePopup setImagePopupOpen={setImagePopupOpen} />}
         <MainCat selectedMenu={mainCat}>
-          <Button>
+          <button>
             <Link to="/profile/0">나의 정보</Link>
-          </Button>
-          <Button>
+          </button>
+          <button>
             <Link to="/profile/1">관계</Link>
-          </Button>
-          <Button>
-            <Link to="/profile/2">모아보기</Link>
-          </Button>
+          </button>
+          <button>
+            <Link to="/profile/2">작성글</Link>
+          </button>
         </MainCat>
         {mainCat === 0 && (
           <ContentArea>
@@ -469,21 +469,14 @@ const Profile = () => {
                   setSubCat(0);
                 }}
               >
-                <span>작성 공고</span>
+                <span>모집 공고</span>
               </Button>
               <Button
                 onClick={() => {
                   setSubCat(1);
                 }}
               >
-                <span>작성 소통</span>
-              </Button>
-              <Button
-                onClick={() => {
-                  setSubCat(2);
-                }}
-              >
-                <span>관심 공고</span>
+                <span>소통</span>
               </Button>
             </SubCat>
             <Posts id="profileScrollWrapper">
@@ -523,26 +516,6 @@ const Profile = () => {
                   dataLength={myCommPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
                   {myCommPosts?.data?.pages.map((p) =>
-                    p.map((v: postProps, i: number) => <Post key={i} postProps={v} />)
-                  )}
-                </InfiniteScroll>
-              )}
-
-              {subCat === 2 && likedPosts?.data?.pages[0].length === 0 && (
-                <EmptyNoti>
-                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-                  <span>게시글이 존재하지 않습니다.</span>
-                </EmptyNoti>
-              )}
-              {subCat === 2 && likedPosts?.data?.pages[0].length !== 0 && (
-                <InfiniteScroll
-                  scrollableTarget="profileScrollWrapper"
-                  hasMore={likedPosts.hasNextPage || false}
-                  loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
-                  next={() => likedPosts.fetchNextPage()}
-                  dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-                >
-                  {likedPosts?.data?.pages.map((p) =>
                     p.map((v: postProps, i: number) => <Post key={i} postProps={v} />)
                   )}
                 </InfiniteScroll>
@@ -729,10 +702,8 @@ const ContentBox = styled.div<{ width: number; padding: number }>`
   @media screen and (max-width: 720px) {
     width: 92vw;
     padding: 20px ${(props) => props.padding + "px"};
-    background-color: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(4px);
-
-    /* box-shadow: none; */
+    /* background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px); */
   }
 `;
 

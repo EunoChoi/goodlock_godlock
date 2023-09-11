@@ -217,14 +217,14 @@ const MobileButtonWrapper = styled.div`
 
     padding: 0px;
     margin: 5px;
-
     border-radius: 100px;
-    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.4);
-    background-color: #bebee7;
-    color: white;
+
+    color: rgba(0, 0, 0, 0.6);
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+    background-color: #d5dbf0;
   }
   button:first-child {
-    background-color: #e0abc2;
+    background-color: #d5dbf0;
   }
 `;
 
