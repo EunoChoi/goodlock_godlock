@@ -201,6 +201,7 @@ const Profile = () => {
                   color="inherit"
                   onClick={() => {
                     setImagePopupOpen(true);
+                    setToggles({ nickname: false, usertext: false });
                   }}
                 >
                   <EditIcon />
@@ -215,6 +216,7 @@ const Profile = () => {
                     onClick={() => {
                       const temp = { ...toggles };
                       temp.nickname = !temp.nickname;
+                      temp.usertext = false;
                       setToggles(temp);
                     }}
                   >
@@ -250,6 +252,7 @@ const Profile = () => {
                         onClick={() => {
                           const temp = { ...toggles };
                           temp.nickname = !temp.nickname;
+                          temp.usertext = false;
                           setToggles(temp);
                         }}
                       >
@@ -277,6 +280,7 @@ const Profile = () => {
                     onClick={() => {
                       const temp = { ...toggles };
                       temp.usertext = !temp.usertext;
+                      temp.nickname = false;
                       setToggles(temp);
                     }}
                   >
@@ -312,6 +316,7 @@ const Profile = () => {
                         onClick={() => {
                           const temp = { ...toggles };
                           temp.usertext = !temp.usertext;
+                          temp.nickname = false;
                           setToggles(temp);
                         }}
                       >

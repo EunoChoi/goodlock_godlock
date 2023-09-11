@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Header from "./common/Header";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import Axios from "../apis/Axios";
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
@@ -229,8 +229,8 @@ const MobileButtonWrapper = styled.div`
 `;
 
 const Children = styled.div`
-  height: 100vh;
-  overflow: scroll;
+  min-height: 100vh;
+  height: auto;
 
   display: flex;
   flex-direction: column;
@@ -244,20 +244,13 @@ const Children = styled.div`
   * {
     flex-shrink: 0;
   }
-  /* > div:last-child {
-    margin-bottom: 120px;
-  } */
-  /* @media screen and (max-width: 720px) {
-    > div:last-child {
-      margin-bottom: 120px;
-    }
-  } */
 `;
 
 const MobileWrapper = styled.div`
   background: rgb(246, 214, 229);
   background: linear-gradient(0deg, rgba(246, 214, 229, 1) 0%, rgba(202, 221, 244, 1) 100%);
-  height: 100vh;
+  height: auto;
+
   .scroll {
     overflow: hidden;
   }
@@ -267,8 +260,14 @@ const PcWrapper = styled.div`
 `;
 
 const LeftWrapper = styled.div`
-  min-width: 350px;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+
+  /* min-width: 350px; */
   max-width: 400px;
+  height: 100vh;
+
   background: rgb(246, 214, 229);
   background: linear-gradient(0deg, rgba(246, 214, 229, 1) 0%, rgba(202, 221, 244, 1) 100%);
   padding-bottom: 50px;
@@ -277,8 +276,14 @@ const LeftWrapper = styled.div`
   z-index: 100;
 `;
 const RightWrapper = styled.div`
+  margin-left: 400px;
+
   flex-grow: 1;
   background-color: rgba(0, 0, 0, 0.02);
+
+  /* @media screen and (max-width: 720px) {
+    position: static;
+  } */
 `;
 
 const SideWrapper = styled.div`
