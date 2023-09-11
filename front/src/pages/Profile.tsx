@@ -239,8 +239,8 @@ const Profile = () => {
                       />
                       <Button
                         onClick={() => {
-                          if (nickname.length > 11) {
-                            toast.warning("닉네임은 최대 10자까지 가능합니다.");
+                          if (nickname.length > 11 || nickname.length < 2) {
+                            toast.warning("닉네임은 2자 이상 10자 이하, 영어 또는 숫자 또는 한글로 가능합니다.");
                           } else editNickname.mutate({ nickname });
                         }}
                       >
@@ -599,6 +599,7 @@ const SubCat = styled.div<{ myPostType: number }>`
     padding: 0px 16px;
     border-radius: 20px;
     margin: 5px;
+    flex-shrink: 0;
 
     font-size: 18px;
     font-weight: 600;
@@ -728,6 +729,10 @@ const ContentBox = styled.div<{ width: number; padding: number }>`
   @media screen and (max-width: 720px) {
     width: 92vw;
     padding: 20px ${(props) => props.padding + "px"};
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px);
+
+    /* box-shadow: none; */
   }
 `;
 
@@ -762,6 +767,7 @@ const InfoValue = styled.div`
     border: none;
     outline-style: none;
     font-size: 16px;
+    background-color: rgba(0, 0, 0, 0);
   }
   input::placeholder {
     font-size: 16px;

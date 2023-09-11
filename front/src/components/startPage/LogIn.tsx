@@ -48,7 +48,12 @@ const LogIn = ({ setToggle }: Props) => {
       onError: (err: CustomError) => {
         toast.error(err.response?.data?.message);
         // alert(err.response?.data?.message);
-        console.log(err.response?.data?.message);
+        if (err.response?.data?.message) {
+          console.log(err.response?.data?.message);
+        } else {
+          toast.error("로그인 중 에러 발생");
+        }
+        console.log(err);
         console.log("로그인 중 에러 발생");
       }
     }

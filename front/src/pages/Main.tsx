@@ -83,7 +83,7 @@ const Main = () => {
   return (
     <AppLayout>
       {type === 0 && (
-        <>
+        <MainEl>
           <WelcomeWrapper>
             <span>반갑습니다.</span>
             <span>
@@ -99,9 +99,14 @@ const Main = () => {
             </RowWrapper>
 
             <RowWrapper>
-              <Temp>무언가 들어갈 영역</Temp>
-              <Temp>무언가 들어갈 영역</Temp>
-              <Temp>무언가 들어갈 영역</Temp>
+              <Temp></Temp>
+              <Temp></Temp>
+              <Temp></Temp>
+              <Temp></Temp>
+              <Temp></Temp>
+              <Temp></Temp>
+              <Temp></Temp>
+              <Temp></Temp>
             </RowWrapper>
 
             <RowWrapper>
@@ -121,6 +126,14 @@ const Main = () => {
               >
                 피드
               </Pill2>
+              <Pill2
+                toggle={toggle}
+                onClick={() => {
+                  setToggle(2);
+                }}
+              >
+                관심 공고
+              </Pill2>
             </RowWrapper>
           </WelcomeWrapper>
 
@@ -135,18 +148,27 @@ const Main = () => {
               {noticePosts?.data?.pages.map((p) => p.map((v: postProps, i: number) => <Post key={i} postProps={v} />))}
             </InfiniteScroll>
           )}
-        </>
+
+          {toggle === 1 && (
+            //피드
+            <></>
+          )}
+          {toggle === 2 && (
+            //관심 공고
+            <></>
+          )}
+        </MainEl>
       )}
       {type === 1 && (
-        <>
+        <MainEl>
           <WelcomeWrapper>
             <span>모집공고 게시판</span>
             <span></span>
-            <span>모집공고 설명 ---- </span>
+            <span>모집공고 설명글</span>
 
             <RowWrapper>
               <Pill>모두</Pill>
-              <Pill>마감 공고 제외</Pill>
+              <Pill>마감 제외</Pill>
               <Pill>검색</Pill>
             </RowWrapper>
           </WelcomeWrapper>
@@ -159,14 +181,14 @@ const Main = () => {
           >
             {infoPosts?.data?.pages.map((p) => p.map((v: postProps, i: number) => <Post key={i} postProps={v} />))}
           </InfiniteScroll>
-        </>
+        </MainEl>
       )}
       {type === 2 && (
-        <>
+        <MainEl>
           <WelcomeWrapper>
             <span>소통 게시판</span>
             <span></span>
-            <span>소통 게시글 설명 ---- </span>
+            <span>소통 게시글 설명글</span>
 
             <RowWrapper>
               <Pill>모두</Pill>
@@ -182,16 +204,22 @@ const Main = () => {
           >
             {communityPosts?.data?.pages.map((p) => p.map((v: postProps, i: number) => <Post key={i} postProps={v} />))}
           </InfiniteScroll>
-        </>
+        </MainEl>
       )}
     </AppLayout>
   );
 };
 
 export default Main;
-
+const MainEl = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  padding-bottom: 120px;
+`;
 const Temp = styled.div`
-  height: 80px;
+  height: 120px;
   width: 80px;
 
   background-color: #fff;
@@ -209,6 +237,12 @@ const RowWrapper = styled.div`
 
   width: 100%;
   overflow-x: scroll;
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 `;
 const Pill = styled.div`
   margin-right: 8px;
@@ -223,7 +257,7 @@ const Pill = styled.div`
   align-items: center;
 
   border-radius: 100px;
-  background-color: #e0d9ec;
+  background-color: rgba(255, 255, 255, 0.5);
   color: #464b53;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 `;
@@ -240,7 +274,7 @@ const Pill2 = styled.div<{ toggle: number }>`
   align-items: center;
 
   border-radius: 100px;
-  background-color: #e0d9ec;
+  background-color: rgba(255, 255, 255, 0.5);
   color: #464b53;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 
