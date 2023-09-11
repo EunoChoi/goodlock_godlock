@@ -638,7 +638,6 @@ const List = styled.div`
   height: 0;
 
   flex-grow: 1;
-  -webkit-flex-grow: 1;
   -webkit-box-flex: 1;
 
   overflow-y: scroll;
@@ -749,7 +748,6 @@ const InfoValue = styled.div`
 
   input {
     flex-grow: 1;
-    -webkit-flex-grow: 1;
     -webkit-box-flex: 1;
 
     border: none;

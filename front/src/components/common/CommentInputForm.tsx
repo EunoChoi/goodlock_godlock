@@ -74,6 +74,7 @@ const CommentInputForm = ({ postId, postType }: props) => {
 export default CommentInputForm;
 
 const CommentInputArea = styled.div`
+  display: -webkit-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -95,7 +96,6 @@ const CommentInput = styled.input`
   width: auto;
 
   flex-grow: 1;
-  -webkit-flex-grow: 1;
   -webkit-box-flex: 1;
 
   height: 24px;

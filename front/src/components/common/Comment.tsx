@@ -205,12 +205,12 @@ const CommentEditButton = styled.button`
 `;
 const CommentEdit = styled.form`
   display: flex;
+  display: -webkit-box;
   padding: 6px 0;
   width: 100%;
   input {
     font-size: 1em;
 
-    -webkit-flex-grow: 1;
     flex-grow: 1;
     -webkit-box-flex: 1;
 

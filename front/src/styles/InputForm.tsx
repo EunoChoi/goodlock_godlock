@@ -26,6 +26,7 @@ const InputWrapper = styled.div`
   box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.2);
   /* border-radius: 5px; */
 
+  display: -webkit-box;
   display: flex;
   justify-content: start;
   align-items: center;
@@ -51,7 +52,6 @@ const TextArea = styled.textarea`
 
   width: 100%;
   flex-grow: 1;
-  -webkit-flex-grow: 1;
   -webkit-box-flex: 1;
 
   background-color: #fff;
