@@ -133,25 +133,6 @@ const InputPopup = ({ scrollRef, setIsPostInputOpen }: props) => {
         )}
         <InputForm.ButtonArea>
           <input ref={imageInput} type="file" accept="image/*" name="image" multiple hidden onChange={onChangeImages} />
-
-          <ButtonWrapper>
-            <FlexButton onClick={() => imageInput.current?.click()}>
-              <InsertPhotoIcon />
-              <span>이미지 삽입</span>
-            </FlexButton>
-
-            <FlexButton
-              onClick={() => {
-                if (content.length < 8 || content.length > 2200) {
-                  toast.warning("게시글은 최소 8자 최대 2200자 작성이 가능합니다.");
-                } else addPost.mutate({ content, images, type: inputType });
-              }}
-            >
-              <PostAddIcon />
-              <span>등록</span>
-            </FlexButton>
-          </ButtonWrapper>
-
           <FlexButton
             onClick={() => {
               // const isCancel = confirm("게시글 작성을 취소하시겠습니까?");
@@ -176,6 +157,23 @@ const InputPopup = ({ scrollRef, setIsPostInputOpen }: props) => {
             <CancelIcon />
             <span>취소</span>
           </FlexButton>
+          <ButtonWrapper>
+            <FlexButton onClick={() => imageInput.current?.click()}>
+              <InsertPhotoIcon />
+              <span>이미지 삽입</span>
+            </FlexButton>
+
+            <FlexButton
+              onClick={() => {
+                if (content.length < 8 || content.length > 2200) {
+                  toast.warning("게시글은 최소 8자 최대 2200자 작성이 가능합니다.");
+                } else addPost.mutate({ content, images, type: inputType });
+              }}
+            >
+              <PostAddIcon />
+              <span>등록</span>
+            </FlexButton>
+          </ButtonWrapper>
         </InputForm.ButtonArea>
       </InputForm.InputWrapper>
     </InputForm.InputBG>
