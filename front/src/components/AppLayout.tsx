@@ -275,12 +275,17 @@ const RightWrapper = styled.div`
 `;
 
 const SideWrapper = styled.div`
+  position: fixed;
+  right: 0px;
+  top: 0px;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
 
   width: 70px;
+  height: 100vh;
   padding: 20px;
   color: white;
   background-color: rgba(0, 0, 0, 0.25);
