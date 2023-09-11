@@ -430,7 +430,7 @@ const PostWrapper = styled.div`
 
   background-color: white;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-  margin: 10px;
+  margin: 0 10px;
   margin-bottom: 30px;
   /* border-radius: 7px; */
   @media screen and (max-width: 720px) {

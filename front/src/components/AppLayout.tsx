@@ -253,12 +253,8 @@ const Children = styled.div`
 `;
 
 const MobileWrapper = styled.div`
-  background: rgb(238, 174, 202);
-  background: linear-gradient(
-    180deg,
-    rgba(238, 174, 202, 0.5087375160024947) 0%,
-    rgba(148, 187, 233, 0.4975330342097777) 100%
-  );
+  background: rgb(246, 214, 229);
+  background: linear-gradient(0deg, rgba(246, 214, 229, 1) 0%, rgba(202, 221, 244, 1) 100%);
   height: 100vh;
   .scroll {
     overflow: hidden;
@@ -271,12 +267,8 @@ const PcWrapper = styled.div`
 const LeftWrapper = styled.div`
   min-width: 350px;
   max-width: 400px;
-  background: rgb(238, 174, 202);
-  background: linear-gradient(
-    180deg,
-    rgba(238, 174, 202, 0.5087375160024947) 0%,
-    rgba(148, 187, 233, 0.4975330342097777) 100%
-  );
+  background: rgb(246, 214, 229);
+  background: linear-gradient(0deg, rgba(246, 214, 229, 1) 0%, rgba(202, 221, 244, 1) 100%);
   padding-bottom: 50px;
 
   box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.2);

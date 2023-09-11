@@ -27,7 +27,7 @@ const Header = ({ top }: props) => {
   const { type } = useParams();
   let currentPage = type ? parseInt(type) : -1;
   if (window.location.pathname.split("/")[1] === "profile") currentPage = 3;
-  const titleArr = ["공지사항", "모집공고", "소통", "프로필"];
+  const titleArr = ["메인", "모집공고", "소통", "프로필"];
 
   useEffect(() => {
     if (!isMobile) {
@@ -59,7 +59,7 @@ const Header = ({ top }: props) => {
           {mountToggle && (
             <HeaderExtendedWrapper currentPage={currentPage + 1}>
               <span onClick={() => setMountToggle(false)}>
-                <Link to="/main/0">공지사항</Link>
+                <Link to="/main/0">메인</Link>
               </span>
               <span onClick={() => setMountToggle(false)}>
                 <Link to="/main/1">모집공고</Link>
@@ -82,7 +82,7 @@ const Header = ({ top }: props) => {
 
           <HeaderLink currentPage={currentPage + 1}>
             <span>
-              <Link to="/main/0">공지사항</Link>
+              <Link to="/main/0">메인</Link>
             </span>
             <span>
               <Link to="/main/1">모집공고</Link>

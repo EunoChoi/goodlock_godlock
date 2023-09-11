@@ -20,12 +20,8 @@ const NotFound = () => {
 export default NotFound;
 
 const BG = styled.div`
-  background: rgb(238, 174, 202);
-  background: linear-gradient(
-    180deg,
-    rgba(238, 174, 202, 0.5087375160024947) 0%,
-    rgba(148, 187, 233, 0.4975330342097777) 100%
-  );
+  background: rgb(246, 214, 229);
+  background: linear-gradient(0deg, rgba(246, 214, 229, 1) 0%, rgba(202, 221, 244, 1) 100%);
   height: 100vh;
 
   display: flex;
