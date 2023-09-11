@@ -739,6 +739,7 @@ const InfoTitle = styled.div`
   }
 `;
 const InfoValue = styled.div`
+  display: -webkit-box;
   display: flex;
   align-items: center;
   width: 100%;
