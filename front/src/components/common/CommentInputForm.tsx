@@ -82,7 +82,7 @@ const CommentInputArea = styled.div`
   margin: 5px 20px;
   padding: 0px 10px;
 
-  /* width: 100%; */
+  width: auto;
   height: 50px;
   border: 2px rgba(0, 0, 0, 0.1) solid;
   border-radius: 7px;
@@ -91,6 +91,8 @@ const CommentInputArea = styled.div`
 const CommentInput = styled.input`
   border: none;
   outline: none;
+
+  width: auto;
   flex-grow: 1;
   height: 24px;
 
@@ -103,5 +105,4 @@ const CommentInput = styled.input`
 const CommentSendButton = styled.button`
   display: flex;
   justify-content: end;
-  width: auto;
 `;
