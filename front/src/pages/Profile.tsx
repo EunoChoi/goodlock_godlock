@@ -747,6 +747,7 @@ const InfoValue = styled.div`
   margin-top: 8px;
 
   input {
+    width: 100%;
     flex-grow: 1;
     -webkit-box-flex: 1;
 
