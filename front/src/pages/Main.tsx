@@ -12,6 +12,9 @@ import { useNavigate } from "react-router-dom";
 import AppLayout from "../components/AppLayout";
 import Post from "../components/common/Post";
 
+//mui
+import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
+
 interface userProps {
   email: string;
   id: number;
@@ -82,8 +85,13 @@ const Main = () => {
       {type === 0 && (
         <>
           <WelcomeWrapper>
-            <span>좋은 오후입니다.</span>
-            <span>{user?.nickname}님! 👋🏻</span>
+            <span>반갑습니다.</span>
+            <span>
+              {user?.nickname}님!
+              <div>
+                <EmojiPeopleIcon fontSize="inherit" />
+              </div>
+            </span>
             <span>오늘도 행복한 하루를 만들어 보아요 :)</span>
 
             <RowWrapper>
@@ -132,7 +140,7 @@ const Main = () => {
       {type === 1 && (
         <>
           <WelcomeWrapper>
-            <span>모집공고</span>
+            <span>모집공고 게시판</span>
             <span></span>
             <span>모집공고 설명 ---- </span>
 
@@ -156,7 +164,7 @@ const Main = () => {
       {type === 2 && (
         <>
           <WelcomeWrapper>
-            <span>소통</span>
+            <span>소통 게시판</span>
             <span></span>
             <span>소통 게시글 설명 ---- </span>
 
@@ -253,12 +261,19 @@ const WelcomeWrapper = styled.div`
 
   > span:first-child,
   > span:nth-child(2) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-left: 5px;
     font-size: 32px;
     font-weight: 600;
     line-height: 36px;
     color: #464b53;
     text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    > div {
+      margin-left: 12px;
+      font-size: 44px;
+    }
   }
   > span:nth-child(3) {
     font-size: 20px;
