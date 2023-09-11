@@ -57,7 +57,7 @@ const Post = ({ postProps }: any) => {
   const isFollowed = user?.Followings?.find((v: any) => v.id === postProps.UserId);
   const isMyPost = user?.id === postProps?.UserId;
 
-  const scroll = useRef<null | HTMLDivElement>(null);
+  const commentScroll = useRef<null | HTMLDivElement>(null);
 
   const open = Boolean(morePop);
   const [timer, setTimer] = useState<NodeJS.Timeout>();
@@ -352,7 +352,7 @@ const Post = ({ postProps }: any) => {
       {isCommentOpen && (
         <>
           <CommentInputForm postId={postProps?.id} postType={postProps?.type}></CommentInputForm>
-          <CommentWrapper ref={scroll}>
+          <CommentWrapper ref={commentScroll}>
             {postProps?.Comments.slice(0, commentLoadLength).map((v: any, i: number) => (
               <Comment
                 key={i + v.content + "comment"}
@@ -371,7 +371,7 @@ const Post = ({ postProps }: any) => {
                     setCommentLoadLength((c) => c + 5);
                   }
                   setTimeout(() => {
-                    scroll.current?.scrollTo({ top: scroll.current.scrollHeight, behavior: "smooth" });
+                    commentScroll.current?.scrollTo({ top: commentScroll.current.scrollHeight, behavior: "smooth" });
                   }, 0);
                 }}
               >

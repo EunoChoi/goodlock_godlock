@@ -8,6 +8,8 @@ import Axios from "../apis/Axios";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Animation from "../styles/Animation";
+
 //components
 import AppLayout from "../components/AppLayout";
 import Post from "../components/common/Post";
@@ -148,32 +150,38 @@ const Main = () => {
           </WelcomeWrapper>
 
           {toggle === 0 && (
-            <InfiniteScroll
-              // scrollableTarget="scrollWrapper"
-              hasMore={noticePosts.hasNextPage || false}
-              loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
-              next={() => noticePosts.fetchNextPage()}
-              dataLength={noticePosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-            >
-              {noticePosts?.data?.pages.map((p) => p.map((v: postProps, i: number) => <Post key={i} postProps={v} />))}
-            </InfiniteScroll>
+            <SubMain>
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={noticePosts.hasNextPage || false}
+                loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
+                next={() => noticePosts.fetchNextPage()}
+                dataLength={noticePosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {noticePosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </SubMain>
           )}
 
           {toggle === 1 && (
             //피드
-            <></>
+            <SubMain></SubMain>
           )}
           {toggle === 2 && (
             //관심 공고
-            <InfiniteScroll
-              // scrollableTarget="profileScrollWrapper"
-              hasMore={likedPosts.hasNextPage || false}
-              loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
-              next={() => likedPosts.fetchNextPage()}
-              dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-            >
-              {likedPosts?.data?.pages.map((p) => p.map((v: postProps, i: number) => <Post key={i} postProps={v} />))}
-            </InfiniteScroll>
+            <SubMain>
+              <InfiniteScroll
+                // scrollableTarget="profileScrollWrapper"
+                hasMore={likedPosts.hasNextPage || false}
+                loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
+                next={() => likedPosts.fetchNextPage()}
+                dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {likedPosts?.data?.pages.map((p) => p.map((v: postProps, i: number) => <Post key={i} postProps={v} />))}
+              </InfiniteScroll>
+            </SubMain>
           )}
         </MainEl>
       )}
@@ -229,12 +237,17 @@ const Main = () => {
 };
 
 export default Main;
+const SubMain = styled.div`
+  animation: ${Animation.smoothAppear} 0.7s;
+`;
 const MainEl = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
   padding-bottom: 120px;
+
+  animation: ${Animation.smoothAppear} 0.7s;
 `;
 const Temp = styled.div`
   height: 120px;
@@ -285,6 +298,8 @@ const Pill = styled.div`
   }
 `;
 const Pill2 = styled.div<{ toggle: number }>`
+  transition: all ease-in-out 0.5s;
+
   margin-right: 8px;
   padding: 6px 16px;
   margin-top: 40px;

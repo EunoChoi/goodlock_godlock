@@ -104,8 +104,6 @@ const LogInSignUp = {
     border: 1px solid #cacaca;
     border-radius: 6px;
     padding: 0 15px;
-    background-color: rgba(0, 0, 0, 0);
-
 
     font-size: 16px;
 
