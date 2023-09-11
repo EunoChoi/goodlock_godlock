@@ -101,7 +101,7 @@ const UserTitle = styled.div`
     margin: 5px;
     &:nth-child(2) {
       font-size: 2em;
-      font-weight: 600;
+      /* font-weight: 600; */
       color: rgba(0, 0, 0, 0.6);
       /* color: white; */
     }
@@ -140,11 +140,11 @@ const UserSub = styled.div`
       color: white;
       color: rgba(0, 0, 0, 0.6);
       font-size: 1.6em;
-      font-weight: 600;
+      /* font-weight: 600; */
     }
     span:nth-child(2) {
       font-size: 1.2em;
-      font-weight: 600;
+      /* font-weight: 600; */
       color: rgba(0, 0, 0, 0.4);
     }
   }

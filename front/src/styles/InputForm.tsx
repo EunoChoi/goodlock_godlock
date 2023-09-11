@@ -51,6 +51,9 @@ const TextArea = styled.textarea`
 
   width: 100%;
   flex-grow: 1;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+
   background-color: #fff;
   /* border-radius: 7px 7px 0px 0px; */
 

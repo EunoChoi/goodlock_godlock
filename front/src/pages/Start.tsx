@@ -79,7 +79,7 @@ const TextBox = styled.div`
   height: 170px;
 
   font-size: 28px;
-  font-weight: 400;
+  /* font-weight: 400; */
   white-space: pre-line;
   color: white;
   text-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
@@ -108,7 +108,7 @@ const CarouselWrapper = styled.div`
 `;
 const Title = styled.span`
   font-size: 48px;
-  font-weight: 600;
+  /* font-weight: 600; */
   text-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
   color: white;
   text-transform: uppercase;
@@ -143,7 +143,7 @@ const StartWrapper = styled.div`
 
 const StartButton = styled.button`
   font-size: 32px;
-  font-weight: 600;
+  /* font-weight: 600; */
   color: white;
   width: 200px;
   padding: 8px;

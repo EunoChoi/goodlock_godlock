@@ -114,8 +114,8 @@ const PcHeaderWrapper = styled.div<{ mountToggle: boolean }>`
 
   padding: 24px;
   font-size: 1.6em;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.34);
+  /* font-weight: 600; */
+  /* color: rgba(0, 0, 0, 0.34); */
   text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 
   width: 100%;
@@ -168,7 +168,7 @@ const HeaderExtendedWrapper = styled.div<{ currentPage: number | undefined }>`
     padding: 7px;
   }
   font-size: 20px;
-  font-weight: 600;
+  /* font-weight: 600; */
   color: white;
   color: rgba(0, 0, 0, 0.4);
   width: 100%;
@@ -181,10 +181,10 @@ const HeaderExtendedWrapper = styled.div<{ currentPage: number | undefined }>`
 
 const HeaderLogo = styled.span`
   text-align: center;
-  color: white;
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 1.8em;
-  font-weight: 700;
+  /* color: white; */
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 48px;
+  /* font-weight: 600; */
 `;
 
 const HeaderLogoMobile = styled.span`
@@ -193,7 +193,7 @@ const HeaderLogoMobile = styled.span`
   color: rgba(0, 0, 0, 0.6);
 
   font-size: 28px;
-  font-weight: 600;
+  /* font-weight: 600; */
 `;
 
 const HeaderLink = styled.div<{ currentPage: number | undefined }>`
@@ -201,6 +201,8 @@ const HeaderLink = styled.div<{ currentPage: number | undefined }>`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  color: rgba(0, 0, 0, 0.5);
 
   * {
     margin: 5px;
@@ -211,7 +213,7 @@ const HeaderLink = styled.div<{ currentPage: number | undefined }>`
     transition: all ease-in-out 0.6s;
   }
   span:nth-child(${(props) => props.currentPage}) {
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.7);
     /* font-weight: 800; */
   }
 `;
