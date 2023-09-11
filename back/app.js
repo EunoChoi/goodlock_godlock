@@ -19,7 +19,7 @@ db.sequelize.sync().then(() => {
 //     credentials: true
 // }));
 
-app.use(cors({ origin: 'http://localhost:80', credential: 'true' }));
+app.use(cors({ origin: "http://13.125.85.2", credentials: true }));
 
 
 //이미지 업로드를 위한 미들웨어
