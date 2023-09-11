@@ -42,6 +42,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const type = params?.type && parseInt(params?.type);
   const isMain = window.location.pathname.split("/")[1] === "main";
 
+  const level = 1;
+
   //useQuery
   const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
     staleTime: 60 * 1000
@@ -95,7 +97,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               </button>
               {
                 //user level이 2이상이여야 공지사항 작성이 가능
-                isMain && type == 0 && user?.level >= 2 && (
+                isMain && type == 0 && user?.level >= level && (
                   <button color="inherit" onClick={() => setPostInputOpen((c) => !c)}>
                     <PostAddIcon fontSize="medium" />
                   </button>
@@ -171,7 +173,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               )}
               {
                 //user level이 2이상이여야 공지사항 작성이 가능
-                isMain && type == 0 && user?.level >= 2 && (
+                isMain && type == 0 && user?.level >= level && (
                   <Button color="inherit" onClick={() => setPostInputOpen((c) => !c)}>
                     <PostAddIcon fontSize="large" />
                   </Button>
