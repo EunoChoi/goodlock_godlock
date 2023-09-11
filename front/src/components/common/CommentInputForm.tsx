@@ -93,7 +93,7 @@ const CommentInput = styled.input`
   border: none;
   outline: none;
 
-  width: auto;
+  width: 50%;
 
   flex-grow: 1;
   -webkit-box-flex: 1;

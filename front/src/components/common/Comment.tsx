@@ -204,8 +204,9 @@ const CommentEditButton = styled.button`
   padding: 4px 8px;
 `;
 const CommentEdit = styled.form`
-  display: flex;
   display: -webkit-box;
+  display: flex;
+
   padding: 6px 0;
   width: 100%;
   input {
@@ -213,6 +214,7 @@ const CommentEdit = styled.form`
 
     flex-grow: 1;
     -webkit-box-flex: 1;
+    width: 50%;
 
     border: 2px rgba(0, 0, 0, 0.1) solid;
     border-radius: 7px;
