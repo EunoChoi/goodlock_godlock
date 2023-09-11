@@ -95,6 +95,7 @@ const CommentInput = styled.input`
   height: 24px;
 
   font-size: 1.1em;
+  background-color: rgba(0, 0, 0, 0);
   input:focus {
     outline: none;
   }
