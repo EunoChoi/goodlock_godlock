@@ -45,7 +45,7 @@ body.react-confirm-alert-body-element {
   font-weight: 600;
 
   @media screen and (max-width: 720px) {
-    width: 92vw
+    width: 92vw;
   }
 
 }
