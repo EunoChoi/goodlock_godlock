@@ -346,14 +346,14 @@ const UserInfo = () => {
                   setSubCat(0);
                 }}
               >
-                <span>작성 공고</span>
+                <span>공고</span>
               </button>
               <button
                 onClick={() => {
                   setSubCat(1);
                 }}
               >
-                <span>작성 소통</span>
+                <span>소통</span>
               </button>
               <button
                 onClick={() => {
