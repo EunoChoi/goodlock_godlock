@@ -95,8 +95,8 @@ const CommentInput = styled.input`
   width: auto;
 
   flex-grow: 1;
+  -webkit-flex-grow: 1;
   -webkit-box-flex: 1;
-  -ms-flex: 1;
 
   height: 24px;
 

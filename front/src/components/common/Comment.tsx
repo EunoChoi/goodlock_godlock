@@ -210,9 +210,9 @@ const CommentEdit = styled.form`
   input {
     font-size: 1em;
 
+    -webkit-flex-grow: 1;
     flex-grow: 1;
     -webkit-box-flex: 1;
-    -ms-flex: 1;
 
     border: 2px rgba(0, 0, 0, 0.1) solid;
     border-radius: 7px;

@@ -265,8 +265,8 @@ const RightWrapper = styled.div`
   margin-left: 400px;
 
   flex-grow: 1;
+  -webkit-flex-grow: 1;
   -webkit-box-flex: 1;
-  -ms-flex: 1;
 
   background-color: rgba(0, 0, 0, 0.02);
 
