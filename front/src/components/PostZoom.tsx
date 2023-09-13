@@ -329,7 +329,7 @@ const CancelBtn = styled.button`
   left: 10px;
   top: 10px;
 
-  z-index: 1000;
+  z-index: 1005;
 
   color: black;
   @media screen and (max-width: 720px) {
@@ -440,7 +440,7 @@ const Image = styled.img`
 `;
 
 const PostZoomBG = styled.div`
-  z-index: 1000;
+  z-index: 1002;
   position: fixed;
   left: 0;
   top: 0;

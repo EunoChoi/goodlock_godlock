@@ -14,7 +14,7 @@ body.react-confirm-alert-body-element {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1000;
+  z-index: 2000;
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(5px);
 
@@ -78,8 +78,8 @@ body.react-confirm-alert-body-element {
 
 .react-confirm-alert-button-group>button {
   outline: none;
-  color: #333;
-  background-color: #DDDAED;
+  color: white;
+  background-color: #b8c1e1;
   border: none;
   display: inline-block;
   padding: 6px 18px;
@@ -88,6 +88,12 @@ body.react-confirm-alert-body-element {
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+}
+
+.react-confirm-alert-button-group>button:nth-child(2) {
+  border: solid 2px #b8c1e1;
+  background-color: white;
+  color: #b8c1e1;
 }
 
 @-webkit-keyframes react-confirm-alert-fadeIn {

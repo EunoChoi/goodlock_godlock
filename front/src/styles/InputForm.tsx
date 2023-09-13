@@ -2,7 +2,19 @@ import styled from "styled-components";
 import Animation from "./Animation";
 
 const InputBG = styled.div`
-  z-index: 500;
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  /* background: rgba(255, 255, 255, 0.5); */
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  animation: ${Animation.smoothAppear} 0.3s;
+`;
+const EditBG = styled.div`
+  z-index: 1010;
   position: fixed;
   top: 0;
   right: 0;
@@ -67,7 +79,7 @@ const TextArea = styled.textarea`
     text-align: center;
     padding: 60px 0px;
     font-size: 1.5em;
-    font-weight: 600;
+    /* font-weight: 600; */
     color: rgba(0, 0, 0, 0.3);
   }
   @media screen and (max-width: 720px) {
@@ -133,6 +145,7 @@ const InputForm = {
   InputImage,
   ImageDeleteButton,
   InputBG,
+  EditBG,
   InputWrapper,
   TextArea,
   ButtonArea

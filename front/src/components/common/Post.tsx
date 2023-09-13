@@ -21,6 +21,8 @@ import { Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import MessageIcon from "@mui/icons-material/Message";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
 import Axios from "../../apis/Axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -127,26 +129,26 @@ const Post = ({ postProps }: any) => {
     }
   });
 
-  const follow = useMutation(() => Axios.patch(`user/${postProps.UserId}/follow`), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
-      toast.success("팔로우 완료");
-    },
-    onError: (err: CustomError) => {
-      toast.warning(err.response?.data);
-      // alert(err.response?.data);
-    }
-  });
-  const unFollow = useMutation(() => Axios.delete(`user/${postProps.UserId}/follow`), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
-      toast.success("언팔로우 완료");
-    },
-    onError: (err: CustomError) => {
-      toast.warning(err.response?.data);
-      // alert(err.response?.data);
-    }
-  });
+  // const follow = useMutation(() => Axios.patch(`user/${postProps.UserId}/follow`), {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries(["user"]);
+  //     toast.success("팔로우 완료");
+  //   },
+  //   onError: (err: CustomError) => {
+  //     toast.warning(err.response?.data);
+  //     // alert(err.response?.data);
+  //   }
+  // });
+  // const unFollow = useMutation(() => Axios.delete(`user/${postProps.UserId}/follow`), {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries(["user"]);
+  //     toast.success("언팔로우 완료");
+  //   },
+  //   onError: (err: CustomError) => {
+  //     toast.warning(err.response?.data);
+  //     // alert(err.response?.data);
+  //   }
+  // });
 
   return (
     <PostWrapper onClick={() => setMorePop(null)}>
@@ -287,7 +289,48 @@ const Post = ({ postProps }: any) => {
 
       {/* 토글 버튼(좋아요, 댓글창, 수정, 삭제) */}
       <ToggleWrapper>
-        {postProps.type !== 0 ? (
+        {postProps.type === 0 && (
+          <ToggleButton
+            onClick={() => {
+              if (!isLiked) {
+                like.mutate();
+              } else {
+                disLike.mutate();
+              }
+            }}
+          >
+            {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
+            <span>{postProps?.Likers?.length}</span>
+          </ToggleButton>
+        )}
+        {postProps.type === 1 && (
+          <FlexDiv>
+            {/* like toggle */}
+            <ToggleButton
+              onClick={() => {
+                if (!isLiked) {
+                  like.mutate();
+                } else {
+                  disLike.mutate();
+                }
+              }}
+            >
+              {isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />}
+              <span>{postProps?.Likers?.length}</span>
+            </ToggleButton>
+            {/* comment toggle */}
+            <ToggleButton
+              onClick={() => {
+                setCommentOpen((c) => !c);
+                setCommentLoadLength(5);
+              }}
+            >
+              <MessageIcon />
+              <span>{postProps?.Comments?.length}</span>
+            </ToggleButton>
+          </FlexDiv>
+        )}
+        {postProps.type === 2 && (
           <FlexDiv>
             {/* like toggle */}
             <ToggleButton
@@ -313,19 +356,6 @@ const Post = ({ postProps }: any) => {
               <span>{postProps?.Comments?.length}</span>
             </ToggleButton>
           </FlexDiv>
-        ) : (
-          <ToggleButton
-            onClick={() => {
-              if (!isLiked) {
-                like.mutate();
-              } else {
-                disLike.mutate();
-              }
-            }}
-          >
-            {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
-            <span>{postProps?.Likers?.length}</span>
-          </ToggleButton>
         )}
         {isMyPost && (
           <ToggleButton
@@ -429,7 +459,7 @@ const PostWrapper = styled.div`
   width: 500px;
 
   background-color: white;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   margin: 3px 10px;
   margin-bottom: 30px;
   /* border-radius: 7px; */

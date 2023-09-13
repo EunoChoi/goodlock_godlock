@@ -20,7 +20,7 @@ interface Props {
 const SignUp = ({ setToggle }: Props) => {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isDirty, isValid },
     watch,
     handleSubmit,
     getValues
@@ -147,7 +147,9 @@ const SignUp = ({ setToggle }: Props) => {
           })}
         ></LogInSignUp.Input>
         <LogInSignUp.WarningText>{errors.passwordCheck?.message}</LogInSignUp.WarningText>
-        <LogInSignUp.Button bgColor="">회원가입</LogInSignUp.Button>
+        <LogInSignUp.Button type="submit" disabled={!isDirty || !isValid} bgColor="">
+          회원가입
+        </LogInSignUp.Button>
       </LogInSignUp.Form>
 
       <LogInSignUp.TextWrapper>

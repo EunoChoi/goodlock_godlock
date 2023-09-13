@@ -637,7 +637,6 @@ const ListTitle = styled.div`
 `;
 const ButtonWrapper = styled.div`
   button {
-    /* font-weight: 600; */
   }
 `;
 const List = styled.div`

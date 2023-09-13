@@ -94,7 +94,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
   };
 
   return (
-    <InputForm.InputBG
+    <InputForm.EditBG
       onClick={() => {
         // const isCancel = confirm("게시글 수정을 중단하시겠습니까?");
         // if (isCancel) setPostEdit(false);
@@ -189,7 +189,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
           </ButtonWrapper>
         </InputForm.ButtonArea>
       </InputForm.InputWrapper>
-    </InputForm.InputBG>
+    </InputForm.EditBG>
   );
 };
 

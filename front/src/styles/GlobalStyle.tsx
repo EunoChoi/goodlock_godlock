@@ -42,6 +42,7 @@ const GlobalStyle = createGlobalStyle`
     border: none;
     padding: 0;
     cursor: pointer;
+    -webkit-tap-highlight-color : transparent !important;
   }
 `;
 

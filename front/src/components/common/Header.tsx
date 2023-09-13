@@ -21,6 +21,8 @@ const Header = () => {
   let currentPage = type ? parseInt(type) : -1;
   if (window.location.pathname.split("/")[1] === "profile") currentPage = 3;
 
+  // console.log(window.visualViewport?.height);
+
   useEffect(() => {
     if (!isMobile) {
       setMountToggle(false);
@@ -51,37 +53,42 @@ const Header = () => {
                   setMountToggle((c) => !c);
                 }}
               >
-                <MenuIcon fontSize="large" />
+                <MenuIcon fontSize="inherit" />
               </HeaderMenuButton>
             </RowDiv>
           </HeaderFixedWrapper>
-          {mountToggle && (
-            <HeaderExtendedWrapper currentPage={currentPage + 1}>
-              <span onClick={() => setMountToggle(false)}>
-                <Link to="/main/0">메인</Link>
-              </span>
-              <span onClick={() => setMountToggle(false)}>
-                <Link to="/main/1">모집공고</Link>
-              </span>
-              <span onClick={() => setMountToggle(false)}>
-                <Link to="/main/2">소통</Link>
-              </span>
-              <span onClick={() => setMountToggle(false)}>
-                <Link to="/profile/0">프로필</Link>
-              </span>
-            </HeaderExtendedWrapper>
-          )}
+          <HeaderExtendedWrapper currentPage={currentPage + 1}>
+            <span onClick={() => setMountToggle(false)}>
+              <Link to="/main/0">홈</Link>
+            </span>
+            <span onClick={() => setMountToggle(false)}>
+              <Link to="/main/1">모집공고</Link>
+            </span>
+            <span onClick={() => setMountToggle(false)}>
+              <Link to="/main/2">소통</Link>
+            </span>
+          </HeaderExtendedWrapper>
         </MobileHeaderWrapper>
       ) : (
         //pc header
         <PcHeaderWrapper mountToggle={mountToggle}>
           <Link to="/main/0">
-            <HeaderLogo>NARANG</HeaderLogo>
+            <HeaderLogo
+              onClick={() =>
+                window.scrollTo({
+                  top: 0,
+                  left: 0,
+                  behavior: "smooth"
+                })
+              }
+            >
+              NARANG
+            </HeaderLogo>
           </Link>
 
           <HeaderLink currentPage={currentPage + 1}>
             <span>
-              <Link to="/main/0">메인</Link>
+              <Link to="/main/0">홈</Link>
             </span>
             <span>
               <Link to="/main/1">모집공고</Link>
@@ -112,7 +119,7 @@ const PcHeaderWrapper = styled.div<{ mountToggle: boolean }>`
   justify-content: center;
   align-items: center;
 
-  padding: 24px;
+  /* padding: 24px; */
   font-size: 1.6em;
   /* font-weight: 600; */
   /* color: rgba(0, 0, 0, 0.34); */
@@ -131,21 +138,32 @@ const MobileHeaderWrapper = styled.div<{ mountToggle: boolean }>`
   justify-content: center;
   align-items: start;
 
-  padding: 4px 16px;
+  padding: 4px 12px;
 
   height: auto;
   width: 100vw;
   text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
 
-  background-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-
-  background-color: ${(props) => props.mountToggle && "rgba(255, 255, 255, 0.6)"};
-  box-shadow: ${(props) => props.mountToggle && "0px 5px 5px rgba(0, 0, 0, 0.2)"};
-  backdrop-filter: ${(props) => props.mountToggle && "blur(20px)"};
+  background-color: rgb(236, 244, 255);
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.05);
 
   transition: 0.2s all ease-in-out;
+
+  > div:nth-child(2) {
+    span {
+      transition: all ease-in-out 0.3s;
+      font-size: 0px;
+      padding: 0px;
+      font-size: ${(props) => props.mountToggle && "20px"};
+      padding: ${(props) => props.mountToggle && "8px"};
+      &:first-child {
+        padding-top: ${(props) => props.mountToggle && "16px"};
+      }
+      &:last-child {
+        padding-bottom: ${(props) => props.mountToggle && "16px"};
+      }
+    }
+  }
 `;
 
 const HeaderFixedWrapper = styled.div`
@@ -156,17 +174,17 @@ const HeaderFixedWrapper = styled.div`
 `;
 
 const HeaderMenuButton = styled.button`
-  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: rgba(0, 0, 0, 0.6);
+  font-size: 28px;
 `;
 const HeaderExtendedWrapper = styled.div<{ currentPage: number | undefined }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  * {
-    padding: 7px;
-  }
   font-size: 20px;
   /* font-weight: 600; */
   color: white;
@@ -174,7 +192,6 @@ const HeaderExtendedWrapper = styled.div<{ currentPage: number | undefined }>`
   width: 100%;
 
   span:nth-child(${(props) => props.currentPage}) {
-    /* color: #a09ce0; */
     color: rgba(0, 0, 0, 0.55);
   }
 `;
@@ -192,28 +209,33 @@ const HeaderLogoMobile = styled.span`
   color: white;
   color: rgba(0, 0, 0, 0.6);
 
-  font-size: 28px;
+  font-size: 24px;
   /* font-weight: 600; */
 `;
 
 const HeaderLink = styled.div<{ currentPage: number | undefined }>`
-  padding: 20px;
+  padding: 20px 0;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.4);
+  width: 100%;
 
-  * {
-    margin: 5px;
-    flex-shrink: 0;
-  }
   span {
+    white-space: nowrap;
+    flex-shrink: 0;
+    width: 35%;
     padding-bottom: 5px;
     transition: all ease-in-out 0.6s;
+    text-align: center;
+  }
+  span:first-child,
+  span:nth-child(3) {
+    width: 25%;
   }
   span:nth-child(${(props) => props.currentPage}) {
-    color: rgba(0, 0, 0, 0.7);
+    color: rgba(0, 0, 0, 0.6);
     /* font-weight: 800; */
   }
 `;

@@ -68,7 +68,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           <Header />
           <Children>{children}</Children>
           {isMain && (
-            <MobileButtonWrapper>
+            <MobileButtonWrapper isPostInputOpen={isPostInputOpen}>
               <button
                 color="inherit"
                 onClick={() =>
@@ -84,19 +84,71 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               {
                 //user level이 2이상이여야 공지사항 작성이 가능
                 isMain && type == 0 && user?.level >= level && (
-                  <button color="inherit" onClick={() => setPostInputOpen((c) => !c)}>
+                  <button
+                    color="inherit"
+                    onClick={() => {
+                      if (isPostInputOpen === false) {
+                        setPostInputOpen((c) => !c);
+                      } else {
+                        confirmAlert({
+                          // title: "",
+                          message: "게시글 작성을 중단하시겠습니까?",
+                          buttons: [
+                            {
+                              label: "확인",
+                              onClick: () => setPostInputOpen((c) => !c)
+                            },
+                            {
+                              label: "취소",
+                              onClick: () => console.log("취소")
+                            }
+                          ]
+                        });
+                      }
+                    }}
+                  >
                     <PostAddIcon fontSize="medium" />
+                    <span>글 작성</span>
                   </button>
                 )
               }
               {
                 //user level이 2미만일때 공지 외 게시글 작성 가능
                 isMain && type != 0 && (
-                  <button color="inherit" onClick={() => setPostInputOpen((c) => !c)}>
+                  <button
+                    color="inherit"
+                    onClick={() => {
+                      if (isPostInputOpen === false) {
+                        setPostInputOpen((c) => !c);
+                      } else {
+                        confirmAlert({
+                          // title: "",
+                          message: "게시글 작성을 중단하시겠습니까?",
+                          buttons: [
+                            {
+                              label: "확인",
+                              onClick: () => setPostInputOpen((c) => !c)
+                            },
+                            {
+                              label: "취소",
+                              onClick: () => console.log("취소")
+                            }
+                          ]
+                        });
+                      }
+                    }}
+                  >
                     <PostAddIcon fontSize="medium" />
+                    <span>글 작성</span>
                   </button>
                 )
               }
+
+              <button>
+                <Link to="/profile/0">
+                  <SettingsIcon fontSize="large" />
+                </Link>
+              </button>
             </MobileButtonWrapper>
           )}
         </MobileWrapper>
@@ -110,7 +162,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             <Children id="scrollWrapper">{children}</Children>
           </RightWrapper>
           <SideWrapper>
-            <TopButtons>
+            <div>
               <Button color="inherit">
                 <Link to="/profile/0">
                   <SettingsIcon fontSize="large" />
@@ -138,9 +190,9 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               >
                 <LogoutIcon fontSize="large" />
               </Button>
-            </TopButtons>
+            </div>
 
-            <BottomButtons>
+            <div>
               {isMain && (
                 <Button
                   color="inherit"
@@ -158,7 +210,29 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               {
                 //user level이 2이상이여야 공지사항 작성이 가능
                 isMain && type == 0 && user?.level >= level && (
-                  <Button color="inherit" onClick={() => setPostInputOpen((c) => !c)}>
+                  <Button
+                    color="inherit"
+                    onClick={() => {
+                      if (isPostInputOpen === false) {
+                        setPostInputOpen((c) => !c);
+                      } else {
+                        confirmAlert({
+                          // title: "",
+                          message: "게시글 작성을 중단하시겠습니까?",
+                          buttons: [
+                            {
+                              label: "확인",
+                              onClick: () => setPostInputOpen((c) => !c)
+                            },
+                            {
+                              label: "취소",
+                              onClick: () => console.log("취소")
+                            }
+                          ]
+                        });
+                      }
+                    }}
+                  >
                     <PostAddIcon fontSize="large" />
                   </Button>
                 )
@@ -166,12 +240,34 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               {
                 //user level이 2미만일때 공지 외 게시글 작성 가능
                 isMain && type != 0 && (
-                  <Button color="inherit" onClick={() => setPostInputOpen((c) => !c)}>
+                  <Button
+                    color="inherit"
+                    onClick={() => {
+                      if (isPostInputOpen === false) {
+                        setPostInputOpen((c) => !c);
+                      } else {
+                        confirmAlert({
+                          // title: "",
+                          message: "게시글 작성을 중단하시겠습니까?",
+                          buttons: [
+                            {
+                              label: "확인",
+                              onClick: () => setPostInputOpen((c) => !c)
+                            },
+                            {
+                              label: "취소",
+                              onClick: () => console.log("취소")
+                            }
+                          ]
+                        });
+                      }
+                    }}
+                  >
                     <PostAddIcon fontSize="large" />
                   </Button>
                 )
               }
-            </BottomButtons>
+            </div>
           </SideWrapper>
         </PcWrapper>
       )}
@@ -181,21 +277,18 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
 export default AppLayout;
 
-const TopButtons = styled.div``;
-const BottomButtons = styled.div``;
-
-const MobileButtonWrapper = styled.div`
+const MobileButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: end;
 
-  z-index: 999;
+  z-index: 1001;
   position: fixed;
   bottom: 20px;
   right: 20px;
 
-  button {
+  > button {
     width: 50px;
     height: 50px;
 
@@ -207,11 +300,34 @@ const MobileButtonWrapper = styled.div`
     box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
     background-color: #d5dbf0;
   }
-  button:first-child {
-    background-color: #d5dbf0;
+  > button:nth-child(1) {
+    display: ${(props) => props.isPostInputOpen && "none"};
+  }
+  > button:nth-child(2) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all ease-in-out 0.3s;
+    width: ${(props) => props.isPostInputOpen && "100px"};
+
+    span {
+      transition: all ease-in-out 0.3s;
+      overflow: hidden;
+      flex-shrink: 0;
+      font-size: 0px;
+      margin-left: ${(props) => props.isPostInputOpen && "4px"};
+      font-size: ${(props) => props.isPostInputOpen && "16px"};
+    }
+  }
+  > button:nth-child(3) {
+    display: ${(props) => props.isPostInputOpen && "none"};
+    * {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 `;
-
 const Children = styled.div`
   animation: ${Animation.smoothAppear} 0.7s;
 
@@ -252,26 +368,25 @@ const LeftWrapper = styled.div`
 
   /* min-width: 350px; */
   width: 400px;
+  width: 30vw;
   height: 100vh;
 
   background: rgb(246, 214, 229);
   background: linear-gradient(0deg, rgba(246, 214, 229, 1) 0%, rgba(202, 221, 244, 1) 100%);
+  background: rgb(201, 220, 243);
+  background: linear-gradient(180deg, rgba(201, 220, 243, 1) 0%, rgba(234, 216, 233, 1) 100%);
+
   padding-bottom: 50px;
 
   box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.2);
   z-index: 100;
 `;
 const RightWrapper = styled.div`
-  margin-left: 400px;
+  margin-left: 30vw;
+  margin-right: 70px;
 
   flex-grow: 1;
   -webkit-box-flex: 1;
-
-  /* background-color: rgba(0, 0, 0, 0.02); */
-
-  /* @media screen and (max-width: 720px) {
-    position: static;
-  } */
 `;
 
 const SideWrapper = styled.div`
@@ -287,8 +402,9 @@ const SideWrapper = styled.div`
   width: 70px;
   height: 100vh;
   padding: 20px;
-  color: white;
+  color: rgba(0, 0, 0, 0.6);
   background-color: rgba(0, 0, 0, 0.25);
+  background-color: #bfbfbf;
   /* background-color: #e0daec; */
 
   box-shadow: -3px 0px 10px rgba(0, 0, 0, 0.2);

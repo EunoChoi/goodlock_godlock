@@ -31,7 +31,7 @@ const LogInSignUp = {
 
     padding: 60px 100px;
     background-color: white;
-    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.7);
     /* border-radius: 24px; */
 
     position: absolute;
@@ -85,6 +85,7 @@ const LogInSignUp = {
     color: ${(props) => props.color || "black"};
   `,
   Button: styled.button<{ bgColor: string }>`
+    transition: all 0.7s ease-in-out;
     width: 100%;
     height: 50px;
     border: none;
@@ -95,6 +96,9 @@ const LogInSignUp = {
 
     font-size: 16px;
     flex-shrink: 0;
+    &:disabled{
+      background-color: lightgrey;
+    }
   `,
   Input: styled.input`
     width: 100%;
