@@ -241,6 +241,8 @@ router.get("/info", loginRequired, async (req, res) => {
   try {
     const { id } = req.query;
 
+    if (id == 0) return res.status(200).json(null);
+
     const user = await User.findOne(
       {
         where: { id }, include: [{

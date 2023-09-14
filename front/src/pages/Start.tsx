@@ -144,6 +144,7 @@ const StartWrapper = styled.div`
 const StartButton = styled.button`
   font-size: 24px;
   color: white;
+  color: rgba(0, 0, 0, 0.7);
   text-transform: uppercase;
 
   /* width: 200px; */
@@ -155,6 +156,7 @@ const StartButton = styled.button`
   border: solid 5px white;*/
 
   background-color: #86a7d2;
+  background-color: #d5dbf0;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
 
   cursor: pointer;

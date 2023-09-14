@@ -7,15 +7,18 @@ import Animation from "../../styles/Animation";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Axios from "../../apis/Axios";
+import { useNavigate } from "react-router-dom";
 
 import { useRef } from "react";
 
 //mui
 import MenuIcon from "@mui/icons-material/Menu";
+import PersonIcon from "@mui/icons-material/Person";
 
 const Header = () => {
   const isMobile = useMediaQuery({ maxWidth: 720 });
   const [mountToggle, setMountToggle] = useState(false);
+  const navigate = useNavigate();
 
   const { type } = useParams();
   let currentPage = type ? parseInt(type) : -1;
@@ -35,27 +38,28 @@ const Header = () => {
         //mobile header
         <MobileHeaderWrapper mountToggle={mountToggle}>
           <HeaderFixedWrapper>
-            <RowDiv>
-              <HeaderLogoMobile
-                onClick={() => {
-                  setMountToggle(false);
-                  window.scrollTo({
-                    top: 0,
-                    left: 0,
-                    behavior: "smooth"
-                  });
-                }}
-              >
-                <Link to="/main/0">NARANG</Link>
-              </HeaderLogoMobile>
-              <HeaderMenuButton
-                onClick={() => {
-                  setMountToggle((c) => !c);
-                }}
-              >
-                <MenuIcon fontSize="inherit" />
-              </HeaderMenuButton>
-            </RowDiv>
+            <MyProfile onClick={() => navigate("/profile/0")}>
+              <PersonIcon></PersonIcon>
+            </MyProfile>
+            <HeaderLogoMobile
+              onClick={() => {
+                setMountToggle(false);
+                window.scrollTo({
+                  top: 0,
+                  left: 0,
+                  behavior: "smooth"
+                });
+              }}
+            >
+              <Link to="/main/0">NARANG</Link>
+            </HeaderLogoMobile>
+            <HeaderMenuButton
+              onClick={() => {
+                setMountToggle((c) => !c);
+              }}
+            >
+              <MenuIcon fontSize="inherit" />
+            </HeaderMenuButton>
           </HeaderFixedWrapper>
           <HeaderExtendedWrapper currentPage={currentPage + 1}>
             <span onClick={() => setMountToggle(false)}>
@@ -105,10 +109,10 @@ const Header = () => {
 
 export default Header;
 
-const RowDiv = styled.div`
+const MyProfile = styled.div`
+  width: 20%;
   display: flex;
-  width: 100%;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
 `;
 
@@ -145,6 +149,7 @@ const MobileHeaderWrapper = styled.div<{ mountToggle: boolean }>`
   text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
 
   background-color: rgb(236, 244, 255);
+  background-color: #d5dbf0;
   box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.05);
 
   transition: 0.2s all ease-in-out;
@@ -168,17 +173,18 @@ const MobileHeaderWrapper = styled.div<{ mountToggle: boolean }>`
 
 const HeaderFixedWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
 `;
 
 const HeaderMenuButton = styled.button`
   display: flex;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
   color: rgba(0, 0, 0, 0.6);
   font-size: 28px;
+  width: 20%;
 `;
 const HeaderExtendedWrapper = styled.div<{ currentPage: number | undefined }>`
   display: flex;
@@ -205,7 +211,8 @@ const HeaderLogo = styled.span`
 `;
 
 const HeaderLogoMobile = styled.span`
-  width: auto;
+  width: 60%;
+  text-align: center;
   color: white;
   color: rgba(0, 0, 0, 0.6);
 

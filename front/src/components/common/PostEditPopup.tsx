@@ -96,20 +96,17 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
   return (
     <InputForm.EditBG
       onClick={() => {
-        // const isCancel = confirm("게시글 수정을 중단하시겠습니까?");
-        // if (isCancel) setPostEdit(false);
-
         confirmAlert({
           // title: "",
           message: "게시글 수정을 중단하시겠습니까?",
           buttons: [
             {
-              label: "확인",
-              onClick: () => setPostEdit(false)
-            },
-            {
               label: "취소",
               onClick: () => console.log("취소")
+            },
+            {
+              label: "확인",
+              onClick: () => setPostEdit(false)
             }
           ]
         });
@@ -149,20 +146,17 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
           <input ref={imageInput} type="file" accept="image/*" name="image" multiple hidden onChange={onChangeImages} />
           <FlexButton
             onClick={() => {
-              // const isCancel = confirm("게시글 수정을 중단하시겠습니까?");
-              // if (isCancel) setPostEdit(false);
-
               confirmAlert({
                 // title: "",
                 message: "게시글 수정을 중단하시겠습니까?",
                 buttons: [
                   {
-                    label: "확인",
-                    onClick: () => setPostEdit(false)
-                  },
-                  {
                     label: "취소",
                     onClick: () => console.log("취소")
+                  },
+                  {
+                    label: "확인",
+                    onClick: () => setPostEdit(false)
                   }
                 ]
               });

@@ -83,8 +83,8 @@ const TextArea = styled.textarea`
     color: rgba(0, 0, 0, 0.3);
   }
   @media screen and (max-width: 720px) {
-    height: 500px;
-    height: 30vh;
+    height: 300px;
+    /* height: 30vh; */
     border-radius: 5px;
     padding: 20px;
   }

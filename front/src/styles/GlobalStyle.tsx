@@ -12,6 +12,7 @@ const GlobalStyle = createGlobalStyle`
 }
   ${reset}
   * {
+    -webkit-tap-highlight-color : transparent !important;
     box-sizing: border-box;
     /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
     font-family: Pretendard-SemiBold, system-ui, -apple-system;

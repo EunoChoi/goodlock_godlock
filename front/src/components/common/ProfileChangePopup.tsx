@@ -15,8 +15,14 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Button } from "@mui/material";
 
-interface props {
-  setImagePopupOpen: (b: boolean) => void;
+interface state {
+  image: boolean;
+  usertext: boolean;
+  nickname: boolean;
+}
+
+interface setStateProps {
+  setToggles: (s: state) => void;
 }
 interface CustomError extends Error {
   response?: {
@@ -26,7 +32,7 @@ interface CustomError extends Error {
   };
 }
 
-const ProfileChangePopup = ({ setImagePopupOpen }: props) => {
+const ProfileChangePopup = ({ setToggles }: setStateProps) => {
   const queryClient = useQueryClient();
   const BACK_SERVER = process.env.REACT_APP_BACK_URL;
 
@@ -46,8 +52,6 @@ const ProfileChangePopup = ({ setImagePopupOpen }: props) => {
       queryClient.invalidateQueries(["communityPosts"]);
       toast.success("프로필 이미지 변경이 완료되었습니다.");
       // alert("프로필 이미지 변경이 완료되었습니다.");
-
-      setImagePopupOpen(false);
     },
     onError: (err: CustomError) => {
       toast.warning(err.response?.data);
@@ -69,7 +73,7 @@ const ProfileChangePopup = ({ setImagePopupOpen }: props) => {
   }, []);
 
   return (
-    <PopupBackBlur onClick={() => setImagePopupOpen(false)}>
+    <PopupBackBlur onClick={() => setToggles({ image: false, nickname: false, usertext: false })}>
       <PopupBox
         onClick={(e) => {
           e.stopPropagation();
@@ -94,7 +98,7 @@ const ProfileChangePopup = ({ setImagePopupOpen }: props) => {
         </ProfileImageBox>
 
         <ButtonArea>
-          <Button onClick={() => setImagePopupOpen(false)}>
+          <Button onClick={() => setToggles({ image: false, nickname: false, usertext: false })}>
             <CancelIcon />
             <span>취소</span>
           </Button>

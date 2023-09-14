@@ -59,6 +59,7 @@ interface CustomError extends Error {
   };
 }
 interface Toggles {
+  image: boolean;
   nickname: boolean;
   usertext: boolean;
 }
@@ -69,17 +70,20 @@ const Profile = () => {
   const navigate = useNavigate();
 
   //state
-  const [toggles, setToggles] = useState<Toggles>({ nickname: false, usertext: false });
-  const [isImagePopupOpen, setImagePopupOpen] = useState<boolean>(false);
-  const { cat } = useParams();
-  const mainCat = cat ? parseInt(cat) : 0;
-  const [subCat, setSubCat] = useState<number>(0);
+  const [toggles, setToggles] = useState<Toggles>({ image: false, nickname: false, usertext: false });
+  const params = useParams();
+  const categoryNum = params.cat ? parseInt(params.cat) : -1;
 
   useEffect(() => {
-    if (mainCat < 0 || mainCat >= 3) {
+    if (categoryNum < 0 || categoryNum >= 5) {
       navigate("/404");
     }
-  }, [mainCat]);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    });
+  }, [categoryNum]);
 
   //input state
   const [nickname, setNickname] = useState<string>("");
@@ -90,16 +94,6 @@ const Profile = () => {
     staleTime: 60 * 1000
   }).data;
 
-  const likedPosts = useInfiniteQuery(
-    ["likedPosts"],
-    ({ pageParam = 1 }) =>
-      Axios.get("post/liked", { params: { type: 0, pageParam, tempDataNum: 5 } }).then((res) => res.data),
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        return lastPage.length === 0 ? undefined : allPages.length + 1;
-      }
-    }
-  );
   const myInfoPosts = useInfiniteQuery(
     ["myInfoPosts"],
     ({ pageParam = 1 }) =>
@@ -171,30 +165,33 @@ const Profile = () => {
     }
   });
 
+  const category = ["정보", "팔로잉", "팔로워", "내 모집공고", "내 소통글"];
+
   return (
     <AppLayout>
       <>
-        {isImagePopupOpen && <ProfileChangePopup setImagePopupOpen={setImagePopupOpen} />}
-        <MainCat selectedMenu={mainCat}>
-          <button>
-            <Link to="/profile/0">나의 정보</Link>
-          </button>
-          <button>
-            <Link to="/profile/1">관계</Link>
-          </button>
-          <button>
-            <Link to="/profile/2">작성글</Link>
-          </button>
-        </MainCat>
-        {mainCat === 0 && (
-          <ContentArea>
+        {toggles.image && <ProfileChangePopup setToggles={setToggles} />}
+        <ProfileTitle>
+          <Nickname>마이 페이지</Nickname>
+          <span>내 정보 수정 및 작성 글 확인이 가능합니다.</span>
+          <MenuWrapper>
+            {category.map((v, i) => (
+              <Pill catNum={categoryNum} key={"catNum" + i} onClick={() => navigate(`/profile/${i}`)}>
+                {v}
+              </Pill>
+            ))}
+          </MenuWrapper>
+        </ProfileTitle>
+
+        {categoryNum === 0 && (
+          <ContentWrapper>
             <ContentBox width={500} padding={30}>
               <ProfilePicWrapper>
                 {user?.profilePic ? (
-                  <ProfilePic width={150} alt="userProfilePic" src={`${BACK_SERVER}/${user?.profilePic}`} />
+                  <ProfilePic width={100} alt="userProfilePic" src={`${BACK_SERVER}/${user?.profilePic}`} />
                 ) : (
                   <ProfilePic
-                    width={150}
+                    width={100}
                     alt="userProfilePic"
                     src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
                   />
@@ -203,8 +200,7 @@ const Profile = () => {
                 <Button
                   color="inherit"
                   onClick={() => {
-                    setImagePopupOpen(true);
-                    setToggles({ nickname: false, usertext: false });
+                    setToggles({ nickname: false, usertext: false, image: !toggles.image });
                   }}
                 >
                   <EditIcon />
@@ -217,10 +213,7 @@ const Profile = () => {
                   <Button
                     color="inherit"
                     onClick={() => {
-                      const temp = { ...toggles };
-                      temp.nickname = !temp.nickname;
-                      temp.usertext = false;
-                      setToggles(temp);
+                      setToggles({ nickname: !toggles.nickname, usertext: false, image: false });
                     }}
                   >
                     <EditIcon />
@@ -244,19 +237,34 @@ const Profile = () => {
                       />
                       <Button
                         onClick={() => {
-                          if (nickname.length > 11 || nickname.length < 2) {
+                          console.log();
+                          if (nickname.split(" ").length >= 2) {
+                            toast.warning("닉네임에 공백이 포함될 수 없습니다.");
+                          } else if (nickname.length > 11 || nickname.length < 2) {
                             toast.warning("닉네임은 2자 이상 10자 이하, 영어 또는 숫자 또는 한글로 가능합니다.");
-                          } else editNickname.mutate({ nickname });
+                          } else {
+                            confirmAlert({
+                              // title: "",
+                              message: "닉네임을 변경하시겠습니까?",
+                              buttons: [
+                                {
+                                  label: "취소",
+                                  onClick: () => console.log("닉네임 변경 취소")
+                                },
+                                {
+                                  label: "확인",
+                                  onClick: () => editNickname.mutate({ nickname })
+                                }
+                              ]
+                            });
+                          }
                         }}
                       >
                         <CheckCircleIcon />
                       </Button>
                       <Button
                         onClick={() => {
-                          const temp = { ...toggles };
-                          temp.nickname = !temp.nickname;
-                          temp.usertext = false;
-                          setToggles(temp);
+                          setToggles({ nickname: !toggles.nickname, usertext: false, image: false });
                         }}
                       >
                         <CancelIcon color="error" />
@@ -281,10 +289,7 @@ const Profile = () => {
                   <Button
                     color="inherit"
                     onClick={() => {
-                      const temp = { ...toggles };
-                      temp.usertext = !temp.usertext;
-                      temp.nickname = false;
-                      setToggles(temp);
+                      setToggles({ usertext: !toggles.usertext, nickname: false, image: false });
                     }}
                   >
                     <EditIcon />
@@ -310,17 +315,29 @@ const Profile = () => {
                         onClick={() => {
                           if (usertext.length > 30) {
                             toast.warning("상태메세지는 최대 30자까지 가능합니다.");
-                          } else editUsertext.mutate({ usertext });
+                          } else {
+                            confirmAlert({
+                              // title: "",
+                              message: "상태메시지를 변경하시겠습니까?",
+                              buttons: [
+                                {
+                                  label: "취소",
+                                  onClick: () => console.log("상태메세지 변경 취소")
+                                },
+                                {
+                                  label: "확인",
+                                  onClick: () => editUsertext.mutate({ usertext })
+                                }
+                              ]
+                            });
+                          }
                         }}
                       >
                         <CheckCircleIcon />
                       </Button>
                       <Button
                         onClick={() => {
-                          const temp = { ...toggles };
-                          temp.usertext = !temp.usertext;
-                          temp.nickname = false;
-                          setToggles(temp);
+                          setToggles({ usertext: !toggles.usertext, nickname: false, image: false });
                         }}
                       >
                         <CancelIcon color="error" />
@@ -346,12 +363,12 @@ const Profile = () => {
                       message: "로그아웃 하시겠습니까?",
                       buttons: [
                         {
-                          label: "확인",
-                          onClick: () => logout.mutate()
-                        },
-                        {
                           label: "취소",
                           onClick: () => console.log("로그아웃 취소")
+                        },
+                        {
+                          label: "확인",
+                          onClick: () => logout.mutate()
                         }
                       ]
                     });
@@ -361,142 +378,127 @@ const Profile = () => {
                 </Button>
               </ButtonWrapper>
             </ContentBox>
-          </ContentArea>
+          </ContentWrapper>
         )}
-        {mainCat === 1 && (
-          <ContentArea>
-            <ContentBox width={700} padding={0}>
-              <RowBox>
-                <ListWrapper>
-                  <ListTitle>
-                    <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
-                      <InsertEmoticonRoundedIcon fontSize="inherit" />
-                    </Badge>
-                    <div>팔로잉</div>
-                  </ListTitle>
+        {categoryNum === 1 && (
+          <ContentWrapper>
+            <ContentBox width={500} padding={0}>
+              <ListWrapper>
+                <ListTitle>
+                  <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
+                    <InsertEmoticonRoundedIcon fontSize="inherit" />
+                  </Badge>
+                  <div>팔로잉</div>
+                </ListTitle>
 
-                  <List>
-                    {user?.Followings?.length === 0 ? (
-                      <EmptyUserNoti>
-                        <span>팔로잉 목록이 존재하지 않습니다.</span>
-                      </EmptyUserNoti>
-                    ) : (
-                      user?.Followings?.map((v: user, i: number) => (
-                        <ListItem key={v.nickname + i}>
-                          <div>
-                            <Link to={`/userinfo/${v?.id}/cat/0`}>
-                              {v.profilePic ? (
-                                <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
-                              ) : (
-                                <ProfilePic
-                                  width={32}
-                                  alt="defaultProfilePic"
-                                  src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                                />
-                              )}
-                            </Link>
-                            <span>{v.nickname}</span>
-                          </div>
+                <List>
+                  {user?.Followings?.length === 0 ? (
+                    <EmptyUserNoti>
+                      <span>팔로잉 목록이 존재하지 않습니다.</span>
+                    </EmptyUserNoti>
+                  ) : (
+                    user?.Followings?.map((v: user, i: number) => (
+                      <ListItem key={v.nickname + i}>
+                        <div>
+                          <Link to={`/userinfo/${v?.id}/cat/0`}>
+                            {v.profilePic ? (
+                              <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
+                            ) : (
+                              <ProfilePic
+                                width={32}
+                                alt="defaultProfilePic"
+                                src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                              />
+                            )}
+                          </Link>
+                          <span>{v.nickname}</span>
+                        </div>
 
-                          <Button
-                            onClick={() => {
-                              // const isDelete = confirm("언팔로우 하시겠습니까?");
-                              // if (isDelete) unFollow.mutate({ userId: v.id });
-
-                              confirmAlert({
-                                // title: "",
-                                message: "언팔로우 하시겠습니까?",
-                                buttons: [
-                                  {
-                                    label: "확인",
-                                    onClick: () => unFollow.mutate({ userId: v.id })
-                                  },
-                                  {
-                                    label: "취소",
-                                    onClick: () => console.log("취소")
-                                  }
-                                ]
-                              });
-                            }}
-                          >
-                            <PersonRemoveIcon color="error" />
-                          </Button>
-                        </ListItem>
-                      ))
-                    )}
-                  </List>
-                </ListWrapper>
-                <ListWrapper>
-                  <ListTitle>
-                    <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
-                      <InsertEmoticonOutlinedIcon fontSize="inherit" />
-                    </Badge>
-                    <div>팔로워</div>
-                  </ListTitle>
-
-                  <List>
-                    {user?.Followers?.length === 0 ? (
-                      <EmptyUserNoti>
-                        <span>팔로워 목록이 존재하지 않습니다.</span>
-                      </EmptyUserNoti>
-                    ) : (
-                      user?.Followers?.map((v: user, i: number) => (
-                        <ListItem key={v.nickname + i}>
-                          <div>
-                            <Link to={`/userinfo/${v?.id}/cat/0`}>
-                              {v.profilePic ? (
-                                <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
-                              ) : (
-                                <ProfilePic
-                                  width={32}
-                                  alt="ProfilePic"
-                                  src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                                />
-                              )}
-                            </Link>
-                            <span>{v.nickname}</span>
-                          </div>
-
-                          <Button onClick={() => toast.error("구현 예정")}>
-                            <RemoveCircleOutlinedIcon color="error" />
-                          </Button>
-                        </ListItem>
-                      ))
-                    )}
-                  </List>
-                </ListWrapper>
-              </RowBox>
+                        <Button
+                          onClick={() => {
+                            confirmAlert({
+                              // title: "",
+                              message: "언팔로우 하시겠습니까?",
+                              buttons: [
+                                {
+                                  label: "취소",
+                                  onClick: () => console.log("취소")
+                                },
+                                {
+                                  label: "확인",
+                                  onClick: () => unFollow.mutate({ userId: v.id })
+                                }
+                              ]
+                            });
+                          }}
+                        >
+                          <PersonRemoveIcon color="error" />
+                        </Button>
+                      </ListItem>
+                    ))
+                  )}
+                </List>
+              </ListWrapper>
             </ContentBox>
-          </ContentArea>
+          </ContentWrapper>
         )}
-        {mainCat === 2 && (
-          <ContentArea>
-            <SubCat myPostType={subCat + 1}>
-              <button
-                onClick={() => {
-                  setSubCat(0);
-                }}
-              >
-                <span>모집 공고</span>
-              </button>
-              <button
-                onClick={() => {
-                  setSubCat(1);
-                }}
-              >
-                <span>소통</span>
-              </button>
-            </SubCat>
+        {categoryNum === 2 && (
+          <ContentWrapper>
+            <ContentBox width={500} padding={0}>
+              <ListWrapper>
+                <ListTitle>
+                  <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
+                    <InsertEmoticonOutlinedIcon fontSize="inherit" />
+                  </Badge>
+                  <div>팔로워</div>
+                </ListTitle>
+
+                <List>
+                  {user?.Followers?.length === 0 ? (
+                    <EmptyUserNoti>
+                      <span>팔로워 목록이 존재하지 않습니다.</span>
+                    </EmptyUserNoti>
+                  ) : (
+                    user?.Followers?.map((v: user, i: number) => (
+                      <ListItem key={v.nickname + i}>
+                        <div>
+                          <Link to={`/userinfo/${v?.id}/cat/0`}>
+                            {v.profilePic ? (
+                              <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
+                            ) : (
+                              <ProfilePic
+                                width={32}
+                                alt="ProfilePic"
+                                src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                              />
+                            )}
+                          </Link>
+                          <span>{v.nickname}</span>
+                        </div>
+
+                        <Button onClick={() => toast.error("구현 예정")}>
+                          <RemoveCircleOutlinedIcon color="error" />
+                        </Button>
+                      </ListItem>
+                    ))
+                  )}
+                </List>
+              </ListWrapper>
+            </ContentBox>
+          </ContentWrapper>
+        )}
+        {categoryNum === 3 && (
+          <ContentWrapper>
             <Posts id="profileScrollWrapper">
-              {subCat === 0 && myInfoPosts?.data?.pages[0].length === 0 && (
+              {myInfoPosts?.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
                   <span>게시글이 존재하지 않습니다.</span>
                 </EmptyNoti>
               )}
-              {subCat === 0 && myInfoPosts?.data?.pages[0].length !== 0 && (
+              {myInfoPosts?.data?.pages[0].length !== 0 && (
                 <InfiniteScroll
-                  scrollableTarget="profileScrollWrapper"
+                  // scrollableTarget="profileScrollWrapper"
                   hasMore={myInfoPosts.hasNextPage || false}
                   loader={
                     <LoadingIcon>
@@ -511,16 +513,21 @@ const Profile = () => {
                   )}
                 </InfiniteScroll>
               )}
-
-              {subCat === 1 && myCommPosts?.data?.pages[0].length === 0 && (
+            </Posts>
+          </ContentWrapper>
+        )}
+        {categoryNum === 4 && (
+          <ContentWrapper>
+            <Posts id="profileScrollWrapper">
+              {myCommPosts?.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
                   <span>게시글이 존재하지 않습니다.</span>
                 </EmptyNoti>
               )}
-              {subCat === 1 && myCommPosts?.data?.pages[0].length !== 0 && (
+              {myCommPosts?.data?.pages[0].length !== 0 && (
                 <InfiniteScroll
-                  scrollableTarget="profileScrollWrapper"
+                  // scrollableTarget="profileScrollWrapper"
                   hasMore={myCommPosts.hasNextPage || false}
                   // loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
                   loader="로딩"
@@ -533,7 +540,7 @@ const Profile = () => {
                 </InfiniteScroll>
               )}
             </Posts>
-          </ContentArea>
+          </ContentWrapper>
         )}
       </>
     </AppLayout>
@@ -541,6 +548,130 @@ const Profile = () => {
 };
 
 export default Profile;
+
+const Pill = styled.div<{ catNum: number }>`
+  transition: all ease-in-out 0.5s;
+  height: 32px;
+  margin-right: 12px;
+  padding: 6px 20px;
+  border-radius: 100px;
+
+  font-size: 18px;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+
+  color: #464b53;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+
+  background-color: #e0d9eb;
+  &:nth-child(${(props) => props.catNum + 1}) {
+    background-color: #d5dbf1;
+  }
+
+  @media screen and (max-width: 720px) {
+    margin-right: 8px;
+    &:first-child {
+      margin-left: 4vw;
+    }
+    &:last-child {
+      margin-right: 4vw;
+    }
+
+    background-color: white;
+    &:nth-child(${(props) => props.catNum + 1}) {
+      background-color: #f2e1f6;
+    }
+  }
+`;
+const ProfileTitle = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  width: 500px;
+
+  padding-top: 64px;
+  padding-bottom: 20px;
+
+  span:nth-child(2) {
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 24px 0;
+  }
+
+  @media screen and (max-width: 720px) {
+    width: 100vw;
+    > span {
+      padding-left: 4vw;
+    }
+  }
+`;
+const Nickname = styled.div`
+  font-size: 32px;
+  line-height: 36px;
+  color: rgba(0, 0, 0, 0.8);
+  @media screen and (max-width: 720px) {
+    padding-left: 4vw;
+  }
+`;
+const MenuWrapper = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: auto;
+  width: 100%;
+
+  position: sticky;
+  top: 36px;
+
+  padding: 4px 2px;
+
+  overflow-x: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+`;
+const ContentWrapper = styled.div`
+  animation: ${Animation.smoothAppear} 0.7s;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: auto;
+`;
+const ContentBox = styled.div<{ width: number; padding: number }>`
+  width: ${(props) => props.width + "px"};
+  height: 550px;
+  padding: 40px ${(props) => props.padding + "px"};
+  background-color: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  * {
+    flex-shrink: 0;
+  }
+  button {
+    color: #aaa7d4;
+  }
+  @media screen and (max-width: 720px) {
+    width: 92vw;
+    padding: 20px ${(props) => props.padding + "px"};
+    /* background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px); */
+  }
+`;
 const LoadingIcon = styled.div`
   display: flex;
   justify-content: center;
@@ -579,42 +710,6 @@ const EmptyUserNoti = styled.div`
   }
 `;
 
-const SubCat = styled.div<{ myPostType: number }>`
-  height: 70px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  button {
-    transition: all ease-in-out 0.7s;
-
-    padding: 4px 16px;
-    border-radius: 20px;
-    margin: 5px;
-    flex-shrink: 0;
-
-    font-size: 18px;
-    /* font-weight: 600; */
-    background-color: #a9a7d4;
-    /* color: rgba(0, 0, 0, 0.5); */
-    color: white;
-    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
-    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
-  }
-  button:nth-child(${(props) => props.myPostType}) {
-    /* color: rgba(0, 0, 0, 0.4); */
-    /* text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2); */
-    background-color: #d4a7be;
-    /* background-color: #f6f5ff; */
-  }
-  @media screen and (max-width: 720px) {
-    height: 60px;
-    /* color: white; */
-    /* margin-top: 30px; */
-    button {
-      font-size: 1em;
-    }
-  }
-`;
 const ListTitle = styled.div`
   font-size: 60px;
   color: rgba(0, 0, 0, 0.4);
@@ -635,10 +730,7 @@ const ListTitle = styled.div`
     }
   }
 `;
-const ButtonWrapper = styled.div`
-  button {
-  }
-`;
+const ButtonWrapper = styled.div``;
 const List = styled.div`
   padding: 20px;
   width: 100%;
@@ -671,22 +763,16 @@ const ListItem = styled.div`
   }
 `;
 const ListWrapper = styled.div`
-  width: 50%;
+  width: 80%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  &:first-child {
-    border-right: solid 2px rgba(0, 0, 0, 0.05);
-  }
+
   @media screen and (max-width: 720px) {
     width: 90%;
-    height: 45%;
-    &:first-child {
-      border: none;
-      border-bottom: solid 2px rgba(0, 0, 0, 0.05);
-    }
+    height: 95%;
   }
 `;
 const ProfilePic = styled.img<{ width: number }>`
@@ -699,31 +785,6 @@ const ProfilePic = styled.img<{ width: number }>`
 
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
   /* margin-right: 12px; */
-`;
-const ContentBox = styled.div<{ width: number; padding: number }>`
-  width: ${(props) => props.width + "px"};
-  height: 650px;
-  padding: 40px ${(props) => props.padding + "px"};
-  background-color: white;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  * {
-    flex-shrink: 0;
-  }
-  button {
-    color: #aaa7d4;
-  }
-  @media screen and (max-width: 720px) {
-    width: 92vw;
-    padding: 20px ${(props) => props.padding + "px"};
-    /* background-color: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(4px); */
-  }
 `;
 
 const InfoAttribute = styled.div`
@@ -752,6 +813,7 @@ const InfoValue = styled.div`
   width: 100%;
   padding: 10px 0px;
   height: 36px;
+  line-height: 36px;
   margin-top: 8px;
 
   input {
@@ -802,58 +864,6 @@ const InfoValue = styled.div`
   }
 `;
 
-const MainCat = styled.div<{ selectedMenu: number }>`
-  display: flex;
-  justify-content: center;
-  align-items: end;
-  height: 100px;
-  width: 100%;
-  overflow-x: scroll;
-
-  * {
-    flex-shrink: 0;
-  }
-  button {
-    transition: all ease-in-out 0.5s;
-
-    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
-    font-size: 1.6em;
-    /* font-weight: 600; */
-    color: grey;
-
-    padding: 10px;
-  }
-  button:nth-child(${(props) => props.selectedMenu + 1}) {
-    color: #aaa7d4;
-  }
-  @media screen and (max-width: 720px) {
-    height: 130px;
-    button {
-      font-size: 1.3em;
-    }
-    button:nth-child(${(props) => props.selectedMenu + 1}) {
-      color: rgba(0, 0, 0, 0.55);
-      font-size: 1.4em;
-    }
-  }
-`;
-const ContentArea = styled.div`
-  animation: ${Animation.smoothAppear} 0.7s;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  color: #4f4f4f;
-
-  width: 100%;
-  height: calc(100vh - 100px);
-
-  @media screen and (max-width: 720px) {
-    height: calc(100vh - 130px);
-  }
-`;
 const Posts = styled.div`
   display: flex;
   flex-direction: column;
@@ -863,18 +873,7 @@ const Posts = styled.div`
   padding-top: 4px;
 
   width: 100%;
-  height: calc(100vh - 170px);
-  @media screen and (max-width: 720px) {
-    height: calc(100vh - 190px);
-  }
-
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
-  }
-
-  overflow: auto;
+  height: auto;
   * {
     flex-shrink: 0;
   }
@@ -894,17 +893,5 @@ const ProfilePicWrapper = styled.div`
   overflow: auto;
   * {
     flex-shrink: 0;
-  }
-`;
-const RowBox = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-
-  @media screen and (max-width: 720px) {
-    justify-content: space-around;
-    flex-direction: column;
   }
 `;

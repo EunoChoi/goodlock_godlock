@@ -160,6 +160,7 @@ const Post = ({ postProps }: any) => {
             color="inherit"
             onClick={() => {
               setMorePop(null);
+              clearTimeout(timer);
               setPostEdit((c) => !c);
             }}
           >
@@ -170,17 +171,18 @@ const Post = ({ postProps }: any) => {
             color="error"
             onClick={() => {
               setMorePop(null);
+              clearTimeout(timer);
               confirmAlert({
                 // title: "",
                 message: "게시글을 삭제 하시겠습니까?",
                 buttons: [
                   {
-                    label: "확인",
-                    onClick: () => deletePost.mutate()
-                  },
-                  {
                     label: "취소",
                     onClick: () => console.log("취소")
+                  },
+                  {
+                    label: "확인",
+                    onClick: () => deletePost.mutate()
                   }
                 ]
               });
@@ -214,55 +216,6 @@ const Post = ({ postProps }: any) => {
             </Link>
           )}
           <span>{postProps?.User?.nickname}</span>
-          {/* {!isMyPost &&
-            (isFollowed ? (
-              <Button
-                variant="outlined"
-                color="warning"
-                size="small"
-                onClick={() => {
-                  confirmAlert({
-                    // title: "",
-                    message: "언팔로우 하시겠습니까?",
-                    buttons: [
-                      {
-                        label: "확인",
-                        onClick: () => unFollow.mutate()
-                      },
-                      {
-                        label: "취소",
-                        onClick: () => console.log("취소")
-                      }
-                    ]
-                  });
-                }}
-              >
-                unfollow
-              </Button>
-            ) : (
-              <Button
-                variant="outlined"
-                color="warning"
-                size="small"
-                onClick={() => {
-                  confirmAlert({
-                    message: "팔로우 하시겠습니까?",
-                    buttons: [
-                      {
-                        label: "확인",
-                        onClick: () => follow.mutate()
-                      },
-                      {
-                        label: "취소",
-                        onClick: () => console.log("취소")
-                      }
-                    ]
-                  });
-                }}
-              >
-                follow
-              </Button>
-            ))} */}
         </div>
         <span>{moment(postProps?.createdAt).fromNow()}</span>
       </PostInfoWrapper>

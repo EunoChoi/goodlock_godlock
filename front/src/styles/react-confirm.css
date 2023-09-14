@@ -90,7 +90,7 @@ body.react-confirm-alert-body-element {
   cursor: pointer;
 }
 
-.react-confirm-alert-button-group>button:nth-child(2) {
+.react-confirm-alert-button-group>button:nth-child(1) {
   border: solid 2px #b8c1e1;
   background-color: white;
   color: #b8c1e1;

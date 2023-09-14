@@ -82,20 +82,17 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
   return (
     <InputForm.InputBG
       onClick={() => {
-        // const isCancel = confirm("게시글 작성을 취소하시겠습니까?");
-        // if (isCancel) setIsPostInputOpen(false);
-
         confirmAlert({
           // title: "",
           message: "게시글 작성을 중단하시겠습니까?",
           buttons: [
             {
-              label: "확인",
-              onClick: () => setIsPostInputOpen(false)
-            },
-            {
               label: "취소",
               onClick: () => console.log("취소")
+            },
+            {
+              label: "확인",
+              onClick: () => setIsPostInputOpen(false)
             }
           ]
         });
@@ -135,20 +132,17 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
           <input ref={imageInput} type="file" accept="image/*" name="image" multiple hidden onChange={onChangeImages} />
           <FlexButton
             onClick={() => {
-              // const isCancel = confirm("게시글 작성을 취소하시겠습니까?");
-              // if (isCancel) setIsPostInputOpen(false);
-
               confirmAlert({
                 // title: "",
                 message: "게시글 작성을 중단하시겠습니까?",
                 buttons: [
                   {
-                    label: "확인",
-                    onClick: () => setIsPostInputOpen(false)
-                  },
-                  {
                     label: "취소",
                     onClick: () => console.log("취소")
+                  },
+                  {
+                    label: "확인",
+                    onClick: () => setIsPostInputOpen(false)
                   }
                 ]
               });

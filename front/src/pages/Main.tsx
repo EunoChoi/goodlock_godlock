@@ -465,18 +465,18 @@ const WelcomeWrapper = styled.div`
 
     margin: 8px 0;
     margin-bottom: 0;
-    margin-left: 2px;
+    /* margin-left: 2px; */
     /* text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); */
   }
   > span:nth-child(3) {
     margin-top: 24px;
-    margin-bottom: 32px;
   }
   > span:nth-child(4) {
     font-size: 24px;
     /* font-weight: 600; */
     line-height: 36px;
-    color: rgba(0, 0, 0, 0.7);
+    margin-top: 32px;
+    color: #323232;
     text-transform: uppercase;
   }
   > span {

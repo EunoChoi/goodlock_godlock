@@ -97,6 +97,7 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
     <CommentBox
       onClick={() => {
         setMorePop(null);
+        clearTimeout(timer);
       }}
     >
       <Popper open={open} anchorEl={morePop} placement="top-end">
@@ -106,6 +107,7 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
             color="inherit"
             onClick={() => {
               setMorePop(null);
+              clearTimeout(timer);
               setCommentEdit((c) => !c);
             }}
           >
@@ -116,17 +118,18 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
             color="error"
             onClick={() => {
               setMorePop(null);
+              clearTimeout(timer);
               confirmAlert({
                 // title: "",
                 message: "댓글을 삭제 하시겠습니까?",
                 buttons: [
                   {
-                    label: "확인",
-                    onClick: () => deleteComment.mutate()
-                  },
-                  {
                     label: "취소",
                     onClick: () => console.log("취소")
+                  },
+                  {
+                    label: "확인",
+                    onClick: () => deleteComment.mutate()
                   }
                 ]
               });
