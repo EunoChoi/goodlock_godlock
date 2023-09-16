@@ -66,7 +66,7 @@ router.get("/current", tokenCheck, async (req, res) => {
         attributes: ['id', 'nickname', 'profilePic'],
       }, {
         model: Post,
-        attributes: ['id'],
+        attributes: ['id', 'type'],
       }, {
         model: Post,
         as: 'Liked',
@@ -255,7 +255,7 @@ router.get("/info", tokenCheck, async (req, res) => {
           attributes: ['id', 'nickname', 'profilePic'],
         }, {
           model: Post,
-          attributes: ['id'],
+          attributes: ['id', 'type'],
         }, {
           model: Post,
           as: 'Liked',

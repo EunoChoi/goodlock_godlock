@@ -16,6 +16,7 @@ import { confirmAlert } from "react-confirm-alert";
 import AppLayout from "../components/AppLayout";
 import Post from "../components/common/Post";
 import ProfileChangePopup from "../components/common/ProfileChangePopup";
+import PostZoom from "../components/PostZoom";
 
 //style
 import Animation from "../styles/Animation";
@@ -73,6 +74,7 @@ const Profile = () => {
   const [toggles, setToggles] = useState<Toggles>({ image: false, nickname: false, usertext: false });
   const params = useParams();
   const categoryNum = params.cat ? parseInt(params.cat) : -1;
+  const [isZoom, setZoom] = useState<boolean>(false);
 
   useEffect(() => {
     window.scrollTo({
@@ -522,7 +524,7 @@ const Profile = () => {
                   dataLength={myInfoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
                   {myInfoPosts?.data?.pages.map((p) =>
-                    p.map((v: postProps, i: number) => <Post key={i} postProps={v} />)
+                    p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                   )}
                 </InfiniteScroll>
               )}
@@ -548,7 +550,7 @@ const Profile = () => {
                   dataLength={myCommPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
                   {myCommPosts?.data?.pages.map((p) =>
-                    p.map((v: postProps, i: number) => <Post key={i} postProps={v} />)
+                    p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                   )}
                 </InfiniteScroll>
               )}

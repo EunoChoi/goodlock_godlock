@@ -4,7 +4,7 @@ import Axios from "../apis/Axios";
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
-import { useFetcher, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -14,23 +14,18 @@ import { confirmAlert } from "react-confirm-alert";
 //components
 import AppLayout from "../components/AppLayout";
 import Post from "../components/common/Post";
-import ProfileChangePopup from "../components/common/ProfileChangePopup";
 import InfiniteScroll from "react-infinite-scroll-component";
+import PostZoom from "../components/PostZoom";
 
 //style
 import Animation from "../styles/Animation";
 
 //mui
-import { Button } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
+
 import Badge from "@mui/material/Badge";
 import InsertEmoticonRoundedIcon from "@mui/icons-material/InsertEmoticonRounded";
 import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlined";
-import RemoveCircleOutlinedIcon from "@mui/icons-material/RemoveCircleOutlined";
-import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import { useMediaQuery } from "react-responsive";
 
 interface userProps {
   email: string;
@@ -65,9 +60,11 @@ const UserInfo = () => {
   const params = useParams();
   const categoryNum = params.cat ? parseInt(params.cat) : 0;
   const id = params.id ? parseInt(params.id) : 0;
+  const [isZoom, setZoom] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const scrollTarget = useRef<HTMLDivElement>(null);
+  const category = ["팔로잉", "팔로워", "작성 모집공고", "작성 소통글", "관심공고"];
 
   //useQuery, useInfiniteQuery
   const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
@@ -83,6 +80,9 @@ const UserInfo = () => {
       }
     }
   );
+
+  const isFollowed = targetUser?.Followers?.find((v: any) => v.id === user.id);
+
   const likedPosts = useInfiniteQuery(
     ["userLikedPosts"],
     ({ pageParam = 1 }) =>
@@ -143,21 +143,12 @@ const UserInfo = () => {
       left: 0,
       behavior: "smooth"
     });
-    if (user?.id == id) {
-      navigate("/profile/0");
-    } else {
-      refetch();
-      likedPosts.refetch();
-      infoPosts.refetch();
-      commPosts.refetch();
-    }
+    refetch();
+    likedPosts.refetch();
+    infoPosts.refetch();
+    commPosts.refetch();
   }, [id]);
 
-  const isFollowed = targetUser?.Followers?.find((v: any) => v.id === user.id);
-
-  const category = ["팔로잉", "팔로워", "작성 모집공고", "작성 소통글", "관심공고"];
-
-  console.log(scrollTarget.current?.scrollHeight);
   return (
     <AppLayout>
       <>
@@ -172,8 +163,8 @@ const UserInfo = () => {
           <span>{targetUser?.email}</span>
           <span>{targetUser?.usertext}</span>
           <span>
-            팔로잉 {targetUser?.Followings?.length} • 팔로워 {targetUser?.Followers?.length} • 게시글{" "}
-            {targetUser?.Posts?.length}
+            팔로잉 {targetUser?.Followings?.length} • 팔로워 {targetUser?.Followers?.length} • 소통글{" "}
+            {targetUser?.Posts?.filter((v: any) => v.type === 2).length}
           </span>
           {isFollowed ? (
             <FollowButton
@@ -340,7 +331,7 @@ const UserInfo = () => {
                   dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
                   {infoPosts?.data?.pages.map((p) =>
-                    p.map((v: postProps, i: number) => <Post key={i} postProps={v} />)
+                    p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                   )}
                 </InfiniteScroll>
               )}
@@ -368,7 +359,7 @@ const UserInfo = () => {
                   dataLength={commPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
                   {commPosts?.data?.pages.map((p) =>
-                    p.map((v: postProps, i: number) => <Post key={i} postProps={v} />)
+                    p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                   )}
                 </InfiniteScroll>
               )}
@@ -396,7 +387,7 @@ const UserInfo = () => {
                   dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
                   {likedPosts?.data?.pages.map((p) =>
-                    p.map((v: postProps, i: number) => <Post key={i} postProps={v} />)
+                    p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                   )}
                 </InfiniteScroll>
               )}
@@ -471,10 +462,6 @@ const Pill = styled.div<{ catNum: number }>`
     &:last-child {
       margin-right: 0;
     }
-    /* background-color: rgba(255, 255, 255, 0.4);
-    &:nth-child(${(props) => props.catNum + 1}) {
-      background-color: rgba(255, 255, 255, 0.7);
-    } */
   }
 `;
 const ProfilePicWrapper = styled.div`

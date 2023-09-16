@@ -28,8 +28,8 @@ const UserProfile = () => {
 
       <UserSub>
         <Link to="/profile/4">
-          <span>{user?.Posts?.length}</span>
-          <span>게시글</span>
+          <span>{user?.Posts?.filter((v: any) => v.type === 2).length}</span>
+          <span>소통글</span>
         </Link>
       </UserSub>
       <UserSub>

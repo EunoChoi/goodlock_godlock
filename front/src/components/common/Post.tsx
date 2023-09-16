@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 
@@ -50,10 +50,10 @@ const Post = ({ postProps }: any) => {
   }).data;
 
   const [commentLoadLength, setCommentLoadLength] = useState<number>(5);
-  const [isZoom, setZoom] = useState<boolean>(false);
   const [isPostEdit, setPostEdit] = useState<boolean>(false);
   const [isCommentOpen, setCommentOpen] = useState<boolean>(false);
   const [morePop, setMorePop] = useState<null | HTMLElement>(null);
+  const [isZoom, setZoom] = useState<boolean>(false);
 
   const isLiked = postProps?.Likers?.find((v: any) => v.id === user?.id);
   const isMyPost = user?.id === postProps?.UserId;
@@ -136,13 +136,19 @@ const Post = ({ postProps }: any) => {
     }
   });
 
+  const navigate = useNavigate();
   useEffect(() => {
     setZoom(false);
   }, [postProps.id]);
 
+  useEffect(() => {
+    if (isZoom) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
+  }, [isZoom]);
+
   return (
     <PostWrapper onClick={() => setMorePop(null)}>
-      {isZoom && <PostZoom postProps={postProps} setZoom={setZoom} />}
+      {isZoom && <PostZoom setZoom={setZoom} postProps={postProps} />}
       <Popper open={open} anchorEl={morePop} placement="top-end">
         <EditPopup>
           <Button
@@ -193,6 +199,11 @@ const Post = ({ postProps }: any) => {
       <PostInfoWrapper>
         <div
           onClick={() => {
+            if (user?.id === postProps?.User?.id) {
+              navigate(`/profile/0`);
+            } else {
+              navigate(`/userinfo/${postProps?.User?.id}/cat/0`);
+            }
             window.scrollTo({
               top: 0,
               left: 0,
@@ -200,17 +211,13 @@ const Post = ({ postProps }: any) => {
             });
           }}
         >
-          <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-            {postProps?.User?.profilePic ? (
-              <ProfilePic width={150} alt="userProfilePic" src={`${BACK_SERVER}/${postProps?.User?.profilePic}`} />
-            ) : (
-              <ProfilePic
-                width={150}
-                alt="userProfilePic"
-                src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-              />
-            )}
-          </Link>
+          {/* <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}> */}
+          {postProps?.User?.profilePic ? (
+            <ProfilePic width={150} alt="userProfilePic" src={`${BACK_SERVER}/${postProps?.User?.profilePic}`} />
+          ) : (
+            <ProfilePic width={150} alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
+          )}
+          {/* </Link> */}
           <span>{postProps?.User?.nickname}</span>
         </div>
         <span>{moment(postProps?.createdAt).fromNow()}</span>

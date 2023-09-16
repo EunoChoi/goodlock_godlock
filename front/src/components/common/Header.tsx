@@ -32,6 +32,11 @@ const Header = () => {
     }
   }, [isMobile]);
 
+  // const [height, setHeight] = useState(window.visualViewport?.height);
+  // useEffect(() => {
+  //   setHeight(window.visualViewport?.height);
+  // }, [window.visualViewport?.height]);
+
   return (
     <>
       {isMobile ? (
@@ -40,6 +45,7 @@ const Header = () => {
           <HeaderFixedWrapper>
             <MyProfile onClick={() => navigate("/profile/0")}>
               <PersonIcon></PersonIcon>
+              {/* {height} */}
             </MyProfile>
             <HeaderLogoMobile
               onClick={() => {

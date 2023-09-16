@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
@@ -460,8 +460,6 @@ const PostZoomBG = styled.div`
   left: 0;
   top: 0;
 
-  /* width: 100vw;
-  height: 100vh; */
   width: 100vw;
   height: 100vh;
 
@@ -470,17 +468,22 @@ const PostZoomBG = styled.div`
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 
   > button {
     padding-top: 16px;
   }
+  @media screen and (max-width: 720) {
+    justify-content: start;
+
+    /* height: calc(var(--vh, 1vh) * 100); */
+  }
 `;
 const OnlyText = styled.div`
   position: relative;
   width: 70vw;
-  height: 90vh;
+  height: calc(var(--vh, 1vh) * 90);
 
   display: flex;
   justify-content: center;
@@ -538,6 +541,7 @@ const ImageText = styled.div`
   position: relative;
   width: 90vw;
   height: 90vh;
+  height: calc(var(--vh, 1vh) * 90);
 
   display: flex;
   justify-content: center;
@@ -601,6 +605,7 @@ const Mobile = styled.div`
   position: relative;
   width: 90vw;
   height: 80vh;
+  height: calc(var(--vh, 1vh) * 80);
 
   padding-bottom: 24px;
 

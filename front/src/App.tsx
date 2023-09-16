@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -25,6 +25,8 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 import Loading from "./pages/Loading";
 
 function App() {
+  console.log("===== App 리렌더 =====");
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -32,7 +34,18 @@ function App() {
       }
     }
   });
-  console.log("===== App 리렌더 =====");
+
+  const setScreenSize = () => {
+    const vh = window.visualViewport?.height;
+    if (vh) {
+      document.documentElement.style.setProperty("--vh", `${vh * 0.01}px`);
+    }
+  };
+  window.addEventListener("resize", () => setScreenSize());
+
+  useEffect(() => {
+    setScreenSize();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

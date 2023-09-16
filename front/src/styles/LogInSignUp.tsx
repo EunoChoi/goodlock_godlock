@@ -4,6 +4,7 @@ import Animation, { ANIMATION_APPEAR } from "./Animation";
 /* eslint-disable */
 const LogInSignUp = {
   Background: styled.div<{ animation: string }>`
+    /* transition: all ease-in-out 0.2s; */
     width: 100vw;
     height: 100vh;
 
@@ -19,6 +20,8 @@ const LogInSignUp = {
         : Animation.smoothDisappear}
       0.5s;
     @media screen and (max-width: 720px) {
+        height: calc(var(--vh, 1vh) * 100);
+        
         display: flex;
         justify-content: center;
         align-items: center;

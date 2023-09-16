@@ -12,10 +12,12 @@ import Animation from "../styles/Animation";
 //components
 import AppLayout from "../components/AppLayout";
 import Post from "../components/common/Post";
+import PostZoom from "../components/PostZoom";
 
 //mui
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import SearchIcon from "@mui/icons-material/Search";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 interface userProps {
   email: string;
@@ -120,7 +122,9 @@ const Main = () => {
               </div>
             </span>
             <span>오늘도 행복한 하루를 만들어 보아요 :)</span>
-            <span>📅 today</span>
+            <span>
+              <CalendarMonthIcon /> today
+            </span>
             <span>신규 등록 모집공고 128개</span>
             <span>마감 예정 관심공고 5개</span>
           </WelcomeWrapper>
@@ -166,7 +170,7 @@ const Main = () => {
                 dataLength={noticePosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
                 {noticePosts?.data?.pages.map((p) =>
-                  p.map((v: postProps, i: number) => <Post key={i} postProps={v} />)
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
               </InfiniteScroll>
             </HomeEl>
@@ -183,7 +187,9 @@ const Main = () => {
                 next={() => likedPosts.fetchNextPage()}
                 dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
-                {likedPosts?.data?.pages.map((p) => p.map((v: postProps, i: number) => <Post key={i} postProps={v} />))}
+                {likedPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
               </InfiniteScroll>
             </HomeEl>
           )}
@@ -255,12 +261,13 @@ const Main = () => {
                 dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
                 {infoPosts?.data?.pages.map((p) =>
-                  p.map((v: postProps, i: number) => <Post key={v.content + i} postProps={v} />)
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
               </InfiniteScroll>
             </HomeEl>
           )}
           {toggles.sub === 1 && <HomeEl></HomeEl>}
+          {toggles.sub === 2 && <HomeEl></HomeEl>}
         </MainEl>
       )}
       {toggles.main === 2 && (
@@ -328,12 +335,13 @@ const Main = () => {
                 dataLength={communityPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
                 {communityPosts?.data?.pages.map((p) =>
-                  p.map((v: postProps, i: number) => <Post key={i} postProps={v} />)
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
               </InfiniteScroll>
             </HomeEl>
           )}
           {toggles.sub === 1 && <HomeEl></HomeEl>}
+          {toggles.sub === 2 && <HomeEl></HomeEl>}
         </MainEl>
       )}
     </AppLayout>
@@ -518,8 +526,16 @@ const WelcomeWrapper = styled.div`
     margin-top: 32px;
     color: #323232;
     text-transform: uppercase;
+
+    svg {
+      font-size: 32px;
+      margin-right: 4px;
+    }
   }
   > span {
+    display: flex;
+    align-items: center;
+
     padding-left: 10px;
     padding-left: calc(35vw - 285px);
   }
