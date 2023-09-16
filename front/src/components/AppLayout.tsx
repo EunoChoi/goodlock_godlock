@@ -296,7 +296,8 @@ const MobileButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
 
     color: rgba(0, 0, 0, 0.6);
     box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
-    background-color: #d5dbf0;
+    /* background-color: #d5dbf0; */
+    background-color: #f3e0f1;
   }
   > button:nth-child(1) {
     display: ${(props) => props.isPostInputOpen && "none"};
@@ -337,8 +338,14 @@ const Children = styled.div`
 `;
 
 const MobileWrapper = styled.div`
-  background: rgb(246, 214, 229);
+  /* background: rgb(246, 214, 229);
   background: linear-gradient(0deg, rgba(246, 214, 229, 1) 0%, rgba(202, 221, 244, 1) 100%);
+
+  background: rgb(201, 220, 243);
+  background: linear-gradient(180deg, rgba(201, 220, 243, 1) 0%, rgba(234, 216, 233, 1) 100%); */
+
+  background-color: #c9dbf3;
+
   height: auto;
 
   .scroll {
@@ -359,8 +366,6 @@ const LeftWrapper = styled.div`
   width: 30vw;
   height: 100vh;
 
-  background: rgb(246, 214, 229);
-  background: linear-gradient(0deg, rgba(246, 214, 229, 1) 0%, rgba(202, 221, 244, 1) 100%);
   background: rgb(201, 220, 243);
   background: linear-gradient(180deg, rgba(201, 220, 243, 1) 0%, rgba(234, 216, 233, 1) 100%);
 
@@ -396,4 +401,5 @@ const SideWrapper = styled.div`
   /* background-color: #e0daec; */
 
   box-shadow: -3px 0px 10px rgba(0, 0, 0, 0.2);
+  z-index: 100;
 `;

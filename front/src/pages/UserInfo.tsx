@@ -67,7 +67,7 @@ const UserInfo = () => {
   const id = params.id ? parseInt(params.id) : 0;
 
   const navigate = useNavigate();
-  const scrollTarget = useRef<HTMLInputElement>(null);
+  const scrollTarget = useRef<HTMLDivElement>(null);
 
   //useQuery, useInfiniteQuery
   const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
@@ -138,6 +138,11 @@ const UserInfo = () => {
   });
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    });
     if (user?.id == id) {
       navigate("/profile/0");
     } else {
@@ -149,26 +154,20 @@ const UserInfo = () => {
   }, [id]);
 
   const isFollowed = targetUser?.Followers?.find((v: any) => v.id === user.id);
-  const isMobile = useMediaQuery({ maxWidth: 720 });
 
-  const category = ["팔로잉", "팔로워", "모집공고", "소통글", "관심 공고"];
+  const category = ["팔로잉", "팔로워", "작성 모집공고", "작성 소통글", "관심공고"];
 
   console.log(scrollTarget.current?.scrollHeight);
   return (
     <AppLayout>
       <>
         <UserInfoWrapper ref={scrollTarget}>
-          <ProfilePicWrapper>
-            {targetUser?.profilePic ? (
-              <ProfilePic width={200} alt="userProfilePic" src={`${BACK_SERVER}/${targetUser?.profilePic}`} />
-            ) : (
-              <ProfilePic
-                width={200}
-                alt="userProfilePic"
-                src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-              />
-            )}
-          </ProfilePicWrapper>
+          {targetUser?.profilePic ? (
+            <Pic alt="userProfilePic" src={`${BACK_SERVER}/${targetUser?.profilePic}`} />
+          ) : (
+            <Pic width={150} alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
+          )}
+
           <span>{targetUser?.nickname}</span>
           <span>{targetUser?.email}</span>
           <span>{targetUser?.usertext}</span>
@@ -177,10 +176,7 @@ const UserInfo = () => {
             {targetUser?.Posts?.length}
           </span>
           {isFollowed ? (
-            <Button
-              variant="outlined"
-              color="inherit"
-              size="small"
+            <FollowButton
               onClick={() => {
                 confirmAlert({
                   // title: "",
@@ -199,11 +195,9 @@ const UserInfo = () => {
               }}
             >
               unfollow
-            </Button>
+            </FollowButton>
           ) : (
-            <Button
-              color="inherit"
-              size="small"
+            <FollowButton
               onClick={() => {
                 confirmAlert({
                   // title: "",
@@ -222,7 +216,7 @@ const UserInfo = () => {
               }}
             >
               follow
-            </Button>
+            </FollowButton>
           )}
         </UserInfoWrapper>
 
@@ -232,23 +226,15 @@ const UserInfo = () => {
               catNum={categoryNum}
               key={"catNum" + i}
               onClick={() => {
-                if (isMobile) {
-                  window.scrollTo({
-                    top: scrollTarget.current?.scrollHeight,
-                    left: 0,
-                    behavior: "smooth"
-                  });
-                } else {
-                  window.scrollTo({
-                    top: scrollTarget.current?.scrollHeight,
-                    left: 0,
-                    behavior: "smooth"
-                  });
-                }
+                window.scrollTo({
+                  top: scrollTarget.current?.scrollHeight,
+                  left: 0,
+                  behavior: "smooth"
+                });
 
                 setTimeout(() => {
                   navigate(`/userinfo/${targetUser?.id}/cat/${i}`);
-                }, 0);
+                }, 1);
               }}
             >
               {v}
@@ -258,40 +244,38 @@ const UserInfo = () => {
         {categoryNum === 0 && (
           <ContentWrapper>
             <ContentBox>
-              <ListWrapper>
-                <ListTitle>
-                  <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
-                    <InsertEmoticonRoundedIcon fontSize="inherit" />
-                  </Badge>
-                  <div>팔로잉</div>
-                </ListTitle>
-                <List>
-                  {targetUser?.Followings?.length === 0 ? (
-                    <EmptyUserNoti>
-                      <span>팔로잉 목록이 존재하지 않습니다.</span>
-                    </EmptyUserNoti>
-                  ) : (
-                    targetUser?.Followings?.map((v: user, i: number) => (
-                      <ListItem key={v.nickname + i}>
-                        <div>
-                          <Link to={`/userinfo/${v?.id}/cat/0`}>
-                            {v.profilePic ? (
-                              <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
-                            ) : (
-                              <ProfilePic
-                                width={32}
-                                alt="defaultProfilePic"
-                                src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                              />
-                            )}
-                          </Link>
-                        </div>
-                        <span>{v.nickname}</span>
-                      </ListItem>
-                    ))
-                  )}
-                </List>
-              </ListWrapper>
+              <ListTitle>
+                <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
+                  <InsertEmoticonRoundedIcon fontSize="inherit" />
+                </Badge>
+                <div>팔로잉</div>
+              </ListTitle>
+              <List>
+                {targetUser?.Followings?.length === 0 ? (
+                  <EmptyUserNoti>
+                    <span>팔로잉 목록이 존재하지 않습니다.</span>
+                  </EmptyUserNoti>
+                ) : (
+                  targetUser?.Followings?.map((v: user, i: number) => (
+                    <ListItem key={v.nickname + i}>
+                      <div>
+                        <Link to={`/userinfo/${v?.id}/cat/0`}>
+                          {v.profilePic ? (
+                            <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
+                          ) : (
+                            <ProfilePic
+                              width={32}
+                              alt="defaultProfilePic"
+                              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                            />
+                          )}
+                        </Link>
+                      </div>
+                      <span>{v.nickname}</span>
+                    </ListItem>
+                  ))
+                )}
+              </List>
             </ContentBox>
           </ContentWrapper>
         )}
@@ -426,6 +410,22 @@ const UserInfo = () => {
 
 export default UserInfo;
 
+const Pic = styled.img`
+  /* position: absolute;
+  right: 0px; */
+  background-color: white;
+  width: 190px;
+  height: 190px;
+  border-radius: 12px;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
+
+  /* @media screen and (max-width: 720px) {
+    width: 200px;
+    height: 200px;
+  } */
+`;
+
 const ListTitle = styled.div`
   font-size: 60px;
   color: rgba(0, 0, 0, 0.4);
@@ -448,7 +448,6 @@ const ListTitle = styled.div`
 `;
 
 const Pill = styled.div<{ catNum: number }>`
-  transition: all ease-in-out 0.5s;
   height: 32px;
   margin-right: 12px;
   padding: 6px 20px;
@@ -460,24 +459,22 @@ const Pill = styled.div<{ catNum: number }>`
   align-items: center;
   cursor: pointer;
 
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
   color: #464b53;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
-
-  background-color: #e0d9eb;
+  background-color: #e3ecf9;
   &:nth-child(${(props) => props.catNum + 1}) {
-    background-color: #d5dbf1;
+    background-color: #f3e0f1;
   }
 
   @media screen and (max-width: 720px) {
     margin-right: 8px;
-    background-color: white;
-
     &:last-child {
       margin-right: 0;
     }
+    /* background-color: rgba(255, 255, 255, 0.4);
     &:nth-child(${(props) => props.catNum + 1}) {
-      background-color: #f2e1f6;
-    }
+      background-color: rgba(255, 255, 255, 0.7);
+    } */
   }
 `;
 const ProfilePicWrapper = styled.div`
@@ -485,6 +482,10 @@ const ProfilePicWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 50%;
+  padding: 25px 0;
+
+  background-color: #fff;
 
   * {
     flex-shrink: 0;
@@ -498,58 +499,91 @@ const UserInfoWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: end;
   align-items: start;
-  padding-top: 40px;
+  /* padding-top: 40px; */
   width: 500px;
-  height: 60vh;
+  height: 500px;
 
   > span {
-    font-size: 20px;
+    /* text-align: center; */
     color: rgba(0, 0, 0, 0.6);
-    margin: 4px 0;
   }
   > span:nth-child(2) {
     margin-top: 32px;
-    font-size: 32px;
+    font-size: 48px;
     color: rgba(0, 0, 0, 0.8);
   }
   > span:nth-child(3) {
-    font-size: 24px;
+    font-size: 28px;
     color: rgba(0, 0, 0, 0.7);
   }
+  > span:nth-child(4) {
+    font-size: 22px;
+    margin-top: 24px;
+    /* padding: 0 12px; */
+  }
   > span:nth-child(5) {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    font-size: 20px;
+    margin-top: 24px;
+    margin-bottom: 24px;
   }
 
   @media screen and (max-width: 720px) {
     width: 92vw;
     margin-top: 36px;
-  }
-  button {
-    /* margin-left: 10px; */
-    margin-bottom: 48px;
-    border: 2px rgba(0, 0, 0, 0.6) solid;
-    color: rgba(0, 0, 0, 0.6);
+    > span:nth-child(2) {
+      font-size: 36px;
+    }
+    > span:nth-child(3) {
+      font-size: 24px;
+    }
+    > span:nth-child(4) {
+      font-size: 22px;
+    }
+    > span:nth-child(5) {
+      font-size: 18px;
+    }
   }
 `;
-const Row = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
+const FollowButton = styled.button`
+  cursor: pointer;
+  text-transform: uppercase;
+
+  font-size: 14px;
+  height: 36px;
+  width: 108px;
+  border: 3px rgba(0, 0, 0, 0.6) solid;
+  border-radius: 6px;
+
+  /* margin-bottom: 24px; */
+
+  color: rgba(0, 0, 0, 0.6);
+
+  transition: all ease-in-out 0.3s;
+  &:hover {
+    transform: scale(1.05);
+  }
+  @media screen and (max-width: 720px) {
+    /* margin-bottom: 48px; */
+  }
 `;
+
 const MenuWrapper = styled.div`
+  position: sticky;
+  top: 0px;
+  z-index: 85;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(245, 245, 245, 1) 11%, rgba(245, 245, 245, 1) 100%);
+
   display: flex;
   justify-content: start;
   align-items: center;
   height: auto;
-  width: 504px;
+  width: 508px;
 
-  padding: 4px 2px;
-  margin-top: 32px;
+  padding: 36px 4px;
+  /* margin-top: 32px; */
 
   overflow-x: scroll;
   -ms-overflow-style: none; /* IE and Edge */
@@ -558,6 +592,15 @@ const MenuWrapper = styled.div`
     display: none; /* Chrome, Safari, Opera*/
   }
   @media screen and (max-width: 720px) {
+    background: rgb(255, 255, 255);
+    background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(200, 218, 243, 1) 11%,
+      rgba(200, 218, 243, 1) 100%
+    );
+
+    top: 36px;
     width: 100%;
     padding-left: 4vw;
     padding-right: 4vw;
@@ -573,22 +616,22 @@ const ContentWrapper = styled.div`
 
   width: 100%;
   height: auto;
-  min-height: calc(100vh - 72px);
+  min-height: calc(100vh - 104px);
 
-  padding-top: 24px;
+  /* padding-top: 24px; */
   padding-bottom: 24px;
   @media screen and (max-width: 720px) {
-    //header : 36px;
-    //buttons area : 72px;
-    min-height: calc(100vh - 36px - 72px);
-    /* min-height: 100vh; */
+    //haeder height : 36px
+    min-height: calc(100vh - 36px - 104px);
   }
 `;
 const ContentBox = styled.div`
   width: 500px;
   height: 550px;
+  min-height: calc(100vh - 104px - 24px);
+
   padding: 20px;
-  margin-bottom: 24px;
+  /* margin-bottom: 24px; */
   background-color: white;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 
@@ -605,6 +648,7 @@ const ContentBox = styled.div`
   }
   @media screen and (max-width: 720px) {
     width: 92vw;
+    min-height: calc(100vh - 36px - 104px - 24px);
     /* background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(4px); */
   }
@@ -612,6 +656,9 @@ const ContentBox = styled.div`
 const LoadingIcon = styled.div`
   display: flex;
   justify-content: center;
+  img {
+    width: 25%;
+  }
 `;
 
 const EmptyNoti = styled.div`
@@ -650,9 +697,9 @@ const EmptyUserNoti = styled.div`
 `;
 
 const List = styled.div`
-  padding: 20px;
+  padding: 20px 0;
   width: 80%;
-  height: 0;
+  height: 50%;
 
   flex-grow: 1;
   -webkit-box-flex: 1;

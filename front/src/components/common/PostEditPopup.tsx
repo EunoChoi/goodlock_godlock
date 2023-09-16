@@ -74,8 +74,8 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
     }
   });
 
-  const PostInputHelpText = ["공지사항 입력 설명", "모집 공고 입력 설명", "소통글 입력 설명"];
-  const placeholders = ["공지사항 입력", "모집 공고 입력", "소통글 입력"];
+  const PostInputHelpText = ["공지사항 입력 설명", "모집공고 입력 설명", "소통글 입력 설명"];
+  const placeholders = ["공지사항 입력", "모집공고 입력", "소통글 입력"];
   const [content, setContent] = useState<string>(postProps.content);
   const [images, setImages] = useState<string[]>(postProps.images.map((v) => v.src));
   const imageInput = useRef<HTMLInputElement>(null);

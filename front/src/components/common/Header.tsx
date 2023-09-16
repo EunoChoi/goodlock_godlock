@@ -139,18 +139,20 @@ const MobileHeaderWrapper = styled.div<{ mountToggle: boolean }>`
   top: 0px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: start;
 
   padding: 4px 12px;
-
   height: auto;
   width: 100vw;
+
   text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
 
-  background-color: rgb(236, 244, 255);
-  background-color: #d5dbf0;
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.05);
+  background-color: #c8daf3;
+  background-color: ${(props) => props.mountToggle && " #e3ecf9"};
+  box-shadow: ${(props) => props.mountToggle && "0px 3px 3px rgba(0, 0, 0, 0.2)"};
+  /* background-color: ${(props) => props.mountToggle && "rgba(0,0,0,0)"};
+  backdrop-filter: ${(props) => props.mountToggle && "blur(12px)"}; */
 
   transition: 0.2s all ease-in-out;
 
@@ -159,6 +161,8 @@ const MobileHeaderWrapper = styled.div<{ mountToggle: boolean }>`
       transition: all ease-in-out 0.3s;
       font-size: 0px;
       padding: 0px;
+      opacity: 0;
+      opacity: ${(props) => props.mountToggle && "1"};
       font-size: ${(props) => props.mountToggle && "20px"};
       padding: ${(props) => props.mountToggle && "8px"};
       &:first-child {
@@ -183,7 +187,7 @@ const HeaderMenuButton = styled.button`
   justify-content: end;
   align-items: center;
   color: rgba(0, 0, 0, 0.6);
-  font-size: 28px;
+  font-size: 29px;
   width: 20%;
 `;
 const HeaderExtendedWrapper = styled.div<{ currentPage: number | undefined }>`

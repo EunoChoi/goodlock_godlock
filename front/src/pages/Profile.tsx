@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components/macro";
 import Axios from "../apis/Axios";
 import { useQuery } from "@tanstack/react-query";
@@ -75,14 +75,16 @@ const Profile = () => {
   const categoryNum = params.cat ? parseInt(params.cat) : -1;
 
   useEffect(() => {
-    if (categoryNum < 0 || categoryNum >= 5) {
-      navigate("/404");
-    }
     window.scrollTo({
       top: 0,
       left: 0,
       behavior: "smooth"
     });
+  }, []);
+  useEffect(() => {
+    if (categoryNum < 0 || categoryNum >= 5) {
+      navigate("/404");
+    }
   }, [categoryNum]);
 
   //input state
@@ -165,23 +167,38 @@ const Profile = () => {
     }
   });
 
+  const scrollTarget = useRef<HTMLDivElement>(null);
   const category = ["정보", "팔로잉", "팔로워", "내 모집공고", "내 소통글"];
 
   return (
     <AppLayout>
       <>
         {toggles.image && <ProfileChangePopup setToggles={setToggles} />}
-        <ProfileTitle>
+        <ProfileTitle ref={scrollTarget}>
           <Nickname>마이 페이지</Nickname>
           <span>내 정보 수정 및 작성 글 확인이 가능합니다.</span>
-          <MenuWrapper>
-            {category.map((v, i) => (
-              <Pill catNum={categoryNum} key={"catNum" + i} onClick={() => navigate(`/profile/${i}`)}>
-                {v}
-              </Pill>
-            ))}
-          </MenuWrapper>
+          <span>마지막 정보 수정 - 어제</span>
         </ProfileTitle>
+        <MenuWrapper>
+          {category.map((v, i) => (
+            <Pill
+              catNum={categoryNum}
+              key={"catNum" + i}
+              onClick={() => {
+                window.scrollTo({
+                  top: scrollTarget.current?.scrollHeight,
+                  left: 0,
+                  behavior: "smooth"
+                });
+                setTimeout(() => {
+                  navigate(`/profile/${i}`);
+                }, 0);
+              }}
+            >
+              {v}
+            </Pill>
+          ))}
+        </MenuWrapper>
 
         {categoryNum === 0 && (
           <ContentWrapper>
@@ -383,107 +400,103 @@ const Profile = () => {
         {categoryNum === 1 && (
           <ContentWrapper>
             <ContentBox width={500} padding={0}>
-              <ListWrapper>
-                <ListTitle>
-                  <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
-                    <InsertEmoticonRoundedIcon fontSize="inherit" />
-                  </Badge>
-                  <div>팔로잉</div>
-                </ListTitle>
+              <ListTitle>
+                <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
+                  <InsertEmoticonRoundedIcon fontSize="inherit" />
+                </Badge>
+                <div>팔로잉</div>
+              </ListTitle>
 
-                <List>
-                  {user?.Followings?.length === 0 ? (
-                    <EmptyUserNoti>
-                      <span>팔로잉 목록이 존재하지 않습니다.</span>
-                    </EmptyUserNoti>
-                  ) : (
-                    user?.Followings?.map((v: user, i: number) => (
-                      <ListItem key={v.nickname + i}>
-                        <div>
-                          <Link to={`/userinfo/${v?.id}/cat/0`}>
-                            {v.profilePic ? (
-                              <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
-                            ) : (
-                              <ProfilePic
-                                width={32}
-                                alt="defaultProfilePic"
-                                src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                              />
-                            )}
-                          </Link>
-                          <span>{v.nickname}</span>
-                        </div>
+              <List>
+                {user?.Followings?.length === 0 ? (
+                  <EmptyUserNoti>
+                    <span>팔로잉 목록이 존재하지 않습니다.</span>
+                  </EmptyUserNoti>
+                ) : (
+                  user?.Followings?.map((v: user, i: number) => (
+                    <ListItem key={v.nickname + i}>
+                      <div>
+                        <Link to={`/userinfo/${v?.id}/cat/0`}>
+                          {v.profilePic ? (
+                            <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
+                          ) : (
+                            <ProfilePic
+                              width={32}
+                              alt="defaultProfilePic"
+                              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                            />
+                          )}
+                        </Link>
+                        <span>{v.nickname}</span>
+                      </div>
 
-                        <Button
-                          onClick={() => {
-                            confirmAlert({
-                              // title: "",
-                              message: "언팔로우 하시겠습니까?",
-                              buttons: [
-                                {
-                                  label: "취소",
-                                  onClick: () => console.log("취소")
-                                },
-                                {
-                                  label: "확인",
-                                  onClick: () => unFollow.mutate({ userId: v.id })
-                                }
-                              ]
-                            });
-                          }}
-                        >
-                          <PersonRemoveIcon color="error" />
-                        </Button>
-                      </ListItem>
-                    ))
-                  )}
-                </List>
-              </ListWrapper>
+                      <Button
+                        onClick={() => {
+                          confirmAlert({
+                            // title: "",
+                            message: "언팔로우 하시겠습니까?",
+                            buttons: [
+                              {
+                                label: "취소",
+                                onClick: () => console.log("취소")
+                              },
+                              {
+                                label: "확인",
+                                onClick: () => unFollow.mutate({ userId: v.id })
+                              }
+                            ]
+                          });
+                        }}
+                      >
+                        <PersonRemoveIcon color="error" />
+                      </Button>
+                    </ListItem>
+                  ))
+                )}
+              </List>
             </ContentBox>
           </ContentWrapper>
         )}
         {categoryNum === 2 && (
           <ContentWrapper>
             <ContentBox width={500} padding={0}>
-              <ListWrapper>
-                <ListTitle>
-                  <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
-                    <InsertEmoticonOutlinedIcon fontSize="inherit" />
-                  </Badge>
-                  <div>팔로워</div>
-                </ListTitle>
+              <ListTitle>
+                <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
+                  <InsertEmoticonOutlinedIcon fontSize="inherit" />
+                </Badge>
+                <div>팔로워</div>
+              </ListTitle>
 
-                <List>
-                  {user?.Followers?.length === 0 ? (
-                    <EmptyUserNoti>
-                      <span>팔로워 목록이 존재하지 않습니다.</span>
-                    </EmptyUserNoti>
-                  ) : (
-                    user?.Followers?.map((v: user, i: number) => (
-                      <ListItem key={v.nickname + i}>
-                        <div>
-                          <Link to={`/userinfo/${v?.id}/cat/0`}>
-                            {v.profilePic ? (
-                              <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
-                            ) : (
-                              <ProfilePic
-                                width={32}
-                                alt="ProfilePic"
-                                src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                              />
-                            )}
-                          </Link>
-                          <span>{v.nickname}</span>
-                        </div>
+              <List>
+                {user?.Followers?.length === 0 ? (
+                  <EmptyUserNoti>
+                    <span>팔로워 목록이 존재하지 않습니다.</span>
+                  </EmptyUserNoti>
+                ) : (
+                  user?.Followers?.map((v: user, i: number) => (
+                    <ListItem key={v.nickname + i}>
+                      <div>
+                        <Link to={`/userinfo/${v?.id}/cat/0`}>
+                          {v.profilePic ? (
+                            <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
+                          ) : (
+                            <ProfilePic
+                              width={32}
+                              alt="ProfilePic"
+                              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                            />
+                          )}
+                        </Link>
+                        <span>{v.nickname}</span>
+                      </div>
 
-                        <Button onClick={() => toast.error("구현 예정")}>
-                          <RemoveCircleOutlinedIcon color="error" />
-                        </Button>
-                      </ListItem>
-                    ))
-                  )}
-                </List>
-              </ListWrapper>
+                      <Button onClick={() => toast.error("구현 예정")}>
+                        <RemoveCircleOutlinedIcon color="error" />
+                      </Button>
+                    </ListItem>
+                  ))
+                )}
+              </List>
             </ContentBox>
           </ContentWrapper>
         )}
@@ -563,12 +576,11 @@ const Pill = styled.div<{ catNum: number }>`
   display: flex;
   align-items: center;
 
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
   color: #464b53;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
-
-  background-color: #e0d9eb;
+  background-color: #e3ecf9;
   &:nth-child(${(props) => props.catNum + 1}) {
-    background-color: #d5dbf1;
+    background-color: #f3e0f1;
   }
 
   @media screen and (max-width: 720px) {
@@ -579,11 +591,6 @@ const Pill = styled.div<{ catNum: number }>`
     &:last-child {
       margin-right: 4vw;
     }
-
-    background-color: white;
-    &:nth-child(${(props) => props.catNum + 1}) {
-      background-color: #f2e1f6;
-    }
   }
 `;
 const ProfileTitle = styled.div`
@@ -593,16 +600,23 @@ const ProfileTitle = styled.div`
   align-items: start;
   width: 500px;
 
+  margin-top: 0px;
   padding-top: 64px;
-  padding-bottom: 20px;
 
-  span:nth-child(2) {
+  > span:nth-child(2) {
     font-size: 20px;
     color: rgba(0, 0, 0, 0.5);
-    margin: 24px 0;
+    margin-top: 24px;
+  }
+  > span:nth-child(3) {
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.5);
+    margin-top: 8px;
+    margin-bottom: 12px;
   }
 
   @media screen and (max-width: 720px) {
+    margin-top: 36px;
     width: 100vw;
     > span {
       padding-left: 4vw;
@@ -622,12 +636,15 @@ const MenuWrapper = styled.div`
   justify-content: start;
   align-items: center;
   height: auto;
-  width: 100%;
+  width: 508px;
 
   position: sticky;
-  top: 36px;
+  top: 0px;
 
-  padding: 4px 2px;
+  padding: 36px 4px;
+  z-index: 85;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(245, 245, 245, 1) 11%, rgba(245, 245, 245, 1) 100%);
 
   overflow-x: scroll;
   -ms-overflow-style: none; /* IE and Edge */
@@ -635,21 +652,40 @@ const MenuWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
+  @media screen and (max-width: 720px) {
+    top: 36px;
+    width: 100%;
+    background: rgb(255, 255, 255);
+    background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(200, 218, 243, 1) 11%,
+      rgba(200, 218, 243, 1) 100%
+    );
+  }
 `;
 const ContentWrapper = styled.div`
   animation: ${Animation.smoothAppear} 0.7s;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 
   width: 100%;
   height: auto;
+  min-height: calc(100vh - 104px);
+
+  /* padding-top: 24px; */
+  /* padding-bottom: 24px; */
+  @media screen and (max-width: 720px) {
+    //haeder height : 36px
+    min-height: calc(100vh - 36px - 104px);
+  }
 `;
 const ContentBox = styled.div<{ width: number; padding: number }>`
   width: ${(props) => props.width + "px"};
-  height: 550px;
+  min-height: calc(100vh - 104px - 24px);
   padding: 40px ${(props) => props.padding + "px"};
   background-color: white;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
@@ -668,6 +704,7 @@ const ContentBox = styled.div<{ width: number; padding: number }>`
   @media screen and (max-width: 720px) {
     width: 92vw;
     padding: 20px ${(props) => props.padding + "px"};
+    min-height: calc(100vh - 36px - 104px - 24px);
     /* background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(4px); */
   }
@@ -675,6 +712,9 @@ const ContentBox = styled.div<{ width: number; padding: number }>`
 const LoadingIcon = styled.div`
   display: flex;
   justify-content: center;
+  img {
+    width: 25%;
+  }
 `;
 
 const EmptyNoti = styled.div`
@@ -732,9 +772,9 @@ const ListTitle = styled.div`
 `;
 const ButtonWrapper = styled.div``;
 const List = styled.div`
-  padding: 20px;
-  width: 100%;
-  height: 0;
+  padding: 20px 0;
+  width: 80%;
+  height: 50%;
 
   flex-grow: 1;
   -webkit-box-flex: 1;

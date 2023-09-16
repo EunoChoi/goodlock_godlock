@@ -10,7 +10,6 @@ const tokenCheck = async (req, res, next) => {
   }
   catch (error) {
     console.log(error.name);
-    // if (error.name === "TokenExpiredError") {
     try {
       const refreshToken = req.cookies.refreshToken;
       const user = jwt.verify(refreshToken, process.env.REFRECH_KEY);
@@ -35,7 +34,8 @@ const tokenCheck = async (req, res, next) => {
       req.body.newAccessToken = accessToken;
       next();
     } catch (error) {
-      next();
+      res.status(401).send('로그인이 필요합니다.');
+      // next();
     };
   }
   // }

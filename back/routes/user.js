@@ -237,11 +237,11 @@ router.get("/followers", loginRequired, async (req, res) => {
 });
 
 //타겟 유저 정보 불러오기
-router.get("/info", loginRequired, async (req, res) => {
+router.get("/info", tokenCheck, async (req, res) => {
   try {
     const { id } = req.query;
 
-    if (id == 0) return res.status(200).json(null);
+    // if (id == 0) return res.status(200).json(null);
 
     const user = await User.findOne(
       {

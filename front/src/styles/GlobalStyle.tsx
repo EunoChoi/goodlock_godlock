@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
   }
   
   html{
-    background-color: rgba(0, 0, 0, 0.02);
+    background-color: whitesmoke;
   }
   /* @media screen and (max-width: 720px){
     html{

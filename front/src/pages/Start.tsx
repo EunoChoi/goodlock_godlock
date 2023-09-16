@@ -155,8 +155,7 @@ const StartButton = styled.button`
   backdrop-filter: blur(2px); 
   border: solid 5px white;*/
 
-  background-color: #86a7d2;
-  background-color: #d5dbf0;
+  background-color: #c8daf3;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
 
   cursor: pointer;

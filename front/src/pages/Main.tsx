@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -38,6 +38,7 @@ interface toggleProps {
 }
 
 const Main = () => {
+  const scrollTarget = useRef<HTMLDivElement>(null);
   const params = useParams();
   const type = params.type ? parseInt(params.type) : 0;
   const [toggles, setToggles] = useState<toggleProps>({
@@ -110,7 +111,7 @@ const Main = () => {
     <AppLayout>
       {toggles.main === 0 && (
         <MainEl>
-          <WelcomeWrapper>
+          <WelcomeWrapper ref={scrollTarget}>
             <span>반갑습니다.</span>
             <span>
               <Link to={`/profile/0`}>{user?.nickname}님!</Link>
@@ -120,28 +121,37 @@ const Main = () => {
             </span>
             <span>오늘도 행복한 하루를 만들어 보아요 :)</span>
             <span>📅 today</span>
-            <span>신규 등록된 모집공고 128개</span>
-            <span>3일이내 마감 예정 관심 공고 5개</span>
-
-            <Pill.Wrapper>
-              <Pill.Sub
-                toggle={toggles.sub}
-                onClick={() => {
-                  setToggles({ main: toggles.main, sub: 0 });
-                }}
-              >
-                공지사항
-              </Pill.Sub>
-              <Pill.Sub
-                toggle={toggles.sub}
-                onClick={() => {
-                  setToggles({ main: toggles.main, sub: 1 });
-                }}
-              >
-                관심 공고
-              </Pill.Sub>
-            </Pill.Wrapper>
+            <span>신규 등록 모집공고 128개</span>
+            <span>마감 예정 관심공고 5개</span>
           </WelcomeWrapper>
+          <Pill.Wrapper>
+            <Pill.Sub
+              toggle={toggles.sub}
+              onClick={() => {
+                setToggles({ main: toggles.main, sub: 0 });
+                window.scrollTo({
+                  top: scrollTarget.current?.scrollHeight,
+                  left: 0,
+                  behavior: "smooth"
+                });
+              }}
+            >
+              공지사항
+            </Pill.Sub>
+            <Pill.Sub
+              toggle={toggles.sub}
+              onClick={() => {
+                setToggles({ main: toggles.main, sub: 1 });
+                window.scrollTo({
+                  top: scrollTarget.current?.scrollHeight,
+                  left: 0,
+                  behavior: "smooth"
+                });
+              }}
+            >
+              관심 공고
+            </Pill.Sub>
+          </Pill.Wrapper>
 
           {toggles.sub === 0 && ( //공지사항
             <HomeEl>
@@ -181,46 +191,56 @@ const Main = () => {
       )}
       {toggles.main === 1 && (
         <MainEl>
-          <WelcomeWrapper>
+          <WelcomeWrapper ref={scrollTarget}>
             <span>모집공고</span>
             <span></span>
             <span>모집공고 설명글</span>
-
-            <Pill.Wrapper>
-              <Pill.Sub
-                toggle={toggles.sub}
-                onClick={() => {
-                  setToggles({ main: toggles.main, sub: 0 });
-                }}
-              >
-                모두
-              </Pill.Sub>
-              <Pill.Sub
-                toggle={toggles.sub}
-                onClick={() => {
-                  setToggles({ main: toggles.main, sub: 1 });
-                }}
-              >
-                마감 제외
-              </Pill.Sub>
-              <Pill.Search
-                toggle={toggles.sub === 2}
-                onClick={() => {
-                  setToggles({ main: toggles.main, sub: 2 });
-                }}
-              >
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    console.log("submit");
-                  }}
-                >
-                  <SearchIcon />
-                  <input />
-                </form>
-              </Pill.Search>
-            </Pill.Wrapper>
           </WelcomeWrapper>
+          <Pill.Wrapper>
+            <Pill.Sub
+              toggle={toggles.sub}
+              onClick={() => {
+                console.log(scrollTarget.current?.scrollHeight);
+                setToggles({ main: toggles.main, sub: 0 });
+                window.scrollTo({
+                  top: scrollTarget.current?.scrollHeight,
+                  left: 0,
+                  behavior: "smooth"
+                });
+              }}
+            >
+              모두
+            </Pill.Sub>
+            <Pill.Sub
+              toggle={toggles.sub}
+              onClick={() => {
+                setToggles({ main: toggles.main, sub: 1 });
+                window.scrollTo({
+                  top: scrollTarget.current?.scrollHeight,
+                  left: 0,
+                  behavior: "smooth"
+                });
+              }}
+            >
+              마감 제외
+            </Pill.Sub>
+            <Pill.Search
+              toggle={toggles.sub === 2}
+              onClick={() => {
+                setToggles({ main: toggles.main, sub: 2 });
+              }}
+            >
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  console.log("submit");
+                }}
+              >
+                <SearchIcon />
+                <input />
+              </form>
+            </Pill.Search>
+          </Pill.Wrapper>
           {toggles.sub === 0 && (
             <HomeEl>
               <InfiniteScroll
@@ -234,7 +254,9 @@ const Main = () => {
                 next={() => infoPosts.fetchNextPage()}
                 dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
-                {infoPosts?.data?.pages.map((p) => p.map((v: postProps, i: number) => <Post key={i} postProps={v} />))}
+                {infoPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={v.content + i} postProps={v} />)
+                )}
               </InfiniteScroll>
             </HomeEl>
           )}
@@ -243,46 +265,55 @@ const Main = () => {
       )}
       {toggles.main === 2 && (
         <MainEl>
-          <WelcomeWrapper>
+          <WelcomeWrapper ref={scrollTarget}>
             <span>소통</span>
             <span></span>
             <span>소통 게시글 설명글</span>
-
-            <Pill.Wrapper>
-              <Pill.Sub
-                toggle={toggles.sub}
-                onClick={() => {
-                  setToggles({ main: toggles.main, sub: 0 });
-                }}
-              >
-                모두
-              </Pill.Sub>
-              <Pill.Sub
-                toggle={toggles.sub}
-                onClick={() => {
-                  setToggles({ main: toggles.main, sub: 1 });
-                }}
-              >
-                피드
-              </Pill.Sub>
-              <Pill.Search
-                toggle={toggles.sub === 2}
-                onClick={() => {
-                  setToggles({ main: toggles.main, sub: 2 });
-                }}
-              >
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    console.log("submit");
-                  }}
-                >
-                  <SearchIcon />
-                  <input />
-                </form>
-              </Pill.Search>
-            </Pill.Wrapper>
           </WelcomeWrapper>
+          <Pill.Wrapper>
+            <Pill.Sub
+              toggle={toggles.sub}
+              onClick={() => {
+                setToggles({ main: toggles.main, sub: 0 });
+                window.scrollTo({
+                  top: scrollTarget.current?.scrollHeight,
+                  left: 0,
+                  behavior: "smooth"
+                });
+              }}
+            >
+              모두
+            </Pill.Sub>
+            <Pill.Sub
+              toggle={toggles.sub}
+              onClick={() => {
+                setToggles({ main: toggles.main, sub: 1 });
+                window.scrollTo({
+                  top: scrollTarget.current?.scrollHeight,
+                  left: 0,
+                  behavior: "smooth"
+                });
+              }}
+            >
+              피드
+            </Pill.Sub>
+            <Pill.Search
+              toggle={toggles.sub === 2}
+              onClick={() => {
+                setToggles({ main: toggles.main, sub: 2 });
+              }}
+            >
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  console.log("submit");
+                }}
+              >
+                <SearchIcon />
+                <input />
+              </form>
+            </Pill.Search>
+          </Pill.Wrapper>
           {toggles.sub === 0 && (
             <HomeEl>
               <InfiniteScroll
@@ -313,36 +344,60 @@ export default Main;
 const LoadingIconWrapper = styled.div`
   display: flex;
   justify-content: center;
+  img {
+    width: 25%;
+  }
 `;
 
 const HomeEl = styled.div`
   animation: ${Animation.smoothAppear} 0.7s;
+  min-height: calc(100vh - 80px);
 `;
 const MainEl = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  padding-bottom: 120px;
 
   animation: ${Animation.smoothAppear} 0.7s;
 `;
 
 const Pill = {
   Wrapper: styled.div`
+    z-index: 80;
+    position: sticky;
+    top: 0px;
+    /* background-color: whitesmoke; */
+    background: rgb(255, 255, 255);
+    background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(245, 245, 245, 1) 11%,
+      rgba(245, 245, 245, 1) 100%
+    );
+
     display: flex;
     justify-content: start;
     align-items: center;
 
-    padding: 5px 0;
-    padding-left: 10px;
     padding-left: calc(35vw - 285px);
+    padding-top: 24px;
+    padding-bottom: 24px;
 
     width: 100%;
     overflow-x: scroll;
 
     @media screen and (max-width: 720px) {
-      padding: 5px 4vw;
+      top: 36px;
+      /* background-color: #c8daf3; */
+      background: rgb(255, 255, 255);
+      background: linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(200, 218, 243, 1) 11%,
+        rgba(200, 218, 243, 1) 100%
+      );
+      padding: 24px 4vw;
     }
 
     -ms-overflow-style: none; /* IE and Edge */
@@ -354,21 +409,18 @@ const Pill = {
   Search: styled.div<{ toggle: boolean }>`
     transition: all ease-in-out 0.5s;
     padding: 8px 16px;
-    /* width: 56px; */
     width: ${(props) => (props.toggle ? "200px" : "56px")};
-    background-color: #e0d9eb;
-    background-color: ${({ toggle }) => toggle && "#d5dbf1"};
 
     height: 32px;
-    margin-top: 40px;
-    margin-bottom: 16px;
     border-radius: 100px;
 
     font-size: 18px;
-    /* font-weight: 600; */
 
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
     color: #464b53;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+    background-color: #e3ecf9;
+    background-color: ${({ toggle }) => toggle && "#f3e0f1"};
+
     form {
       width: 100%;
       height: 100%;
@@ -392,19 +444,14 @@ const Pill = {
       flex-grow: ${({ toggle }) => toggle && "1"};
     }
     @media screen and (max-width: 720px) {
-      background-color: rgba(255, 255, 255, 0.7);
       width: ${(props) => props.toggle && "50%"};
       flex-grow: ${({ toggle }) => toggle && "1"};
-      background-color: ${({ toggle }) => toggle && "rgba(255, 255, 255, 0.2)"};
     }
   `,
   Sub: styled.div<{ toggle: number }>`
     transition: all ease-in-out 0.5s;
     height: 32px;
-    margin-right: 8px;
     padding: 6px 16px;
-    margin-top: 40px;
-    margin-bottom: 16px;
     margin-right: 8px;
     border-radius: 100px;
 
@@ -414,26 +461,19 @@ const Pill = {
     display: flex;
     align-items: center;
 
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
     color: #464b53;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
-
-    background-color: #e0d9eb;
-
+    background-color: #e3ecf9;
     &:nth-child(${(props) => props.toggle + 1}) {
-      background-color: #d5dbf1;
-    }
-    @media screen and (max-width: 720px) {
-      background-color: rgba(255, 255, 255, 0.7);
-      &:nth-child(${(props) => props.toggle + 1}) {
-        background-color: ${({ toggle }) => toggle && "rgba(255, 255, 255, 0.2)"};
-      }
+      background-color: #f3e0f1;
     }
   `
 };
 
 const WelcomeWrapper = styled.div`
   width: calc(70vw - 70px);
-  margin-top: 64px;
+  padding-top: 64px;
+  padding-bottom: 24px;
 
   display: flex;
   flex-direction: column;
@@ -485,8 +525,9 @@ const WelcomeWrapper = styled.div`
   }
   @media screen and (max-width: 720px) {
     width: 100vw;
-    padding: 0;
-    padding-top: 60px;
+    padding-top: 88px;
+    margin-top: 36px;
+    padding-bottom: 24px;
     > span {
       padding-left: 5vw;
       padding-right: 5vw;

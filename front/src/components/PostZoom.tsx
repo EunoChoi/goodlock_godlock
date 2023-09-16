@@ -15,6 +15,8 @@ import Carousel from "react-material-ui-carousel";
 import CancelIcon from "@mui/icons-material/Cancel";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
 interface Image {
   src: string;
@@ -42,18 +44,22 @@ const PostZoom = ({ postProps, setZoom }: props) => {
   const like = useMutation(() => Axios.patch(`post/${postProps.id}/like`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-      if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
-      if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
-      if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);
-      if (window.location.pathname.split("/")[1] === "userinfo") {
-        queryClient.invalidateQueries(["userLikedPosts"]);
-        queryClient.invalidateQueries(["userInfoPosts"]);
-        queryClient.invalidateQueries(["userCommPosts"]);
-      }
+
+      queryClient.invalidateQueries(["noticePosts"]);
+      queryClient.invalidateQueries(["infoPosts"]);
+      queryClient.invalidateQueries(["communityPosts"]);
+
+      queryClient.invalidateQueries(["userLikedPosts"]);
+      queryClient.invalidateQueries(["userInfoPosts"]);
+      queryClient.invalidateQueries(["userCommPosts"]);
+
       queryClient.invalidateQueries(["likedPosts"]);
       queryClient.invalidateQueries(["myCommPosts"]);
       queryClient.invalidateQueries(["myInfoPosts"]);
-      toast.success("좋아요 완료");
+
+      if (postProps.type === 0) toast.success("좋아요 완료");
+      if (postProps.type === 1) toast.success("관심등록 완료");
+      if (postProps.type === 2) toast.success("좋아요 완료");
     },
     onError: (err: CustomError) => {
       toast.error(err.response?.data);
@@ -63,18 +69,22 @@ const PostZoom = ({ postProps, setZoom }: props) => {
   const disLike = useMutation(() => Axios.delete(`post/${postProps.id}/like`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-      if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
-      if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
-      if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);
-      if (window.location.pathname.split("/")[1] === "userinfo") {
-        queryClient.invalidateQueries(["userLikedPosts"]);
-        queryClient.invalidateQueries(["userInfoPosts"]);
-        queryClient.invalidateQueries(["userCommPosts"]);
-      }
+
+      queryClient.invalidateQueries(["noticePosts"]);
+      queryClient.invalidateQueries(["infoPosts"]);
+      queryClient.invalidateQueries(["communityPosts"]);
+
+      queryClient.invalidateQueries(["userLikedPosts"]);
+      queryClient.invalidateQueries(["userInfoPosts"]);
+      queryClient.invalidateQueries(["userCommPosts"]);
+
       queryClient.invalidateQueries(["likedPosts"]);
       queryClient.invalidateQueries(["myCommPosts"]);
       queryClient.invalidateQueries(["myInfoPosts"]);
-      toast.success("좋아요 취소 완료");
+
+      if (postProps.type === 0) toast.success("좋아요 취소 완료");
+      if (postProps.type === 1) toast.success("관심등록 해제 완료");
+      if (postProps.type === 2) toast.success("좋아요 취소 완료");
     },
     onError: (err: CustomError) => {
       toast.error(err.response?.data);
@@ -86,9 +96,6 @@ const PostZoom = ({ postProps, setZoom }: props) => {
   const isOnlyText = postProps.Images.length === 0;
   const isLiked = postProps?.Likers?.find((v: any) => v.id === user?.id);
   const arr = new Array(postProps.Images.length + 1).fill(0);
-
-  // src && <Image src={`${BACK_SERVER}/${src}`} alt="full page images" />
-  // <Img key={v.src + i} src={`${BACK_SERVER}/${v?.src}`} />
 
   return (
     <PostZoomBG onClick={() => setZoom(false)}>
@@ -125,7 +132,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       }
                     }}
                   >
-                    {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
+                    {postProps.type === 1 &&
+                      (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
+                    {postProps.type === 1 ||
+                      (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
                     <span>{postProps?.Likers?.length}</span>
                   </button>
                 </Like>
@@ -193,11 +203,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                     }
                   }}
                 >
-                  {isLiked ? (
-                    <FavoriteIcon style={{ color: "red" }} fontSize="large" />
-                  ) : (
-                    <FavoriteBorderIcon fontSize="large" />
-                  )}
+                  {postProps.type === 1 &&
+                    (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
+                  {postProps.type === 1 ||
+                    (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
                   <span>{postProps?.Likers?.length}</span>
                 </button>
               </Like>
@@ -252,7 +261,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       }
                     }}
                   >
-                    {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
+                    {postProps.type === 1 &&
+                      (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
+                    {postProps.type === 1 ||
+                      (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
                     <span>{postProps?.Likers?.length}</span>
                   </button>
                 </Like>
@@ -300,7 +312,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                                 }
                               }}
                             >
-                              {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
+                              {postProps.type === 1 &&
+                                (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
+                              {postProps.type === 1 ||
+                                (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
                               <span>{postProps?.Likers?.length}</span>
                             </button>
                           </Like>
@@ -445,6 +460,8 @@ const PostZoomBG = styled.div`
   left: 0;
   top: 0;
 
+  /* width: 100vw;
+  height: 100vh; */
   width: 100vw;
   height: 100vh;
 

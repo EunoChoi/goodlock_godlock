@@ -56,7 +56,6 @@ const Post = ({ postProps }: any) => {
   const [morePop, setMorePop] = useState<null | HTMLElement>(null);
 
   const isLiked = postProps?.Likers?.find((v: any) => v.id === user?.id);
-  const isFollowed = user?.Followings?.find((v: any) => v.id === postProps.UserId);
   const isMyPost = user?.id === postProps?.UserId;
 
   const commentScroll = useRef<null | HTMLDivElement>(null);
@@ -67,18 +66,22 @@ const Post = ({ postProps }: any) => {
   const like = useMutation(() => Axios.patch(`post/${postProps.id}/like`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-      if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
-      if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
-      if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);
-      if (window.location.pathname.split("/")[1] === "userinfo") {
-        queryClient.invalidateQueries(["userLikedPosts"]);
-        queryClient.invalidateQueries(["userInfoPosts"]);
-        queryClient.invalidateQueries(["userCommPosts"]);
-      }
+
+      queryClient.invalidateQueries(["noticePosts"]);
+      queryClient.invalidateQueries(["infoPosts"]);
+      queryClient.invalidateQueries(["communityPosts"]);
+
+      queryClient.invalidateQueries(["userLikedPosts"]);
+      queryClient.invalidateQueries(["userInfoPosts"]);
+      queryClient.invalidateQueries(["userCommPosts"]);
+
       queryClient.invalidateQueries(["likedPosts"]);
       queryClient.invalidateQueries(["myCommPosts"]);
       queryClient.invalidateQueries(["myInfoPosts"]);
-      toast.success("좋아요 완료");
+
+      if (postProps.type === 0) toast.success("좋아요 완료");
+      if (postProps.type === 1) toast.success("관심 등록 완료");
+      if (postProps.type === 2) toast.success("좋아요 완료");
     },
     onError: (err: CustomError) => {
       toast.error(err.response?.data);
@@ -88,18 +91,22 @@ const Post = ({ postProps }: any) => {
   const disLike = useMutation(() => Axios.delete(`post/${postProps.id}/like`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-      if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
-      if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
-      if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);
-      if (window.location.pathname.split("/")[1] === "userinfo") {
-        queryClient.invalidateQueries(["userLikedPosts"]);
-        queryClient.invalidateQueries(["userInfoPosts"]);
-        queryClient.invalidateQueries(["userCommPosts"]);
-      }
+
+      queryClient.invalidateQueries(["noticePosts"]);
+      queryClient.invalidateQueries(["infoPosts"]);
+      queryClient.invalidateQueries(["communityPosts"]);
+
+      queryClient.invalidateQueries(["userLikedPosts"]);
+      queryClient.invalidateQueries(["userInfoPosts"]);
+      queryClient.invalidateQueries(["userCommPosts"]);
+
       queryClient.invalidateQueries(["likedPosts"]);
       queryClient.invalidateQueries(["myCommPosts"]);
       queryClient.invalidateQueries(["myInfoPosts"]);
-      toast.success("좋아요 취소 완료");
+
+      if (postProps.type === 0) toast.success("좋아요 취소 완료");
+      if (postProps.type === 1) toast.success("관심등록 해제 완료");
+      if (postProps.type === 2) toast.success("좋아요 취소 완료");
     },
     onError: (err: CustomError) => {
       toast.error(err.response?.data);
@@ -129,26 +136,9 @@ const Post = ({ postProps }: any) => {
     }
   });
 
-  // const follow = useMutation(() => Axios.patch(`user/${postProps.UserId}/follow`), {
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries(["user"]);
-  //     toast.success("팔로우 완료");
-  //   },
-  //   onError: (err: CustomError) => {
-  //     toast.warning(err.response?.data);
-  //     // alert(err.response?.data);
-  //   }
-  // });
-  // const unFollow = useMutation(() => Axios.delete(`user/${postProps.UserId}/follow`), {
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries(["user"]);
-  //     toast.success("언팔로우 완료");
-  //   },
-  //   onError: (err: CustomError) => {
-  //     toast.warning(err.response?.data);
-  //     // alert(err.response?.data);
-  //   }
-  // });
+  useEffect(() => {
+    setZoom(false);
+  }, [postProps.id]);
 
   return (
     <PostWrapper onClick={() => setMorePop(null)}>
@@ -201,20 +191,26 @@ const Post = ({ postProps }: any) => {
         />
       ) : null}
       <PostInfoWrapper>
-        <div>
-          {postProps?.User?.profilePic ? (
-            <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+        <div
+          onClick={() => {
+            window.scrollTo({
+              top: 0,
+              left: 0,
+              behavior: "smooth"
+            });
+          }}
+        >
+          <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+            {postProps?.User?.profilePic ? (
               <ProfilePic width={150} alt="userProfilePic" src={`${BACK_SERVER}/${postProps?.User?.profilePic}`} />
-            </Link>
-          ) : (
-            <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+            ) : (
               <ProfilePic
                 width={150}
                 alt="userProfilePic"
                 src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
               />
-            </Link>
-          )}
+            )}
+          </Link>
           <span>{postProps?.User?.nickname}</span>
         </div>
         <span>{moment(postProps?.createdAt).fromNow()}</span>
