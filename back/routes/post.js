@@ -32,7 +32,7 @@ const upload = multer({
     },
     filename(req, file, done) { //파일명 결정 함수
       const ext = path.extname(file.originalname); //파일 확장자 추출
-      const basename = path.basename(file.originalname, ext); //path에서 파일명 추출
+      const basename = path.basename(file.originalname.slice(0, 10), ext); //path에서 파일명 추출
       done(null, basename + '_' + new Date().getTime() + ext); //파일명 + 시간 + 확장자 
     }
   }),

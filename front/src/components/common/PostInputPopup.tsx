@@ -30,6 +30,17 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
   const inputType = params.type ? parseInt(params.type) : 0;
   const isMobile = useMediaQuery({ maxWidth: 720 });
 
+  const PostInputHelpText = ["공지사항 입력 설명", "모집 공고 입력 설명", "소통글 입력 설명"];
+  const placeholders = ["공지사항 입력", "모집 공고 입력", "소통글 입력"];
+  const [content, setContent] = useState<string>("");
+  const [images, setImages] = useState<string[]>([]);
+  const imageInput = useRef<HTMLInputElement>(null);
+
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
   const addPost = useMutation(
     (data: postDataType) => {
       return Axios.post<postDataType>("/post", data);
@@ -63,12 +74,6 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
     }
   );
 
-  const PostInputHelpText = ["공지사항 입력 설명", "모집공고 입력 설명", "소통글 입력 설명"];
-  const placeholders = ["공지사항 입력", "모집공고 입력", "소통글 입력"];
-  const [content, setContent] = useState<string>("");
-  const [images, setImages] = useState<string[]>([]);
-  const imageInput = useRef<HTMLInputElement>(null);
-
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const imageFormData = new FormData();
@@ -101,6 +106,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
       {isMobile || <PostInputHelp>{PostInputHelpText[inputType]}</PostInputHelp>}
       <InputForm.InputWrapper onClick={(e) => e.stopPropagation()}>
         <InputForm.TextArea
+          ref={inputRef}
           minLength={12}
           placeholder={placeholders[inputType]}
           onChange={(e) => {

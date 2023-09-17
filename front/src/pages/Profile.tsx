@@ -11,12 +11,13 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { confirmAlert } from "react-confirm-alert";
+import moment from "moment";
+import "moment/locale/ko";
 
 //components
 import AppLayout from "../components/AppLayout";
 import Post from "../components/common/Post";
 import ProfileChangePopup from "../components/common/ProfileChangePopup";
-import PostZoom from "../components/PostZoom";
 
 //style
 import Animation from "../styles/Animation";
@@ -66,6 +67,7 @@ interface Toggles {
 }
 
 const Profile = () => {
+  moment.locale("ko");
   const queryClient = useQueryClient();
   const BACK_SERVER = process.env.REACT_APP_BACK_URL;
   const navigate = useNavigate();
@@ -170,7 +172,7 @@ const Profile = () => {
   });
 
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["정보", "팔로잉", "팔로워", "내 모집공고", "내 소통글"];
+  const category = ["정보", "팔로잉", "팔로워", "내 모집 공고", "내 소통글"];
 
   return (
     <AppLayout>
@@ -178,8 +180,8 @@ const Profile = () => {
         {toggles.image && <ProfileChangePopup setToggles={setToggles} />}
         <ProfileTitle ref={scrollTarget}>
           <Nickname>마이 페이지</Nickname>
-          <span>내 정보 수정 및 작성 글 확인이 가능합니다.</span>
-          <span>마지막 정보 수정 - 어제</span>
+          <span>정보 수정 및 작성 글 확인이 가능합니다.</span>
+          <span>마지막 정보 수정 - {moment(user?.updatedAt).fromNow()}</span>
         </ProfileTitle>
         <MenuWrapper>
           {category.map((v, i) => (
@@ -694,7 +696,7 @@ const ContentBox = styled.div<{ width: number; padding: number }>`
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
 
   * {
@@ -707,6 +709,7 @@ const ContentBox = styled.div<{ width: number; padding: number }>`
     width: 92vw;
     padding: 20px ${(props) => props.padding + "px"};
     min-height: calc(100vh - 36px - 104px - 24px);
+    min-height: calc(var(--vh, 1vh) * 100 - 36px - 104px - 24px);
     /* background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(4px); */
   }
@@ -804,19 +807,7 @@ const ListItem = styled.div`
     min-width: 0;
   }
 `;
-const ListWrapper = styled.div`
-  width: 80%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
 
-  @media screen and (max-width: 720px) {
-    width: 90%;
-    height: 95%;
-  }
-`;
 const ProfilePic = styled.img<{ width: number }>`
   width: ${(props) => props.width + "px"};
   height: ${(props) => props.width + "px"};
@@ -836,7 +827,7 @@ const InfoAttribute = styled.div`
   justify-content: center;
   align-items: start;
 
-  margin-bottom: 30px;
+  margin-bottom: 24px;
 `;
 const InfoTitle = styled.div`
   display: flex;
@@ -853,9 +844,9 @@ const InfoValue = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 10px 0px;
-  height: 36px;
-  line-height: 36px;
+  /* padding: 10px 0px; */
+  /* height: 36px;
+  line-height: 36px; */
   margin-top: 8px;
 
   input {

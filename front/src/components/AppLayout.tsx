@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./common/Header";
 import styled from "styled-components/macro";
 import Axios from "../apis/Axios";
@@ -43,6 +43,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const params = useParams();
   const type = params?.type && parseInt(params?.type);
   const isMain = window.location.pathname.split("/")[1] === "main";
+  const [goTopButton, setGoTopButton] = useState<boolean>(false);
 
   const level = 1;
 
@@ -61,6 +62,27 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     }
   });
 
+  const handleScroll = async () => {
+    // console.log(window.scrollY);
+    if (window.scrollY > 2000) {
+      setGoTopButton(true);
+    } else {
+      setGoTopButton(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => handleScroll());
+    return () => {
+      window.removeEventListener("scroll", () => handleScroll());
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isPostInputOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
+  }, [isPostInputOpen]);
+
   return (
     <>
       {isPostInputOpen && <InputPopup setIsPostInputOpen={setPostInputOpen} />}
@@ -70,18 +92,20 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           <Children>{children}</Children>
 
           <MobileButtonWrapper isPostInputOpen={isPostInputOpen}>
-            <button
-              color="inherit"
-              onClick={() =>
-                window.scrollTo({
-                  top: 0,
-                  left: 0,
-                  behavior: "smooth"
-                })
-              }
-            >
-              <ArrowUpwardIcon fontSize="medium" />
-            </button>
+            {goTopButton && (
+              <button
+                color="inherit"
+                onClick={() =>
+                  window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: "smooth"
+                  })
+                }
+              >
+                <ArrowUpwardIcon fontSize="medium" />
+              </button>
+            )}
             {
               //user level이 2이상이여야 공지사항 작성이 가능
               isMain && type == 0 && user?.level >= level && (

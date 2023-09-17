@@ -18,6 +18,7 @@ import PostZoom from "../components/PostZoom";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import SearchIcon from "@mui/icons-material/Search";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import { toast } from "react-toastify";
 
 interface userProps {
   email: string;
@@ -125,8 +126,8 @@ const Main = () => {
             <span>
               <CalendarMonthIcon /> today
             </span>
-            <span>신규 등록 모집공고 128개</span>
-            <span>마감 예정 관심공고 5개</span>
+            <span>신규 모집 공고 - </span>
+            <span>마감 예정 관심 공고 - </span>
           </WelcomeWrapper>
           <Pill.Wrapper>
             <Pill.Sub
@@ -198,9 +199,9 @@ const Main = () => {
       {toggles.main === 1 && (
         <MainEl>
           <WelcomeWrapper ref={scrollTarget}>
-            <span>모집공고</span>
+            <span>모집 공고</span>
             <span></span>
-            <span>모집공고 설명글</span>
+            <span>모집 공고 설명글</span>
           </WelcomeWrapper>
           <Pill.Wrapper>
             <Pill.Sub
@@ -239,6 +240,7 @@ const Main = () => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
+                  toast.error("구현 예정");
                   console.log("submit");
                 }}
               >
@@ -313,6 +315,7 @@ const Main = () => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
+                  toast.error("구현 예정");
                   console.log("submit");
                 }}
               >

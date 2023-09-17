@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import moment from "moment";
-import { Link, useNavigate } from "react-router-dom";
+import "moment/locale/ko";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 
@@ -39,9 +40,8 @@ interface CustomError extends Error {
   };
 }
 
-moment.locale("ko");
-
 const Post = ({ postProps }: any) => {
+  moment.locale("ko");
   const BACK_SERVER = process.env.REACT_APP_BACK_URL;
   const queryClient = useQueryClient();
 
@@ -105,7 +105,7 @@ const Post = ({ postProps }: any) => {
       queryClient.invalidateQueries(["myInfoPosts"]);
 
       if (postProps.type === 0) toast.success("좋아요 취소 완료");
-      if (postProps.type === 1) toast.success("관심등록 해제 완료");
+      if (postProps.type === 1) toast.success("관심 해제 완료");
       if (postProps.type === 2) toast.success("좋아요 취소 완료");
     },
     onError: (err: CustomError) => {
@@ -145,6 +145,17 @@ const Post = ({ postProps }: any) => {
     if (isZoom) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "auto";
   }, [isZoom]);
+  useEffect(() => {
+    commentScroll.current?.scrollTo({ top: 0, behavior: "smooth" });
+  }, [postProps?.Comments.length]);
+
+  // const postDay = new Date(postProps.createdAt);
+  // const today = new Date();
+  // console.log(postDay);
+  // console.log(today);
+  // if (postProps.createdAt > today) {
+  //   console.log("post > today");
+  // }
 
   return (
     <PostWrapper onClick={() => setMorePop(null)}>
@@ -211,13 +222,11 @@ const Post = ({ postProps }: any) => {
             });
           }}
         >
-          {/* <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}> */}
           {postProps?.User?.profilePic ? (
-            <ProfilePic width={150} alt="userProfilePic" src={`${BACK_SERVER}/${postProps?.User?.profilePic}`} />
+            <ProfilePic alt="userProfilePic" src={`${BACK_SERVER}/${postProps?.User?.profilePic}`} />
           ) : (
-            <ProfilePic width={150} alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
+            <ProfilePic alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}
-          {/* </Link> */}
           <span>{postProps?.User?.nickname}</span>
         </div>
         <span>{moment(postProps?.createdAt).fromNow()}</span>
@@ -408,7 +417,7 @@ const PostWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  transition: all ease-in-out 1s;
+  transition: all ease-in-out 0.5s;
 
   /* padding: 20px 0px; */
   height: auto;
@@ -421,6 +430,9 @@ const PostWrapper = styled.div`
   /* border-radius: 7px; */
   @media screen and (max-width: 720px) {
     width: 92vw;
+    &:last-child {
+      margin-bottom: 150px;
+    }
     /* width: 450px; */
     /* height: auto; */
   }

@@ -73,7 +73,9 @@ const LogIn = ({ setToggle }: Props) => {
   });
   const onSubmit = () => {
     const { email, password } = getValues();
-    login.mutate({ email, password });
+    if (login.isLoading === false) {
+      login.mutate({ email, password });
+    }
   };
 
   return (

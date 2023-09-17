@@ -6,12 +6,12 @@ import moment from "moment";
 import Axios from "../apis/Axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import Carousel from "react-material-ui-carousel";
 
 //style
 import Animation from "../styles/Animation";
 
 //mui
-import Carousel from "react-material-ui-carousel";
 import CancelIcon from "@mui/icons-material/Cancel";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -58,7 +58,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
       queryClient.invalidateQueries(["myInfoPosts"]);
 
       if (postProps.type === 0) toast.success("좋아요 완료");
-      if (postProps.type === 1) toast.success("관심등록 완료");
+      if (postProps.type === 1) toast.success("관심 등록 완료");
       if (postProps.type === 2) toast.success("좋아요 완료");
     },
     onError: (err: CustomError) => {
@@ -83,7 +83,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
       queryClient.invalidateQueries(["myInfoPosts"]);
 
       if (postProps.type === 0) toast.success("좋아요 취소 완료");
-      if (postProps.type === 1) toast.success("관심등록 해제 완료");
+      if (postProps.type === 1) toast.success("관심 해제 완료");
       if (postProps.type === 2) toast.success("좋아요 취소 완료");
     },
     onError: (err: CustomError) => {
@@ -224,9 +224,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
             <CancelBtn onClick={() => setZoom(false)}>
               <CancelIcon fontSize="large" />
             </CancelBtn>
+            {/* only text */}
             {postProps.Images?.length === 0 && (
-              <TextBox key="텍스트페이지">
-                <div>
+              <div>
+                <MobilePostInfo>
                   <div>
                     {postProps?.User?.profilePic ? (
                       <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
@@ -249,58 +250,84 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                   </div>
 
                   <span>{moment(postProps?.createdAt).fromNow()}</span>
-                </div>
-                <div>{postProps.content}</div>
-                <Like>
-                  <button
-                    onClick={() => {
-                      if (!isLiked) {
-                        like.mutate();
-                      } else {
-                        disLike.mutate();
-                      }
-                    }}
-                  >
-                    {postProps.type === 1 &&
-                      (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
-                    {postProps.type === 1 ||
-                      (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
-                    <span>{postProps?.Likers?.length}</span>
-                  </button>
-                </Like>
-              </TextBox>
+                </MobilePostInfo>
+                <TextBox key="텍스트페이지">
+                  <div>{postProps.content}</div>
+                  <Like>
+                    <button
+                      onClick={() => {
+                        if (!isLiked) {
+                          like.mutate();
+                        } else {
+                          disLike.mutate();
+                        }
+                      }}
+                    >
+                      {postProps.type === 1 &&
+                        (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
+                      {postProps.type === 1 ||
+                        (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
+                      <span>{postProps?.Likers?.length}</span>
+                    </button>
+                  </Like>
+                </TextBox>
+              </div>
             )}
+            {/* image + text */}
             {postProps.Images?.length !== 0 && (
               <div>
-                <Carousel indicators={true} autoPlay={false} animation="fade">
+                <MobilePostInfo>
+                  <div>
+                    {postProps?.User?.profilePic ? (
+                      <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                        <ProfilePicSM
+                          width={150}
+                          alt="userProfilePic"
+                          src={`${BACK_SERVER}/${postProps?.User?.profilePic}`}
+                        />
+                      </Link>
+                    ) : (
+                      <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                        <ProfilePicSM
+                          width={150}
+                          alt="userProfilePic"
+                          src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                        />
+                      </Link>
+                    )}
+                    <span>{postProps.User.nickname}</span>
+                  </div>
+
+                  <span>{moment(postProps?.createdAt).fromNow()}</span>
+                </MobilePostInfo>
+                <Carousel
+                  swipe={false}
+                  navButtonsAlwaysVisible={false}
+                  fullHeightHover={false}
+                  indicators={true}
+                  autoPlay={false}
+                  navButtonsProps={{
+                    style: {
+                      backgroundColor: "rgba(0,0,0,0.2)"
+                    }
+                  }}
+                  indicatorIconButtonProps={{
+                    style: {
+                      top: "-50px"
+                      // color: "white"
+                    }
+                  }}
+                  activeIndicatorIconButtonProps={{
+                    style: {
+                      // color: "#a4bddf"
+                    }
+                  }}
+                  animation="fade"
+                >
                   {arr.map((v, i) => {
                     if (i === 0) {
                       return (
                         <TextBox key="텍스트페이지">
-                          <div>
-                            <div>
-                              {postProps?.User?.profilePic ? (
-                                <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                                  <ProfilePicSM
-                                    width={150}
-                                    alt="userProfilePic"
-                                    src={`${BACK_SERVER}/${postProps?.User?.profilePic}`}
-                                  />
-                                </Link>
-                              ) : (
-                                <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                                  <ProfilePicSM
-                                    width={150}
-                                    alt="userProfilePic"
-                                    src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                                  />
-                                </Link>
-                              )}
-                              <span>{postProps.User.nickname}</span>
-                            </div>
-
-                            <span>{moment(postProps?.createdAt).fromNow()}</span>
-                          </div>
                           <div>{postProps.content}</div>
                           <Like>
                             <button
@@ -346,11 +373,12 @@ const CancelBtn = styled.button`
 
   z-index: 1005;
 
-  color: black;
+  color: darkgray;
+
   @media screen and (max-width: 720px) {
-    top: 10px;
-    left: 50%;
-    transform: translate(-50%);
+    top: calc(100% - 50px);
+    left: 10%;
+    transform: translateX(-50%);
   }
 `;
 const Content = styled.div`
@@ -367,6 +395,7 @@ const Content = styled.div`
 const Like = styled.div`
   /* margin-top: 12px;
   margin-bottom: 24px; */
+
   span {
     font-size: 1.5em;
     margin-left: 4px;
@@ -374,6 +403,12 @@ const Like = styled.div`
   button {
     display: flex;
     align-items: center;
+  }
+  @media screen and (max-width: 720px) {
+    height: 100px;
+    button {
+      margin-top: 12px;
+    }
   }
 `;
 
@@ -397,40 +432,42 @@ const ProfilePicSM = styled.img`
 
   object-fit: cover;
 `;
-
-const TextBox = styled.div`
+const MobilePostInfo = styled.div`
   width: 100%;
-  height: calc(80vh - 50px);
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-direction: column;
-
-  padding-top: 50px;
-  > div:first-child {
-    width: 100%;
+  padding: 16px;
+  height: 64px;
+  div {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 16px;
-    div {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    span {
-      padding: 8px;
-      font-size: 1.1em;
-    }
   }
-  > div:nth-child(2) {
-    height: calc(80vh - 200px);
+  span {
+    padding: 8px;
+    font-size: 1.1em;
+  }
+`;
+const TextBox = styled.div`
+  width: 100%;
+  height: calc(80vh - 50px);
+  height: calc(var(--vh, 1vh) * 90 - 64px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  > div:nth-child(1) {
+    /* height: calc(80vh - 200px); */
+    height: 50%;
+    flex-grow: 1;
     width: 100%;
     white-space: pre-wrap;
     line-height: 1.3em;
     overflow-y: scroll;
-    padding: 12px 24px;
+    padding: 24px;
 
     font-size: 1.2em;
   }
@@ -443,7 +480,9 @@ const ImageBox = styled.div`
   justify-content: center;
   align-items: center;
   @media screen and (max-width: 720px) {
+    /* background-color: black; */
     height: calc(80vh - 50px);
+    height: calc(var(--vh, 1vh) * 90 - 64px);
   }
 `;
 const Image = styled.img`
@@ -455,6 +494,8 @@ const Image = styled.img`
 `;
 
 const PostZoomBG = styled.div`
+  overflow: hidden;
+
   z-index: 1002;
   position: fixed;
   left: 0;
@@ -471,13 +512,14 @@ const PostZoomBG = styled.div`
   justify-content: start;
   align-items: center;
 
+  padding-top: calc(var(--vh, 1vh) * 5);
+
   > button {
     padding-top: 16px;
   }
   @media screen and (max-width: 720) {
     justify-content: start;
-
-    /* height: calc(var(--vh, 1vh) * 100); */
+    height: calc(var(--vh, 1vh) * 100);
   }
 `;
 const OnlyText = styled.div`
@@ -602,12 +644,11 @@ const ImageText = styled.div`
 `;
 
 const Mobile = styled.div`
+  transition: all ease-in-out 0.3s;
   position: relative;
   width: 90vw;
-  height: 80vh;
-  height: calc(var(--vh, 1vh) * 80);
-
-  padding-bottom: 24px;
+  height: 90vh;
+  height: calc(var(--vh, 1vh) * 90);
 
   display: flex;
   justify-content: center;

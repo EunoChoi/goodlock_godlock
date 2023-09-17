@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -11,6 +11,7 @@ import Popper from "@mui/material/Popper";
 import { Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import SendIcon from "@mui/icons-material/Send";
 import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
@@ -34,6 +35,7 @@ interface CommentType {
 
 const Comment = ({ commentProps, currentUserId, postType }: any) => {
   const queryClient = useQueryClient();
+  const BACK_SERVER = process.env.REACT_APP_BACK_URL;
   const [isCommentEdit, setCommentEdit] = useState<boolean>(false);
   const [commentEditContent, setCommentEditContent] = useState<string>(commentProps.content);
 
@@ -41,6 +43,11 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
 
   const open = Boolean(morePop);
   const [timer, setTimer] = useState<NodeJS.Timeout>();
+
+  const commentRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    commentRef.current?.focus();
+  }, [isCommentEdit]);
 
   //mutation - 댓글 수정, 삭제
   const editComment = useMutation(
@@ -141,6 +148,11 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
       </Popper>
       <CommentInfo>
         <FlexDiv>
+          {commentProps?.User?.profilePic ? (
+            <ProfilePic alt="userProfilePic" src={`${BACK_SERVER}/${commentProps?.User?.profilePic}`} />
+          ) : (
+            <ProfilePic alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
+          )}
           <Link to={`/userinfo/${commentProps?.User?.id}/cat/0`}>
             <UserNickname>{commentProps?.User?.nickname}</UserNickname>
           </Link>
@@ -181,9 +193,9 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
             }
           }}
         >
-          <input value={commentEditContent} onChange={(e) => setCommentEditContent(e.target.value)} />
+          <input ref={commentRef} value={commentEditContent} onChange={(e) => setCommentEditContent(e.target.value)} />
           <CommentEditButton>
-            <SendIcon />
+            <CheckCircleIcon />
           </CommentEditButton>
           <CommentEditButton
             onClick={() => {
@@ -202,7 +214,17 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
 };
 
 export default Comment;
+const ProfilePic = styled.img`
+  width: 36px;
+  height: 36px;
+  margin-right: 10px;
+  border-radius: 50px;
+  background-color: white;
 
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+
+  object-fit: cover;
+`;
 const CommentEditButton = styled.button`
   padding: 4px 8px;
 `;

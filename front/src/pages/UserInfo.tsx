@@ -64,7 +64,7 @@ const UserInfo = () => {
 
   const navigate = useNavigate();
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["팔로잉", "팔로워", "작성 모집공고", "작성 소통글", "관심공고"];
+  const category = ["팔로잉", "팔로워", "작성 모집 공고", "작성 소통글", "관심 공고"];
 
   //useQuery, useInfiniteQuery
   const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
@@ -273,40 +273,38 @@ const UserInfo = () => {
         {categoryNum === 1 && (
           <ContentWrapper>
             <ContentBox>
-              <ListWrapper>
-                <ListTitle>
-                  <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
-                    <InsertEmoticonOutlinedIcon fontSize="inherit" />
-                  </Badge>
-                  <div>팔로워</div>
-                </ListTitle>
-                <List>
-                  {targetUser?.Followers?.length === 0 ? (
-                    <EmptyUserNoti>
-                      <span>팔로워 목록이 존재하지 않습니다.</span>
-                    </EmptyUserNoti>
-                  ) : (
-                    targetUser?.Followers?.map((v: user, i: number) => (
-                      <ListItem key={v.nickname + i}>
-                        <div>
-                          <Link to={`/userinfo/${v?.id}/cat/0`}>
-                            {v.profilePic ? (
-                              <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
-                            ) : (
-                              <ProfilePic
-                                width={32}
-                                alt="ProfilePic"
-                                src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                              />
-                            )}
-                          </Link>
-                        </div>
-                        <span>{v.nickname}</span>
-                      </ListItem>
-                    ))
-                  )}
-                </List>
-              </ListWrapper>
+              <ListTitle>
+                <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
+                  <InsertEmoticonOutlinedIcon fontSize="inherit" />
+                </Badge>
+                <div>팔로워</div>
+              </ListTitle>
+              <List>
+                {targetUser?.Followers?.length === 0 ? (
+                  <EmptyUserNoti>
+                    <span>팔로워 목록이 존재하지 않습니다.</span>
+                  </EmptyUserNoti>
+                ) : (
+                  targetUser?.Followers?.map((v: user, i: number) => (
+                    <ListItem key={v.nickname + i}>
+                      <div>
+                        <Link to={`/userinfo/${v?.id}/cat/0`}>
+                          {v.profilePic ? (
+                            <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
+                          ) : (
+                            <ProfilePic
+                              width={32}
+                              alt="ProfilePic"
+                              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                            />
+                          )}
+                        </Link>
+                      </div>
+                      <span>{v.nickname}</span>
+                    </ListItem>
+                  ))
+                )}
+              </List>
             </ContentBox>
           </ContentWrapper>
         )}
@@ -464,22 +462,6 @@ const Pill = styled.div<{ catNum: number }>`
     }
   }
 `;
-const ProfilePicWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  padding: 25px 0;
-
-  background-color: #fff;
-
-  * {
-    flex-shrink: 0;
-  }
-  @media screen and (max-width: 720px) {
-  }
-`;
 
 const UserInfoWrapper = styled.div`
   position: relative;
@@ -613,8 +595,8 @@ const ContentWrapper = styled.div`
   }
 `;
 const ContentBox = styled.div`
+  transition: all ease-in-out 0.3s;
   width: 500px;
-  height: 550px;
   min-height: calc(100vh - 104px - 24px);
 
   padding: 20px;
@@ -635,7 +617,8 @@ const ContentBox = styled.div`
   }
   @media screen and (max-width: 720px) {
     width: 92vw;
-    min-height: calc(100vh - 36px - 104px - 24px);
+    min-height: calc(100vh);
+    min-height: calc(var(--vh, 1vh) * 100 - 36px - 104px - 24px);
     /* background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(4px); */
   }
@@ -714,19 +697,7 @@ const ListItem = styled.div`
     min-width: 0;
   }
 `;
-const ListWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
 
-  @media screen and (max-width: 720px) {
-    width: 90%;
-    height: 95%;
-  }
-`;
 const ProfilePic = styled.img<{ width: number }>`
   width: ${(props) => props.width + "px"};
   height: ${(props) => props.width + "px"};

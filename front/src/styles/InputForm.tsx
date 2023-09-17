@@ -45,11 +45,17 @@ const InputWrapper = styled.div`
   flex-direction: column;
   @media screen and (max-width: 720px) {
     position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    height: auto;
-    margin-bottom: 20px;
+    left: 0;
+    top: 0;
+    /* transform: translate(-50%, -50%); */
+
+    /* height: auto;
+    height: 100vh; */
+    margin-left: 5%;
+    margin-top: calc(var(--vh, 1vh) * 5);
+    height: calc(var(--vh, 1vh) * 90);
+
+    /* margin-bottom: 20px; */
     background-color: #fff;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
@@ -83,7 +89,7 @@ const TextArea = styled.textarea`
     color: rgba(0, 0, 0, 0.3);
   }
   @media screen and (max-width: 720px) {
-    height: 300px;
+    /* height: 300px; */
     /* height: 30vh; */
     border-radius: 5px;
     padding: 20px;

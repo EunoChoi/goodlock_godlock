@@ -47,9 +47,18 @@ interface CustomError extends Error {
 const PostEditPopup = ({ setPostEdit, postProps }: props) => {
   const queryClient = useQueryClient();
   const BACK_SERVER = process.env.REACT_APP_BACK_URL;
-  const params = useParams();
-  const inputType = params.type ? parseInt(params.type) : 0;
   const isMobile = useMediaQuery({ maxWidth: 720 });
+
+  const PostInputHelpText = ["공지사항 입력 설명", "모집 공고 입력 설명", "소통글 입력 설명"];
+  const placeholders = ["공지사항 입력", "모집 공고 입력", "소통글 입력"];
+  const [content, setContent] = useState<string>(postProps.content);
+  const [images, setImages] = useState<string[]>(postProps.images.map((v) => v.src));
+  const imageInput = useRef<HTMLInputElement>(null);
+
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const editPost = useMutation((data: localPostData) => Axios.patch<localPostData>(`/post/${postProps.id}`, data), {
     onSuccess: () => {
@@ -73,12 +82,6 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
       // alert(err.response?.data);
     }
   });
-
-  const PostInputHelpText = ["공지사항 입력 설명", "모집공고 입력 설명", "소통글 입력 설명"];
-  const placeholders = ["공지사항 입력", "모집공고 입력", "소통글 입력"];
-  const [content, setContent] = useState<string>(postProps.content);
-  const [images, setImages] = useState<string[]>(postProps.images.map((v) => v.src));
-  const imageInput = useRef<HTMLInputElement>(null);
 
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -115,6 +118,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
       {isMobile || <PostInputHelp>{PostInputHelpText[postProps.type]}</PostInputHelp>}
       <InputForm.InputWrapper onClick={(e) => e.stopPropagation()}>
         <InputForm.TextArea
+          ref={inputRef}
           minLength={12}
           placeholder={placeholders[postProps.type]}
           onChange={(e) => {

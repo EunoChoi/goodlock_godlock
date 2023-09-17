@@ -35,16 +35,18 @@ function App() {
     }
   });
 
-  const setScreenSize = () => {
+  const updateMobileViewport = () => {
+    // console.log("visual viewport resized");
     const vh = window.visualViewport?.height;
     if (vh) {
       document.documentElement.style.setProperty("--vh", `${vh * 0.01}px`);
     }
   };
-  window.addEventListener("resize", () => setScreenSize());
-
   useEffect(() => {
-    setScreenSize();
+    window.addEventListener("resize", () => updateMobileViewport());
+    return () => {
+      window.removeEventListener("resize", () => updateMobileViewport());
+    };
   }, []);
 
   return (

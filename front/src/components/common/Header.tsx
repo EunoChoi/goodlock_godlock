@@ -25,17 +25,34 @@ const Header = () => {
   if (window.location.pathname.split("/")[1] === "profile") currentPage = 3;
 
   // console.log(window.visualViewport?.height);
+  const handleScroll = async () => {
+    const preY = window.scrollY;
+    setTimeout(() => {
+      // console.log("currentY : ", window.scrollY);
+      // console.log("preY : ", preY);
+      if (preY === window.scrollY) {
+        // console.log("스크롤 멈춤");
+      } else if (preY < window.scrollY) {
+        // console.log("스크롤 내려가는 중");
+        setMountToggle(false);
+      } else {
+        // console.log("스크롤 올라가는 중");
+        setMountToggle(false);
+      }
+    }, 100);
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", () => handleScroll());
+    return () => {
+      window.removeEventListener("scroll", () => handleScroll());
+    };
+  }, []);
 
   useEffect(() => {
     if (!isMobile) {
       setMountToggle(false);
     }
   }, [isMobile]);
-
-  // const [height, setHeight] = useState(window.visualViewport?.height);
-  // useEffect(() => {
-  //   setHeight(window.visualViewport?.height);
-  // }, [window.visualViewport?.height]);
 
   return (
     <>
@@ -45,7 +62,7 @@ const Header = () => {
           <HeaderFixedWrapper>
             <MyProfile onClick={() => navigate("/profile/0")}>
               <PersonIcon></PersonIcon>
-              {/* {height} */}
+              {/* {prevY} */}
             </MyProfile>
             <HeaderLogoMobile
               onClick={() => {
@@ -72,7 +89,7 @@ const Header = () => {
               <Link to="/main/0">홈</Link>
             </span>
             <span onClick={() => setMountToggle(false)}>
-              <Link to="/main/1">모집공고</Link>
+              <Link to="/main/1">모집 공고</Link>
             </span>
             <span onClick={() => setMountToggle(false)}>
               <Link to="/main/2">소통</Link>
@@ -101,7 +118,7 @@ const Header = () => {
               <Link to="/main/0">홈</Link>
             </span>
             <span>
-              <Link to="/main/1">모집공고</Link>
+              <Link to="/main/1">모집 공고</Link>
             </span>
             <span>
               <Link to="/main/2">소통</Link>

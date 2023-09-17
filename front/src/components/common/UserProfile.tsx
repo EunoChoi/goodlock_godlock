@@ -35,7 +35,7 @@ const UserProfile = () => {
       <UserSub>
         <Link to="/main/0">
           <span>{user?.Liked?.filter((v: any) => v.type === 1).length}</span>
-          <span>관심공고</span>
+          <span>관심 공고</span>
         </Link>
       </UserSub>
       <UserSub>

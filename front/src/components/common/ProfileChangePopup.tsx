@@ -51,6 +51,7 @@ const ProfileChangePopup = ({ setToggles }: setStateProps) => {
       queryClient.invalidateQueries(["infoPosts"]);
       queryClient.invalidateQueries(["communityPosts"]);
       toast.success("프로필 이미지 변경이 완료되었습니다.");
+      setToggles({ image: false, nickname: false, usertext: false });
       // alert("프로필 이미지 변경이 완료되었습니다.");
     },
     onError: (err: CustomError) => {
