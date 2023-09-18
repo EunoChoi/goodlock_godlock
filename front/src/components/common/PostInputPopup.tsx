@@ -65,6 +65,9 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["user"]);
+
+        queryClient.invalidateQueries(["activinfo"]);
+
         if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
         if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
         if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);
@@ -103,8 +106,6 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
       Axios.post("post/images", imageFormData).then((res) => setImages([...images, ...res.data]));
     }
   };
-
-  console.log(link);
 
   return (
     <InputForm.InputBG
@@ -240,9 +241,28 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
 
             <FlexButton
               onClick={() => {
-                if (content.length < 8 || content.length > 2200) {
+                if (start > end) {
+                  toast.warning("기간 설정이 잘못되었습니다.");
+                } else if (content.length < 8 || content.length > 2200) {
                   toast.warning("게시글은 최소 8자 최대 2200자 작성이 가능합니다.");
-                } else addPost.mutate({ content, images, type: inputType, start, end, link });
+                } else {
+                  const startY = start.getFullYear();
+                  const startM = start.getMonth();
+                  const startD = start.getDate();
+
+                  const endY = end.getFullYear();
+                  const endM = end.getMonth();
+                  const endD = end.getDate();
+
+                  addPost.mutate({
+                    content,
+                    images,
+                    type: inputType,
+                    start: new Date(startY, startM, startD, 0, 0, 0),
+                    end: new Date(endY, endM, endD, 0, 0, 0),
+                    link
+                  });
+                }
               }}
             >
               <PostAddIcon />

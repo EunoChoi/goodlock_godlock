@@ -29,6 +29,9 @@ interface serverPostData {
   id: number;
   content: string;
   images: serverImages[];
+  start: Date;
+  end: Date;
+  link: string;
 }
 interface localPostData {
   type: number;
@@ -64,8 +67,10 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
   const imageInput = useRef<HTMLInputElement>(null);
 
   const [optionToggle, setOptionToggle] = useState<number>(0);
-  const [start, setStart] = useState<Date>(new Date());
-  const [end, setEnd] = useState<Date>(new Date());
+  console.log(postProps.start);
+  const [start, setStart] = useState<Date>(new Date(postProps.start));
+  const [end, setEnd] = useState<Date>(new Date(postProps.end));
+
   const [link, setLink] = useState<string>("");
   const isInfoPost =
     window.location.pathname.split("/")[2] === "1" && window.location.pathname.split("/")[1] === "main";
@@ -78,6 +83,9 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
   const editPost = useMutation((data: localPostData) => Axios.patch<localPostData>(`/post/${postProps.id}`, data), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
+
+      queryClient.invalidateQueries(["activinfo"]);
+
       if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
       if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
       if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);
@@ -244,9 +252,29 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
             </FlexButton>
             <FlexButton
               onClick={() => {
-                if (content.length < 8 || content.length > 2200) {
+                if (start > end) {
+                  toast.warning("기간 설정이 잘못되었습니다.");
+                } else if (content.length < 8 || content.length > 2200) {
                   toast.warning("게시글은 최소 8자 최대 2200자 작성이 가능합니다.");
-                } else editPost.mutate({ content, images, type: postProps.type, id: postProps.id, start, end, link });
+                } else {
+                  const startY = start.getFullYear();
+                  const startM = start.getMonth();
+                  const startD = start.getDate();
+
+                  const endY = end.getFullYear();
+                  const endM = end.getMonth();
+                  const endD = end.getDate();
+
+                  editPost.mutate({
+                    content,
+                    images,
+                    type: postProps.type,
+                    id: postProps.id,
+                    start: new Date(startY, startM, startD, 0, 0, 0),
+                    end: new Date(endY, endM, endD, 0, 0, 0),
+                    link
+                  });
+                }
               }}
             >
               <PostAddIcon />

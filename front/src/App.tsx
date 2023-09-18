@@ -43,10 +43,10 @@ function App() {
     }
   };
   useEffect(() => {
-    window.addEventListener("resize", () => updateMobileViewport());
+    visualViewport?.addEventListener("resize", () => updateMobileViewport());
     updateMobileViewport();
     return () => {
-      window.removeEventListener("resize", () => updateMobileViewport());
+      visualViewport?.removeEventListener("resize", () => updateMobileViewport());
     };
   }, []);
 

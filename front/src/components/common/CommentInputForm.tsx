@@ -23,6 +23,9 @@ const CommentInputForm = ({ postId, postType }: props) => {
   const addComment = useMutation(() => Axios.post(`post/${postId}/comment`, { content }), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
+
+      queryClient.invalidateQueries(["activinfo"]);
+
       if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
       if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
       if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);

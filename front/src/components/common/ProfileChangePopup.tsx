@@ -47,9 +47,20 @@ const ProfileChangePopup = ({ setToggles }: setStateProps) => {
   const editProfilePic = useMutation((data: { profilePic: string }) => Axios.patch("user/edit/profilepic", data), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
+
+      queryClient.invalidateQueries(["activinfo"]);
+
       queryClient.invalidateQueries(["noticePosts"]);
       queryClient.invalidateQueries(["infoPosts"]);
       queryClient.invalidateQueries(["communityPosts"]);
+
+      queryClient.invalidateQueries(["userLikedPosts"]);
+      queryClient.invalidateQueries(["userInfoPosts"]);
+      queryClient.invalidateQueries(["userCommPosts"]);
+
+      queryClient.invalidateQueries(["likedPosts"]);
+      queryClient.invalidateQueries(["myCommPosts"]);
+      queryClient.invalidateQueries(["myInfoPosts"]);
       toast.success("프로필 이미지 변경이 완료되었습니다.");
       setToggles({ image: false, nickname: false, usertext: false });
       // alert("프로필 이미지 변경이 완료되었습니다.");

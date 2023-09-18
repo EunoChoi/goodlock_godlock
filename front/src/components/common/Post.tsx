@@ -68,6 +68,9 @@ const Post = ({ postProps }: any) => {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
 
+      queryClient.invalidateQueries(["todayendliked"]);
+      queryClient.invalidateQueries(["activinfo"]);
+
       queryClient.invalidateQueries(["noticePosts"]);
       queryClient.invalidateQueries(["infoPosts"]);
       queryClient.invalidateQueries(["communityPosts"]);
@@ -92,6 +95,9 @@ const Post = ({ postProps }: any) => {
   const disLike = useMutation(() => Axios.delete(`post/${postProps.id}/like`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
+
+      queryClient.invalidateQueries(["todayendliked"]);
+      queryClient.invalidateQueries(["activinfo"]);
 
       queryClient.invalidateQueries(["noticePosts"]);
       queryClient.invalidateQueries(["infoPosts"]);
@@ -118,6 +124,10 @@ const Post = ({ postProps }: any) => {
   const deletePost = useMutation(() => Axios.delete(`post/${postProps.id}`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
+
+      queryClient.invalidateQueries(["todayendliked"]);
+      queryClient.invalidateQueries(["activinfo"]);
+
       if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
       if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
       if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);
@@ -199,7 +209,15 @@ const Post = ({ postProps }: any) => {
       {isPostEdit ? (
         <PostEditPopup
           setPostEdit={setPostEdit}
-          postProps={{ type: postProps.type, id: postProps.id, content: postProps.content, images: postProps.Images }}
+          postProps={{
+            type: postProps.type,
+            id: postProps.id,
+            content: postProps.content,
+            images: postProps.Images,
+            start: postProps?.start,
+            end: postProps?.end,
+            link: postProps?.link
+          }}
         />
       ) : null}
       <PostInfoWrapper>

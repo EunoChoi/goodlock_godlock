@@ -66,7 +66,7 @@ const InputWrapper = styled.div`
 
 const TextArea = styled.textarea`
   padding: 40px;
-  padding-top: 10px;
+  padding-top: 30px;
   resize: none;
 
   width: 100%;

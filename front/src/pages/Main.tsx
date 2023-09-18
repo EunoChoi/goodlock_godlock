@@ -13,7 +13,6 @@ import Animation from "../styles/Animation";
 //components
 import AppLayout from "../components/AppLayout";
 import Post from "../components/common/Post";
-import PostZoom from "../components/PostZoom";
 
 //mui
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
@@ -55,22 +54,14 @@ const Main = () => {
   const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
     staleTime: 60 * 1000
   }).data;
-  const todayUpInfo = useQuery(["todayinfo"], () => Axios.get("post/todayinfo").then((v) => v.data), {
+
+  //today
+  const todayUploadInfoPost = useQuery(["todayinfo"], () => Axios.get("post/todayinfo").then((v) => v.data), {
     staleTime: 60 * 1000
   }).data;
-
-  useEffect(() => {
-    if (type < 0 || type >= 3) {
-      navigate("/404");
-    } else {
-      setToggles({ main: type, sub: 0 });
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth"
-      });
-    }
-  }, [type]);
+  const todayEndLikedPost = useQuery(["todayendliked"], () => Axios.get("post/todayendliked").then((v) => v.data), {
+    staleTime: 60 * 1000
+  }).data;
 
   //load posts
   const noticePosts = useInfiniteQuery(
@@ -113,6 +104,39 @@ const Main = () => {
       }
     }
   );
+  const activInfo = useInfiniteQuery(
+    ["activinfo"],
+    ({ pageParam = 1 }) =>
+      Axios.get("post/activinfo", { params: { type: 1, pageParam, tempDataNum: 5 } }).then((res) => res.data),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.length === 0 ? undefined : allPages.length + 1;
+      }
+    }
+  );
+  const feedPosts = useInfiniteQuery(
+    ["feed"],
+    ({ pageParam = 1 }) =>
+      Axios.get("post/feed", { params: { type: 0, pageParam, tempDataNum: 5 } }).then((res) => res.data),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.length === 0 ? undefined : allPages.length + 1;
+      }
+    }
+  );
+
+  useEffect(() => {
+    if (type < 0 || type >= 3) {
+      navigate("/404");
+    } else {
+      setToggles({ main: type, sub: 0 });
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth"
+      });
+    }
+  }, [type]);
 
   return (
     <AppLayout>
@@ -130,8 +154,8 @@ const Main = () => {
             <span>
               <CalendarMonthIcon /> today
             </span>
-            <span>신규 모집 공고 - {todayUpInfo?.len}</span>
-            <span>마감 예정 관심 공고 </span>
+            <span>신규 등록된 모집공고 {todayUploadInfoPost?.len}개</span>
+            <span>자정 마감 예정 관심공고 {todayEndLikedPost?.len}개</span>
           </WelcomeWrapper>
           <Pill.Wrapper>
             <Pill.Sub
@@ -224,7 +248,6 @@ const Main = () => {
             <Pill.Sub
               toggle={toggles.sub}
               onClick={() => {
-                console.log(scrollTarget.current?.scrollHeight);
                 setToggles({ main: toggles.main, sub: 0 });
                 window.scrollTo({
                   top: scrollTarget.current?.scrollHeight,
@@ -293,7 +316,7 @@ const Main = () => {
           )}
           {toggles.sub === 1 && (
             <HomeEl>
-              {infoPosts.data?.pages[0].length === 0 && (
+              {activInfo.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
                   <span>게시글이 존재하지 않습니다.</span>
@@ -301,16 +324,16 @@ const Main = () => {
               )}
               <InfiniteScroll
                 // scrollableTarget="scrollWrapper"
-                hasMore={infoPosts.hasNextPage || false}
+                hasMore={activInfo.hasNextPage || false}
                 loader={
                   <LoadingIconWrapper>
                     <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
                   </LoadingIconWrapper>
                 }
-                next={() => infoPosts.fetchNextPage()}
-                dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+                next={() => activInfo.fetchNextPage()}
+                dataLength={activInfo.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
-                {infoPosts?.data?.pages.map((p) =>
+                {activInfo?.data?.pages.map((p) =>
                   p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
               </InfiniteScroll>
@@ -318,7 +341,7 @@ const Main = () => {
           )}
           {toggles.sub === 2 && (
             <HomeEl>
-              {infoPosts.data?.pages[0].length === 0 && (
+              {/* {infoPosts.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
                   <span>게시글이 존재하지 않습니다.</span>
@@ -338,7 +361,7 @@ const Main = () => {
                 {infoPosts?.data?.pages.map((p) =>
                   p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
-              </InfiniteScroll>
+              </InfiniteScroll> */}
             </HomeEl>
           )}
         </MainEl>
@@ -396,6 +419,7 @@ const Main = () => {
             </Pill.Search>
           </Pill.Wrapper>
           {toggles.sub === 0 && (
+            //모든 소통글
             <HomeEl>
               {communityPosts.data?.pages[0].length === 0 && (
                 <EmptyNoti>
@@ -421,8 +445,9 @@ const Main = () => {
             </HomeEl>
           )}
           {toggles.sub === 1 && (
+            //피드 소통글
             <HomeEl>
-              {communityPosts.data?.pages[0].length === 0 && (
+              {feedPosts?.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
                   <span>게시글이 존재하지 않습니다.</span>
@@ -430,16 +455,16 @@ const Main = () => {
               )}
               <InfiniteScroll
                 // scrollableTarget="scrollWrapper"
-                hasMore={communityPosts.hasNextPage || false}
+                hasMore={feedPosts?.hasNextPage || false}
                 loader={
                   <LoadingIconWrapper>
                     <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
                   </LoadingIconWrapper>
                 }
-                next={() => communityPosts.fetchNextPage()}
-                dataLength={communityPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+                next={() => feedPosts?.fetchNextPage()}
+                dataLength={feedPosts?.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
-                {communityPosts?.data?.pages.map((p) =>
+                {feedPosts?.data?.pages.map((p) =>
                   p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
               </InfiniteScroll>

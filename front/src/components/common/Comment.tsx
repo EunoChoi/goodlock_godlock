@@ -1,9 +1,12 @@
 import styled from "styled-components";
 import React, { useEffect, useRef, useState } from "react";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import Axios from "../../apis/Axios";
+import { useQueryClient } from "@tanstack/react-query";
 
 //mui
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -13,12 +16,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
-import SendIcon from "@mui/icons-material/Send";
-import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
-
-import { useMutation } from "@tanstack/react-query";
-import Axios from "../../apis/Axios";
-import { useQueryClient } from "@tanstack/react-query";
 
 moment.locale("ko");
 
@@ -44,10 +41,16 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
   const open = Boolean(morePop);
   const [timer, setTimer] = useState<NodeJS.Timeout>();
 
+  const navigate = useNavigate();
+
   const commentRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     commentRef.current?.focus();
   }, [isCommentEdit]);
+
+  const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
+    staleTime: 60 * 1000
+  }).data;
 
   //mutation - 댓글 수정, 삭제
   const editComment = useMutation(
@@ -55,6 +58,9 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["user"]);
+
+        queryClient.invalidateQueries(["activinfo"]);
+
         if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
         if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
         if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);
@@ -147,15 +153,20 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
         </EditPopup>
       </Popper>
       <CommentInfo>
-        <FlexDiv>
+        <FlexDiv
+          onClick={() => {
+            if (user?.id === commentProps?.User?.id) navigate(`/profile/0`);
+            else navigate(`/userinfo/${commentProps?.User?.id}/cat/0`);
+          }}
+        >
           {commentProps?.User?.profilePic ? (
             <ProfilePic alt="userProfilePic" src={`${BACK_SERVER}/${commentProps?.User?.profilePic}`} />
           ) : (
             <ProfilePic alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}
-          <Link to={`/userinfo/${commentProps?.User?.id}/cat/0`}>
-            <UserNickname>{commentProps?.User?.nickname}</UserNickname>
-          </Link>
+
+          <UserNickname>{commentProps?.User?.nickname}</UserNickname>
+
           <CommentTime>{moment(commentProps?.createdAt).fromNow()}</CommentTime>
         </FlexDiv>
         <FlexDiv>

@@ -705,6 +705,7 @@ const ContentBox = styled.div<{ width: number; padding: number }>`
     color: #aaa7d4;
   }
   @media screen and (max-width: 720px) {
+    transition: all ease-in-out 0.3s;
     width: 92vw;
     padding: 20px ${(props) => props.padding + "px"};
     min-height: calc(100vh - 36px - 104px - 24px);

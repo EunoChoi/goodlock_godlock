@@ -48,6 +48,9 @@ const PostZoom = ({ postProps, setZoom }: props) => {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
 
+      queryClient.invalidateQueries(["todayendliked"]);
+      queryClient.invalidateQueries(["activeinfo"]);
+
       queryClient.invalidateQueries(["noticePosts"]);
       queryClient.invalidateQueries(["infoPosts"]);
       queryClient.invalidateQueries(["communityPosts"]);
@@ -72,6 +75,9 @@ const PostZoom = ({ postProps, setZoom }: props) => {
   const disLike = useMutation(() => Axios.delete(`post/${postProps.id}/like`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
+
+      queryClient.invalidateQueries(["todayendliked"]);
+      queryClient.invalidateQueries(["activeinfo"]);
 
       queryClient.invalidateQueries(["noticePosts"]);
       queryClient.invalidateQueries(["infoPosts"]);
@@ -480,7 +486,7 @@ const CustomCarousel = styled(Carousel)`
 const MobileCancelBtn = styled.button`
   height: 32px;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: #a9aed4;
   color: white;
 `;
 const PostTag = styled.div`
@@ -556,7 +562,7 @@ const CancelBtn = styled.button`
 
   z-index: 1005;
 
-  color: darkgray;
+  color: black;
 
   @media screen and (max-width: 720px) {
     top: calc(100% - 50px);
@@ -799,6 +805,7 @@ const ImageText = styled.div`
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    padding: 20px 0;
     > div:first-child {
       width: 90%;
       display: flex;

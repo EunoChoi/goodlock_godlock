@@ -92,16 +92,67 @@ router.get("/", async (req, res) => {
     console.err(e);
   }
 })
+//load posts - info active
+router.get("/activinfo", async (req, res) => {
+  const { type, pageParam, tempDataNum } = req.query;
 
-//load today update posts length
+  const todayfull = new Date();
+  let year = todayfull.getFullYear(); // 년도
+  let month = todayfull.getMonth();  // 월
+  let date = todayfull.getDate();  // 날짜
+  const today = new Date(year, month, date, 0, 0, 0);
+
+  try {
+    const where = {};
+    const Posts = await Post.findAll({
+      where: [{
+        type: 1,
+        end: { [Op.gte]: today }
+      }],
+      order: [
+        ['createdAt', 'DESC'],
+        [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+      ],
+      include: [
+        {
+          model: User,//게시글 작성자
+          attributes: ['id', 'nickname', 'profilePic', 'email'],
+        },
+        {
+          model: User, //좋아요 누른 사람
+          as: 'Likers', //모델에서 가져온대로 설정
+          attributes: ['id', 'nickname'],
+        },
+        {
+          model: Image, //게시글의 이미지
+        },
+        {
+          model: Comment, //게시글에 달린 댓글
+          include: [
+            {
+              model: User, //댓글의 작성자
+              attributes: ['id', 'nickname', 'profilePic'],
+            }
+          ],
+        }
+      ],
+    });
+
+    return res.status(201).json(Posts.slice(tempDataNum * (pageParam - 1), tempDataNum * pageParam));
+  } catch (e) {
+    console.err(e);
+  }
+})
+
+
+//length - today upload info posts
 router.get("/todayinfo", async (req, res) => {
   const todayfull = new Date();
   let year = todayfull.getFullYear(); // 년도
   let month = todayfull.getMonth();  // 월
   let date = todayfull.getDate();  // 날짜
   const today = new Date(year, month, date, 0, 0, 0);
-  console.log(todayfull);
-  console.log(today);
+
   try {
     const where = {};
     const Posts = await Post.findAll({
@@ -112,9 +163,100 @@ router.get("/todayinfo", async (req, res) => {
       , attributes: ['id'],
     });
 
-    console.log(Posts.length);
-
     return res.status(201).json({ len: Posts.length });
+  } catch (e) {
+    console.err(e);
+  }
+})
+//length - today end info posts
+router.get("/todayendliked", loginRequired, async (req, res) => {
+  const todayfull = new Date();
+  let year = todayfull.getFullYear(); // 년도
+  let month = todayfull.getMonth();  // 월
+  let date = todayfull.getDate();  // 날짜
+  const today = new Date(year, month, date, 0, 0, 0);
+
+  try {
+    const UserId = req.currentUserId;
+
+    //좋아요 누른 포스트 id 배열 ,ex : [1, 2, 3]
+    const likedPosts = await Post.findAll({
+      attributes: ["id"],
+      include: [{
+        model: User,
+        as: "Likers",
+        where: { id: UserId }
+      }]
+    })
+    if (likedPosts.length >= 1) {
+      const Posts = await Post.findAll({
+        attributes: ['id'],
+        where: [{
+          type: 1,
+          id: { [Op.in]: likedPosts.map(v => v.id) },
+          end: { [Op.eq]: today }
+        }]
+      });
+      return res.status(201).json({ len: Posts.length });
+    }
+    else return res.status(201).json({ len: 0 });
+  } catch (e) {
+    console.err(e);
+  }
+})
+
+//load posts - feed post(팔로잉 유저 포스트 모아보기)
+router.get("/feed", loginRequired, async (req, res) => {
+  const { pageParam, tempDataNum } = req.query;
+  try {
+    const UserId = req.currentUserId;
+
+    const followings = await User.findAll({
+      attributes: ["id"],
+      include: [{
+        model: User,
+        as: "Followers",
+        where: {
+          id: UserId
+        }
+      }]
+    })
+
+    const Posts = await Post.findAll({
+      where: [{
+        type: 2,
+        UserId: { [Op.in]: followings.map(v => v.id) }
+      }],
+      order: [
+        ['createdAt', 'DESC'],
+        [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+      ],
+      include: [
+        {
+          model: User,//게시글 작성자
+          attributes: ['id', 'nickname', 'profilePic', 'email'],
+        },
+        {
+          model: User, //좋아요 누른 사람
+          as: 'Likers', //모델에서 가져온대로 설정
+          attributes: ['id', 'nickname'],
+        },
+        {
+          model: Image, //게시글의 이미지
+        },
+        {
+          model: Comment, //게시글에 달린 댓글
+          include: [
+            {
+              model: User, //댓글의 작성자
+              attributes: ['id', 'nickname', 'profilePic'],
+            }
+          ],
+        }
+      ],
+    });
+    // return res.status(201).json(Posts);
+    return res.status(201).json(Posts.slice(tempDataNum * (pageParam - 1), tempDataNum * pageParam));
   } catch (e) {
     console.err(e);
   }
@@ -219,6 +361,8 @@ router.get("/liked", loginRequired, async (req, res) => {
     console.err(e);
   }
 })
+
+
 //load posts - target user post (type)
 router.get("/user", loginRequired, async (req, res) => {
   const { type, id } = req.query;
