@@ -4,7 +4,7 @@ const multer = require('multer');
 const path = require('path'); //path는 노드에서 기능하는 기능
 const fs = require('fs');//파일 시스템 조작 가능한 모듈
 
-const loginRequired = require("../middleware/loginRequired.js");
+const tokenCheck = require("../middleware/tokenCheck.js");
 
 const db = require("../models/index.js");
 const Op = db.Sequelize.Op;
@@ -146,7 +146,7 @@ router.get("/activinfo", async (req, res) => {
 
 
 //length - today upload info posts
-router.get("/todayinfo", async (req, res) => {
+router.get("/todayinfo", tokenCheck, async (req, res) => {
   const todayfull = new Date();
   let year = todayfull.getFullYear(); // 년도
   let month = todayfull.getMonth();  // 월
@@ -169,7 +169,7 @@ router.get("/todayinfo", async (req, res) => {
   }
 })
 //length - today end info posts
-router.get("/todayendliked", loginRequired, async (req, res) => {
+router.get("/todayendliked", tokenCheck, async (req, res) => {
   const todayfull = new Date();
   let year = todayfull.getFullYear(); // 년도
   let month = todayfull.getMonth();  // 월
@@ -206,7 +206,7 @@ router.get("/todayendliked", loginRequired, async (req, res) => {
 })
 
 //load posts - feed post(팔로잉 유저 포스트 모아보기)
-router.get("/feed", loginRequired, async (req, res) => {
+router.get("/feed", tokenCheck, async (req, res) => {
   const { pageParam, tempDataNum } = req.query;
   try {
     const UserId = req.currentUserId;
@@ -264,7 +264,7 @@ router.get("/feed", loginRequired, async (req, res) => {
 
 
 //load posts - my post, type 구분
-router.get("/my", loginRequired, async (req, res) => {
+router.get("/my", tokenCheck, async (req, res) => {
   const { type, pageParam, tempDataNum } = req.query;
   try {
     const UserId = req.currentUserId;
@@ -309,7 +309,7 @@ router.get("/my", loginRequired, async (req, res) => {
   }
 })
 //load posts - my liked
-router.get("/liked", loginRequired, async (req, res) => {
+router.get("/liked", tokenCheck, async (req, res) => {
   const { pageParam, tempDataNum } = req.query;
   try {
     const UserId = req.currentUserId;
@@ -364,7 +364,7 @@ router.get("/liked", loginRequired, async (req, res) => {
 
 
 //load posts - target user post (type)
-router.get("/user", loginRequired, async (req, res) => {
+router.get("/user", tokenCheck, async (req, res) => {
   const { type, id } = req.query;
   const { pageParam, tempDataNum } = req.query;
 
@@ -410,7 +410,7 @@ router.get("/user", loginRequired, async (req, res) => {
   }
 })
 //load posts - target user liked
-router.get("/user/liked", loginRequired, async (req, res) => {
+router.get("/user/liked", tokenCheck, async (req, res) => {
   const { id } = req.query;
   const { pageParam, tempDataNum } = req.query;
 
@@ -466,7 +466,7 @@ router.get("/user/liked", loginRequired, async (req, res) => {
 
 
 //add, edit, delete post
-router.post("/", loginRequired, async (req, res) => {
+router.post("/", tokenCheck, async (req, res) => {
   try {
     //현재 로그인된 유저의 id와 포스트 text로 post 모델의 요소 생성
     console.log(req.body);
@@ -491,7 +491,7 @@ router.post("/", loginRequired, async (req, res) => {
   }
   res.status(200).json("post upload success");
 })
-router.patch("/:postId", loginRequired, async (req, res) => {
+router.patch("/:postId", tokenCheck, async (req, res) => {
   try {
     const postId = req.params.postId;
 
@@ -530,7 +530,7 @@ router.patch("/:postId", loginRequired, async (req, res) => {
   }
   res.status(200).json("post edit success");
 })
-router.delete("/:postId", loginRequired, async (req, res) => {
+router.delete("/:postId", tokenCheck, async (req, res) => {
   try {
     const postId = req.params.postId;
 
@@ -550,7 +550,7 @@ router.delete("/:postId", loginRequired, async (req, res) => {
 
 
 //add, edit, delete comment
-router.post("/:postId/comment", loginRequired, async (req, res) => {
+router.post("/:postId/comment", tokenCheck, async (req, res) => {
   try {
     const postId = req.params.postId;
     const currentPost = await Post.findOne(
@@ -572,7 +572,7 @@ router.post("/:postId/comment", loginRequired, async (req, res) => {
     console.error(e);
   }
 });
-router.delete("/:postId/comment/:commentId", loginRequired, async (req, res) => {
+router.delete("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
   try {
     const postId = req.params.postId;
     const commentId = req.params.commentId;
@@ -590,7 +590,7 @@ router.delete("/:postId/comment/:commentId", loginRequired, async (req, res) => 
   }
   res.status(200).json("comment delete success");
 })
-router.patch("/:postId/comment/:commentId", loginRequired, async (req, res) => {
+router.patch("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
   try {
     const postId = req.params.postId;
     const commentId = req.params.commentId;
@@ -616,7 +616,7 @@ router.patch("/:postId/comment/:commentId", loginRequired, async (req, res) => {
 
 
 //post like, unlike
-router.patch("/:postId/like", loginRequired, async (req, res) => {
+router.patch("/:postId/like", tokenCheck, async (req, res) => {
   try {
     const postId = req.params.postId;
 
@@ -640,7 +640,7 @@ router.patch("/:postId/like", loginRequired, async (req, res) => {
   }
   catch (e) { console.error(e) }
 })
-router.delete("/:postId/like", loginRequired, async (req, res) => {
+router.delete("/:postId/like", tokenCheck, async (req, res) => {
   try {
     const postId = req.params.postId;
 
