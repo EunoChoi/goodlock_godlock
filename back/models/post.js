@@ -7,6 +7,18 @@ module.exports = (sequelize, DataTypes) => {
     content: {
       type: DataTypes.TEXT,
       allowNull: false
+    },
+    link: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    start: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    end: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
     charset: 'utf8',

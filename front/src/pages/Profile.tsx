@@ -76,7 +76,6 @@ const Profile = () => {
   const [toggles, setToggles] = useState<Toggles>({ image: false, nickname: false, usertext: false });
   const params = useParams();
   const categoryNum = params.cat ? parseInt(params.cat) : -1;
-  const [isZoom, setZoom] = useState<boolean>(false);
 
   useEffect(() => {
     window.scrollTo({
@@ -506,7 +505,7 @@ const Profile = () => {
         )}
         {categoryNum === 3 && (
           <ContentWrapper>
-            <Posts id="profileScrollWrapper">
+            <Posts>
               {myInfoPosts?.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
@@ -515,7 +514,6 @@ const Profile = () => {
               )}
               {myInfoPosts?.data?.pages[0].length !== 0 && (
                 <InfiniteScroll
-                  // scrollableTarget="profileScrollWrapper"
                   hasMore={myInfoPosts.hasNextPage || false}
                   loader={
                     <LoadingIcon>
@@ -535,7 +533,7 @@ const Profile = () => {
         )}
         {categoryNum === 4 && (
           <ContentWrapper>
-            <Posts id="profileScrollWrapper">
+            <Posts>
               {myCommPosts?.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
@@ -544,10 +542,12 @@ const Profile = () => {
               )}
               {myCommPosts?.data?.pages[0].length !== 0 && (
                 <InfiniteScroll
-                  // scrollableTarget="profileScrollWrapper"
                   hasMore={myCommPosts.hasNextPage || false}
-                  // loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
-                  loader="로딩"
+                  loader={
+                    <LoadingIcon>
+                      <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    </LoadingIcon>
+                  }
                   next={() => myCommPosts.fetchNextPage()}
                   dataLength={myCommPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
@@ -566,7 +566,7 @@ const Profile = () => {
 
 export default Profile;
 
-const Pill = styled.div<{ catNum: number }>`
+const Pill = styled.button<{ catNum: number }>`
   transition: all ease-in-out 0.5s;
   height: 32px;
   margin-right: 12px;
@@ -677,7 +677,6 @@ const ContentWrapper = styled.div`
   align-items: center;
 
   width: 100%;
-  height: auto;
   min-height: calc(100vh - 104px);
 
   /* padding-top: 24px; */
@@ -724,7 +723,7 @@ const LoadingIcon = styled.div`
 
 const EmptyNoti = styled.div`
   width: 100%;
-  height: 100%;
+  height: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;

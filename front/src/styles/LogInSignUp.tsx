@@ -44,13 +44,12 @@ const LogInSignUp = {
     @media screen and (max-width: 720px) {
       width: 100vw;
       height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
+      overflow-y: scroll;
+
       padding: 60px 50px;
 
-      position: static;
-      /* position: absolute;
-      transform: translate(-50%, -50%);
-      top: 50%;
-      left: 50%; */
+      /* position: static; */
     }
   `,
   Wrapper: styled.div`
@@ -63,6 +62,9 @@ const LogInSignUp = {
     align-items: center;
 
     animation: ${Animation.smoothAppear} 0.6s;
+    @media screen and (max-width: 720px){
+      justify-content: start;
+    }
   `,
   Form: styled.form`
     display: flex;
@@ -96,7 +98,6 @@ const LogInSignUp = {
     background-color: ${(props) => props.bgColor || "rgb(190, 190, 231)"};
     color: white;
     margin-top: 28px;
-
     font-size: 16px;
     flex-shrink: 0;
     &:disabled{
@@ -104,6 +105,20 @@ const LogInSignUp = {
     }
   `,
   Input: styled.input`
+    width: 100%;
+    height: 50px;
+    border: none;
+    /* margin-top: 10px; */
+    border: 1px solid #cacaca;
+    border-radius: 6px;
+    padding: 0 15px;
+
+    font-size: 16px;
+
+    outline: none;
+  `,
+  Password: styled.input`
+    -webkit-text-security: disc;
     width: 100%;
     height: 50px;
     border: none;

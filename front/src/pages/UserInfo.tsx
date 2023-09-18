@@ -436,7 +436,7 @@ const ListTitle = styled.div`
   }
 `;
 
-const Pill = styled.div<{ catNum: number }>`
+const Pill = styled.button<{ catNum: number }>`
   height: 32px;
   margin-right: 12px;
   padding: 6px 20px;
@@ -586,6 +586,7 @@ const ContentWrapper = styled.div`
   width: 100%;
   height: auto;
   min-height: calc(100vh - 104px);
+  /* min-height: calc(100vh - 124px); */
 
   /* padding-top: 24px; */
   padding-bottom: 24px;
@@ -633,7 +634,7 @@ const LoadingIcon = styled.div`
 
 const EmptyNoti = styled.div`
   width: 100%;
-  height: 100%;
+  height: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;

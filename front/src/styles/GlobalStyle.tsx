@@ -39,6 +39,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   button{
+    flex-shrink: 0;
     background: none;
     border: none;
     padding: 0;

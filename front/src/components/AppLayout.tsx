@@ -356,9 +356,6 @@ const Children = styled.div`
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  * {
-    flex-shrink: 0;
-  }
 `;
 
 const MobileWrapper = styled.div`

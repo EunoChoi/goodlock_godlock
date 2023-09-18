@@ -44,6 +44,7 @@ function App() {
   };
   useEffect(() => {
     window.addEventListener("resize", () => updateMobileViewport());
+    updateMobileViewport();
     return () => {
       window.removeEventListener("resize", () => updateMobileViewport());
     };

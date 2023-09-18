@@ -17,6 +17,9 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import InsertLinkIcon from "@mui/icons-material/InsertLink";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface Image {
   src: string;
@@ -121,29 +124,56 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 <span>{postProps.User.nickname}</span>
                 <span>{postProps.User.email}</span>
               </div>
-              <div>
-                <Like>
-                  <button
-                    onClick={() => {
-                      if (!isLiked) {
-                        like.mutate();
-                      } else {
-                        disLike.mutate();
-                      }
-                    }}
-                  >
-                    {postProps.type === 1 &&
-                      (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
-                    {postProps.type === 1 ||
-                      (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
-                    <span>{postProps?.Likers?.length}</span>
-                  </button>
-                </Like>
-                <span>{moment(postProps?.createdAt).fromNow()}</span>
-              </div>
+              <span>{moment(postProps?.createdAt).fromNow()}</span>
             </div>
             <div>
               <Content>{postProps.content}</Content>
+              {postProps.type === 1 && (
+                <SubContentWrapper onClick={() => setZoom(true)}>
+                  <PostStartEnd>
+                    <span>
+                      <CalendarMonthIcon />
+                    </span>
+                    <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
+                    <span>~</span>
+                    <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
+                  </PostStartEnd>
+                  {postProps?.link && (
+                    <PostLink>
+                      <InsertLinkIcon />
+                      <span>
+                        <a target="_blank" href={`https://${postProps?.link}`} rel="noreferrer">
+                          https://{postProps?.link}
+                        </a>
+                      </span>
+                    </PostLink>
+                  )}
+                  {true && (
+                    <PostTag>
+                      {["태그1", "태그2", "태그3", "태그4", "태그5", "태그6"].map((v, i) => (
+                        <button key={"태그" + v + i}>{v}</button>
+                      ))}
+                    </PostTag>
+                  )}
+                </SubContentWrapper>
+              )}
+              <Like>
+                <button
+                  onClick={() => {
+                    if (!isLiked) {
+                      like.mutate();
+                    } else {
+                      disLike.mutate();
+                    }
+                  }}
+                >
+                  {postProps.type === 1 &&
+                    (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
+                  {postProps.type === 1 ||
+                    (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
+                  <span>{postProps?.Likers?.length}</span>
+                </button>
+              </Like>
             </div>
             <CancelBtn onClick={() => setZoom(false)}>
               <CancelIcon fontSize="large" />
@@ -193,6 +223,35 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 <span>{moment(postProps?.createdAt).fromNow()}</span>
               </div>
               <Content>{postProps.content}</Content>
+              {postProps.type === 1 && (
+                <SubContentWrapper onClick={() => setZoom(true)}>
+                  <PostStartEnd>
+                    <span>
+                      <CalendarMonthIcon />
+                    </span>
+                    <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
+                    <span>~</span>
+                    <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
+                  </PostStartEnd>
+                  {postProps?.link && (
+                    <PostLink>
+                      <InsertLinkIcon />
+                      <span>
+                        <a target="_blank" href={`https://${postProps?.link}`} rel="noreferrer">
+                          https://{postProps?.link}
+                        </a>
+                      </span>
+                    </PostLink>
+                  )}
+                  {true && (
+                    <PostTag>
+                      {["태그1", "태그2", "태그3", "태그4", "태그5", "태그6"].map((v, i) => (
+                        <button key={"태그" + v + i}>{v}</button>
+                      ))}
+                    </PostTag>
+                  )}
+                </SubContentWrapper>
+              )}
               <Like>
                 <button
                   onClick={() => {
@@ -221,9 +280,6 @@ const PostZoom = ({ postProps, setZoom }: props) => {
         //mobile
         isMobile && (
           <Mobile onClick={(e) => e.stopPropagation()}>
-            <CancelBtn onClick={() => setZoom(false)}>
-              <CancelIcon fontSize="large" />
-            </CancelBtn>
             {/* only text */}
             {postProps.Images?.length === 0 && (
               <div>
@@ -253,6 +309,35 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 </MobilePostInfo>
                 <TextBox key="텍스트페이지">
                   <div>{postProps.content}</div>
+                  {postProps.type === 1 && (
+                    <SubContentWrapper onClick={() => setZoom(true)}>
+                      <PostStartEnd>
+                        <span>
+                          <CalendarMonthIcon />
+                        </span>
+                        <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
+                        <span>~</span>
+                        <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
+                      </PostStartEnd>
+                      {postProps?.link && (
+                        <PostLink>
+                          <InsertLinkIcon />
+                          <span>
+                            <a target="_blank" href={`https://${postProps?.link}`} rel="noreferrer">
+                              https://{postProps?.link}
+                            </a>
+                          </span>
+                        </PostLink>
+                      )}
+                      {true && (
+                        <PostTag>
+                          {["태그1", "태그2", "태그3", "태그4", "태그5", "태그6"].map((v, i) => (
+                            <button key={"태그" + v + i}>{v}</button>
+                          ))}
+                        </PostTag>
+                      )}
+                    </SubContentWrapper>
+                  )}
                   <Like>
                     <button
                       onClick={() => {
@@ -271,6 +356,9 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                     </button>
                   </Like>
                 </TextBox>
+                <MobileCancelBtn onClick={() => setZoom(false)}>
+                  <CloseIcon />
+                </MobileCancelBtn>
               </div>
             )}
             {/* image + text */}
@@ -300,26 +388,15 @@ const PostZoom = ({ postProps, setZoom }: props) => {
 
                   <span>{moment(postProps?.createdAt).fromNow()}</span>
                 </MobilePostInfo>
-                <Carousel
+                <CustomCarousel
                   swipe={false}
-                  navButtonsAlwaysVisible={false}
-                  fullHeightHover={false}
+                  navButtonsAlwaysVisible={true}
+                  fullHeightHover={true}
                   indicators={true}
                   autoPlay={false}
                   navButtonsProps={{
                     style: {
                       backgroundColor: "rgba(0,0,0,0.2)"
-                    }
-                  }}
-                  indicatorIconButtonProps={{
-                    style: {
-                      top: "-50px"
-                      // color: "white"
-                    }
-                  }}
-                  activeIndicatorIconButtonProps={{
-                    style: {
-                      // color: "#a4bddf"
                     }
                   }}
                   animation="fade"
@@ -329,6 +406,35 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       return (
                         <TextBox key="텍스트페이지">
                           <div>{postProps.content}</div>
+                          {postProps.type === 1 && (
+                            <SubContentWrapper onClick={() => setZoom(true)}>
+                              <PostStartEnd>
+                                <span>
+                                  <CalendarMonthIcon />
+                                </span>
+                                <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
+                                <span>~</span>
+                                <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
+                              </PostStartEnd>
+                              {postProps?.link && (
+                                <PostLink>
+                                  <InsertLinkIcon />
+                                  <span>
+                                    <a target="_blank" href={`https://${postProps?.link}`} rel="noreferrer">
+                                      https://{postProps?.link}
+                                    </a>
+                                  </span>
+                                </PostLink>
+                              )}
+                              {true && (
+                                <PostTag>
+                                  {["태그1", "태그2", "태그3", "태그4", "태그5", "태그6"].map((v, i) => (
+                                    <button key={"태그" + v + i}>{v}</button>
+                                  ))}
+                                </PostTag>
+                              )}
+                            </SubContentWrapper>
+                          )}
                           <Like>
                             <button
                               onClick={() => {
@@ -354,7 +460,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       );
                     }
                   })}
-                </Carousel>
+                </CustomCarousel>
+                <MobileCancelBtn onClick={() => setZoom(false)}>
+                  <CloseIcon />
+                </MobileCancelBtn>
               </div>
             )}
           </Mobile>
@@ -365,6 +474,80 @@ const PostZoom = ({ postProps, setZoom }: props) => {
 };
 
 export default PostZoom;
+const CustomCarousel = styled(Carousel)`
+  height: calc(var(--vh, 1vh) * 90 - 64px - 32px);
+`;
+const MobileCancelBtn = styled.button`
+  height: 32px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+`;
+const PostTag = styled.div`
+  width: 100%;
+  padding: 2px;
+  margin-top: 12px;
+  overflow-x: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+
+  button {
+    flex-shrink: 0;
+    font-size: 16px;
+
+    padding: 4px 12px;
+    background-color: #f3e0f1;
+    border-radius: 50px;
+    margin-right: 8px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+  }
+`;
+const SubContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+
+  width: 90%;
+  /* padding-left: 32px;
+  padding-right: 32px; */
+
+  @media screen and (max-width: 720px) {
+    width: 100%;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  font-size: 18px;
+
+  margin: 10px 20px;
+  > div {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+`;
+const PostStartEnd = styled.div`
+  span {
+    margin-right: 4px;
+  }
+  span:first-child {
+    color: #be303e;
+  }
+`;
+const PostLink = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  span {
+    color: #5974af;
+    text-decoration-line: underline;
+    margin-left: 4px;
+  }
+`;
 
 const CancelBtn = styled.button`
   position: absolute;
@@ -377,14 +560,21 @@ const CancelBtn = styled.button`
 
   @media screen and (max-width: 720px) {
     top: calc(100% - 50px);
-    left: 10%;
-    transform: translateX(-50%);
+    /* left: 10%; */
+    /* transform: translateX(-50%); */
   }
 `;
 const Content = styled.div`
   display: flex;
+  justify-content: start;
   align-items: start;
+
+  height: calc(100% - 160px);
   height: 100%;
+  width: 90%;
+  padding-top: 24px;
+
+  /* padding: 16px; */
 
   font-size: 1.2em;
   overflow-y: scroll;
@@ -393,8 +583,11 @@ const Content = styled.div`
   line-height: 1.3em;
 `;
 const Like = styled.div`
-  /* margin-top: 12px;
-  margin-bottom: 24px; */
+  height: 50px;
+  /* width: 100%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   span {
     font-size: 1.5em;
@@ -405,10 +598,8 @@ const Like = styled.div`
     align-items: center;
   }
   @media screen and (max-width: 720px) {
-    height: 100px;
-    button {
-      margin-top: 12px;
-    }
+    align-items: center;
+    height: 60px;
   }
 `;
 
@@ -451,8 +642,7 @@ const MobilePostInfo = styled.div`
 `;
 const TextBox = styled.div`
   width: 100%;
-  height: calc(80vh - 50px);
-  height: calc(var(--vh, 1vh) * 90 - 64px);
+  height: calc(var(--vh, 1vh) * 90 - 64px - 32px);
 
   display: flex;
   flex-direction: column;
@@ -482,7 +672,7 @@ const ImageBox = styled.div`
   @media screen and (max-width: 720px) {
     /* background-color: black; */
     height: calc(80vh - 50px);
-    height: calc(var(--vh, 1vh) * 90 - 64px);
+    height: calc(var(--vh, 1vh) * 90 - 64px - 32px);
   }
 `;
 const Image = styled.img`
@@ -542,7 +732,7 @@ const OnlyText = styled.div`
     padding: 36px;
     padding-top: 15%;
 
-    background-color: rgba(0, 0, 0, 0.025);
+    background-color: rgba(0, 0, 0, 0.04);
 
     display: flex;
     flex-direction: column;
@@ -564,18 +754,20 @@ const OnlyText = styled.div`
         font-size: 32px;
       }
     }
-    > div:nth-child(3) {
+    > span:nth-child(3) {
       width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      text-align: center;
       font-size: 1.1em;
     }
   }
   > div:nth-child(2) {
     width: 60%;
-    height: 100%;
-    padding: 48px;
+    height: 90%;
+    /* padding: 48px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -627,18 +819,6 @@ const ImageText = styled.div`
         font-size: 1.1em;
         color: rgba(0, 0, 0, 0.5);
       }
-    }
-    > div:nth-child(2) {
-      height: calc(100% - 160px);
-      width: 100%;
-      padding: 32px;
-    }
-    > div:nth-child(3) {
-      height: 80px;
-      width: 90%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
   }
 `;

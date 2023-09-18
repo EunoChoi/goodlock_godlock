@@ -92,6 +92,35 @@ router.get("/", async (req, res) => {
     console.err(e);
   }
 })
+
+//load today update posts length
+router.get("/todayinfo", async (req, res) => {
+  const todayfull = new Date();
+  let year = todayfull.getFullYear(); // 년도
+  let month = todayfull.getMonth();  // 월
+  let date = todayfull.getDate();  // 날짜
+  const today = new Date(year, month, date, 0, 0, 0);
+  console.log(todayfull);
+  console.log(today);
+  try {
+    const where = {};
+    const Posts = await Post.findAll({
+      where: [{
+        type: 1,
+        createdAt: { [Op.gte]: today }
+      }]
+      , attributes: ['id'],
+    });
+
+    console.log(Posts.length);
+
+    return res.status(201).json({ len: Posts.length });
+  } catch (e) {
+    console.err(e);
+  }
+})
+
+
 //load posts - my post, type 구분
 router.get("/my", loginRequired, async (req, res) => {
   const { type, pageParam, tempDataNum } = req.query;
@@ -296,10 +325,14 @@ router.get("/user/liked", loginRequired, async (req, res) => {
 router.post("/", loginRequired, async (req, res) => {
   try {
     //현재 로그인된 유저의 id와 포스트 text로 post 모델의 요소 생성
+    console.log(req.body);
     const post = await Post.create({
       type: req.body.type,
       content: req.body.content,
       UserId: req.currentUserId,
+      start: req.body.start,
+      end: req.body.end,
+      link: req.body.link
     });
 
     //image 모델 요소 생성 후 Post 모델과 연결
@@ -327,6 +360,9 @@ router.patch("/:postId", loginRequired, async (req, res) => {
     //현재 로그인된 유저의 id와 포스트 text로 post 모델의 요소 생성
     await Post.update({
       content: req.body.content,
+      start: req.body.start,
+      end: req.body.end,
+      link: req.body.link
     }, {
       where: { id: postId, UserId: req.currentUserId }
     }

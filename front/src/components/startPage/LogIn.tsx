@@ -81,8 +81,9 @@ const LogIn = ({ setToggle }: Props) => {
   return (
     <LogInSignUp.Wrapper>
       <LogInSignUp.Title>로그인</LogInSignUp.Title>
-      <LogInSignUp.Form onSubmit={handleSubmit(onSubmit)}>
+      <LogInSignUp.Form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <LogInSignUp.Input
+          autoComplete="new-password"
           placeholder="이메일"
           type="email"
           {...register("email", {
@@ -95,6 +96,7 @@ const LogIn = ({ setToggle }: Props) => {
         <LogInSignUp.WarningText>{errors.email?.message}</LogInSignUp.WarningText>
         <LogInSignUp.Input
           placeholder="비밀번호"
+          autoComplete="new-password"
           type="password"
           {...register("password", {
             required: {

@@ -5,6 +5,8 @@ import "moment/locale/ko";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
+import Axios from "../../apis/Axios";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 //components
 import Comment from "./Comment";
@@ -24,9 +26,8 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import MessageIcon from "@mui/icons-material/Message";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-
-import Axios from "../../apis/Axios";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import InsertLinkIcon from "@mui/icons-material/InsertLink";
 
 interface Image {
   src: string;
@@ -128,6 +129,8 @@ const Post = ({ postProps }: any) => {
       queryClient.invalidateQueries(["likedPosts"]);
       queryClient.invalidateQueries(["myCommPosts"]);
       queryClient.invalidateQueries(["myInfoPosts"]);
+
+      queryClient.invalidateQueries(["todayinfo"]);
       toast.success("게시글 삭제 완료");
     },
     onError: (err: CustomError) => {
@@ -148,14 +151,6 @@ const Post = ({ postProps }: any) => {
   useEffect(() => {
     commentScroll.current?.scrollTo({ top: 0, behavior: "smooth" });
   }, [postProps?.Comments.length]);
-
-  // const postDay = new Date(postProps.createdAt);
-  // const today = new Date();
-  // console.log(postDay);
-  // console.log(today);
-  // if (postProps.createdAt > today) {
-  //   console.log("post > today");
-  // }
 
   return (
     <PostWrapper onClick={() => setMorePop(null)}>
@@ -251,6 +246,35 @@ const Post = ({ postProps }: any) => {
       )}
 
       <TextWrapper onClick={() => setZoom(true)}>{postProps?.content}</TextWrapper>
+      {postProps.type === 1 && (
+        <SubContentWrapper>
+          <PostStartEnd>
+            <span>
+              <CalendarMonthIcon />
+            </span>
+            <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
+            <span>~</span>
+            <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
+          </PostStartEnd>
+          {postProps?.link && (
+            <PostLink>
+              <InsertLinkIcon />
+              <span>
+                <a target="_blank" href={`https://${postProps?.link}`} rel="noreferrer">
+                  https://{postProps?.link}
+                </a>
+              </span>
+            </PostLink>
+          )}
+          {true && (
+            <PostTag>
+              {["태그1", "태그2", "태그3", "태그4", "태그5", "태그6"].map((v, i) => (
+                <button key={"태그" + v + i}>{v}</button>
+              ))}
+            </PostTag>
+          )}
+        </SubContentWrapper>
+      )}
 
       {/* 토글 버튼(좋아요, 댓글창, 수정, 삭제) */}
       <ToggleWrapper>
@@ -381,7 +405,60 @@ const Post = ({ postProps }: any) => {
 };
 
 export default Post;
+const PostTag = styled.div`
+  padding: 2px;
+  margin-top: 12px;
+  overflow-x: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 
+  button {
+    flex-shrink: 0;
+    font-size: 16px;
+
+    padding: 4px 12px;
+    background-color: #f3e0f1;
+    border-radius: 50px;
+    margin-right: 8px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+  }
+`;
+const SubContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+
+  font-size: 18px;
+
+  margin: 10px 20px;
+  > div {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+`;
+const PostStartEnd = styled.div`
+  span {
+    margin-right: 4px;
+  }
+  span:first-child {
+    color: #be303e;
+  }
+`;
+const PostLink = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  span {
+    color: #5974af;
+    text-decoration-line: underline;
+    margin-left: 4px;
+  }
+`;
 const More = styled.div`
   margin: 16px;
   margin-top: 0px;
@@ -483,6 +560,8 @@ const TextWrapper = styled.div`
   //줄바꿈 표시
   white-space: pre-wrap;
   line-height: 1.3em;
+
+  font-size: 20px;
 
   margin: 10px 20px;
 

@@ -6,6 +6,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Axios from "../apis/Axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import Animation from "../styles/Animation";
 
@@ -18,7 +19,7 @@ import PostZoom from "../components/PostZoom";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import SearchIcon from "@mui/icons-material/Search";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import { toast } from "react-toastify";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 
 interface userProps {
   email: string;
@@ -52,6 +53,9 @@ const Main = () => {
   const navigate = useNavigate();
 
   const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
+    staleTime: 60 * 1000
+  }).data;
+  const todayUpInfo = useQuery(["todayinfo"], () => Axios.get("post/todayinfo").then((v) => v.data), {
     staleTime: 60 * 1000
   }).data;
 
@@ -126,8 +130,8 @@ const Main = () => {
             <span>
               <CalendarMonthIcon /> today
             </span>
-            <span>신규 모집 공고 - </span>
-            <span>마감 예정 관심 공고 - </span>
+            <span>신규 모집 공고 - {todayUpInfo?.len}</span>
+            <span>마감 예정 관심 공고 </span>
           </WelcomeWrapper>
           <Pill.Wrapper>
             <Pill.Sub
@@ -160,6 +164,13 @@ const Main = () => {
 
           {toggles.sub === 0 && ( //공지사항
             <HomeEl>
+              {noticePosts.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
+
               <InfiniteScroll
                 hasMore={noticePosts.hasNextPage || false}
                 loader={
@@ -178,6 +189,12 @@ const Main = () => {
           )}
           {toggles.sub === 1 && ( //관심 공고
             <HomeEl>
+              {likedPosts.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
               <InfiniteScroll
                 hasMore={likedPosts.hasNextPage || false}
                 loader={
@@ -229,7 +246,7 @@ const Main = () => {
                 });
               }}
             >
-              마감 제외
+              모집 중
             </Pill.Sub>
             <Pill.Search
               toggle={toggles.sub === 2}
@@ -245,12 +262,18 @@ const Main = () => {
                 }}
               >
                 <SearchIcon />
-                <input />
+                <input placeholder="태그 검색" />
               </form>
             </Pill.Search>
           </Pill.Wrapper>
           {toggles.sub === 0 && (
             <HomeEl>
+              {infoPosts.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
               <InfiniteScroll
                 // scrollableTarget="scrollWrapper"
                 hasMore={infoPosts.hasNextPage || false}
@@ -268,8 +291,56 @@ const Main = () => {
               </InfiniteScroll>
             </HomeEl>
           )}
-          {toggles.sub === 1 && <HomeEl></HomeEl>}
-          {toggles.sub === 2 && <HomeEl></HomeEl>}
+          {toggles.sub === 1 && (
+            <HomeEl>
+              {infoPosts.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={infoPosts.hasNextPage || false}
+                loader={
+                  <LoadingIconWrapper>
+                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                  </LoadingIconWrapper>
+                }
+                next={() => infoPosts.fetchNextPage()}
+                dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {infoPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </HomeEl>
+          )}
+          {toggles.sub === 2 && (
+            <HomeEl>
+              {infoPosts.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={infoPosts.hasNextPage || false}
+                loader={
+                  <LoadingIconWrapper>
+                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                  </LoadingIconWrapper>
+                }
+                next={() => infoPosts.fetchNextPage()}
+                dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {infoPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </HomeEl>
+          )}
         </MainEl>
       )}
       {toggles.main === 2 && (
@@ -320,12 +391,18 @@ const Main = () => {
                 }}
               >
                 <SearchIcon />
-                <input />
+                <input placeholder="태그 검색" />
               </form>
             </Pill.Search>
           </Pill.Wrapper>
           {toggles.sub === 0 && (
             <HomeEl>
+              {communityPosts.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
               <InfiniteScroll
                 // scrollableTarget="scrollWrapper"
                 hasMore={communityPosts.hasNextPage || false}
@@ -343,8 +420,56 @@ const Main = () => {
               </InfiniteScroll>
             </HomeEl>
           )}
-          {toggles.sub === 1 && <HomeEl></HomeEl>}
-          {toggles.sub === 2 && <HomeEl></HomeEl>}
+          {toggles.sub === 1 && (
+            <HomeEl>
+              {communityPosts.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={communityPosts.hasNextPage || false}
+                loader={
+                  <LoadingIconWrapper>
+                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                  </LoadingIconWrapper>
+                }
+                next={() => communityPosts.fetchNextPage()}
+                dataLength={communityPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {communityPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </HomeEl>
+          )}
+          {toggles.sub === 2 && (
+            <HomeEl>
+              {communityPosts.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={communityPosts.hasNextPage || false}
+                loader={
+                  <LoadingIconWrapper>
+                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                  </LoadingIconWrapper>
+                }
+                next={() => communityPosts.fetchNextPage()}
+                dataLength={communityPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {communityPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </HomeEl>
+          )}
         </MainEl>
       )}
     </AppLayout>
@@ -352,6 +477,23 @@ const Main = () => {
 };
 
 export default Main;
+
+const EmptyNoti = styled.div`
+  width: 100%;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 72px;
+  color: rgba(0, 0, 0, 0.5);
+  /* font-weight: 600; */
+  span {
+    margin-top: 20px;
+    font-size: 24px;
+  }
+`;
 const LoadingIconWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -363,6 +505,9 @@ const LoadingIconWrapper = styled.div`
 const HomeEl = styled.div`
   animation: ${Animation.smoothAppear} 0.7s;
   min-height: calc(100vh - 80px);
+  @media screen and (max-width: 720px) {
+    min-height: calc(100vh - 116px);
+  }
 `;
 const MainEl = styled.div`
   display: flex;
@@ -453,6 +598,11 @@ const Pill = {
       opacity: ${({ toggle }) => toggle && "1"};
       padding: ${({ toggle }) => toggle && "0 10px"};
       flex-grow: ${({ toggle }) => toggle && "1"};
+
+      &::placeholder {
+        color: rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
     }
     @media screen and (max-width: 720px) {
       width: ${(props) => props.toggle && "50%"};
