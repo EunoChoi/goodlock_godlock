@@ -67,13 +67,15 @@ const Post = ({ postProps }: any) => {
   const like = useMutation(() => Axios.patch(`post/${postProps.id}/like`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-
       queryClient.invalidateQueries(["todayendliked"]);
-      queryClient.invalidateQueries(["activinfo"]);
 
       queryClient.invalidateQueries(["noticePosts"]);
+
       queryClient.invalidateQueries(["infoPosts"]);
+      queryClient.invalidateQueries(["activinfo"]);
+
       queryClient.invalidateQueries(["communityPosts"]);
+      queryClient.invalidateQueries(["feed"]);
 
       queryClient.invalidateQueries(["userLikedPosts"]);
       queryClient.invalidateQueries(["userInfoPosts"]);
@@ -95,13 +97,15 @@ const Post = ({ postProps }: any) => {
   const disLike = useMutation(() => Axios.delete(`post/${postProps.id}/like`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-
       queryClient.invalidateQueries(["todayendliked"]);
-      queryClient.invalidateQueries(["activinfo"]);
 
       queryClient.invalidateQueries(["noticePosts"]);
+
       queryClient.invalidateQueries(["infoPosts"]);
+      queryClient.invalidateQueries(["activinfo"]);
+
       queryClient.invalidateQueries(["communityPosts"]);
+      queryClient.invalidateQueries(["feed"]);
 
       queryClient.invalidateQueries(["userLikedPosts"]);
       queryClient.invalidateQueries(["userInfoPosts"]);
@@ -124,13 +128,16 @@ const Post = ({ postProps }: any) => {
   const deletePost = useMutation(() => Axios.delete(`post/${postProps.id}`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-
       queryClient.invalidateQueries(["todayendliked"]);
+
+      queryClient.invalidateQueries(["noticePosts"]);
+
+      queryClient.invalidateQueries(["infoPosts"]);
       queryClient.invalidateQueries(["activinfo"]);
 
-      if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
-      if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
-      if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);
+      queryClient.invalidateQueries(["communityPosts"]);
+      queryClient.invalidateQueries(["feed"]);
+
       if (window.location.pathname.split("/")[1] === "userinfo") {
         queryClient.invalidateQueries(["userLikedPosts"]);
         queryClient.invalidateQueries(["userInfoPosts"]);

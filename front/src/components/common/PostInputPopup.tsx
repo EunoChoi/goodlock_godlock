@@ -65,22 +65,24 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["user"]);
+        queryClient.invalidateQueries(["todayendliked"]);
+        queryClient.invalidateQueries(["todayinfo"]);
 
+        queryClient.invalidateQueries(["noticePosts"]);
+
+        queryClient.invalidateQueries(["infoPosts"]);
         queryClient.invalidateQueries(["activinfo"]);
 
-        if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
-        if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
-        if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);
-        if (window.location.pathname.split("/")[1] === "userinfo") {
-          queryClient.invalidateQueries(["userLikedPosts"]);
-          queryClient.invalidateQueries(["userInfoPosts"]);
-          queryClient.invalidateQueries(["userCommPosts"]);
-        }
+        queryClient.invalidateQueries(["communityPosts"]);
+        queryClient.invalidateQueries(["feed"]);
+
+        queryClient.invalidateQueries(["userLikedPosts"]);
+        queryClient.invalidateQueries(["userInfoPosts"]);
+        queryClient.invalidateQueries(["userCommPosts"]);
+
         queryClient.invalidateQueries(["likedPosts"]);
         queryClient.invalidateQueries(["myCommPosts"]);
         queryClient.invalidateQueries(["myInfoPosts"]);
-
-        queryClient.invalidateQueries(["todayinfo"]);
 
         setIsPostInputOpen(false);
         toast.success("게시글 등록이 완료되었습니다.");
