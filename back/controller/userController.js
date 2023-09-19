@@ -34,6 +34,7 @@ const userController = {
       await User.create(
         {
           level: 1,
+          usertext: "상태메세지를 입력하세요.",
           email,
           nickname,
           password: hashedPassword //암호화된 비밀번호로 회원가입
