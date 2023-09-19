@@ -256,6 +256,9 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
                   const endM = end.getMonth();
                   const endD = end.getDate();
 
+                  console.log(end);
+                  console.log(new Date(endY, endM, endD, 0, 0, 0));
+
                   addPost.mutate({
                     content,
                     images,
