@@ -96,7 +96,7 @@ const LogIn = ({ setToggle }: Props) => {
         <LogInSignUp.WarningText>{errors.email?.message}</LogInSignUp.WarningText>
         <LogInSignUp.Input
           placeholder="비밀번호"
-          autoComplete="new-password"
+          autoComplete="current-password"
           type="password"
           {...register("password", {
             required: {

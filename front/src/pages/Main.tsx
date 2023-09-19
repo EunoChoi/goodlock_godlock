@@ -155,7 +155,7 @@ const Main = () => {
               <CalendarMonthIcon /> today
             </span>
             <span>신규 등록된 모집공고 {todayUploadInfoPost?.len}개</span>
-            <span>자정 마감 예정 관심공고 {todayEndLikedPost?.len}개</span>
+            <span>금일 마감 관심공고 {todayEndLikedPost?.len}개</span>
           </WelcomeWrapper>
           <Pill.Wrapper>
             <Pill.Sub

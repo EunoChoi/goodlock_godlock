@@ -347,7 +347,7 @@ const PostOptionWrapper = styled.div`
     }
 
     @media screen and (max-width: 720px) {
-      justify-content: center;
+      /* justify-content: center; */
     }
   }
 `;
