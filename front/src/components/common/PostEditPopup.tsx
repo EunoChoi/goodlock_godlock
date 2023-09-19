@@ -269,6 +269,9 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
                   const endM = end.getMonth();
                   const endD = end.getDate();
 
+                  console.log(end);
+                  console.log(new Date(endY, endM, endD, 0, 0, 0));
+
                   editPost.mutate({
                     content,
                     images,
