@@ -596,7 +596,7 @@ const TextWrapper = styled.div`
   text-overflow: ellipsis;
 
   display: -webkit-box;
-  -webkit-line-clamp: 6; /* 원하는 줄 수 표시 */
+  -webkit-line-clamp: 4; /* 원하는 줄 수 표시 */
   -webkit-box-orient: vertical;
   overflow: hidden;
 

@@ -161,7 +161,7 @@ const UserInfo = () => {
 
           <span>{targetUser?.nickname}</span>
           <span>{targetUser?.email}</span>
-          <span>{targetUser?.usertext}</span>
+          <span>{targetUser?.usertext ? targetUser?.usertext : "-"}</span>
           <span>
             팔로잉 {targetUser?.Followings?.length} • 팔로워 {targetUser?.Followers?.length} • 소통글{" "}
             {targetUser?.Posts?.filter((v: any) => v.type === 2).length}
