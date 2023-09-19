@@ -20,7 +20,7 @@ interface Props {
 const SignUp = ({ setToggle }: Props) => {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isDirty, isValid },
     watch,
     handleSubmit,
     getValues
@@ -60,7 +60,8 @@ const SignUp = ({ setToggle }: Props) => {
       <LogInSignUp.Form onSubmit={handleSubmit(onSubmit)}>
         <LogInSignUp.Input
           placeholder="이메일"
-          type="text"
+          autoComplete="new-password"
+          type="email"
           {...register("email", {
             required: {
               value: true,
@@ -79,6 +80,7 @@ const SignUp = ({ setToggle }: Props) => {
         <LogInSignUp.WarningText>{errors.email?.message}</LogInSignUp.WarningText>
         <LogInSignUp.Input
           placeholder="닉네임"
+          autoComplete="new-password"
           type="text"
           {...register("nickname", {
             required: {
@@ -96,9 +98,9 @@ const SignUp = ({ setToggle }: Props) => {
           })}
         ></LogInSignUp.Input>
         <LogInSignUp.WarningText>{errors.nickname?.message}</LogInSignUp.WarningText>
-        <LogInSignUp.Input
+        <LogInSignUp.Password
           placeholder="비밀번호"
-          type="password"
+          type="text"
           {...register("password", {
             required: {
               value: true,
@@ -117,11 +119,11 @@ const SignUp = ({ setToggle }: Props) => {
               message: "최소 8 자, 최소 하나의 문자 및 하나의 숫자"
             }
           })}
-        ></LogInSignUp.Input>
+        ></LogInSignUp.Password>
         <LogInSignUp.WarningText>{errors.password?.message}</LogInSignUp.WarningText>
-        <LogInSignUp.Input
+        <LogInSignUp.Password
           placeholder="비밀번호 확인"
-          type="password"
+          type="text"
           {...register("passwordCheck", {
             required: {
               value: true,
@@ -145,9 +147,11 @@ const SignUp = ({ setToggle }: Props) => {
               }
             }
           })}
-        ></LogInSignUp.Input>
+        ></LogInSignUp.Password>
         <LogInSignUp.WarningText>{errors.passwordCheck?.message}</LogInSignUp.WarningText>
-        <LogInSignUp.Button bgColor="">회원가입</LogInSignUp.Button>
+        <LogInSignUp.Button type="submit" disabled={!isDirty || !isValid} bgColor="">
+          회원가입
+        </LogInSignUp.Button>
       </LogInSignUp.Form>
 
       <LogInSignUp.TextWrapper>

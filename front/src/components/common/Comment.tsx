@@ -1,9 +1,12 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import Axios from "../../apis/Axios";
+import { useQueryClient } from "@tanstack/react-query";
 
 //mui
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -11,13 +14,8 @@ import Popper from "@mui/material/Popper";
 import { Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
-import SendIcon from "@mui/icons-material/Send";
-import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
-
-import { useMutation } from "@tanstack/react-query";
-import Axios from "../../apis/Axios";
-import { useQueryClient } from "@tanstack/react-query";
 
 moment.locale("ko");
 
@@ -34,6 +32,7 @@ interface CommentType {
 
 const Comment = ({ commentProps, currentUserId, postType }: any) => {
   const queryClient = useQueryClient();
+  const BACK_SERVER = process.env.REACT_APP_BACK_URL;
   const [isCommentEdit, setCommentEdit] = useState<boolean>(false);
   const [commentEditContent, setCommentEditContent] = useState<string>(commentProps.content);
 
@@ -42,20 +41,36 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
   const open = Boolean(morePop);
   const [timer, setTimer] = useState<NodeJS.Timeout>();
 
+  const navigate = useNavigate();
+
+  const commentRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    commentRef.current?.focus();
+  }, [isCommentEdit]);
+
+  const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
+    staleTime: 60 * 1000
+  }).data;
+
   //mutation - 댓글 수정, 삭제
   const editComment = useMutation(
     (data: CommentType) => Axios.patch<CommentType>(`post/${commentProps.PostId}/comment/${commentProps.id}`, data),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["user"]);
-        if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
-        if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
-        if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);
-        if (window.location.pathname.split("/")[1] === "userinfo") {
-          queryClient.invalidateQueries(["userLikedPosts"]);
-          queryClient.invalidateQueries(["userInfoPosts"]);
-          queryClient.invalidateQueries(["userCommPosts"]);
-        }
+
+        queryClient.invalidateQueries(["noticePosts"]);
+
+        queryClient.invalidateQueries(["infoPosts"]);
+        queryClient.invalidateQueries(["activinfo"]);
+
+        queryClient.invalidateQueries(["communityPosts"]);
+        queryClient.invalidateQueries(["feed"]);
+
+        queryClient.invalidateQueries(["userLikedPosts"]);
+        queryClient.invalidateQueries(["userInfoPosts"]);
+        queryClient.invalidateQueries(["userCommPosts"]);
+
         queryClient.invalidateQueries(["likedPosts"]);
         queryClient.invalidateQueries(["myCommPosts"]);
         queryClient.invalidateQueries(["myInfoPosts"]);
@@ -73,14 +88,19 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
   const deleteComment = useMutation(() => Axios.delete(`post/${commentProps.PostId}/comment/${commentProps.id}`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-      if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
-      if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
-      if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);
-      if (window.location.pathname.split("/")[1] === "userinfo") {
-        queryClient.invalidateQueries(["userLikedPosts"]);
-        queryClient.invalidateQueries(["userInfoPosts"]);
-        queryClient.invalidateQueries(["userCommPosts"]);
-      }
+
+      queryClient.invalidateQueries(["noticePosts"]);
+
+      queryClient.invalidateQueries(["infoPosts"]);
+      queryClient.invalidateQueries(["activinfo"]);
+
+      queryClient.invalidateQueries(["communityPosts"]);
+      queryClient.invalidateQueries(["feed"]);
+
+      queryClient.invalidateQueries(["userLikedPosts"]);
+      queryClient.invalidateQueries(["userInfoPosts"]);
+      queryClient.invalidateQueries(["userCommPosts"]);
+
       queryClient.invalidateQueries(["likedPosts"]);
       queryClient.invalidateQueries(["myCommPosts"]);
       queryClient.invalidateQueries(["myInfoPosts"]);
@@ -97,6 +117,7 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
     <CommentBox
       onClick={() => {
         setMorePop(null);
+        clearTimeout(timer);
       }}
     >
       <Popper open={open} anchorEl={morePop} placement="top-end">
@@ -106,6 +127,7 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
             color="inherit"
             onClick={() => {
               setMorePop(null);
+              clearTimeout(timer);
               setCommentEdit((c) => !c);
             }}
           >
@@ -116,17 +138,18 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
             color="error"
             onClick={() => {
               setMorePop(null);
+              clearTimeout(timer);
               confirmAlert({
                 // title: "",
                 message: "댓글을 삭제 하시겠습니까?",
                 buttons: [
                   {
-                    label: "확인",
-                    onClick: () => deleteComment.mutate()
-                  },
-                  {
                     label: "취소",
                     onClick: () => console.log("취소")
+                  },
+                  {
+                    label: "확인",
+                    onClick: () => deleteComment.mutate()
                   }
                 ]
               });
@@ -137,10 +160,20 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
         </EditPopup>
       </Popper>
       <CommentInfo>
-        <FlexDiv>
-          <Link to={`/userinfo/${commentProps?.User?.id}/cat/0`}>
-            <UserNickname>{commentProps?.User?.nickname}</UserNickname>
-          </Link>
+        <FlexDiv
+          onClick={() => {
+            if (user?.id === commentProps?.User?.id) navigate(`/profile/0`);
+            else navigate(`/userinfo/${commentProps?.User?.id}/cat/0`);
+          }}
+        >
+          {commentProps?.User?.profilePic ? (
+            <ProfilePic alt="userProfilePic" src={`${BACK_SERVER}/${commentProps?.User?.profilePic}`} />
+          ) : (
+            <ProfilePic alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
+          )}
+
+          <UserNickname>{commentProps?.User?.nickname}</UserNickname>
+
           <CommentTime>{moment(commentProps?.createdAt).fromNow()}</CommentTime>
         </FlexDiv>
         <FlexDiv>
@@ -178,9 +211,9 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
             }
           }}
         >
-          <input value={commentEditContent} onChange={(e) => setCommentEditContent(e.target.value)} />
+          <input ref={commentRef} value={commentEditContent} onChange={(e) => setCommentEditContent(e.target.value)} />
           <CommentEditButton>
-            <SendIcon />
+            <CheckCircleIcon />
           </CommentEditButton>
           <CommentEditButton
             onClick={() => {
@@ -199,7 +232,17 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
 };
 
 export default Comment;
+const ProfilePic = styled.img`
+  width: 36px;
+  height: 36px;
+  margin-right: 10px;
+  border-radius: 50px;
+  background-color: white;
 
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+
+  object-fit: cover;
+`;
 const CommentEditButton = styled.button`
   padding: 4px 8px;
 `;

@@ -56,7 +56,7 @@ const Start = () => {
               else setPopupOpen(true);
             }}
           >
-            함께하기
+            start
           </StartButton>
         </StartWrapper>
       )}
@@ -82,7 +82,7 @@ const TextBox = styled.div`
   /* font-weight: 400; */
   white-space: pre-line;
   color: white;
-  text-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+  text-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
 
   display: flex;
   flex-direction: column;
@@ -109,7 +109,7 @@ const CarouselWrapper = styled.div`
 const Title = styled.span`
   font-size: 48px;
   /* font-weight: 600; */
-  text-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+  text-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   color: white;
   text-transform: uppercase;
 `;
@@ -121,7 +121,7 @@ const BG = styled.img`
   width: 100vw;
   height: 100vh;
   object-fit: cover;
-  filter: brightness(0.75);
+  filter: brightness(0.6);
 `;
 
 const StartWrapper = styled.div`
@@ -131,7 +131,7 @@ const StartWrapper = styled.div`
   left: 50%;
 
   width: 80%;
-  height: 60%;
+  height: 65%;
 
   display: flex;
   flex-direction: column;
@@ -142,14 +142,21 @@ const StartWrapper = styled.div`
 `;
 
 const StartButton = styled.button`
-  font-size: 32px;
-  /* font-weight: 600; */
+  font-size: 24px;
   color: white;
-  width: 200px;
-  padding: 8px;
-  background-color: rgba(0, 0, 0, 0);
-  backdrop-filter: blur(2px);
+  color: rgba(0, 0, 0, 0.7);
+  text-transform: uppercase;
 
-  border: solid 5px white;
+  /* width: 200px; */
+  padding: 12px 32px;
+  border-radius: 100px;
+
+  /* background-color: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(2px); 
+  border: solid 5px white;*/
+
+  background-color: #c8daf3;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+
   cursor: pointer;
 `;

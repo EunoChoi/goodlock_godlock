@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components/macro";
 import Axios from "../apis/Axios";
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
-import { useFetcher, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -14,21 +14,17 @@ import { confirmAlert } from "react-confirm-alert";
 //components
 import AppLayout from "../components/AppLayout";
 import Post from "../components/common/Post";
-import ProfileChangePopup from "../components/common/ProfileChangePopup";
 import InfiniteScroll from "react-infinite-scroll-component";
+import PostZoom from "../components/PostZoom";
 
 //style
 import Animation from "../styles/Animation";
 
 //mui
-import { Button } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
+
 import Badge from "@mui/material/Badge";
 import InsertEmoticonRoundedIcon from "@mui/icons-material/InsertEmoticonRounded";
 import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlined";
-import RemoveCircleOutlinedIcon from "@mui/icons-material/RemoveCircleOutlined";
-import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 
 interface userProps {
@@ -61,25 +57,31 @@ interface CustomError extends Error {
 const UserInfo = () => {
   const BACK_SERVER = process.env.REACT_APP_BACK_URL;
   const queryClient = useQueryClient();
-  const { id, cat } = useParams();
-  const mainCat = cat ? parseInt(cat) : 0;
-  const [subCat, setSubCat] = useState<number>(0);
+  const params = useParams();
+  const categoryNum = params.cat ? parseInt(params.cat) : 0;
+  const id = params.id ? parseInt(params.id) : 0;
+  const [isZoom, setZoom] = useState<boolean>(false);
+
   const navigate = useNavigate();
+  const scrollTarget = useRef<HTMLDivElement>(null);
+  const category = ["팔로잉", "팔로워", "작성 모집 공고", "작성 소통글", "관심 공고"];
 
   //useQuery, useInfiniteQuery
   const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
     staleTime: 60 * 1000
   }).data;
-
   const { data: targetUser, refetch } = useQuery(
     ["targetUser"],
     () => Axios.get("user/info", { params: { id } }).then((res) => res.data),
     {
       onError: () => {
+        // location.reload();
         navigate("/404");
       }
     }
   );
+
+  const isFollowed = targetUser?.Followers?.find((v: any) => v.id === user.id);
 
   const likedPosts = useInfiniteQuery(
     ["userLikedPosts"],
@@ -111,12 +113,12 @@ const UserInfo = () => {
       }
     }
   );
-
   //useMutation
   const follow = useMutation(() => Axios.patch(`user/${targetUser.id}/follow`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
       queryClient.invalidateQueries(["targetUser"]);
+      toast.success("팔로우 완료");
     },
     onError: (err: CustomError) => {
       toast.warning(err.response?.data);
@@ -127,6 +129,7 @@ const UserInfo = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
       queryClient.invalidateQueries(["targetUser"]);
+      toast.success("언팔로우 완료");
     },
     onError: (err: CustomError) => {
       toast.warning(err.response?.data);
@@ -135,296 +138,259 @@ const UserInfo = () => {
   });
 
   useEffect(() => {
-    if (user.id == id) {
-      navigate("/profile/0");
-    } else {
-      refetch();
-      likedPosts.refetch();
-      infoPosts.refetch();
-      commPosts.refetch();
-      setSubCat(0);
-    }
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    });
+    refetch();
+    likedPosts.refetch();
+    infoPosts.refetch();
+    commPosts.refetch();
   }, [id]);
-
-  const isFollowed = targetUser?.Followers?.find((v: any) => v.id === user.id);
 
   return (
     <AppLayout>
       <>
-        <MainCat selectedMenu={mainCat}>
-          <button>
-            <Link to={`/userinfo/${targetUser?.id}/cat/0`}>{targetUser?.nickname} 정보</Link>
-          </button>
-          <button>
-            <Link to={`/userinfo/${targetUser?.id}/cat/1`}>관계</Link>
-          </button>
-          <button>
-            <Link to={`/userinfo/${targetUser?.id}/cat/2`}>모아보기</Link>
-          </button>
-        </MainCat>
-        {mainCat === 0 && (
-          <ContentArea>
-            <ContentBox width={500} padding={30}>
-              <ProfilePicWrapper>
-                {targetUser?.profilePic ? (
-                  <ProfilePic width={150} alt="userProfilePic" src={`${BACK_SERVER}/${targetUser?.profilePic}`} />
+        <UserInfoWrapper ref={scrollTarget}>
+          {targetUser?.profilePic ? (
+            <Pic alt="userProfilePic" src={`${BACK_SERVER}/${targetUser?.profilePic}`} />
+          ) : (
+            <Pic width={150} alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
+          )}
+
+          <span>{targetUser?.nickname}</span>
+          <span>{targetUser?.email}</span>
+          <span>{targetUser?.usertext ? targetUser?.usertext : "-"}</span>
+          <span>
+            팔로잉 {targetUser?.Followings?.length} • 팔로워 {targetUser?.Followers?.length} • 소통글{" "}
+            {targetUser?.Posts?.filter((v: any) => v.type === 2).length}
+          </span>
+          {isFollowed ? (
+            <FollowButton
+              onClick={() => {
+                confirmAlert({
+                  // title: "",
+                  message: "언팔로우 하시겠습니까?",
+                  buttons: [
+                    {
+                      label: "취소",
+                      onClick: () => console.log("취소")
+                    },
+                    {
+                      label: "확인",
+                      onClick: () => unFollow.mutate()
+                    }
+                  ]
+                });
+              }}
+            >
+              unfollow
+            </FollowButton>
+          ) : (
+            <FollowButton
+              onClick={() => {
+                confirmAlert({
+                  // title: "",
+                  message: "팔로우 하시겠습니까?",
+                  buttons: [
+                    {
+                      label: "취소",
+                      onClick: () => console.log("취소")
+                    },
+                    {
+                      label: "확인",
+                      onClick: () => follow.mutate()
+                    }
+                  ]
+                });
+              }}
+            >
+              follow
+            </FollowButton>
+          )}
+        </UserInfoWrapper>
+
+        <MenuWrapper>
+          {category.map((v, i) => (
+            <Pill
+              catNum={categoryNum}
+              key={"catNum" + i}
+              onClick={() => {
+                window.scrollTo({
+                  top: scrollTarget.current?.scrollHeight,
+                  left: 0,
+                  behavior: "smooth"
+                });
+
+                setTimeout(() => {
+                  navigate(`/userinfo/${targetUser?.id}/cat/${i}`);
+                }, 1);
+              }}
+            >
+              {v}
+            </Pill>
+          ))}
+        </MenuWrapper>
+        {categoryNum === 0 && (
+          <ContentWrapper>
+            <ContentBox>
+              <ListTitle>
+                <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
+                  <InsertEmoticonRoundedIcon fontSize="inherit" />
+                </Badge>
+                <div>팔로잉</div>
+              </ListTitle>
+              <List>
+                {targetUser?.Followings?.length === 0 ? (
+                  <EmptyUserNoti>
+                    <span>팔로잉 목록이 존재하지 않습니다.</span>
+                  </EmptyUserNoti>
                 ) : (
-                  <ProfilePic
-                    width={150}
-                    alt="userProfilePic"
-                    src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                  />
+                  targetUser?.Followings?.map((v: user, i: number) => (
+                    <ListItem key={v.nickname + i}>
+                      <div>
+                        <Link to={`/userinfo/${v?.id}/cat/0`}>
+                          {v.profilePic ? (
+                            <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
+                          ) : (
+                            <ProfilePic
+                              width={32}
+                              alt="defaultProfilePic"
+                              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                            />
+                          )}
+                        </Link>
+                      </div>
+                      <span>{v.nickname}</span>
+                    </ListItem>
+                  ))
                 )}
-              </ProfilePicWrapper>
-              <InfoAttribute>
-                <InfoTitle>
-                  <span>닉네임</span>
-                </InfoTitle>
-
-                <InfoValue>
-                  <span>{targetUser?.nickname}</span>
-                </InfoValue>
-              </InfoAttribute>
-              <InfoAttribute>
-                <InfoTitle>
-                  <span>이메일</span>
-                </InfoTitle>
-                <InfoValue>
-                  <span>{targetUser?.email}</span>
-                </InfoValue>
-              </InfoAttribute>
-              <InfoAttribute>
-                <InfoTitle>
-                  <span>상태 메세지</span>
-                </InfoTitle>
-
-                <InfoValue>
-                  <span>{targetUser?.usertext ? targetUser?.usertext : "-"}</span>
-                </InfoValue>
-              </InfoAttribute>
-              {isFollowed ? (
-                <Button
-                  variant="outlined"
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    // const isConfirm = confirm("언팔로우 하시겠습니까?");
-                    // if (isConfirm) unFollow.mutate();
-
-                    confirmAlert({
-                      // title: "",
-                      message: "언팔로우 하시겠습니까?",
-                      buttons: [
-                        {
-                          label: "확인",
-                          onClick: () => unFollow.mutate()
-                        },
-                        {
-                          label: "취소",
-                          onClick: () => console.log("취소")
-                        }
-                      ]
-                    });
-                  }}
-                >
-                  unfollow
-                </Button>
-              ) : (
-                <Button
-                  color="inherit"
-                  variant="outlined"
-                  size="small"
-                  onClick={() => {
-                    // const isConfirm = confirm("팔로우 하시겠습니까?");
-                    // if (isConfirm) follow.mutate();
-
-                    confirmAlert({
-                      // title: "",
-                      message: "팔로우 하시겠습니까?",
-                      buttons: [
-                        {
-                          label: "확인",
-                          onClick: () => follow.mutate()
-                        },
-                        {
-                          label: "취소",
-                          onClick: () => console.log("취소")
-                        }
-                      ]
-                    });
-                  }}
-                >
-                  follow
-                </Button>
-              )}
+              </List>
             </ContentBox>
-          </ContentArea>
+          </ContentWrapper>
         )}
-        {mainCat === 1 && (
-          <ContentArea>
-            <ContentBox width={700} padding={0}>
-              <RowBox>
-                <ListWrapper>
-                  <ListTitle>
-                    <Badge badgeContent={targetUser?.Followings?.length} color="info" max={999} showZero>
-                      <InsertEmoticonRoundedIcon fontSize="inherit" />
-                    </Badge>
-                    <div>{targetUser.nickname}의 팔로잉</div>
-                  </ListTitle>
-
-                  <List>
-                    {targetUser?.Followings?.length === 0 ? (
-                      <EmptyUserNoti>
-                        <span>팔로잉 목록이 존재하지 않습니다.</span>
-                      </EmptyUserNoti>
-                    ) : (
-                      targetUser?.Followings?.map((v: user, i: number) => (
-                        <ListItem key={v.nickname + i}>
-                          <Link to={`/userinfo/${v?.id}/cat/0`}>
-                            {v.profilePic ? (
-                              <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
-                            ) : (
-                              <ProfilePic
-                                width={32}
-                                alt="defaultProfilePic"
-                                src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                              />
-                            )}
-                          </Link>
-                          <div>
-                            <span>{v.nickname}</span>
-                          </div>
-                        </ListItem>
-                      ))
-                    )}
-                  </List>
-                </ListWrapper>
-                <ListWrapper>
-                  <ListTitle>
-                    <Badge badgeContent={targetUser?.Followers?.length} color="info" max={999} showZero>
-                      <InsertEmoticonOutlinedIcon fontSize="inherit" />
-                    </Badge>
-                    <div>{targetUser.nickname}의 팔로워</div>
-                  </ListTitle>
-
-                  <List>
-                    {targetUser?.Followers?.length === 0 ? (
-                      <EmptyUserNoti>
-                        <span>팔로워 목록이 존재하지 않습니다.</span>
-                      </EmptyUserNoti>
-                    ) : (
-                      targetUser?.Followers?.map((v: user, i: number) => (
-                        <ListItem key={v.nickname + i}>
-                          <Link to={`/userinfo/${v?.id}/cat/0`}>
-                            {v.profilePic ? (
-                              <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
-                            ) : (
-                              <ProfilePic
-                                width={32}
-                                alt="ProfilePic"
-                                src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                              />
-                            )}
-                          </Link>
-                          <div>
-                            <span>{v.nickname}</span>
-                          </div>
-                        </ListItem>
-                      ))
-                    )}
-                  </List>
-                </ListWrapper>
-              </RowBox>
+        {categoryNum === 1 && (
+          <ContentWrapper>
+            <ContentBox>
+              <ListTitle>
+                <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
+                  <InsertEmoticonOutlinedIcon fontSize="inherit" />
+                </Badge>
+                <div>팔로워</div>
+              </ListTitle>
+              <List>
+                {targetUser?.Followers?.length === 0 ? (
+                  <EmptyUserNoti>
+                    <span>팔로워 목록이 존재하지 않습니다.</span>
+                  </EmptyUserNoti>
+                ) : (
+                  targetUser?.Followers?.map((v: user, i: number) => (
+                    <ListItem key={v.nickname + i}>
+                      <div>
+                        <Link to={`/userinfo/${v?.id}/cat/0`}>
+                          {v.profilePic ? (
+                            <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
+                          ) : (
+                            <ProfilePic
+                              width={32}
+                              alt="ProfilePic"
+                              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                            />
+                          )}
+                        </Link>
+                      </div>
+                      <span>{v.nickname}</span>
+                    </ListItem>
+                  ))
+                )}
+              </List>
             </ContentBox>
-          </ContentArea>
+          </ContentWrapper>
         )}
-        {mainCat === 2 && (
-          <ContentArea>
-            <SubCat myPostType={subCat + 1}>
-              <button
-                onClick={() => {
-                  setSubCat(0);
-                }}
-              >
-                <span>공고</span>
-              </button>
-              <button
-                onClick={() => {
-                  setSubCat(1);
-                }}
-              >
-                <span>소통</span>
-              </button>
-              <button
-                onClick={() => {
-                  setSubCat(2);
-                }}
-              >
-                <span>관심 공고</span>
-              </button>
-            </SubCat>
-            <Posts id="userInfoScrollWrapper">
-              {subCat === 0 && infoPosts?.data?.pages[0].length === 0 && (
+        {categoryNum === 2 && (
+          <ContentWrapper>
+            <Posts>
+              {infoPosts?.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
                   <span>게시글이 존재하지 않습니다.</span>
                 </EmptyNoti>
               )}
-              {subCat === 0 && infoPosts?.data?.pages[0].length !== 0 && (
+              {infoPosts?.data?.pages[0].length !== 0 && (
                 <InfiniteScroll
-                  scrollableTarget="userInfoScrollWrapper"
                   hasMore={infoPosts.hasNextPage || false}
-                  loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
+                  loader={
+                    <LoadingIcon>
+                      <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    </LoadingIcon>
+                  }
                   next={() => infoPosts.fetchNextPage()}
                   dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
                   {infoPosts?.data?.pages.map((p) =>
-                    p.map((v: postProps, i: number) => <Post key={i} postProps={v} />)
-                  )}
-                </InfiniteScroll>
-              )}
-
-              {subCat === 1 && commPosts?.data?.pages[0].length === 0 && (
-                <EmptyNoti>
-                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-                  <span>게시글이 존재하지 않습니다.</span>
-                </EmptyNoti>
-              )}
-              {subCat === 1 && commPosts?.data?.pages[0].length !== 0 && (
-                <InfiniteScroll
-                  scrollableTarget="userInfoScrollWrapper"
-                  hasMore={commPosts.hasNextPage || false}
-                  loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
-                  next={() => commPosts.fetchNextPage()}
-                  dataLength={commPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-                >
-                  {commPosts?.data?.pages.map((p) =>
-                    p.map((v: postProps, i: number) => <Post key={i} postProps={v} />)
-                  )}
-                </InfiniteScroll>
-              )}
-
-              {subCat === 2 && likedPosts?.data?.pages[0].length === 0 && (
-                <EmptyNoti>
-                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-                  <span>게시글이 존재하지 않습니다.</span>
-                </EmptyNoti>
-              )}
-              {subCat === 2 && likedPosts?.data?.pages[0].length !== 0 && (
-                <InfiniteScroll
-                  scrollableTarget="userInfoScrollWrapper"
-                  hasMore={likedPosts.hasNextPage || false}
-                  loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
-                  next={() => likedPosts.fetchNextPage()}
-                  dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-                >
-                  {likedPosts?.data?.pages.map((p) =>
-                    p.map((v: postProps, i: number) => <Post key={i} postProps={v} />)
+                    p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                   )}
                 </InfiniteScroll>
               )}
             </Posts>
-          </ContentArea>
+          </ContentWrapper>
+        )}
+        {categoryNum === 3 && (
+          <ContentWrapper>
+            <Posts>
+              {commPosts?.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
+              {commPosts?.data?.pages[0].length !== 0 && (
+                <InfiniteScroll
+                  hasMore={commPosts.hasNextPage || false}
+                  loader={
+                    <LoadingIcon>
+                      <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    </LoadingIcon>
+                  }
+                  next={() => commPosts.fetchNextPage()}
+                  dataLength={commPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+                >
+                  {commPosts?.data?.pages.map((p) =>
+                    p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                  )}
+                </InfiniteScroll>
+              )}
+            </Posts>
+          </ContentWrapper>
+        )}
+        {categoryNum === 4 && (
+          <ContentWrapper>
+            <Posts>
+              {likedPosts?.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
+              {likedPosts?.data?.pages[0].length !== 0 && (
+                <InfiniteScroll
+                  hasMore={likedPosts.hasNextPage || false}
+                  loader={
+                    <LoadingIcon>
+                      <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    </LoadingIcon>
+                  }
+                  next={() => likedPosts.fetchNextPage()}
+                  dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+                >
+                  {likedPosts?.data?.pages.map((p) =>
+                    p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                  )}
+                </InfiniteScroll>
+              )}
+            </Posts>
+          </ContentWrapper>
         )}
       </>
     </AppLayout>
@@ -433,75 +399,22 @@ const UserInfo = () => {
 
 export default UserInfo;
 
-const EmptyNoti = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+const Pic = styled.img`
+  /* position: absolute;
+  right: 0px; */
+  background-color: white;
+  width: 190px;
+  height: 190px;
+  border-radius: 12px;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
 
-  font-size: 72px;
-  color: rgba(0, 0, 0, 0.5);
-  /* font-weight: 600; */
-  span {
-    margin-top: 20px;
-    font-size: 24px;
-  }
-`;
-const EmptyUserNoti = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  font-size: 48px;
-  color: rgba(0, 0, 0, 0.5);
-  /* font-weight: 600; */
-  span {
-    margin-top: 20px;
-    font-size: 18px;
-  }
+  /* @media screen and (max-width: 720px) {
+    width: 200px;
+    height: 200px;
+  } */
 `;
 
-const SubCat = styled.div<{ myPostType: number }>`
-  height: 70px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  button {
-    transition: all ease-in-out 0.7s;
-
-    padding: 4px 16px;
-
-    border-radius: 20px;
-    margin: 5px;
-
-    font-size: 18px;
-    /* font-weight: 600; */
-    background-color: #a9a7d4;
-    /* color: rgba(0, 0, 0, 0.5); */
-    color: white;
-    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
-    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
-  }
-  button:nth-child(${(props) => props.myPostType}) {
-    /* color: rgba(0, 0, 0, 0.4); */
-    /* text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2); */
-    background-color: #d4a7be;
-    /* background-color: #f6f5ff; */
-  }
-  @media screen and (max-width: 720px) {
-    height: 60px;
-    /* color: white; */
-    /* margin-top: 30px; */
-    button {
-      font-size: 1em;
-    }
-  }
-`;
 const ListTitle = styled.div`
   font-size: 60px;
   color: rgba(0, 0, 0, 0.4);
@@ -523,14 +436,242 @@ const ListTitle = styled.div`
   }
 `;
 
-const List = styled.div`
+const Pill = styled.button<{ catNum: number }>`
+  height: 32px;
+  margin-right: 12px;
+  padding: 6px 20px;
+  border-radius: 100px;
+
+  font-size: 18px;
+
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+  color: #464b53;
+  background-color: #e3ecf9;
+  &:nth-child(${(props) => props.catNum + 1}) {
+    background-color: #f3e0f1;
+  }
+
+  @media screen and (max-width: 720px) {
+    margin-right: 8px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+`;
+
+const UserInfoWrapper = styled.div`
+  position: relative;
+
   display: flex;
   flex-direction: column;
+  justify-content: end;
+  align-items: start;
+  /* padding-top: 40px; */
+  width: 500px;
+  height: 500px;
+
+  > span {
+    /* text-align: center; */
+    color: rgba(0, 0, 0, 0.6);
+  }
+  > span:nth-child(2) {
+    margin-top: 32px;
+    font-size: 48px;
+    color: rgba(0, 0, 0, 0.8);
+  }
+  > span:nth-child(3) {
+    font-size: 28px;
+    color: rgba(0, 0, 0, 0.7);
+  }
+  > span:nth-child(4) {
+    font-size: 22px;
+    margin-top: 24px;
+    /* padding: 0 12px; */
+  }
+  > span:nth-child(5) {
+    font-size: 20px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+
+  @media screen and (max-width: 720px) {
+    width: 92vw;
+    margin-top: 36px;
+    > span:nth-child(2) {
+      font-size: 36px;
+    }
+    > span:nth-child(3) {
+      font-size: 24px;
+    }
+    > span:nth-child(4) {
+      font-size: 22px;
+    }
+    > span:nth-child(5) {
+      font-size: 18px;
+    }
+  }
+`;
+const FollowButton = styled.button`
+  cursor: pointer;
+  text-transform: uppercase;
+
+  font-size: 14px;
+  height: 36px;
+  width: 108px;
+  border: 3px rgba(0, 0, 0, 0.6) solid;
+  border-radius: 6px;
+
+  /* margin-bottom: 24px; */
+
+  color: rgba(0, 0, 0, 0.6);
+
+  transition: all ease-in-out 0.3s;
+  &:hover {
+    transform: scale(1.05);
+  }
+  @media screen and (max-width: 720px) {
+    /* margin-bottom: 48px; */
+  }
+`;
+
+const MenuWrapper = styled.div`
+  position: sticky;
+  top: 0px;
+  z-index: 85;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(245, 245, 245, 1) 11%, rgba(245, 245, 245, 1) 100%);
+
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: auto;
+  width: 508px;
+
+  padding: 36px 4px;
+  /* margin-top: 32px; */
+
+  overflow-x: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+  @media screen and (max-width: 720px) {
+    background: rgb(255, 255, 255);
+    background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(200, 218, 243, 1) 11%,
+      rgba(200, 218, 243, 1) 100%
+    );
+
+    top: 36px;
+    width: 100%;
+    padding-left: 4vw;
+    padding-right: 4vw;
+  }
+`;
+const ContentWrapper = styled.div`
+  animation: ${Animation.smoothAppear} 0.7s;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
   align-items: center;
 
-  padding: 20px;
   width: 100%;
-  height: 0;
+  height: auto;
+  min-height: calc(100vh - 104px);
+  /* min-height: calc(100vh - 124px); */
+
+  /* padding-top: 24px; */
+  padding-bottom: 24px;
+  @media screen and (max-width: 720px) {
+    //haeder height : 36px
+    min-height: calc(100vh - 36px - 104px);
+  }
+`;
+const ContentBox = styled.div`
+  transition: all ease-in-out 0.3s;
+  width: 500px;
+  min-height: calc(100vh - 104px - 24px);
+
+  padding: 20px;
+  /* margin-bottom: 24px; */
+  background-color: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  * {
+    flex-shrink: 0;
+  }
+  button {
+    color: #aaa7d4;
+  }
+  @media screen and (max-width: 720px) {
+    width: 92vw;
+    min-height: calc(100vh);
+    min-height: calc(var(--vh, 1vh) * 100 - 36px - 104px - 24px);
+    /* background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px); */
+  }
+`;
+const LoadingIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  img {
+    width: 25%;
+  }
+`;
+
+const EmptyNoti = styled.div`
+  width: 100%;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 72px;
+  color: rgba(0, 0, 0, 0.5);
+  /* font-weight: 600; */
+  span {
+    margin-top: 20px;
+    font-size: 24px;
+  }
+`;
+const EmptyUserNoti = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  white-space: nowrap;
+
+  font-size: 48px;
+  color: rgba(0, 0, 0, 0.5);
+  /* font-weight: 600; */
+  span {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+`;
+
+const List = styled.div`
+  padding: 20px 0;
+  width: 80%;
+  height: 50%;
+
   flex-grow: 1;
   -webkit-box-flex: 1;
 
@@ -557,25 +698,7 @@ const ListItem = styled.div`
     min-width: 0;
   }
 `;
-const ListWrapper = styled.div`
-  width: 50%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  &:first-child {
-    border-right: solid 2px rgba(0, 0, 0, 0.05);
-  }
-  @media screen and (max-width: 720px) {
-    width: 90%;
-    height: 45%;
-    &:first-child {
-      border: none;
-      border-bottom: solid 2px rgba(0, 0, 0, 0.05);
-    }
-  }
-`;
+
 const ProfilePic = styled.img<{ width: number }>`
   width: ${(props) => props.width + "px"};
   height: ${(props) => props.width + "px"};
@@ -585,152 +708,8 @@ const ProfilePic = styled.img<{ width: number }>`
   background-color: #fff;
 
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-  /* margin-right: 12px; */
-`;
-const ContentBox = styled.div<{ width: number; padding: number }>`
-  width: ${(props) => props.width + "px"};
-  height: 650px;
-  padding: 40px ${(props) => props.padding + "px"};
-  background-color: white;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  * {
-    flex-shrink: 0;
-  }
-  button {
-    color: #aaa7d4;
-  }
-  @media screen and (max-width: 720px) {
-    width: 92vw;
-    padding: 20px ${(props) => props.padding + "px"};
-  }
 `;
 
-const InfoAttribute = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
-
-  margin-bottom: 30px;
-`;
-const InfoTitle = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  > span {
-    font-size: 1.5em;
-    /* font-weight: 600; */
-  }
-`;
-const InfoValue = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 10px 0px;
-  height: 36px;
-  margin-top: 8px;
-  input {
-    flex-grow: 1;
-    -webkit-box-flex: 1;
-
-    border: none;
-    outline-style: none;
-    font-size: 16px;
-  }
-  input::placeholder {
-    font-size: 16px;
-  }
-  > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    border: 2px solid #aaa7d4;
-    border-radius: 32px;
-    padding: 0 10px;
-    padding-right: 0;
-    > button {
-      min-width: 0;
-      border-radius: 100px;
-      padding: 6px;
-      &:last-child {
-        padding-left: 0px;
-      }
-    }
-  }
-  > span {
-    width: 100%;
-
-    font-size: 18px;
-    white-space: nowrap;
-    overflow: auto;
-
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-    &::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera*/
-    }
-  }
-`;
-
-const MainCat = styled.div<{ selectedMenu: number }>`
-  display: flex;
-  justify-content: center;
-  align-items: end;
-  height: 100px;
-  width: 100%;
-  overflow-x: scroll;
-  * {
-    flex-shrink: 0;
-  }
-  button {
-    transition: all ease-in-out 0.5s;
-
-    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
-    font-size: 1.6em;
-    /* font-weight: 600; */
-    color: grey;
-
-    padding: 10px;
-  }
-  button:nth-child(${(props) => props.selectedMenu + 1}) {
-    color: #aaa7d4;
-  }
-  @media screen and (max-width: 720px) {
-    height: 130px;
-    button {
-      font-size: 1.3em;
-    }
-    button:nth-child(${(props) => props.selectedMenu + 1}) {
-      color: rgba(0, 0, 0, 0.55);
-      font-size: 1.4em;
-    }
-  }
-`;
-const ContentArea = styled.div`
-  animation: ${Animation.smoothAppear} 0.7s;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  color: #4f4f4f;
-
-  width: 100%;
-  height: calc(100vh - 100px);
-
-  @media screen and (max-width: 720px) {
-    height: calc(100vh - 130px);
-  }
-`;
 const Posts = styled.div`
   display: flex;
   flex-direction: column;
@@ -740,49 +719,11 @@ const Posts = styled.div`
   padding-top: 4px;
 
   width: 100%;
-  height: calc(100vh - 170px);
-
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
-  }
-
-  @media screen and (max-width: 720px) {
-    height: calc(100vh - 190px);
-  }
-
-  overflow: auto;
+  height: auto;
   * {
     flex-shrink: 0;
   }
   > div {
     animation: ${Animation.smoothAppear} 0.7s;
-  }
-`;
-const ProfilePicWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  padding: 10px;
-  padding-bottom: 30px;
-
-  overflow: auto;
-  * {
-    flex-shrink: 0;
-  }
-`;
-const RowBox = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-
-  @media screen and (max-width: 720px) {
-    justify-content: space-around;
-    flex-direction: column;
   }
 `;

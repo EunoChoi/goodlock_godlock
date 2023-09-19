@@ -1,12 +1,12 @@
-import React, { RefObject, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Axios from "../apis/Axios";
-import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import Animation from "../styles/Animation";
 
@@ -16,6 +16,9 @@ import Post from "../components/common/Post";
 
 //mui
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
+import SearchIcon from "@mui/icons-material/Search";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 
 interface userProps {
   email: string;
@@ -32,12 +35,19 @@ interface postProps {
   content: string;
   createdAt: string;
 }
+interface toggleProps {
+  main: number;
+  sub: number;
+}
 
 const Main = () => {
+  const scrollTarget = useRef<HTMLDivElement>(null);
   const params = useParams();
   const type = params.type ? parseInt(params.type) : 0;
-
-  const [toggle, setToggle] = useState<number>(0);
+  const [toggles, setToggles] = useState<toggleProps>({
+    main: 0,
+    sub: 0
+  });
 
   const navigate = useNavigate();
 
@@ -45,12 +55,15 @@ const Main = () => {
     staleTime: 60 * 1000
   }).data;
 
-  useEffect(() => {
-    if (type < 0 || type >= 3) {
-      navigate("/404");
-    }
-  }, [type]);
+  //today
+  const todayUploadInfoPost = useQuery(["todayinfo"], () => Axios.get("post/todayinfo").then((v) => v.data), {
+    staleTime: 60 * 1000
+  }).data;
+  const todayEndLikedPost = useQuery(["todayendliked"], () => Axios.get("post/todayendliked").then((v) => v.data), {
+    staleTime: 60 * 1000
+  }).data;
 
+  //load posts
   const noticePosts = useInfiniteQuery(
     ["noticePosts"],
     ({ pageParam = 1 }) =>
@@ -91,145 +104,397 @@ const Main = () => {
       }
     }
   );
+  const activInfo = useInfiniteQuery(
+    ["activinfo"],
+    ({ pageParam = 1 }) =>
+      Axios.get("post/activinfo", { params: { type: 1, pageParam, tempDataNum: 5 } }).then((res) => res.data),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.length === 0 ? undefined : allPages.length + 1;
+      }
+    }
+  );
+  const feedPosts = useInfiniteQuery(
+    ["feed"],
+    ({ pageParam = 1 }) =>
+      Axios.get("post/feed", { params: { type: 0, pageParam, tempDataNum: 5 } }).then((res) => res.data),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.length === 0 ? undefined : allPages.length + 1;
+      }
+    }
+  );
+
+  useEffect(() => {
+    if (type < 0 || type >= 3) {
+      navigate("/404");
+    } else {
+      setToggles({ main: type, sub: 0 });
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth"
+      });
+    }
+  }, [type]);
 
   return (
     <AppLayout>
-      {type === 0 && (
+      {toggles.main === 0 && (
         <MainEl>
-          <WelcomeWrapper>
+          <WelcomeWrapper ref={scrollTarget}>
             <span>반갑습니다.</span>
             <span>
-              {user?.nickname}님!
+              <Link to={`/profile/0`}>{user?.nickname}님!</Link>
               <div>
                 <EmojiPeopleIcon fontSize="inherit" />
               </div>
             </span>
             <span>오늘도 행복한 하루를 만들어 보아요 :)</span>
-
-            <RowWrapper>
-              <Pill>추가 기능</Pill>
-            </RowWrapper>
-
-            <RowWrapper>
-              <Temp></Temp>
-              <Temp></Temp>
-              <Temp></Temp>
-              <Temp></Temp>
-              <Temp></Temp>
-              <Temp></Temp>
-              <Temp></Temp>
-              <Temp></Temp>
-            </RowWrapper>
-
-            <RowWrapper>
-              <Pill2
-                toggle={toggle}
-                onClick={() => {
-                  setToggle(0);
-                }}
-              >
-                공지사항
-              </Pill2>
-              <Pill2
-                toggle={toggle}
-                onClick={() => {
-                  setToggle(1);
-                }}
-              >
-                피드
-              </Pill2>
-              <Pill2
-                toggle={toggle}
-                onClick={() => {
-                  setToggle(2);
-                }}
-              >
-                관심 공고
-              </Pill2>
-            </RowWrapper>
+            <span>
+              <CalendarMonthIcon /> today
+            </span>
+            <span>신규 등록된 모집공고 {todayUploadInfoPost?.len}개</span>
+            <span>자정 마감 예정 관심공고 {todayEndLikedPost?.len}개</span>
           </WelcomeWrapper>
+          <Pill.Wrapper>
+            <Pill.Sub
+              toggle={toggles.sub}
+              onClick={() => {
+                setToggles({ main: toggles.main, sub: 0 });
+                window.scrollTo({
+                  top: scrollTarget.current?.scrollHeight,
+                  left: 0,
+                  behavior: "smooth"
+                });
+              }}
+            >
+              공지사항
+            </Pill.Sub>
+            <Pill.Sub
+              toggle={toggles.sub}
+              onClick={() => {
+                setToggles({ main: toggles.main, sub: 1 });
+                window.scrollTo({
+                  top: scrollTarget.current?.scrollHeight,
+                  left: 0,
+                  behavior: "smooth"
+                });
+              }}
+            >
+              관심 공고
+            </Pill.Sub>
+          </Pill.Wrapper>
 
-          {toggle === 0 && (
-            <SubMain>
+          {toggles.sub === 0 && ( //공지사항
+            <HomeEl>
+              {noticePosts.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
+
               <InfiniteScroll
-                // scrollableTarget="scrollWrapper"
                 hasMore={noticePosts.hasNextPage || false}
-                loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
+                loader={
+                  <LoadingIconWrapper>
+                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                  </LoadingIconWrapper>
+                }
                 next={() => noticePosts.fetchNextPage()}
                 dataLength={noticePosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
                 {noticePosts?.data?.pages.map((p) =>
-                  p.map((v: postProps, i: number) => <Post key={i} postProps={v} />)
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
               </InfiniteScroll>
-            </SubMain>
+            </HomeEl>
           )}
-
-          {toggle === 1 && (
-            //피드
-            <SubMain></SubMain>
-          )}
-          {toggle === 2 && (
-            //관심 공고
-            <SubMain>
+          {toggles.sub === 1 && ( //관심 공고
+            <HomeEl>
+              {likedPosts.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
               <InfiniteScroll
-                // scrollableTarget="profileScrollWrapper"
                 hasMore={likedPosts.hasNextPage || false}
-                loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
+                loader={
+                  <LoadingIconWrapper>
+                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                  </LoadingIconWrapper>
+                }
                 next={() => likedPosts.fetchNextPage()}
                 dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
-                {likedPosts?.data?.pages.map((p) => p.map((v: postProps, i: number) => <Post key={i} postProps={v} />))}
+                {likedPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
               </InfiniteScroll>
-            </SubMain>
+            </HomeEl>
           )}
         </MainEl>
       )}
-      {type === 1 && (
+      {toggles.main === 1 && (
         <MainEl>
-          <WelcomeWrapper>
-            <span>모집공고</span>
+          <WelcomeWrapper ref={scrollTarget}>
+            <span>모집 공고</span>
             <span></span>
-            <span>모집공고 설명글</span>
-
-            <RowWrapper>
-              <Pill>모두</Pill>
-              <Pill>마감 제외</Pill>
-              <Pill>검색</Pill>
-            </RowWrapper>
+            <span>모집 공고 설명글</span>
           </WelcomeWrapper>
-          <InfiniteScroll
-            // scrollableTarget="scrollWrapper"
-            hasMore={infoPosts.hasNextPage || false}
-            loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
-            next={() => infoPosts.fetchNextPage()}
-            dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-          >
-            {infoPosts?.data?.pages.map((p) => p.map((v: postProps, i: number) => <Post key={i} postProps={v} />))}
-          </InfiniteScroll>
+          <Pill.Wrapper>
+            <Pill.Sub
+              toggle={toggles.sub}
+              onClick={() => {
+                setToggles({ main: toggles.main, sub: 0 });
+                window.scrollTo({
+                  top: scrollTarget.current?.scrollHeight,
+                  left: 0,
+                  behavior: "smooth"
+                });
+              }}
+            >
+              모두
+            </Pill.Sub>
+            <Pill.Sub
+              toggle={toggles.sub}
+              onClick={() => {
+                setToggles({ main: toggles.main, sub: 1 });
+                window.scrollTo({
+                  top: scrollTarget.current?.scrollHeight,
+                  left: 0,
+                  behavior: "smooth"
+                });
+              }}
+            >
+              모집 중
+            </Pill.Sub>
+            <Pill.Search
+              toggle={toggles.sub === 2}
+              onClick={() => {
+                setToggles({ main: toggles.main, sub: 2 });
+              }}
+            >
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  toast.error("구현 예정");
+                  console.log("submit");
+                }}
+              >
+                <SearchIcon />
+                <input placeholder="태그 검색" />
+              </form>
+            </Pill.Search>
+          </Pill.Wrapper>
+          {toggles.sub === 0 && (
+            <HomeEl>
+              {infoPosts.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={infoPosts.hasNextPage || false}
+                loader={
+                  <LoadingIconWrapper>
+                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                  </LoadingIconWrapper>
+                }
+                next={() => infoPosts.fetchNextPage()}
+                dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {infoPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </HomeEl>
+          )}
+          {toggles.sub === 1 && (
+            <HomeEl>
+              {activInfo.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={activInfo.hasNextPage || false}
+                loader={
+                  <LoadingIconWrapper>
+                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                  </LoadingIconWrapper>
+                }
+                next={() => activInfo.fetchNextPage()}
+                dataLength={activInfo.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {activInfo?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </HomeEl>
+          )}
+          {toggles.sub === 2 && (
+            <HomeEl>
+              {/* {infoPosts.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={infoPosts.hasNextPage || false}
+                loader={
+                  <LoadingIconWrapper>
+                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                  </LoadingIconWrapper>
+                }
+                next={() => infoPosts.fetchNextPage()}
+                dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {infoPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll> */}
+            </HomeEl>
+          )}
         </MainEl>
       )}
-      {type === 2 && (
+      {toggles.main === 2 && (
         <MainEl>
-          <WelcomeWrapper>
+          <WelcomeWrapper ref={scrollTarget}>
             <span>소통</span>
             <span></span>
             <span>소통 게시글 설명글</span>
-
-            <RowWrapper>
-              <Pill>모두</Pill>
-              <Pill>검색</Pill>
-            </RowWrapper>
           </WelcomeWrapper>
-          <InfiniteScroll
-            // scrollableTarget="scrollWrapper"
-            hasMore={communityPosts.hasNextPage || false}
-            loader={<img src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="loading" />}
-            next={() => communityPosts.fetchNextPage()}
-            dataLength={communityPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-          >
-            {communityPosts?.data?.pages.map((p) => p.map((v: postProps, i: number) => <Post key={i} postProps={v} />))}
-          </InfiniteScroll>
+          <Pill.Wrapper>
+            <Pill.Sub
+              toggle={toggles.sub}
+              onClick={() => {
+                setToggles({ main: toggles.main, sub: 0 });
+                window.scrollTo({
+                  top: scrollTarget.current?.scrollHeight,
+                  left: 0,
+                  behavior: "smooth"
+                });
+              }}
+            >
+              모두
+            </Pill.Sub>
+            <Pill.Sub
+              toggle={toggles.sub}
+              onClick={() => {
+                setToggles({ main: toggles.main, sub: 1 });
+                window.scrollTo({
+                  top: scrollTarget.current?.scrollHeight,
+                  left: 0,
+                  behavior: "smooth"
+                });
+              }}
+            >
+              피드
+            </Pill.Sub>
+            <Pill.Search
+              toggle={toggles.sub === 2}
+              onClick={() => {
+                setToggles({ main: toggles.main, sub: 2 });
+              }}
+            >
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  toast.error("구현 예정");
+                  console.log("submit");
+                }}
+              >
+                <SearchIcon />
+                <input placeholder="태그 검색" />
+              </form>
+            </Pill.Search>
+          </Pill.Wrapper>
+          {toggles.sub === 0 && (
+            //모든 소통글
+            <HomeEl>
+              {communityPosts.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={communityPosts.hasNextPage || false}
+                loader={
+                  <LoadingIconWrapper>
+                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                  </LoadingIconWrapper>
+                }
+                next={() => communityPosts.fetchNextPage()}
+                dataLength={communityPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {communityPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </HomeEl>
+          )}
+          {toggles.sub === 1 && (
+            //피드 소통글
+            <HomeEl>
+              {feedPosts?.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={feedPosts?.hasNextPage || false}
+                loader={
+                  <LoadingIconWrapper>
+                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                  </LoadingIconWrapper>
+                }
+                next={() => feedPosts?.fetchNextPage()}
+                dataLength={feedPosts?.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {feedPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </HomeEl>
+          )}
+          {toggles.sub === 2 && (
+            <HomeEl>
+              {communityPosts.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>게시글이 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={communityPosts.hasNextPage || false}
+                loader={
+                  <LoadingIconWrapper>
+                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                  </LoadingIconWrapper>
+                }
+                next={() => communityPosts.fetchNextPage()}
+                dataLength={communityPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {communityPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </HomeEl>
+          )}
         </MainEl>
       )}
     </AppLayout>
@@ -237,99 +502,164 @@ const Main = () => {
 };
 
 export default Main;
-const SubMain = styled.div`
+
+const EmptyNoti = styled.div`
+  width: 100%;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 72px;
+  color: rgba(0, 0, 0, 0.5);
+  /* font-weight: 600; */
+  span {
+    margin-top: 20px;
+    font-size: 24px;
+  }
+`;
+const LoadingIconWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  img {
+    width: 25%;
+  }
+`;
+
+const HomeEl = styled.div`
   animation: ${Animation.smoothAppear} 0.7s;
+  min-height: calc(100vh - 80px);
+  @media screen and (max-width: 720px) {
+    min-height: calc(100vh - 116px);
+  }
 `;
 const MainEl = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  padding-bottom: 120px;
 
   animation: ${Animation.smoothAppear} 0.7s;
 `;
-const Temp = styled.div`
-  height: 120px;
-  width: 80px;
 
-  background-color: #fff;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-  /* margin: 16px 0; */
-  margin-right: 8px;
-`;
+const Pill = {
+  Wrapper: styled.div`
+    z-index: 80;
+    position: sticky;
+    top: 0px;
+    /* background-color: whitesmoke; */
+    background: rgb(255, 255, 255);
+    background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(245, 245, 245, 1) 11%,
+      rgba(245, 245, 245, 1) 100%
+    );
 
-const RowWrapper = styled.div`
-  display: flex;
-  justify-content: start;
-  align-items: center;
+    display: flex;
+    justify-content: start;
+    align-items: center;
 
-  padding: 5px;
-  padding-left: 2px;
+    padding-left: calc(35vw - 285px);
+    padding-top: 24px;
+    padding-bottom: 24px;
 
-  width: 100%;
-  overflow-x: scroll;
+    width: 100%;
+    overflow-x: scroll;
 
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
-  }
-`;
-const Pill = styled.div`
-  margin-right: 8px;
-  padding: 8px 16px;
-  margin-top: 40px;
-  margin-bottom: 16px;
-  margin-right: 8px;
-  border-radius: 100px;
+    @media screen and (max-width: 720px) {
+      top: 36px;
+      /* background-color: #c8daf3; */
+      background: rgb(255, 255, 255);
+      background: linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(200, 218, 243, 1) 11%,
+        rgba(200, 218, 243, 1) 100%
+      );
+      padding: 24px 4vw;
+    }
 
-  font-size: 18px;
-  /* font-weight: 600; */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera*/
+    }
+  `,
+  Search: styled.div<{ toggle: boolean }>`
+    transition: all ease-in-out 0.5s;
+    padding: 8px 16px;
+    width: ${(props) => (props.toggle ? "200px" : "56px")};
 
-  display: flex;
-  align-items: center;
+    height: 32px;
+    border-radius: 100px;
 
-  color: #464b53;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-  background-color: #e0d9eb;
-  @media screen and (max-width: 720px) {
-    background-color: rgba(255, 255, 255, 0.5);
-  }
-`;
-const Pill2 = styled.div<{ toggle: number }>`
-  transition: all ease-in-out 0.5s;
+    font-size: 18px;
 
-  margin-right: 8px;
-  padding: 6px 16px;
-  margin-top: 40px;
-  margin-bottom: 16px;
-  margin-right: 8px;
-  border-radius: 100px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+    color: #464b53;
+    background-color: #e3ecf9;
+    background-color: ${({ toggle }) => toggle && "#f3e0f1"};
 
-  font-size: 18px;
-  /* font-weight: 600; */
+    form {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: start;
+      align-items: center;
+    }
+    input {
+      opacity: 0;
+      transition: all ease-in-out 0.5s;
+      outline: none;
+      width: 0;
+      height: 24px;
+      font-size: 18px;
+      border-radius: 100px;
+      border: none;
 
-  display: flex;
-  align-items: center;
+      background-color: ${({ toggle }) => toggle && "rgba(255, 255, 255, 0.8)"};
+      opacity: ${({ toggle }) => toggle && "1"};
+      padding: ${({ toggle }) => toggle && "0 10px"};
+      flex-grow: ${({ toggle }) => toggle && "1"};
 
-  color: #464b53;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+      &::placeholder {
+        color: rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+    }
+    @media screen and (max-width: 720px) {
+      width: ${(props) => props.toggle && "50%"};
+      flex-grow: ${({ toggle }) => toggle && "1"};
+    }
+  `,
+  Sub: styled.div<{ toggle: number }>`
+    transition: all ease-in-out 0.5s;
+    height: 32px;
+    padding: 6px 16px;
+    margin-right: 8px;
+    border-radius: 100px;
 
-  background-color: #e0d9eb;
-  @media screen and (max-width: 720px) {
-    background-color: rgba(255, 255, 255, 0.5);
-  }
+    font-size: 18px;
+    /* font-weight: 600; */
 
-  &:nth-child(${(props) => props.toggle + 1}) {
-    background-color: #d5dbf1;
-  }
-`;
+    display: flex;
+    align-items: center;
+
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+    color: #464b53;
+    background-color: #e3ecf9;
+    &:nth-child(${(props) => props.toggle + 1}) {
+      background-color: #f3e0f1;
+    }
+  `
+};
+
 const WelcomeWrapper = styled.div`
-  width: 500px;
-  /* height: 500px; */
-  margin-top: 64px;
-  /* margin-bottom: 12px; */
+  width: calc(70vw - 70px);
+  padding-top: 64px;
+  padding-bottom: 24px;
 
   display: flex;
   flex-direction: column;
@@ -341,30 +671,60 @@ const WelcomeWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 2px;
     font-size: 32px;
     /* font-weight: 600; */
     line-height: 36px;
     color: rgba(0, 0, 0, 0.8);
-    text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    /* text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2); */
     > div {
       margin-left: 12px;
       font-size: 44px;
     }
   }
-  > span:nth-child(3) {
+  > span:nth-child(3),
+  > span:nth-child(4),
+  > span:nth-child(5),
+  > span:nth-child(6) {
     font-size: 20px;
     /* font-weight: 400; */
     color: rgba(0, 0, 0, 0.5);
 
-    margin: 32px 0;
+    margin: 8px 0;
     margin-bottom: 0;
-    margin-left: 2px;
-    text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    /* margin-left: 2px; */
+    /* text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); */
+  }
+  > span:nth-child(3) {
+    margin-top: 24px;
+  }
+  > span:nth-child(4) {
+    font-size: 24px;
+    /* font-weight: 600; */
+    line-height: 36px;
+    margin-top: 32px;
+    color: #323232;
+    text-transform: uppercase;
+
+    svg {
+      font-size: 32px;
+      margin-right: 4px;
+    }
+  }
+  > span {
+    display: flex;
+    align-items: center;
+
+    padding-left: 10px;
+    padding-left: calc(35vw - 285px);
   }
   @media screen and (max-width: 720px) {
-    width: 92vw;
-    /* padding: 0 12px; */
-    padding-top: 60px;
+    width: 100vw;
+    padding-top: 88px;
+    margin-top: 36px;
+    padding-bottom: 24px;
+    > span {
+      padding-left: 5vw;
+      padding-right: 5vw;
+    }
   }
 `;

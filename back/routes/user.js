@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 
 const userController = require("../controller/userController.js");
 const tokenCheck = require("../middleware/tokenCheck.js");
-const loginRequired = require("../middleware/loginRequired.js");
 
 
 const User = db.User;
@@ -66,7 +65,7 @@ router.get("/current", tokenCheck, async (req, res) => {
         attributes: ['id', 'nickname', 'profilePic'],
       }, {
         model: Post,
-        attributes: ['id'],
+        attributes: ['id', 'type'],
       }, {
         model: Post,
         as: 'Liked',
@@ -104,16 +103,10 @@ router.get("/logout", (req, res) => {
   res.status(200).json("로그아웃 완료");
 })
 //유저 정보 변경 - 닉네임
-router.patch("/edit/nickname", loginRequired, async (req, res) => {
+router.patch("/edit/nickname", tokenCheck, async (req, res) => {
   try {
     const userId = req.currentUserId;
     const nickname = req.body.nickname;
-
-    // user 존재 확인 - loginRequired 미들웨어 과정을 거치기 때문에 불필요
-    // const user = await User.findOne({
-    //   where: { id: userId }
-    // });
-    // if (!user) return res.status(403).json("유저가 존재하지 않습니다.");
 
     const isNicknameExist = await User.findOne({
       where: { nickname }
@@ -132,7 +125,7 @@ router.patch("/edit/nickname", loginRequired, async (req, res) => {
   };
 })
 //유저 정보 변경 - 상태메세지
-router.patch("/edit/usertext", loginRequired, async (req, res) => {
+router.patch("/edit/usertext", tokenCheck, async (req, res) => {
   try {
     const userId = req.currentUserId;
     const usertext = req.body.usertext;
@@ -149,7 +142,7 @@ router.patch("/edit/usertext", loginRequired, async (req, res) => {
   };
 })
 //유저 정보 변경 - 프로필 이미지
-router.patch("/edit/profilepic", loginRequired, async (req, res) => {
+router.patch("/edit/profilepic", tokenCheck, async (req, res) => {
   try {
     const userId = req.currentUserId;
     const profilePic = req.body.profilePic;
@@ -169,7 +162,7 @@ router.patch("/edit/profilepic", loginRequired, async (req, res) => {
 
 //
 //팔로잉팔로워 관련 - 팔로우
-router.patch("/:userId/follow", loginRequired, async (req, res) => {
+router.patch("/:userId/follow", tokenCheck, async (req, res) => {
   const targetUserId = req.params.userId;
   if (targetUserId === req.currentUserId) return res.status(403).json("자기 자신을 팔로우할 수 없습니다.");
 
@@ -187,7 +180,7 @@ router.patch("/:userId/follow", loginRequired, async (req, res) => {
   }
 });
 //팔로잉팔로워 관련 - 언팔로우
-router.delete("/:userId/follow", loginRequired, async (req, res) => {
+router.delete("/:userId/follow", tokenCheck, async (req, res) => {
   const targetUserId = req.params.userId;
   if (targetUserId === req.currentUserId) return res.status(403).json("자기 자신을 언팔로우할 수 없습니다.");
 
@@ -206,7 +199,7 @@ router.delete("/:userId/follow", loginRequired, async (req, res) => {
 });
 
 //팔로잉팔로워 관련 - 팔로잉 정보 불러오기
-router.get("/followings", loginRequired, async (req, res) => {
+router.get("/followings", tokenCheck, async (req, res) => {
   try {
     const user = await User.findOne(
       { where: { id: req.currentUserId } }
@@ -221,7 +214,7 @@ router.get("/followings", loginRequired, async (req, res) => {
   }
 });
 //팔로잉팔로워 관련 - 팔로워 정보 불러오기
-router.get("/followers", loginRequired, async (req, res) => {
+router.get("/followers", tokenCheck, async (req, res) => {
   try {
     const user = await User.findOne(
       { where: { id: req.currentUserId } }
@@ -237,9 +230,11 @@ router.get("/followers", loginRequired, async (req, res) => {
 });
 
 //타겟 유저 정보 불러오기
-router.get("/info", loginRequired, async (req, res) => {
+router.get("/info", tokenCheck, async (req, res) => {
   try {
     const { id } = req.query;
+
+    // if (id == 0) return res.status(200).json(null);
 
     const user = await User.findOne(
       {
@@ -253,7 +248,7 @@ router.get("/info", loginRequired, async (req, res) => {
           attributes: ['id', 'nickname', 'profilePic'],
         }, {
           model: Post,
-          attributes: ['id'],
+          attributes: ['id', 'type'],
         }, {
           model: Post,
           as: 'Liked',

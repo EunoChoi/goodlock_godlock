@@ -27,13 +27,13 @@ const UserProfile = () => {
       </UserTitle>
 
       <UserSub>
-        <Link to="/profile/2">
-          <span>{user?.Posts?.length}</span>
-          <span>게시글</span>
+        <Link to="/profile/4">
+          <span>{user?.Posts?.filter((v: any) => v.type === 2).length}</span>
+          <span>소통글</span>
         </Link>
       </UserSub>
       <UserSub>
-        <Link to="/profile/2">
+        <Link to="/main/0">
           <span>{user?.Liked?.filter((v: any) => v.type === 1).length}</span>
           <span>관심 공고</span>
         </Link>
@@ -45,7 +45,7 @@ const UserProfile = () => {
         </Link>
       </UserSub>
       <UserSub>
-        <Link to="/profile/1">
+        <Link to="/profile/2">
           <span>{user?.Followers?.length}</span>
           <span>팔로워</span>
         </Link>

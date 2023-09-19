@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import "moment/locale/ko";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
+import Axios from "../../apis/Axios";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 //components
 import Comment from "./Comment";
@@ -21,9 +24,10 @@ import { Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import MessageIcon from "@mui/icons-material/Message";
-
-import Axios from "../../apis/Axios";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import InsertLinkIcon from "@mui/icons-material/InsertLink";
 
 interface Image {
   src: string;
@@ -37,9 +41,8 @@ interface CustomError extends Error {
   };
 }
 
-moment.locale("ko");
-
 const Post = ({ postProps }: any) => {
+  moment.locale("ko");
   const BACK_SERVER = process.env.REACT_APP_BACK_URL;
   const queryClient = useQueryClient();
 
@@ -48,13 +51,12 @@ const Post = ({ postProps }: any) => {
   }).data;
 
   const [commentLoadLength, setCommentLoadLength] = useState<number>(5);
-  const [isZoom, setZoom] = useState<boolean>(false);
   const [isPostEdit, setPostEdit] = useState<boolean>(false);
   const [isCommentOpen, setCommentOpen] = useState<boolean>(false);
   const [morePop, setMorePop] = useState<null | HTMLElement>(null);
+  const [isZoom, setZoom] = useState<boolean>(false);
 
   const isLiked = postProps?.Likers?.find((v: any) => v.id === user?.id);
-  const isFollowed = user?.Followings?.find((v: any) => v.id === postProps.UserId);
   const isMyPost = user?.id === postProps?.UserId;
 
   const commentScroll = useRef<null | HTMLDivElement>(null);
@@ -65,18 +67,27 @@ const Post = ({ postProps }: any) => {
   const like = useMutation(() => Axios.patch(`post/${postProps.id}/like`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-      if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
-      if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
-      if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);
-      if (window.location.pathname.split("/")[1] === "userinfo") {
-        queryClient.invalidateQueries(["userLikedPosts"]);
-        queryClient.invalidateQueries(["userInfoPosts"]);
-        queryClient.invalidateQueries(["userCommPosts"]);
-      }
+      queryClient.invalidateQueries(["todayendliked"]);
+
+      queryClient.invalidateQueries(["noticePosts"]);
+
+      queryClient.invalidateQueries(["infoPosts"]);
+      queryClient.invalidateQueries(["activinfo"]);
+
+      queryClient.invalidateQueries(["communityPosts"]);
+      queryClient.invalidateQueries(["feed"]);
+
+      queryClient.invalidateQueries(["userLikedPosts"]);
+      queryClient.invalidateQueries(["userInfoPosts"]);
+      queryClient.invalidateQueries(["userCommPosts"]);
+
       queryClient.invalidateQueries(["likedPosts"]);
       queryClient.invalidateQueries(["myCommPosts"]);
       queryClient.invalidateQueries(["myInfoPosts"]);
-      toast.success("좋아요 완료");
+
+      if (postProps.type === 0) toast.success("좋아요 완료");
+      if (postProps.type === 1) toast.success("관심 등록 완료");
+      if (postProps.type === 2) toast.success("좋아요 완료");
     },
     onError: (err: CustomError) => {
       toast.error(err.response?.data);
@@ -86,18 +97,27 @@ const Post = ({ postProps }: any) => {
   const disLike = useMutation(() => Axios.delete(`post/${postProps.id}/like`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-      if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
-      if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
-      if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);
-      if (window.location.pathname.split("/")[1] === "userinfo") {
-        queryClient.invalidateQueries(["userLikedPosts"]);
-        queryClient.invalidateQueries(["userInfoPosts"]);
-        queryClient.invalidateQueries(["userCommPosts"]);
-      }
+      queryClient.invalidateQueries(["todayendliked"]);
+
+      queryClient.invalidateQueries(["noticePosts"]);
+
+      queryClient.invalidateQueries(["infoPosts"]);
+      queryClient.invalidateQueries(["activinfo"]);
+
+      queryClient.invalidateQueries(["communityPosts"]);
+      queryClient.invalidateQueries(["feed"]);
+
+      queryClient.invalidateQueries(["userLikedPosts"]);
+      queryClient.invalidateQueries(["userInfoPosts"]);
+      queryClient.invalidateQueries(["userCommPosts"]);
+
       queryClient.invalidateQueries(["likedPosts"]);
       queryClient.invalidateQueries(["myCommPosts"]);
       queryClient.invalidateQueries(["myInfoPosts"]);
-      toast.success("좋아요 취소 완료");
+
+      if (postProps.type === 0) toast.success("좋아요 취소 완료");
+      if (postProps.type === 1) toast.success("관심 해제 완료");
+      if (postProps.type === 2) toast.success("좋아요 취소 완료");
     },
     onError: (err: CustomError) => {
       toast.error(err.response?.data);
@@ -108,9 +128,16 @@ const Post = ({ postProps }: any) => {
   const deletePost = useMutation(() => Axios.delete(`post/${postProps.id}`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-      if (window.location.pathname.split("/")[2] === "0") queryClient.invalidateQueries(["noticePosts"]);
-      if (window.location.pathname.split("/")[2] === "1") queryClient.invalidateQueries(["infoPosts"]);
-      if (window.location.pathname.split("/")[2] === "2") queryClient.invalidateQueries(["communityPosts"]);
+      queryClient.invalidateQueries(["todayendliked"]);
+
+      queryClient.invalidateQueries(["noticePosts"]);
+
+      queryClient.invalidateQueries(["infoPosts"]);
+      queryClient.invalidateQueries(["activinfo"]);
+
+      queryClient.invalidateQueries(["communityPosts"]);
+      queryClient.invalidateQueries(["feed"]);
+
       if (window.location.pathname.split("/")[1] === "userinfo") {
         queryClient.invalidateQueries(["userLikedPosts"]);
         queryClient.invalidateQueries(["userInfoPosts"]);
@@ -119,6 +146,8 @@ const Post = ({ postProps }: any) => {
       queryClient.invalidateQueries(["likedPosts"]);
       queryClient.invalidateQueries(["myCommPosts"]);
       queryClient.invalidateQueries(["myInfoPosts"]);
+
+      queryClient.invalidateQueries(["todayinfo"]);
       toast.success("게시글 삭제 완료");
     },
     onError: (err: CustomError) => {
@@ -127,30 +156,22 @@ const Post = ({ postProps }: any) => {
     }
   });
 
-  const follow = useMutation(() => Axios.patch(`user/${postProps.UserId}/follow`), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
-      toast.success("팔로우 완료");
-    },
-    onError: (err: CustomError) => {
-      toast.warning(err.response?.data);
-      // alert(err.response?.data);
-    }
-  });
-  const unFollow = useMutation(() => Axios.delete(`user/${postProps.UserId}/follow`), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
-      toast.success("언팔로우 완료");
-    },
-    onError: (err: CustomError) => {
-      toast.warning(err.response?.data);
-      // alert(err.response?.data);
-    }
-  });
+  const navigate = useNavigate();
+  useEffect(() => {
+    setZoom(false);
+  }, [postProps.id]);
+
+  useEffect(() => {
+    if (isZoom) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
+  }, [isZoom]);
+  useEffect(() => {
+    commentScroll.current?.scrollTo({ top: 0, behavior: "smooth" });
+  }, [postProps?.Comments.length]);
 
   return (
     <PostWrapper onClick={() => setMorePop(null)}>
-      {isZoom && <PostZoom postProps={postProps} setZoom={setZoom} />}
+      {isZoom && <PostZoom setZoom={setZoom} postProps={postProps} />}
       <Popper open={open} anchorEl={morePop} placement="top-end">
         <EditPopup>
           <Button
@@ -158,6 +179,7 @@ const Post = ({ postProps }: any) => {
             color="inherit"
             onClick={() => {
               setMorePop(null);
+              clearTimeout(timer);
               setPostEdit((c) => !c);
             }}
           >
@@ -168,17 +190,18 @@ const Post = ({ postProps }: any) => {
             color="error"
             onClick={() => {
               setMorePop(null);
+              clearTimeout(timer);
               confirmAlert({
                 // title: "",
                 message: "게시글을 삭제 하시겠습니까?",
                 buttons: [
                   {
-                    label: "확인",
-                    onClick: () => deletePost.mutate()
-                  },
-                  {
                     label: "취소",
                     onClick: () => console.log("취소")
+                  },
+                  {
+                    label: "확인",
+                    onClick: () => deletePost.mutate()
                   }
                 ]
               });
@@ -193,74 +216,38 @@ const Post = ({ postProps }: any) => {
       {isPostEdit ? (
         <PostEditPopup
           setPostEdit={setPostEdit}
-          postProps={{ type: postProps.type, id: postProps.id, content: postProps.content, images: postProps.Images }}
+          postProps={{
+            type: postProps.type,
+            id: postProps.id,
+            content: postProps.content,
+            images: postProps.Images,
+            start: postProps?.start,
+            end: postProps?.end,
+            link: postProps?.link
+          }}
         />
       ) : null}
       <PostInfoWrapper>
-        <div>
+        <div
+          onClick={() => {
+            if (user?.id === postProps?.User?.id) {
+              navigate(`/profile/0`);
+            } else {
+              navigate(`/userinfo/${postProps?.User?.id}/cat/0`);
+            }
+            window.scrollTo({
+              top: 0,
+              left: 0,
+              behavior: "smooth"
+            });
+          }}
+        >
           {postProps?.User?.profilePic ? (
-            <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-              <ProfilePic width={150} alt="userProfilePic" src={`${BACK_SERVER}/${postProps?.User?.profilePic}`} />
-            </Link>
+            <ProfilePic alt="userProfilePic" src={`${BACK_SERVER}/${postProps?.User?.profilePic}`} />
           ) : (
-            <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-              <ProfilePic
-                width={150}
-                alt="userProfilePic"
-                src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-              />
-            </Link>
+            <ProfilePic alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}
           <span>{postProps?.User?.nickname}</span>
-          {/* {!isMyPost &&
-            (isFollowed ? (
-              <Button
-                variant="outlined"
-                color="warning"
-                size="small"
-                onClick={() => {
-                  confirmAlert({
-                    // title: "",
-                    message: "언팔로우 하시겠습니까?",
-                    buttons: [
-                      {
-                        label: "확인",
-                        onClick: () => unFollow.mutate()
-                      },
-                      {
-                        label: "취소",
-                        onClick: () => console.log("취소")
-                      }
-                    ]
-                  });
-                }}
-              >
-                unfollow
-              </Button>
-            ) : (
-              <Button
-                variant="outlined"
-                color="warning"
-                size="small"
-                onClick={() => {
-                  confirmAlert({
-                    message: "팔로우 하시겠습니까?",
-                    buttons: [
-                      {
-                        label: "확인",
-                        onClick: () => follow.mutate()
-                      },
-                      {
-                        label: "취소",
-                        onClick: () => console.log("취소")
-                      }
-                    ]
-                  });
-                }}
-              >
-                follow
-              </Button>
-            ))} */}
         </div>
         <span>{moment(postProps?.createdAt).fromNow()}</span>
       </PostInfoWrapper>
@@ -284,10 +271,80 @@ const Post = ({ postProps }: any) => {
       )}
 
       <TextWrapper onClick={() => setZoom(true)}>{postProps?.content}</TextWrapper>
+      {postProps.type === 1 && (
+        <SubContentWrapper>
+          <PostStartEnd>
+            <span>
+              <CalendarMonthIcon />
+            </span>
+            <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
+            <span>~</span>
+            <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
+          </PostStartEnd>
+          {postProps?.link && (
+            <PostLink>
+              <InsertLinkIcon />
+              <span>
+                <a target="_blank" href={`https://${postProps?.link}`} rel="noreferrer">
+                  https://{postProps?.link}
+                </a>
+              </span>
+            </PostLink>
+          )}
+          {true && (
+            <PostTag>
+              {["태그1", "태그2", "태그3", "태그4", "태그5", "태그6"].map((v, i) => (
+                <button key={"태그" + v + i}>{v}</button>
+              ))}
+            </PostTag>
+          )}
+        </SubContentWrapper>
+      )}
 
       {/* 토글 버튼(좋아요, 댓글창, 수정, 삭제) */}
       <ToggleWrapper>
-        {postProps.type !== 0 ? (
+        {postProps.type === 0 && (
+          <ToggleButton
+            onClick={() => {
+              if (!isLiked) {
+                like.mutate();
+              } else {
+                disLike.mutate();
+              }
+            }}
+          >
+            {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
+            <span>{postProps?.Likers?.length}</span>
+          </ToggleButton>
+        )}
+        {postProps.type === 1 && (
+          <FlexDiv>
+            {/* like toggle */}
+            <ToggleButton
+              onClick={() => {
+                if (!isLiked) {
+                  like.mutate();
+                } else {
+                  disLike.mutate();
+                }
+              }}
+            >
+              {isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />}
+              <span>{postProps?.Likers?.length}</span>
+            </ToggleButton>
+            {/* comment toggle */}
+            <ToggleButton
+              onClick={() => {
+                setCommentOpen((c) => !c);
+                setCommentLoadLength(5);
+              }}
+            >
+              <MessageIcon />
+              <span>{postProps?.Comments?.length}</span>
+            </ToggleButton>
+          </FlexDiv>
+        )}
+        {postProps.type === 2 && (
           <FlexDiv>
             {/* like toggle */}
             <ToggleButton
@@ -313,19 +370,6 @@ const Post = ({ postProps }: any) => {
               <span>{postProps?.Comments?.length}</span>
             </ToggleButton>
           </FlexDiv>
-        ) : (
-          <ToggleButton
-            onClick={() => {
-              if (!isLiked) {
-                like.mutate();
-              } else {
-                disLike.mutate();
-              }
-            }}
-          >
-            {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
-            <span>{postProps?.Likers?.length}</span>
-          </ToggleButton>
         )}
         {isMyPost && (
           <ToggleButton
@@ -386,7 +430,60 @@ const Post = ({ postProps }: any) => {
 };
 
 export default Post;
+const PostTag = styled.div`
+  padding: 2px;
+  margin-top: 12px;
+  overflow-x: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 
+  button {
+    flex-shrink: 0;
+    font-size: 16px;
+
+    padding: 4px 12px;
+    background-color: #f3e0f1;
+    border-radius: 50px;
+    margin-right: 8px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+  }
+`;
+const SubContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+
+  font-size: 18px;
+
+  margin: 10px 20px;
+  > div {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+`;
+const PostStartEnd = styled.div`
+  span {
+    margin-right: 4px;
+  }
+  span:first-child {
+    color: #be303e;
+  }
+`;
+const PostLink = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  span {
+    color: #5974af;
+    text-decoration-line: underline;
+    margin-left: 4px;
+  }
+`;
 const More = styled.div`
   margin: 16px;
   margin-top: 0px;
@@ -422,19 +519,22 @@ const PostWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  transition: all ease-in-out 1s;
+  transition: all ease-in-out 0.5s;
 
   /* padding: 20px 0px; */
   height: auto;
   width: 500px;
 
   background-color: white;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   margin: 3px 10px;
   margin-bottom: 30px;
   /* border-radius: 7px; */
   @media screen and (max-width: 720px) {
     width: 92vw;
+    &:last-child {
+      margin-bottom: 150px;
+    }
     /* width: 450px; */
     /* height: auto; */
   }
@@ -486,6 +586,8 @@ const TextWrapper = styled.div`
   white-space: pre-wrap;
   line-height: 1.3em;
 
+  font-size: 20px;
+
   margin: 10px 20px;
 
   /* max-height: 100px; */
@@ -494,7 +596,7 @@ const TextWrapper = styled.div`
   text-overflow: ellipsis;
 
   display: -webkit-box;
-  -webkit-line-clamp: 6; /* 원하는 줄 수 표시 */
+  -webkit-line-clamp: 4; /* 원하는 줄 수 표시 */
   -webkit-box-orient: vertical;
   overflow: hidden;
 

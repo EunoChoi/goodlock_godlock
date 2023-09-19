@@ -61,7 +61,7 @@ const LogIn = ({ setToggle }: Props) => {
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isDirty, isValid },
     handleSubmit,
     getValues
   } = useForm<LogInForm>({
@@ -73,23 +73,47 @@ const LogIn = ({ setToggle }: Props) => {
   });
   const onSubmit = () => {
     const { email, password } = getValues();
-    login.mutate({ email, password });
+    if (login.isLoading === false) {
+      login.mutate({ email, password });
+    }
   };
 
   return (
     <LogInSignUp.Wrapper>
       <LogInSignUp.Title>로그인</LogInSignUp.Title>
-      <LogInSignUp.Form onSubmit={handleSubmit(onSubmit)}>
-        <LogInSignUp.Input placeholder="이메일" type="email" {...register("email")} />
+      <LogInSignUp.Form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+        <LogInSignUp.Input
+          autoComplete="new-password"
+          placeholder="이메일"
+          type="email"
+          {...register("email", {
+            required: {
+              value: true,
+              message: "이메일을 입력해주세요."
+            }
+          })}
+        />
         <LogInSignUp.WarningText>{errors.email?.message}</LogInSignUp.WarningText>
-        <LogInSignUp.Input placeholder="비밀번호" type="password" {...register("password")} />
+        <LogInSignUp.Input
+          placeholder="비밀번호"
+          autoComplete="new-password"
+          type="password"
+          {...register("password", {
+            required: {
+              value: true,
+              message: "비밀번호를 입력해주세요."
+            }
+          })}
+        />
         <LogInSignUp.WarningText>{errors.password?.message}</LogInSignUp.WarningText>
         <LogInSignUp.TextWrapper>
           <LogInSignUp.Text color="#4284F3" pointer={true} onClick={() => toast.error("구현 예정")}>
             혹시 비밀번호를 잊으셨나요?
           </LogInSignUp.Text>
         </LogInSignUp.TextWrapper>
-        <LogInSignUp.Button bgColor="">로그인</LogInSignUp.Button>
+        <LogInSignUp.Button disabled={!isDirty || !isValid} bgColor="">
+          로그인
+        </LogInSignUp.Button>
       </LogInSignUp.Form>
 
       <LogInSignUp.TextWrapper>

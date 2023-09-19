@@ -2,7 +2,19 @@ import styled from "styled-components";
 import Animation from "./Animation";
 
 const InputBG = styled.div`
-  z-index: 500;
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  /* background: rgba(255, 255, 255, 0.5); */
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  animation: ${Animation.smoothAppear} 0.3s;
+`;
+const EditBG = styled.div`
+  z-index: 1010;
   position: fixed;
   top: 0;
   right: 0;
@@ -33,11 +45,17 @@ const InputWrapper = styled.div`
   flex-direction: column;
   @media screen and (max-width: 720px) {
     position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    height: auto;
-    margin-bottom: 20px;
+    left: 0;
+    top: 0;
+    /* transform: translate(-50%, -50%); */
+
+    /* height: auto;
+    height: 100vh; */
+    margin-left: 5%;
+    margin-top: calc(var(--vh, 1vh) * 5);
+    height: calc(var(--vh, 1vh) * 90);
+
+    /* margin-bottom: 20px; */
     background-color: #fff;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
@@ -48,6 +66,7 @@ const InputWrapper = styled.div`
 
 const TextArea = styled.textarea`
   padding: 40px;
+  padding-top: 30px;
   resize: none;
 
   width: 100%;
@@ -67,12 +86,12 @@ const TextArea = styled.textarea`
     text-align: center;
     padding: 60px 0px;
     font-size: 1.5em;
-    font-weight: 600;
+    /* font-weight: 600; */
     color: rgba(0, 0, 0, 0.3);
   }
   @media screen and (max-width: 720px) {
-    height: 500px;
-    height: 30vh;
+    /* height: 300px; */
+    /* height: 30vh; */
     border-radius: 5px;
     padding: 20px;
   }
@@ -133,6 +152,7 @@ const InputForm = {
   InputImage,
   ImageDeleteButton,
   InputBG,
+  EditBG,
   InputWrapper,
   TextArea,
   ButtonArea

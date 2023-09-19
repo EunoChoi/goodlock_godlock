@@ -12,10 +12,20 @@ const GlobalStyle = createGlobalStyle`
 }
   ${reset}
   * {
+    -webkit-tap-highlight-color : transparent !important;
     box-sizing: border-box;
     /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
     font-family: Pretendard-SemiBold, system-ui, -apple-system;
   }
+  
+  html{
+    background-color: whitesmoke;
+  }
+  /* @media screen and (max-width: 720px){
+    html{
+      background: rgba(246, 214, 229, 1);
+    }
+  } */
   span, div{
     /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
     font-family: Pretendard-SemiBold, system-ui, -apple-system;
@@ -29,10 +39,12 @@ const GlobalStyle = createGlobalStyle`
   }
 
   button{
+    flex-shrink: 0;
     background: none;
     border: none;
     padding: 0;
     cursor: pointer;
+    -webkit-tap-highlight-color : transparent !important;
   }
 `;
 

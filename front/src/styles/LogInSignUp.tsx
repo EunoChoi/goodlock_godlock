@@ -4,6 +4,7 @@ import Animation, { ANIMATION_APPEAR } from "./Animation";
 /* eslint-disable */
 const LogInSignUp = {
   Background: styled.div<{ animation: string }>`
+    /* transition: all ease-in-out 0.2s; */
     width: 100vw;
     height: 100vh;
 
@@ -19,6 +20,8 @@ const LogInSignUp = {
         : Animation.smoothDisappear}
       0.5s;
     @media screen and (max-width: 720px) {
+        height: calc(var(--vh, 1vh) * 100);
+        
         display: flex;
         justify-content: center;
         align-items: center;
@@ -31,7 +34,7 @@ const LogInSignUp = {
 
     padding: 60px 100px;
     background-color: white;
-    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.7);
     /* border-radius: 24px; */
 
     position: absolute;
@@ -41,13 +44,12 @@ const LogInSignUp = {
     @media screen and (max-width: 720px) {
       width: 100vw;
       height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
+      overflow-y: scroll;
+
       padding: 60px 50px;
 
-      position: static;
-      /* position: absolute;
-      transform: translate(-50%, -50%);
-      top: 50%;
-      left: 50%; */
+      /* position: static; */
     }
   `,
   Wrapper: styled.div`
@@ -60,6 +62,9 @@ const LogInSignUp = {
     align-items: center;
 
     animation: ${Animation.smoothAppear} 0.6s;
+    @media screen and (max-width: 720px){
+      justify-content: start;
+    }
   `,
   Form: styled.form`
     display: flex;
@@ -85,6 +90,7 @@ const LogInSignUp = {
     color: ${(props) => props.color || "black"};
   `,
   Button: styled.button<{ bgColor: string }>`
+    transition: all 0.7s ease-in-out;
     width: 100%;
     height: 50px;
     border: none;
@@ -92,11 +98,27 @@ const LogInSignUp = {
     background-color: ${(props) => props.bgColor || "rgb(190, 190, 231)"};
     color: white;
     margin-top: 28px;
-
     font-size: 16px;
     flex-shrink: 0;
+    &:disabled{
+      background-color: lightgrey;
+    }
   `,
   Input: styled.input`
+    width: 100%;
+    height: 50px;
+    border: none;
+    /* margin-top: 10px; */
+    border: 1px solid #cacaca;
+    border-radius: 6px;
+    padding: 0 15px;
+
+    font-size: 16px;
+
+    outline: none;
+  `,
+  Password: styled.input`
+    -webkit-text-security: disc;
     width: 100%;
     height: 50px;
     border: none;
