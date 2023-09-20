@@ -257,11 +257,9 @@ const Profile = () => {
                       />
                       <Button
                         onClick={() => {
-                          console.log();
-                          if (nickname.split(" ").length >= 2) {
-                            toast.warning("닉네임에 공백이 포함될 수 없습니다.");
-                          } else if (nickname.length > 11 || nickname.length < 2) {
-                            toast.warning("닉네임은 2자 이상 10자 이하, 영어 또는 숫자 또는 한글로 가능합니다.");
+                          const pattern = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,10}$/;
+                          if (!nickname.match(pattern)) {
+                            toast.warning("2자 이상 10자 이하, 영어 또는 숫자 또는 한글로 구성되어야 합니다.");
                           } else {
                             confirmAlert({
                               // title: "",

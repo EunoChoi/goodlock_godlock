@@ -96,9 +96,12 @@ const SignUp = ({ setToggle }: Props) => {
           })}
         ></LogInSignUp.Input>
         <LogInSignUp.WarningText>{errors.nickname?.message}</LogInSignUp.WarningText>
-        <LogInSignUp.Password
+        <LogInSignUp.Input
           placeholder="비밀번호"
-          type="text"
+          type="password"
+          autoComplete="off"
+          readOnly
+          onFocus={(e) => e.target.removeAttribute("readonly")}
           {...register("password", {
             required: {
               value: true,
@@ -113,15 +116,18 @@ const SignUp = ({ setToggle }: Props) => {
               message: "최대 30자 입력가능합니다."
             },
             pattern: {
-              value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/i,
-              message: "최소 8 자, 최소 하나의 문자 및 하나의 숫자"
+              value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/i,
+              message: "최소 8자, 영문자, 숫자, 특수 문자(@$!%*#?&) 최소 하나씩 포함 필요"
             }
           })}
-        ></LogInSignUp.Password>
+        ></LogInSignUp.Input>
         <LogInSignUp.WarningText>{errors.password?.message}</LogInSignUp.WarningText>
-        <LogInSignUp.Password
+        <LogInSignUp.Input
           placeholder="비밀번호 확인"
-          type="text"
+          type="password"
+          autoComplete="off"
+          readOnly
+          onFocus={(e) => e.target.removeAttribute("readonly")}
           {...register("passwordCheck", {
             required: {
               value: true,
@@ -136,8 +142,8 @@ const SignUp = ({ setToggle }: Props) => {
               message: "최대 30자 입력가능합니다."
             },
             pattern: {
-              value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/i,
-              message: "최소 8 자, 최소 하나의 문자 및 하나의 숫자"
+              value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/i,
+              message: "최소 8자, 영문자, 숫자, 특수 문자(@$!%*#?&) 최소 하나씩 포함 필요"
             },
             validate: (value: string) => {
               if (watch("password") != value) {
@@ -145,7 +151,7 @@ const SignUp = ({ setToggle }: Props) => {
               }
             }
           })}
-        ></LogInSignUp.Password>
+        ></LogInSignUp.Input>
         <LogInSignUp.WarningText>{errors.passwordCheck?.message}</LogInSignUp.WarningText>
         <LogInSignUp.Button type="submit" disabled={!isDirty || !isValid} bgColor="">
           회원가입
