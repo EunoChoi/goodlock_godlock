@@ -155,7 +155,7 @@ const Main = () => {
               <CalendarMonthIcon /> today
             </span>
             <span>신규 등록된 모집공고 {todayUploadInfoPost?.len}개</span>
-            <span>금일 마감 관심공고 {todayEndLikedPost?.len}개</span>
+            <span>마감 예정 관심공고 {todayEndLikedPost?.len}개</span>
           </WelcomeWrapper>
           <Pill.Wrapper>
             <Pill.Sub
@@ -361,7 +361,7 @@ const Main = () => {
                 {infoPosts?.data?.pages.map((p) =>
                   p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
-              </InfiniteScroll> */}
+              </InfiniteScroll>   */}
             </HomeEl>
           )}
         </MainEl>
@@ -472,7 +472,7 @@ const Main = () => {
           )}
           {toggles.sub === 2 && (
             <HomeEl>
-              {communityPosts.data?.pages[0].length === 0 && (
+              {/* {communityPosts.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
                   <span>게시글이 존재하지 않습니다.</span>
@@ -492,7 +492,7 @@ const Main = () => {
                 {communityPosts?.data?.pages.map((p) =>
                   p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
-              </InfiniteScroll>
+              </InfiniteScroll> */}
             </HomeEl>
           )}
         </MainEl>

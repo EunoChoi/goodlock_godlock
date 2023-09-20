@@ -166,11 +166,17 @@ const Post = ({ postProps }: any) => {
     else document.body.style.overflow = "auto";
   }, [isZoom]);
   useEffect(() => {
+    if (isPostEdit) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
+  }, [isPostEdit]);
+
+  useEffect(() => {
     commentScroll.current?.scrollTo({ top: 0, behavior: "smooth" });
   }, [postProps?.Comments.length]);
 
   return (
     <PostWrapper onClick={() => setMorePop(null)}>
+      {/* 포스트 줌 팝업 */}
       {isZoom && <PostZoom setZoom={setZoom} postProps={postProps} />}
       <Popper open={open} anchorEl={morePop} placement="top-end">
         <EditPopup>

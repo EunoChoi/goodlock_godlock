@@ -72,8 +72,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
   const [end, setEnd] = useState<Date>(new Date(postProps.end));
 
   const [link, setLink] = useState<string>("");
-  const isInfoPost =
-    window.location.pathname.split("/")[2] === "1" && window.location.pathname.split("/")[1] === "main";
+  const isInfoPost = postProps.type === 1;
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {

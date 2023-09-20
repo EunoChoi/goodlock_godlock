@@ -481,7 +481,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
 
 export default PostZoom;
 const CustomCarousel = styled(Carousel)`
-  height: calc(var(--vh, 1vh) * 90 - 64px - 32px);
+  height: calc(var(--vh, 1vh) * 100 - 64px - 32px);
 `;
 const MobileCancelBtn = styled.button`
   height: 32px;
@@ -648,7 +648,7 @@ const MobilePostInfo = styled.div`
 `;
 const TextBox = styled.div`
   width: 100%;
-  height: calc(var(--vh, 1vh) * 90 - 64px - 32px);
+  height: calc(var(--vh, 1vh) * 95 - 64px - 32px);
 
   display: flex;
   flex-direction: column;
@@ -678,7 +678,7 @@ const ImageBox = styled.div`
   @media screen and (max-width: 720px) {
     /* background-color: black; */
     height: calc(80vh - 50px);
-    height: calc(var(--vh, 1vh) * 90 - 64px - 32px);
+    height: calc(var(--vh, 1vh) * 95 - 64px - 32px);
   }
 `;
 const Image = styled.img`
@@ -713,9 +713,10 @@ const PostZoomBG = styled.div`
   > button {
     padding-top: 16px;
   }
-  @media screen and (max-width: 720) {
+  @media screen and (max-width: 720px) {
     justify-content: start;
     height: calc(var(--vh, 1vh) * 100);
+    padding-top: 0;
   }
 `;
 const OnlyText = styled.div`
@@ -833,9 +834,13 @@ const ImageText = styled.div`
 const Mobile = styled.div`
   transition: all ease-in-out 0.3s;
   position: relative;
-  width: 90vw;
-  height: 90vh;
-  height: calc(var(--vh, 1vh) * 90);
+
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 
   display: flex;
   justify-content: center;

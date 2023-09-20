@@ -100,7 +100,7 @@ router.get("/activinfo", async (req, res) => {
   let year = todayfull.getFullYear(); // 년도
   let month = todayfull.getMonth();  // 월
   let date = todayfull.getDate();  // 날짜
-  const today = new Date(year, month, date, 0, 0, 0);
+  const today = new Date(Date.UTC(year, month, date, -9));
 
   try {
     const where = {};
@@ -151,7 +151,7 @@ router.get("/todayinfo", tokenCheck, async (req, res) => {
   let year = todayfull.getFullYear(); // 년도
   let month = todayfull.getMonth();  // 월
   let date = todayfull.getDate();  // 날짜
-  const today = new Date(year, month, date, 0, 0, 0);
+  const today = new Date(Date.UTC(year, month, date, -9));
 
   try {
     const where = {};
@@ -174,7 +174,7 @@ router.get("/todayendliked", tokenCheck, async (req, res) => {
   let year = todayfull.getFullYear(); // 년도
   let month = todayfull.getMonth();  // 월
   let date = todayfull.getDate();  // 날짜
-  const today = new Date(year, month, date, 0, 0, 0);
+  const today = new Date(Date.UTC(year, month, date, -9));
 
   try {
     const UserId = req.currentUserId;
