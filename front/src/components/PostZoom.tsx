@@ -313,7 +313,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
 
                   <span>{moment(postProps?.createdAt).fromNow()}</span>
                 </MobilePostInfo>
-                <TextBox key="텍스트페이지">
+                <OnlyTextBox key="텍스트페이지">
                   <div>{postProps.content}</div>
                   {postProps.type === 1 && (
                     <SubContentWrapper onClick={() => setZoom(true)}>
@@ -361,7 +361,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       <span>{postProps?.Likers?.length}</span>
                     </button>
                   </Like>
-                </TextBox>
+                </OnlyTextBox>
                 <MobileCancelBtn onClick={() => setZoom(false)}>
                   <CloseIcon />
                 </MobileCancelBtn>
@@ -649,6 +649,28 @@ const MobilePostInfo = styled.div`
 const TextBox = styled.div`
   width: 100%;
   height: calc(var(--vh, 1vh) * 95 - 64px - 32px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  > div:nth-child(1) {
+    /* height: calc(80vh - 200px); */
+    height: 50%;
+    flex-grow: 1;
+    width: 100%;
+    white-space: pre-wrap;
+    line-height: 1.3em;
+    overflow-y: scroll;
+    padding: 24px;
+
+    font-size: 1.2em;
+  }
+`;
+const OnlyTextBox = styled.div`
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100 - 64px - 32px);
 
   display: flex;
   flex-direction: column;
