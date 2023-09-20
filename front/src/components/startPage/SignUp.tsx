@@ -96,12 +96,12 @@ const SignUp = ({ setToggle }: Props) => {
           })}
         ></LogInSignUp.Input>
         <LogInSignUp.WarningText>{errors.nickname?.message}</LogInSignUp.WarningText>
+
+        <LogInSignUp.FakePassword></LogInSignUp.FakePassword>
+        <LogInSignUp.FakePassword></LogInSignUp.FakePassword>
         <LogInSignUp.Input
           placeholder="비밀번호"
           type="password"
-          autoComplete="off"
-          readOnly
-          onFocus={(e) => e.target.removeAttribute("readonly")}
           {...register("password", {
             required: {
               value: true,
@@ -125,9 +125,6 @@ const SignUp = ({ setToggle }: Props) => {
         <LogInSignUp.Input
           placeholder="비밀번호 확인"
           type="password"
-          autoComplete="off"
-          readOnly
-          onFocus={(e) => e.target.removeAttribute("readonly")}
           {...register("passwordCheck", {
             required: {
               value: true,

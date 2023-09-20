@@ -117,20 +117,17 @@ const LogInSignUp = {
 
     outline: none;
   `,
-  Password: styled.input`
+  FakePassword: styled.input`
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -100;
+
     -webkit-text-security: disc;
-    width: 100%;
-    height: 50px;
-    border: none;
-    /* margin-top: 10px; */
-    border: 1px solid #cacaca;
-    border-radius: 6px;
-    padding: 0 15px;
-
-    font-size: 16px;
-
-    outline: none;
+    width: 0;
+    /* display: none; */
   `,
+
   Bar: styled.div`
     font-size: 16px;
     margin-top: 28px;
