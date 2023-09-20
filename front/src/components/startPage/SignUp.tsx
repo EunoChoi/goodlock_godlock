@@ -96,12 +96,12 @@ const SignUp = ({ setToggle }: Props) => {
           })}
         ></LogInSignUp.Input>
         <LogInSignUp.WarningText>{errors.nickname?.message}</LogInSignUp.WarningText>
-        <LogInSignUp.Password
+        <LogInSignUp.Input
           placeholder="비밀번호"
-          type="text"
+          type="password"
           autoComplete="off"
-          // readOnly
-          // onFocus={(e) => e.target.removeAttribute("readonly")}
+          readOnly
+          onFocus={(e) => e.target.removeAttribute("readonly")}
           {...register("password", {
             required: {
               value: true,
@@ -120,14 +120,14 @@ const SignUp = ({ setToggle }: Props) => {
               message: "최소 8자, 영문자, 숫자, 특수 문자(@$!%*#?&) 최소 하나씩 포함 필요"
             }
           })}
-        ></LogInSignUp.Password>
+        ></LogInSignUp.Input>
         <LogInSignUp.WarningText>{errors.password?.message}</LogInSignUp.WarningText>
-        <LogInSignUp.Password
+        <LogInSignUp.Input
           placeholder="비밀번호 확인"
-          type="text"
+          type="password"
           autoComplete="off"
-          // readOnly
-          // onFocus={(e) => e.target.removeAttribute("readonly")}
+          readOnly
+          onFocus={(e) => e.target.removeAttribute("readonly")}
           {...register("passwordCheck", {
             required: {
               value: true,
@@ -151,7 +151,7 @@ const SignUp = ({ setToggle }: Props) => {
               }
             }
           })}
-        ></LogInSignUp.Password>
+        ></LogInSignUp.Input>
         <LogInSignUp.WarningText>{errors.passwordCheck?.message}</LogInSignUp.WarningText>
         <LogInSignUp.Button type="submit" disabled={!isDirty || !isValid} bgColor="">
           회원가입
