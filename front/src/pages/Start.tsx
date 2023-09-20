@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import Axios from "../apis/Axios";
@@ -26,6 +26,9 @@ const Start = () => {
   const navigate = useNavigate();
 
   const text = ["사랑이 부족한 이 시대 \n 공감과 위로가 전해지기를", "소개 멘트 2", "소개 멘트 3"];
+  useEffect(() => {
+    setToggle(true);
+  }, [popupOpen]);
 
   return (
     <>

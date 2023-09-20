@@ -151,6 +151,7 @@ const LogInSignUp = {
   WarningText: styled.span`
     color: salmon;
     margin: 10px 0px;
+    text-align: center;
   `
 };
 
