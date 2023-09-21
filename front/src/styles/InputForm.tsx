@@ -26,6 +26,7 @@ const EditBG = styled.div`
   animation: ${Animation.smoothAppear} 0.3s;
 `;
 const InputWrapper = styled.div`
+  transition: all ease-in-out 0.5s;
   position: fixed;
   right: 0;
   top: 0;
@@ -66,7 +67,7 @@ const InputWrapper = styled.div`
 
 const TextArea = styled.textarea`
   padding: 40px;
-  padding-top: 30px;
+  padding-top: 20px;
   resize: none;
 
   width: 100%;
