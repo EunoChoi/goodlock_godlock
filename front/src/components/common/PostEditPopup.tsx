@@ -160,23 +160,33 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
               //start, end date
               optionToggle === 0 && (
                 <div>
-                  <CustomDatePicker
+                  <DatePicker
                     locale={ko}
                     dateFormat="yy년 MM월 dd일"
                     selectsStart
                     selected={start}
                     startDate={start}
                     endDate={end}
+                    customInput={
+                      <DateButton>
+                        {start.getFullYear()}년 {start.getMonth() + 1}월 {start.getDate()}일
+                      </DateButton>
+                    }
                     onChange={(date: Date) => setStart(date)}
                   />
                   <MoreHorizIcon />
-                  <CustomDatePicker
+                  <DatePicker
                     locale={ko}
                     dateFormat="yy년 MM월 dd일"
                     selectsEnd
                     selected={end}
                     startDate={start}
                     endDate={end}
+                    customInput={
+                      <DateButton>
+                        {end.getFullYear()}년 {end.getMonth() + 1}월 {end.getDate()}일
+                      </DateButton>
+                    }
                     onChange={(date: Date) => setEnd(date)}
                   />
                 </div>
@@ -268,9 +278,6 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
                   const endM = end.getMonth();
                   const endD = end.getDate();
 
-                  console.log(end);
-                  console.log(new Date(endY, endM, endD, 0, 0, 0));
-
                   editPost.mutate({
                     content,
                     images,
@@ -295,28 +302,34 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
 
 export default PostEditPopup;
 
-const CustomDatePicker = styled(DatePicker)`
+const DateButton = styled.button`
   font-size: 16px;
-  width: 50%;
+  width: 150px;
   height: 32px;
   border: 2px solid #cbdbf3;
   border-radius: 8px;
   outline: none;
 
   text-align: center;
+  @media screen and (max-width: 720px) {
+    width: calc((90vw - 40px - 24px) / 2);
+  }
 `;
 const PostOptionWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
 
   width: 100%;
   height: 130px;
   padding: 0 40px;
+  padding-top: 40px;
+  padding-bottom: 10px;
 
   @media screen and (max-width: 720px) {
-    padding: 0 20px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   > div:first-child {
