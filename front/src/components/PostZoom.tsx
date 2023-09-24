@@ -48,7 +48,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
 
-      queryClient.invalidateQueries(["todayendliked"]);
+      queryClient.invalidateQueries(["thisweek/end/liked"]);
 
       queryClient.invalidateQueries(["noticePosts"]);
       queryClient.invalidateQueries(["infoPosts"]);
@@ -76,7 +76,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
 
-      queryClient.invalidateQueries(["todayendliked"]);
+      queryClient.invalidateQueries(["thisweek/end/liked"]);
 
       queryClient.invalidateQueries(["noticePosts"]);
       queryClient.invalidateQueries(["infoPosts"]);

@@ -82,8 +82,9 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
   const editPost = useMutation((data: localPostData) => Axios.patch<localPostData>(`/post/${postProps.id}`, data), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-      queryClient.invalidateQueries(["todayendliked"]);
-      queryClient.invalidateQueries(["todayinfo"]);
+      queryClient.invalidateQueries(["thisweek/end/liked"]);
+      queryClient.invalidateQueries(["thisweek/new/1"]);
+      queryClient.invalidateQueries(["thisweek/new/2"]);
 
       queryClient.invalidateQueries(["noticePosts"]);
 

@@ -100,7 +100,7 @@ router.get("/activinfo", async (req, res) => {
   let year = todayfull.getFullYear(); // 년도
   let month = todayfull.getMonth();  // 월
   let date = todayfull.getDate();  // 날짜
-  const today = new Date(Date.UTC(year, month, date, -9));
+  const today = new Date(year, month, date);
 
   try {
     const where = {};
@@ -145,36 +145,67 @@ router.get("/activinfo", async (req, res) => {
 })
 
 
-//length - today upload info posts
-router.get("/todayinfo", tokenCheck, async (req, res) => {
+//length - new post this week
+router.get("/thisweek/new", tokenCheck, async (req, res) => {
+
+  const { type } = req.query;
+
   const todayfull = new Date();
   let year = todayfull.getFullYear(); // 년도
   let month = todayfull.getMonth();  // 월
   let date = todayfull.getDate();  // 날짜
-  const today = new Date(Date.UTC(year, month, date, -9));
+  let day = todayfull.getDay(); // 요일
+
+  const today = new Date(year, month, date);
+  const rangeStart = new Date(year, month, date - ((day + 6) % 7));
+  const rangeEnd = new Date(year, month, date, 23, 59, 59);
+
+
+  //일 0, 월 1, 화 2, 수 3, 목 4, 금 5, 토 6
+  console.log("===================")
+  console.log(day);
+  console.log((day + 6) % 7);
+
+  console.log(rangeStart)
+  console.log(rangeEnd)
+
+  console.log("===================")
+
 
   try {
     const where = {};
     const Posts = await Post.findAll({
       where: [{
-        type: 1,
-        createdAt: { [Op.gte]: today }
+        type,
+        [Op.and]: [
+          { createdAt: { [Op.gte]: rangeStart } },
+          { createdAt: { [Op.lte]: rangeEnd } }
+        ],
       }]
-      , attributes: ['id'],
+      , attributes: ['id', 'createdAt'],
     });
 
+    // return res.status(201).json({ Posts });
     return res.status(201).json({ len: Posts.length });
   } catch (e) {
     console.err(e);
   }
 })
-//length - today end info posts
-router.get("/todayendliked", tokenCheck, async (req, res) => {
+//length - end post this week
+router.get("/thisweek/liked", tokenCheck, async (req, res) => {
+
   const todayfull = new Date();
   let year = todayfull.getFullYear(); // 년도
   let month = todayfull.getMonth();  // 월
   let date = todayfull.getDate();  // 날짜
-  const today = new Date(Date.UTC(year, month, date, -9));
+  let day = todayfull.getDay(); // 요일
+
+  const today = new Date(year, month, date);
+  //this week range date
+  const rangeStart = new Date(year, month, date - ((day + 6) % 7));
+  const rangeEnd = new Date(year, month, date, 23, 59, 59);
+
+
 
   try {
     const UserId = req.currentUserId;
@@ -194,7 +225,10 @@ router.get("/todayendliked", tokenCheck, async (req, res) => {
         where: [{
           type: 1,
           id: { [Op.in]: likedPosts.map(v => v.id) },
-          end: { [Op.eq]: today }
+          [Op.and]: [
+            { end: { [Op.gte]: rangeStart } },
+            { end: { [Op.lte]: rangeEnd } }
+          ],
         }]
       });
       return res.status(201).json({ len: Posts.length });
