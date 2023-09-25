@@ -234,6 +234,7 @@ const Post = ({ postProps }: any) => {
           }}
         />
       ) : null}
+
       <PostInfoWrapper>
         <div
           onClick={() => {
@@ -595,7 +596,7 @@ const TextWrapper = styled.div`
 
   font-size: 18px;
 
-  margin: 10px 20px;
+  margin: 28px 20px;
 
   /* max-height: 100px; */
   overflow-y: scroll;
