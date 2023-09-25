@@ -67,7 +67,7 @@ const Post = ({ postProps }: any) => {
   const like = useMutation(() => Axios.patch(`post/${postProps.id}/like`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-      queryClient.invalidateQueries(["todayendliked"]);
+      queryClient.invalidateQueries(["thisweek/end/liked"]);
 
       queryClient.invalidateQueries(["noticePosts"]);
 
@@ -97,7 +97,7 @@ const Post = ({ postProps }: any) => {
   const disLike = useMutation(() => Axios.delete(`post/${postProps.id}/like`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-      queryClient.invalidateQueries(["todayendliked"]);
+      queryClient.invalidateQueries(["thisweek/end/liked"]);
 
       queryClient.invalidateQueries(["noticePosts"]);
 
@@ -128,7 +128,7 @@ const Post = ({ postProps }: any) => {
   const deletePost = useMutation(() => Axios.delete(`post/${postProps.id}`), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
-      queryClient.invalidateQueries(["todayendliked"]);
+      queryClient.invalidateQueries(["thisweek/end/liked"]);
 
       queryClient.invalidateQueries(["noticePosts"]);
 
@@ -147,7 +147,8 @@ const Post = ({ postProps }: any) => {
       queryClient.invalidateQueries(["myCommPosts"]);
       queryClient.invalidateQueries(["myInfoPosts"]);
 
-      queryClient.invalidateQueries(["todayinfo"]);
+      queryClient.invalidateQueries(["thisweek/new/1"]);
+      queryClient.invalidateQueries(["thisweek/new/2"]);
       toast.success("게시글 삭제 완료");
     },
     onError: (err: CustomError) => {
@@ -233,6 +234,7 @@ const Post = ({ postProps }: any) => {
           }}
         />
       ) : null}
+
       <PostInfoWrapper>
         <div
           onClick={() => {
@@ -592,9 +594,9 @@ const TextWrapper = styled.div`
   white-space: pre-wrap;
   line-height: 1.3em;
 
-  font-size: 20px;
+  font-size: 18px;
 
-  margin: 10px 20px;
+  margin: 28px 20px;
 
   /* max-height: 100px; */
   overflow-y: scroll;

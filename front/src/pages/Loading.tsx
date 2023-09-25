@@ -5,7 +5,7 @@ const Loading = () => {
   return (
     <LoadingWrapper>
       <img src={`${process.env.PUBLIC_URL}/img/loading.gif`}></img>
-      <span>나랑문학</span>
+      <span>NARANG</span>
     </LoadingWrapper>
   );
 };

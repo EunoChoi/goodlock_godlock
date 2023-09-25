@@ -169,6 +169,15 @@ const Profile = () => {
       // alert(err.response?.data);
     }
   });
+  const deleteFollower = useMutation((data: { userId: number }) => Axios.delete(`user/${data.userId}/follower`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["user"]);
+    },
+    onError: (err: CustomError) => {
+      toast.warning(err.response?.data);
+      // alert(err.response?.data);
+    }
+  });
 
   const scrollTarget = useRef<HTMLDivElement>(null);
   const category = ["정보", "팔로잉", "팔로워", "내 모집 공고", "내 소통글"];
@@ -491,7 +500,24 @@ const Profile = () => {
                         <span>{v.nickname}</span>
                       </div>
 
-                      <Button onClick={() => toast.error("구현 예정")}>
+                      <Button
+                        onClick={() =>
+                          confirmAlert({
+                            // title: "",
+                            message: "팔로워를 삭제하시겠습니까?",
+                            buttons: [
+                              {
+                                label: "취소",
+                                onClick: () => console.log("취소")
+                              },
+                              {
+                                label: "확인",
+                                onClick: () => deleteFollower.mutate({ userId: v.id })
+                              }
+                            ]
+                          })
+                        }
+                      >
                         <RemoveCircleOutlinedIcon color="error" />
                       </Button>
                     </ListItem>

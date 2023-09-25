@@ -65,8 +65,9 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["user"]);
-        queryClient.invalidateQueries(["todayendliked"]);
-        queryClient.invalidateQueries(["todayinfo"]);
+        queryClient.invalidateQueries(["thisweek/end/liked"]);
+        queryClient.invalidateQueries(["thisweek/new/1"]);
+        queryClient.invalidateQueries(["thisweek/new/2"]);
 
         queryClient.invalidateQueries(["noticePosts"]);
 
@@ -183,11 +184,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
               //link
               optionToggle === 1 && (
                 <div>
-                  <input
-                    placeholder="추가할 링크를 입력하세요"
-                    value={link}
-                    onChange={(e) => setLink(e.target.value)}
-                  ></input>
+                  <input placeholder="www.example.com" value={link} onChange={(e) => setLink(e.target.value)}></input>
                 </div>
               )
             }

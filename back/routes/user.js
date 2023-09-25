@@ -197,6 +197,23 @@ router.delete("/:userId/follow", tokenCheck, async (req, res) => {
     console.err(err);
   }
 });
+router.delete("/:userId/follower", tokenCheck, async (req, res) => {
+  const targetUserId = req.params.userId;
+  if (targetUserId === req.currentUserId) return res.status(403).json("팔로워 id가 잘못되었습니다.");
+
+  try {
+    const targetUser = await User.findOne(
+      { where: { id: targetUserId } }
+    );
+    if (!targetUser) return res.status(403).json("존재하지 않은 유저입니다.");
+
+    targetUser.removeFollowings(req.currentUserId);
+    return res.status(200).json(targetUser)
+  }
+  catch (err) {
+    console.err(err);
+  }
+});
 
 //팔로잉팔로워 관련 - 팔로잉 정보 불러오기
 router.get("/followings", tokenCheck, async (req, res) => {
