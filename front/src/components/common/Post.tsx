@@ -279,6 +279,7 @@ const Post = ({ postProps }: any) => {
       )}
 
       <TextWrapper onClick={() => setZoom(true)}>{postProps?.content}</TextWrapper>
+
       {postProps.type === 1 && (
         <SubContentWrapper>
           <PostStartEnd>

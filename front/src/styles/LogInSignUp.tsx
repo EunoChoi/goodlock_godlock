@@ -4,6 +4,7 @@ import Animation, { ANIMATION_APPEAR } from "./Animation";
 /* eslint-disable */
 const LogInSignUp = {
   Background: styled.div<{ animation: string }>`
+    z-index: 20;
     /* transition: all ease-in-out 0.2s; */
     width: 100vw;
     height: 100vh;
@@ -12,7 +13,7 @@ const LogInSignUp = {
     top: 0;
     left: 0;
     background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(12px);
 
     animation: ${(props) =>
       props.animation === ANIMATION_APPEAR
@@ -77,6 +78,7 @@ const LogInSignUp = {
     font-size: 28px;
     font-weight: 600;
     margin-bottom: 30px;
+    font-family: Pretendard-bold;
   `,
   TextWrapper: styled.div`
     margin-top: 28px;

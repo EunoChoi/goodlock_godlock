@@ -475,10 +475,11 @@ const UserInfoWrapper = styled.div`
   height: 500px;
 
   > span {
-    /* text-align: center; */
     color: rgba(0, 0, 0, 0.6);
   }
   > span:nth-child(2) {
+    font-family: "Pretendard-bold";
+
     margin-top: 32px;
     font-size: 48px;
     color: rgba(0, 0, 0, 0.8);
@@ -679,7 +680,7 @@ const List = styled.div`
 `;
 const ListItem = styled.div`
   width: 100%;
-  padding: 5px 0px;
+  padding: 5px 5px;
   font-size: 18px;
   color: rgba(0, 0, 0, 0.5);
 

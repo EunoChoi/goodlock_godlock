@@ -25,32 +25,41 @@ const Start = () => {
   const { data: isLoggedIn } = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data));
   const navigate = useNavigate();
 
-  const text = ["사랑이 부족한 이 시대 \n 공감과 위로가 전해지기를", "소개 멘트 2", "소개 멘트 3"];
+  const text = "사랑이 부족한 이 시대 \n 공감과 위로가 전해지기를";
   useEffect(() => {
     setToggle(true);
   }, [popupOpen]);
 
   return (
     <>
-      <BG alt="startPage_2" src={`${process.env.PUBLIC_URL}/img/startPage_4.jpg`}></BG>
-      {!popupOpen && (
-        <StartWrapper>
-          <Title>narang</Title>
-          <CarouselWrapper>
-            <Carousel indicators={true} autoPlay={true} animation="slide">
-              {text.map((v, i) => (
-                <TextBox key={v + i}>
-                  <span>
-                    {i === 0 && <FavoriteIcon fontSize="large" />}
-                    {i === 1 && <EscalatorWarningIcon fontSize="large" />}
-                    {i === 2 && <MenuBookIcon fontSize="large" />}
-                  </span>
-                  <span>{v}</span>
-                </TextBox>
-              ))}
-            </Carousel>
-          </CarouselWrapper>
-
+      {/* <BG alt="startPage_2" src={`${process.env.PUBLIC_URL}/img/startPage_4.jpg`}></BG> */}
+      <BG />
+      <BG2 />
+      <Footer>
+        <span>문의 : pixel@kakao.com</span>
+        <span>
+          <a href="https://kr.freepik.com/free-vector/student-with-laptop-studying-on-online-course_7732666.htm#from_view=detail_author">
+            ❖ Freepik, pch.vector
+          </a>
+        </span>
+      </Footer>
+      <StartWrapper>
+        <div>
+          <Title>
+            <div>
+              <span>모</span>
+              <span>두 함께하는</span>
+            </div>
+            <div>
+              <span>서</span>
+              <span>평</span>
+            </div>
+            <div>
+              <span>리</span>
+              <span>뷰</span>
+            </div>
+          </Title>
+          <TextBox>{text}</TextBox>
           <StartButton
             onClick={(e) => {
               e.preventDefault();
@@ -59,10 +68,13 @@ const Start = () => {
               else setPopupOpen(true);
             }}
           >
-            start
+            함께하기
           </StartButton>
-        </StartWrapper>
-      )}
+        </div>
+        <div>
+          <StartImg alt="start_image" src={`${process.env.PUBLIC_URL}/img/start_image.png`}></StartImg>
+        </div>
+      </StartWrapper>
       {popupOpen && (
         <>
           <PopupBox popupOpen={popupOpen} setPopupOpen={setPopupOpen}>
@@ -78,70 +90,130 @@ const Start = () => {
 export default Start;
 
 const TextBox = styled.div`
-  width: 100%;
-  height: 170px;
-
-  font-size: 28px;
-  /* font-weight: 400; */
+  font-size: 24px;
   white-space: pre-line;
-  color: white;
-  text-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: 600;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  line-height: 36px;
+  text-align: start;
 
-  text-align: center;
-
-  > span {
-    line-height: 32px;
-  }
-  > span:nth-child(2) {
-    margin-top: 32px;
-  }
-
-  @media screen and (max-width: 720px) {
-    font-size: 24px;
-  }
+  margin: 64px 0;
 `;
-const CarouselWrapper = styled.div`
-  width: 100%;
-  height: 200px;
-`;
+
 const Title = styled.span`
-  font-size: 48px;
-  /* font-weight: 600; */
-  text-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
-  color: white;
   text-transform: uppercase;
+  font-family: Pretendard-bold;
+  > div {
+    line-height: 72px;
+    font-size: 64px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.7);
+    span:nth-child(2) {
+      font-size: 42px;
+      color: rgba(0, 0, 0, 0.4);
+    }
+  }
 `;
 
-const BG = styled.img`
+const BG = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  object-fit: cover;
-  filter: brightness(0.6);
+
+  background-color: #c7d7ff;
+`;
+const BG2 = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 30vh;
+  @media screen and (max-width: 720px) {
+    height: 20vh;
+  }
+
+  background-color: rgba(0, 0, 0, 0.2);
+`;
+const Footer = styled.div`
+  z-index: 19;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 32px;
+
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding: 0 12px;
+
+  span {
+    margin-left: 16px;
+  }
 `;
 
 const StartWrapper = styled.div`
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 50%;
-
-  width: 80%;
-  height: 65%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
 
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  @media screen and (max-width: 720px) {
+    flex-direction: column;
+  }
+
+  > div:nth-child(1) {
+    width: 40vw;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+
+    padding-left: 10vw;
+    padding-top: 10vh;
+    @media screen and (max-width: 720px) {
+      width: 100vw;
+      height: 70vh;
+    }
+  }
+  > div:nth-child(2) {
+    width: 60vw;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @media screen and (max-width: 720px) {
+      justify-content: end;
+      align-items: start;
+      width: 100vw;
+      height: 30vh;
+    }
+  }
 
   animation: ${Animation.smoothAppear} 1s;
+`;
+
+const StartImg = styled.img`
+  width: 90%;
+  height: 80%;
+  object-fit: contain;
+  @media screen and (max-width: 720px) {
+    width: 50%;
+    height: 25vh;
+    margin-right: 24px;
+  }
 `;
 
 const StartButton = styled.button`
@@ -150,16 +222,10 @@ const StartButton = styled.button`
   color: rgba(0, 0, 0, 0.7);
   text-transform: uppercase;
 
-  /* width: 200px; */
   padding: 12px 32px;
-  border-radius: 100px;
 
-  /* background-color: rgba(0, 0, 0, 0);
-  backdrop-filter: blur(2px); 
-  border: solid 5px white;*/
-
-  background-color: #c8daf3;
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  background-color: #f4f6b1;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.15);
 
   cursor: pointer;
 `;

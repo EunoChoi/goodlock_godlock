@@ -695,13 +695,14 @@ const WelcomeWrapper = styled.div`
 
   > span:first-child,
   > span:nth-child(2) {
+    font-family: "Pretendard-bold";
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 32px;
+    font-size: 30px;
     /* font-weight: 600; */
     line-height: 36px;
-    color: rgba(0, 0, 0, 0.8);
+    color: rgba(0, 0, 0, 0.7);
     /* text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2); */
     > div {
       margin-left: 12px;
@@ -729,7 +730,7 @@ const WelcomeWrapper = styled.div`
     /* font-weight: 600; */
     line-height: 36px;
     margin-top: 32px;
-    color: #323232;
+    color: rgba(0, 0, 0, 0.65);
     text-transform: uppercase;
 
     svg {

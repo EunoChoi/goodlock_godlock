@@ -30,12 +30,12 @@ const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, children 
             }, 400);
           }}
         >
-          {isMobile || (
+          {/* {isMobile || (
             <WelcomeText>
               <span>나랑문학 소개 글 들어갈 공간 - 1</span>
               <span>나랑문학 소개 글 들어갈 공간 - 2</span>
             </WelcomeText>
-          )}
+          )} */}
           <LogInSignUp.Box onClick={(e) => e.stopPropagation()}>{children}</LogInSignUp.Box>
           {isMobile && (
             <CancelBtn>

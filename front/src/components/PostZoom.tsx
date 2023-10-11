@@ -459,7 +459,9 @@ const MobileCancelBtn = styled.button`
   height: 32px;
   width: 100%;
   background-color: #a9aed4;
+  background-color: #c8daf3;
   color: white;
+  color: rgba(0, 0, 0, 0.7);
 `;
 
 const SubContentWrapper = styled.div`
