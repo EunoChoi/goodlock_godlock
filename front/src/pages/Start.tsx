@@ -99,6 +99,9 @@ const TextBox = styled.div`
   text-align: start;
 
   margin: 64px 0;
+  @media screen and (max-width: 720px) {
+    margin: 48px 0;
+  }
 `;
 
 const Title = styled.span`
@@ -109,9 +112,15 @@ const Title = styled.span`
     font-size: 64px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.7);
+    @media screen and (max-width: 720px) {
+      font-size: 56px;
+    }
     span:nth-child(2) {
       font-size: 42px;
       color: rgba(0, 0, 0, 0.4);
+      @media screen and (max-width: 720px) {
+        font-size: 34px;
+      }
     }
   }
 `;
@@ -185,6 +194,7 @@ const StartWrapper = styled.div`
     @media screen and (max-width: 720px) {
       width: 100vw;
       height: 70vh;
+      height: calc(var(--vh, 1vh) * 65);
     }
   }
   > div:nth-child(2) {
@@ -199,6 +209,7 @@ const StartWrapper = styled.div`
       align-items: start;
       width: 100vw;
       height: 30vh;
+      height: calc(var(--vh, 1vh) * 35);
     }
   }
 
@@ -210,13 +221,15 @@ const StartImg = styled.img`
   height: 80%;
   object-fit: contain;
   @media screen and (max-width: 720px) {
-    width: 50%;
+    width: 40%;
     height: 25vh;
+    height: calc(var(--vh, 1vh) * 25);
     margin-right: 24px;
   }
 `;
 
 const StartButton = styled.button`
+  z-index: 10;
   font-size: 24px;
   color: white;
   color: rgba(0, 0, 0, 0.7);
