@@ -129,7 +129,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
         });
       }}
     >
-      {isMobile || <PostInputHelp>{PostInputHelpText[inputType]}</PostInputHelp>}
+      {/* {isMobile || <PostInputHelp>{PostInputHelpText[inputType]}</PostInputHelp>} */}
       <InputForm.InputWrapper onClick={(e) => e.stopPropagation()}>
         {isInfoPost && (
           <PostOptionWrapper>

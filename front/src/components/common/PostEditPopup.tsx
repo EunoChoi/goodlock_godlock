@@ -142,7 +142,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
         });
       }}
     >
-      {isMobile || <PostInputHelp>{PostInputHelpText[postProps.type]}</PostInputHelp>}
+      {/* {isMobile || <PostInputHelp>{PostInputHelpText[postProps.type]}</PostInputHelp>} */}
       <InputForm.InputWrapper onClick={(e) => e.stopPropagation()}>
         {isInfoPost && (
           <PostOptionWrapper>

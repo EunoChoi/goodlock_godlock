@@ -189,7 +189,7 @@ const Profile = () => {
         <ProfileTitle ref={scrollTarget}>
           <Title>마이 페이지</Title>
           <span>정보 수정 및 작성 글 확인이 가능합니다.</span>
-          <span>마지막 정보 수정 - {moment(user?.updatedAt).fromNow()}</span>
+          <span>마지막 수정 - {moment(user?.updatedAt).fromNow()}</span>
         </ProfileTitle>
         <MenuWrapper>
           {category.map((v, i) => (

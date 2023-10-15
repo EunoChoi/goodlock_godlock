@@ -230,12 +230,12 @@ const StartImg = styled.img`
 
 const StartButton = styled.button`
   z-index: 10;
-  font-size: 24px;
+  font-size: 20px;
   color: white;
   color: rgba(0, 0, 0, 0.7);
   text-transform: uppercase;
 
-  padding: 12px 32px;
+  padding: 12px 24px;
 
   background-color: #f4f6b1;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.15);

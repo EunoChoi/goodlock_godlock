@@ -48,6 +48,8 @@ const Main = () => {
     main: 0,
     sub: 0
   });
+  const [searchInfo, setSearchInfo] = useState<string>("");
+  const [searchComm, setSearchComm] = useState<string>("");
 
   const navigate = useNavigate();
 
@@ -138,6 +140,36 @@ const Main = () => {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
       }
+    }
+  );
+
+  //load search posts
+  const searchInfoPosts = useInfiniteQuery(
+    ["searchInfo"],
+    ({ pageParam = 1 }) =>
+      Axios.get("post/search", { params: { type: 1, search: searchInfo, pageParam, tempDataNum: 5 } }).then(
+        (res) => res.data
+      ),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.length === 0 ? undefined : allPages.length + 1;
+      },
+      refetchOnWindowFocus: false,
+      enabled: false
+    }
+  );
+  const searchCommPosts = useInfiniteQuery(
+    ["searchComm"],
+    ({ pageParam = 1 }) =>
+      Axios.get("post/search", { params: { type: 2, search: searchComm, pageParam, tempDataNum: 5 } }).then(
+        (res) => res.data
+      ),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.length === 0 ? undefined : allPages.length + 1;
+      },
+      refetchOnWindowFocus: false,
+      enabled: false
     }
   );
 
@@ -254,12 +286,12 @@ const Main = () => {
           )}
         </MainEl>
       )}
-      {toggles.main === 1 && (
+      {toggles.main === 1 && ( // 모집 공고
         <MainEl>
           <WelcomeWrapper ref={scrollTarget}>
             <span>모집 공고</span>
             <span></span>
-            <span>모집 공고를 공유해요.</span>
+            <span>서평단 모집 공고를 공유해요.</span>
             <span>
               <CalendarMonthIcon />
               This Week
@@ -302,12 +334,19 @@ const Main = () => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  toast.error("구현 예정");
-                  console.log("submit");
+                  if (searchInfo.length !== 0) {
+                    searchInfoPosts.refetch();
+                  }
                 }}
               >
                 <SearchIcon />
-                <input placeholder="태그 검색" />
+                <input
+                  value={searchInfo}
+                  onChange={(e) => {
+                    setSearchInfo(e.target.value);
+                  }}
+                  placeholder="검색"
+                />
               </form>
             </Pill.Search>
           </Pill.Wrapper>
@@ -361,34 +400,44 @@ const Main = () => {
               </InfiniteScroll>
             </HomeEl>
           )}
-          {toggles.sub === 2 && (
+          {toggles.sub === 2 && ( //모집 공고 검색
             <HomeEl>
-              {/* {infoPosts.data?.pages[0].length === 0 && (
+              {/* 검색하기 전 */}
+              {searchInfoPosts.data == null && (
+                <EmptyNoti>
+                  <SearchIcon fontSize="inherit" />
+                </EmptyNoti>
+              )}
+
+              {/* 검색 결과가 존재하지 않는 경우 */}
+              {searchInfoPosts.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
                   <span>게시글이 존재하지 않습니다.</span>
                 </EmptyNoti>
               )}
+
               <InfiniteScroll
                 // scrollableTarget="scrollWrapper"
-                hasMore={infoPosts.hasNextPage || false}
+                hasMore={searchInfoPosts.hasNextPage || false}
                 loader={
                   <LoadingIconWrapper>
                     <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
                   </LoadingIconWrapper>
                 }
-                next={() => infoPosts.fetchNextPage()}
-                dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+                next={() => searchInfoPosts.fetchNextPage()}
+                dataLength={searchInfoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
-                {infoPosts?.data?.pages.map((p) =>
+                {searchInfoPosts?.data?.pages.map((p) =>
                   p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
-              </InfiniteScroll>   */}
+              </InfiniteScroll>
             </HomeEl>
           )}
         </MainEl>
       )}
-      {toggles.main === 2 && (
+
+      {toggles.main === 2 && ( //소통
         <MainEl>
           <WelcomeWrapper ref={scrollTarget}>
             <span>소통</span>
@@ -436,12 +485,19 @@ const Main = () => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  toast.error("구현 예정");
-                  console.log("submit");
+                  if (searchComm.length !== 0) {
+                    searchCommPosts.refetch();
+                  }
                 }}
               >
                 <SearchIcon />
-                <input placeholder="태그 검색" />
+                <input
+                  placeholder="검색"
+                  value={searchComm}
+                  onChange={(e) => {
+                    setSearchComm(e.target.value);
+                  }}
+                />
               </form>
             </Pill.Search>
           </Pill.Wrapper>
@@ -499,27 +555,31 @@ const Main = () => {
           )}
           {toggles.sub === 2 && (
             <HomeEl>
-              {/* {communityPosts.data?.pages[0].length === 0 && (
+              {searchCommPosts.data == null && (
+                <EmptyNoti>
+                  <SearchIcon fontSize="inherit" />
+                </EmptyNoti>
+              )}
+              {searchCommPosts.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
                   <span>게시글이 존재하지 않습니다.</span>
                 </EmptyNoti>
               )}
               <InfiniteScroll
-                // scrollableTarget="scrollWrapper"
-                hasMore={communityPosts.hasNextPage || false}
+                hasMore={searchCommPosts.hasNextPage || false}
                 loader={
                   <LoadingIconWrapper>
                     <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
                   </LoadingIconWrapper>
                 }
-                next={() => communityPosts.fetchNextPage()}
-                dataLength={communityPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+                next={() => searchCommPosts.fetchNextPage()}
+                dataLength={searchCommPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
-                {communityPosts?.data?.pages.map((p) =>
+                {searchCommPosts?.data?.pages.map((p) =>
                   p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
-              </InfiniteScroll> */}
+              </InfiniteScroll>
             </HomeEl>
           )}
         </MainEl>
