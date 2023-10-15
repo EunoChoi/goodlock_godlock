@@ -336,6 +336,7 @@ const Main = () => {
                   e.preventDefault();
                   if (searchInfo.length !== 0) {
                     searchInfoPosts.refetch();
+                    toast.success(`"${searchInfo}" 검색...`);
                   }
                 }}
               >
@@ -487,6 +488,7 @@ const Main = () => {
                   e.preventDefault();
                   if (searchComm.length !== 0) {
                     searchCommPosts.refetch();
+                    toast.success(`"${searchComm}" 검색...`);
                   }
                 }}
               >
