@@ -187,9 +187,9 @@ const Profile = () => {
       <>
         {toggles.image && <ProfileChangePopup setToggles={setToggles} />}
         <ProfileTitle ref={scrollTarget}>
-          <Nickname>마이 페이지</Nickname>
+          <Title>마이 페이지</Title>
           <span>정보 수정 및 작성 글 확인이 가능합니다.</span>
-          <span>마지막 정보 수정 - {moment(user?.updatedAt).fromNow()}</span>
+          <span>마지막 수정 - {moment(user?.updatedAt).fromNow()}</span>
         </ProfileTitle>
         <MenuWrapper>
           {category.map((v, i) => (
@@ -345,7 +345,7 @@ const Profile = () => {
                           } else {
                             confirmAlert({
                               // title: "",
-                              message: "상태메시지를 변경하시겠습니까?",
+                              message: "상태메세지를 변경하시겠습니까?",
                               buttons: [
                                 {
                                   label: "취소",
@@ -651,7 +651,8 @@ const ProfileTitle = styled.div`
     }
   }
 `;
-const Nickname = styled.div`
+const Title = styled.div`
+  font-family: "Pretendard-bold";
   font-size: 32px;
   line-height: 36px;
   color: rgba(0, 0, 0, 0.8);
@@ -812,7 +813,7 @@ const List = styled.div`
 `;
 const ListItem = styled.div`
   width: 100%;
-  padding: 5px 0px;
+  padding: 5px 5px;
   font-size: 18px;
   color: rgba(0, 0, 0, 0.5);
 

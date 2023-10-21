@@ -396,6 +396,54 @@ router.get("/liked", tokenCheck, async (req, res) => {
   }
 })
 
+//load posts - search contents
+router.get("/search", async (req, res) => {
+  const { type, search, pageParam, tempDataNum } = req.query;
+
+  try {
+    const where = {};
+    const Posts = await Post.findAll({
+      where: [{
+        type: type,
+        content: {
+          [Op.like]: "%" + `${search}` + "%"
+        }
+      }],
+      order: [
+        ['createdAt', 'DESC'],
+        [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+      ],
+      include: [
+        {
+          model: User,//게시글 작성자
+          attributes: ['id', 'nickname', 'profilePic', 'email'],
+        },
+        {
+          model: User, //좋아요 누른 사람
+          as: 'Likers', //모델에서 가져온대로 설정
+          attributes: ['id', 'nickname'],
+        },
+        {
+          model: Image, //게시글의 이미지
+        },
+        {
+          model: Comment, //게시글에 달린 댓글
+          include: [
+            {
+              model: User, //댓글의 작성자
+              attributes: ['id', 'nickname', 'profilePic'],
+            }
+          ],
+        }
+      ],
+    });
+    // return res.status(201).json({ search, Posts });
+    return res.status(201).json(Posts.slice(tempDataNum * (pageParam - 1), tempDataNum * pageParam));
+  } catch (e) {
+    console.err(e);
+  }
+})
+
 
 //load posts - target user post (type)
 router.get("/user", tokenCheck, async (req, res) => {

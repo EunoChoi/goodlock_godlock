@@ -52,7 +52,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
 
       queryClient.invalidateQueries(["noticePosts"]);
       queryClient.invalidateQueries(["infoPosts"]);
+      queryClient.invalidateQueries(["searchInfo"]);
       queryClient.invalidateQueries(["communityPosts"]);
+      queryClient.invalidateQueries(["searchComm"]);
+      queryClient.invalidateQueries(["activinfo"]);
       queryClient.invalidateQueries(["feed"]);
 
       queryClient.invalidateQueries(["userLikedPosts"]);
@@ -80,7 +83,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
 
       queryClient.invalidateQueries(["noticePosts"]);
       queryClient.invalidateQueries(["infoPosts"]);
+      queryClient.invalidateQueries(["searchInfo"]);
       queryClient.invalidateQueries(["communityPosts"]);
+      queryClient.invalidateQueries(["searchComm"]);
+      queryClient.invalidateQueries(["activinfo"]);
       queryClient.invalidateQueries(["feed"]);
 
       queryClient.invalidateQueries(["userLikedPosts"]);
@@ -153,13 +159,6 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                         </a>
                       </span>
                     </PostLink>
-                  )}
-                  {true && (
-                    <PostTag>
-                      {["태그1", "태그2", "태그3", "태그4", "태그5", "태그6"].map((v, i) => (
-                        <button key={"태그" + v + i}>{v}</button>
-                      ))}
-                    </PostTag>
                   )}
                 </SubContentWrapper>
               )}
@@ -249,13 +248,6 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       </span>
                     </PostLink>
                   )}
-                  {true && (
-                    <PostTag>
-                      {["태그1", "태그2", "태그3", "태그4", "태그5", "태그6"].map((v, i) => (
-                        <button key={"태그" + v + i}>{v}</button>
-                      ))}
-                    </PostTag>
-                  )}
                 </SubContentWrapper>
               )}
               <Like>
@@ -334,13 +326,6 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                             </a>
                           </span>
                         </PostLink>
-                      )}
-                      {true && (
-                        <PostTag>
-                          {["태그1", "태그2", "태그3", "태그4", "태그5", "태그6"].map((v, i) => (
-                            <button key={"태그" + v + i}>{v}</button>
-                          ))}
-                        </PostTag>
                       )}
                     </SubContentWrapper>
                   )}
@@ -432,13 +417,6 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                                   </span>
                                 </PostLink>
                               )}
-                              {true && (
-                                <PostTag>
-                                  {["태그1", "태그2", "태그3", "태그4", "태그5", "태그6"].map((v, i) => (
-                                    <button key={"태그" + v + i}>{v}</button>
-                                  ))}
-                                </PostTag>
-                              )}
                             </SubContentWrapper>
                           )}
                           <Like>
@@ -487,30 +465,11 @@ const MobileCancelBtn = styled.button`
   height: 32px;
   width: 100%;
   background-color: #a9aed4;
+  background-color: #c8daf3;
   color: white;
+  color: rgba(0, 0, 0, 0.7);
 `;
-const PostTag = styled.div`
-  width: 100%;
-  padding: 2px;
-  margin-top: 12px;
-  overflow-x: scroll;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
-  }
 
-  button {
-    flex-shrink: 0;
-    font-size: 16px;
-
-    padding: 4px 12px;
-    background-color: #f3e0f1;
-    border-radius: 50px;
-    margin-right: 8px;
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
-  }
-`;
 const SubContentWrapper = styled.div`
   display: flex;
   flex-direction: column;

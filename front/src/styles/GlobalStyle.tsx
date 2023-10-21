@@ -4,10 +4,17 @@ import reset from "styled-reset";
 import Animation from "./Animation";
 
 const GlobalStyle = createGlobalStyle`
-  @font-face {
-    font-family: 'Pretendard-SemiBold';
+@font-face {
+    font-family: 'Pretendard-Regular';
     src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Medium.woff') format('woff');
     font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-bold';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff') format('woff');
+    font-weight: 700;
     font-style: normal;
 }
   ${reset}
@@ -15,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
     -webkit-tap-highlight-color : transparent !important;
     box-sizing: border-box;
     /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
-    font-family: Pretendard-SemiBold, system-ui, -apple-system;
+    font-family: Pretendard-Regular, system-ui, -apple-system;
   }
   
   html{
@@ -28,7 +35,7 @@ const GlobalStyle = createGlobalStyle`
   } */
   span, div{
     /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
-    font-family: Pretendard-SemiBold, system-ui, -apple-system;
+    font-family: Pretendard-Regular, system-ui, -apple-system;
   }
   a {
   color: inherit;

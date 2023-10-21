@@ -60,10 +60,13 @@ const Header = () => {
         //mobile header
         <MobileHeaderWrapper mountToggle={mountToggle}>
           <HeaderFixedWrapper>
-            <MyProfile onClick={() => navigate("/profile/0")}>
-              <PersonIcon></PersonIcon>
-              {/* {prevY} */}
-            </MyProfile>
+            <HeaderMenuButton
+              onClick={() => {
+                setMountToggle((c) => !c);
+              }}
+            >
+              <MenuIcon fontSize="inherit" />
+            </HeaderMenuButton>
             <HeaderLogoMobile
               onClick={() => {
                 setMountToggle(false);
@@ -74,19 +77,16 @@ const Header = () => {
                 });
               }}
             >
-              <Link to="/main/0">NARANG</Link>
+              <Link to="/main/0">모서리</Link>
             </HeaderLogoMobile>
-            <HeaderMenuButton
-              onClick={() => {
-                setMountToggle((c) => !c);
-              }}
-            >
-              <MenuIcon fontSize="inherit" />
-            </HeaderMenuButton>
+            <MyProfile onClick={() => navigate("/profile/0")}>
+              <PersonIcon></PersonIcon>
+              {/* {prevY} */}
+            </MyProfile>
           </HeaderFixedWrapper>
           <HeaderExtendedWrapper currentPage={currentPage + 1}>
             <span onClick={() => setMountToggle(false)}>
-              <Link to="/main/0">홈</Link>
+              <Link to="/main/0">메인</Link>
             </span>
             <span onClick={() => setMountToggle(false)}>
               <Link to="/main/1">모집 공고</Link>
@@ -109,13 +109,13 @@ const Header = () => {
                 })
               }
             >
-              NARANG
+              모서리
             </HeaderLogo>
           </Link>
 
           <HeaderLink currentPage={currentPage + 1}>
             <span>
-              <Link to="/main/0">홈</Link>
+              <Link to="/main/0">메인</Link>
             </span>
             <span>
               <Link to="/main/1">모집 공고</Link>
@@ -135,7 +135,7 @@ export default Header;
 const MyProfile = styled.div`
   width: 20%;
   display: flex;
-  justify-content: start;
+  justify-content: end;
   align-items: center;
 `;
 
@@ -207,7 +207,7 @@ const HeaderFixedWrapper = styled.div`
 
 const HeaderMenuButton = styled.button`
   display: flex;
-  justify-content: end;
+  justify-content: start;
   align-items: center;
   color: rgba(0, 0, 0, 0.6);
   font-size: 29px;
@@ -232,8 +232,10 @@ const HeaderExtendedWrapper = styled.div<{ currentPage: number | undefined }>`
 const HeaderLogo = styled.span`
   text-align: center;
   /* color: white; */
-  color: rgba(0, 0, 0, 0.8);
+  color: rgba(0, 0, 0, 0.7);
   font-size: 48px;
+  font-family: "Pretendard-bold";
+  letter-spacing: 12px;
   /* font-weight: 600; */
 `;
 
@@ -244,6 +246,7 @@ const HeaderLogoMobile = styled.span`
   color: rgba(0, 0, 0, 0.6);
 
   font-size: 24px;
+  font-family: Pretendard-bold;
   /* font-weight: 600; */
 `;
 

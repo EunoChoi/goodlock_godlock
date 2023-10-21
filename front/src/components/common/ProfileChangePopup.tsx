@@ -49,11 +49,11 @@ const ProfileChangePopup = ({ setToggles }: setStateProps) => {
       queryClient.invalidateQueries(["user"]);
 
       queryClient.invalidateQueries(["noticePosts"]);
-
       queryClient.invalidateQueries(["infoPosts"]);
-      queryClient.invalidateQueries(["activinfo"]);
-
+      queryClient.invalidateQueries(["searchInfo"]);
       queryClient.invalidateQueries(["communityPosts"]);
+      queryClient.invalidateQueries(["searchComm"]);
+      queryClient.invalidateQueries(["activinfo"]);
       queryClient.invalidateQueries(["feed"]);
 
       queryClient.invalidateQueries(["userLikedPosts"]);

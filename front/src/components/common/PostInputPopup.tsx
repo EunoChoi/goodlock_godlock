@@ -70,11 +70,11 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
         queryClient.invalidateQueries(["thisweek/new/2"]);
 
         queryClient.invalidateQueries(["noticePosts"]);
-
         queryClient.invalidateQueries(["infoPosts"]);
-        queryClient.invalidateQueries(["activinfo"]);
-
+        queryClient.invalidateQueries(["searchInfo"]);
         queryClient.invalidateQueries(["communityPosts"]);
+        queryClient.invalidateQueries(["searchComm"]);
+        queryClient.invalidateQueries(["activinfo"]);
         queryClient.invalidateQueries(["feed"]);
 
         queryClient.invalidateQueries(["userLikedPosts"]);
@@ -129,7 +129,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
         });
       }}
     >
-      {isMobile || <PostInputHelp>{PostInputHelpText[inputType]}</PostInputHelp>}
+      {/* {isMobile || <PostInputHelp>{PostInputHelpText[inputType]}</PostInputHelp>} */}
       <InputForm.InputWrapper onClick={(e) => e.stopPropagation()}>
         {isInfoPost && (
           <PostOptionWrapper>
