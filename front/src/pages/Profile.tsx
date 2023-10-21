@@ -345,7 +345,7 @@ const Profile = () => {
                           } else {
                             confirmAlert({
                               // title: "",
-                              message: "상태메시지를 변경하시겠습니까?",
+                              message: "상태메세지를 변경하시겠습니까?",
                               buttons: [
                                 {
                                   label: "취소",

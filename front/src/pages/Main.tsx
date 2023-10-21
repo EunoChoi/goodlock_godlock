@@ -7,7 +7,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Axios from "../apis/Axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
 import Animation from "../styles/Animation";
 
 //components
