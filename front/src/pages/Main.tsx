@@ -163,7 +163,7 @@ const Main = () => {
   const searchCommPosts = useInfiniteQuery(
     ["searchComm"],
     ({ pageParam = 1 }) => {
-      if (searchInfo.length >= 1)
+      if (searchComm.length >= 1)
         return Axios.get("post/search", { params: { type: 2, search: searchComm, pageParam, tempDataNum: 5 } }).then(
           (res) => res.data
         );
@@ -177,13 +177,6 @@ const Main = () => {
       enabled: true
     }
   );
-
-  // useEffect(() => {
-  //   searchInfoPosts.refetch();
-  // }, [searchInfo.length]);
-  // useEffect(() => {
-  //   searchCommPosts.refetch();
-  // }, [searchComm.length]);
 
   useEffect(() => {
     if (type < 0 || type >= 3) {
