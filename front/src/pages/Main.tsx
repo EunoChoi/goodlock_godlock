@@ -146,32 +146,45 @@ const Main = () => {
   //load search posts
   const searchInfoPosts = useInfiniteQuery(
     ["searchInfo"],
-    ({ pageParam = 1 }) =>
-      Axios.get("post/search", { params: { type: 1, search: searchInfo, pageParam, tempDataNum: 5 } }).then(
-        (res) => res.data
-      ),
+    ({ pageParam = 1 }) => {
+      if (searchInfo.length >= 1)
+        return Axios.get("post/search", { params: { type: 1, search: searchInfo, pageParam, tempDataNum: 5 } }).then(
+          (res) => res.data
+        );
+      else return [];
+    },
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
       },
       refetchOnWindowFocus: false,
-      enabled: false
+      enabled: true
     }
   );
   const searchCommPosts = useInfiniteQuery(
     ["searchComm"],
-    ({ pageParam = 1 }) =>
-      Axios.get("post/search", { params: { type: 2, search: searchComm, pageParam, tempDataNum: 5 } }).then(
-        (res) => res.data
-      ),
+    ({ pageParam = 1 }) => {
+      if (searchInfo.length >= 1)
+        return Axios.get("post/search", { params: { type: 2, search: searchComm, pageParam, tempDataNum: 5 } }).then(
+          (res) => res.data
+        );
+      else return [];
+    },
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
       },
       refetchOnWindowFocus: false,
-      enabled: false
+      enabled: true
     }
   );
+
+  // useEffect(() => {
+  //   searchInfoPosts.refetch();
+  // }, [searchInfo.length]);
+  // useEffect(() => {
+  //   searchCommPosts.refetch();
+  // }, [searchComm.length]);
 
   useEffect(() => {
     if (type < 0 || type >= 3) {
@@ -336,8 +349,8 @@ const Main = () => {
                   e.preventDefault();
                   if (searchInfo.length !== 0) {
                     searchInfoPosts.refetch();
-                    toast.success(`"${searchInfo}" 검색...`);
-                  }
+                    toast.success(`"${searchInfo}" 검색 완료`);
+                  } else toast.error(`검색어는 최소 1글자 이상 필요합니다.`);
                 }}
               >
                 <SearchIcon />
@@ -403,18 +416,11 @@ const Main = () => {
           )}
           {toggles.sub === 2 && ( //모집 공고 검색
             <HomeEl>
-              {/* 검색하기 전 */}
-              {searchInfoPosts.data == null && (
-                <EmptyNoti>
-                  <SearchIcon fontSize="inherit" />
-                </EmptyNoti>
-              )}
-
               {/* 검색 결과가 존재하지 않는 경우 */}
               {searchInfoPosts.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-                  <span>게시글이 존재하지 않습니다.</span>
+                  <span>검색 결과가 존재하지 않습니다.</span>
                 </EmptyNoti>
               )}
 
@@ -488,8 +494,8 @@ const Main = () => {
                   e.preventDefault();
                   if (searchComm.length !== 0) {
                     searchCommPosts.refetch();
-                    toast.success(`"${searchComm}" 검색...`);
-                  }
+                    toast.success(`"${searchComm}" 검색 완료`);
+                  } else toast.error(`검색어는 최소 1글자 이상 필요합니다.`);
                 }}
               >
                 <SearchIcon />
@@ -557,15 +563,10 @@ const Main = () => {
           )}
           {toggles.sub === 2 && (
             <HomeEl>
-              {searchCommPosts.data == null && (
-                <EmptyNoti>
-                  <SearchIcon fontSize="inherit" />
-                </EmptyNoti>
-              )}
               {searchCommPosts.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-                  <span>게시글이 존재하지 않습니다.</span>
+                  <span>검색 결과가 존재하지 않습니다.</span>
                 </EmptyNoti>
               )}
               <InfiniteScroll

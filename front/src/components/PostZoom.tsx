@@ -52,7 +52,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
 
       queryClient.invalidateQueries(["noticePosts"]);
       queryClient.invalidateQueries(["infoPosts"]);
+      queryClient.invalidateQueries(["searchInfo"]);
       queryClient.invalidateQueries(["communityPosts"]);
+      queryClient.invalidateQueries(["searchComm"]);
+      queryClient.invalidateQueries(["activinfo"]);
       queryClient.invalidateQueries(["feed"]);
 
       queryClient.invalidateQueries(["userLikedPosts"]);
@@ -80,7 +83,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
 
       queryClient.invalidateQueries(["noticePosts"]);
       queryClient.invalidateQueries(["infoPosts"]);
+      queryClient.invalidateQueries(["searchInfo"]);
       queryClient.invalidateQueries(["communityPosts"]);
+      queryClient.invalidateQueries(["searchComm"]);
+      queryClient.invalidateQueries(["activinfo"]);
       queryClient.invalidateQueries(["feed"]);
 
       queryClient.invalidateQueries(["userLikedPosts"]);
