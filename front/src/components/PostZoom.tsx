@@ -393,7 +393,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                   animation="fade"
                 >
                   {arr.map((v, i) => {
-                    if (i === 0) {
+                    if (i === postProps.Images?.length) {
                       return (
                         <TextBox key="텍스트페이지">
                           <div>{postProps.content}</div>
@@ -439,9 +439,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                         </TextBox>
                       );
                     } else {
-                      return (
-                        <ImageBox key={i}>{<Image src={`${BACK_SERVER}/${postProps.Images[i - 1].src}`} />}</ImageBox>
-                      );
+                      return <ImageBox key={i}>{<Image src={`${BACK_SERVER}/${postProps.Images[i].src}`} />}</ImageBox>;
                     }
                   })}
                 </CustomCarousel>
