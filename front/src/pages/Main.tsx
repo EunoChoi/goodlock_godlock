@@ -209,7 +209,7 @@ const Main = () => {
               This Week
             </span>
             <span>신규 등록 포스트 {thisWeekNewInfo?.len + thisWeekNewComm?.len}개</span>
-            <span>이번주 마감 관심공고 {thisWeekEndLiked?.len}개</span>
+            <span>마감 예정 관심공고 {thisWeekEndLiked?.len}개</span>
           </WelcomeWrapper>
           <Pill.Wrapper>
             <Pill.Sub
@@ -341,7 +341,7 @@ const Main = () => {
                   e.preventDefault();
                   if (searchInfo.length !== 0) {
                     searchInfoPosts.refetch();
-                    toast.success(`"${searchInfo}" 검색 완료`);
+                    toast.success(`"${searchInfo}" 검색...`);
                   } else toast.error(`검색어는 최소 1글자 이상 필요합니다.`);
                 }}
               >
@@ -486,7 +486,7 @@ const Main = () => {
                   e.preventDefault();
                   if (searchComm.length !== 0) {
                     searchCommPosts.refetch();
-                    toast.success(`"${searchComm}" 검색 완료`);
+                    toast.success(`"${searchComm}" 검색...`);
                   } else toast.error(`검색어는 최소 1글자 이상 필요합니다.`);
                 }}
               >

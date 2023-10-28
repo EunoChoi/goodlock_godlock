@@ -149,6 +149,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
               optionToggle === 0 && (
                 <div>
                   <DatePicker
+                    calendarStartDay={1}
                     locale={ko}
                     dateFormat="yy년 MM월 dd일"
                     selectsStart
@@ -164,6 +165,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
                   />
                   <MoreHorizIcon />
                   <DatePicker
+                    calendarStartDay={1}
                     locale={ko}
                     dateFormat="yy년 MM월 dd일"
                     selectsEnd

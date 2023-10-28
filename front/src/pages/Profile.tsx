@@ -180,7 +180,7 @@ const Profile = () => {
   });
 
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["정보", "팔로잉", "팔로워", "내 모집 공고", "내 소통글"];
+  const category = ["정보", "팔로잉", "팔로워", "모집 공고", "소통글"];
 
   return (
     <AppLayout>

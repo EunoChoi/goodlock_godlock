@@ -158,7 +158,7 @@ router.get("/thisweek/new", tokenCheck, async (req, res) => {
 
   const today = new Date(year, month, date);
   const rangeStart = new Date(year, month, date - ((day + 6) % 7));
-  const rangeEnd = new Date(year, month, date, 23, 59, 59);
+  const rangeEnd = new Date(year, month, date - ((day + 6) % 7) + 6, 23, 59, 59);
 
 
   //일 0, 월 1, 화 2, 수 3, 목 4, 금 5, 토 6
@@ -203,7 +203,7 @@ router.get("/thisweek/liked", tokenCheck, async (req, res) => {
   const today = new Date(year, month, date);
   //this week range date
   const rangeStart = new Date(year, month, date - ((day + 6) % 7));
-  const rangeEnd = new Date(year, month, date, 23, 59, 59);
+  const rangeEnd = new Date(year, month, date - ((day + 6) % 7) + 6, 23, 59, 59);
 
 
 
