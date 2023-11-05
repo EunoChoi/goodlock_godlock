@@ -97,7 +97,7 @@ const ProfileChangePopup = ({ setToggles }: setStateProps) => {
         <span>프로필 이미지 변경</span>
         <ProfileImageBox>
           {image ? (
-            <ProfileImage src={`${BACK_SERVER}/${image}`} alt="프로필 이미지" />
+            <ProfileImage src={`${image.replace(/\/thumb\//, "/original/")}`} alt="프로필 이미지" />
           ) : (
             <ProfileImage src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} alt="프로필 이미지" />
           )}

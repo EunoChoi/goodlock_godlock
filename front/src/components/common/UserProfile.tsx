@@ -16,7 +16,7 @@ const UserProfile = () => {
       <UserTitle>
         <Link to="/profile/0">
           {user?.profilePic ? (
-            <ProfilePic alt="profile_Pic" src={`${BACK_SERVER}/${user.profilePic}`} />
+            <ProfilePic alt="profile_Pic" src={`${user.profilePic}`} />
           ) : (
             <ProfilePic alt="profile_Pic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}

@@ -110,16 +110,32 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
     }
   });
 
+  const uploadImages = useMutation(
+    (images: any) => {
+      return Axios.post("post/images", images);
+      // return Axios.post("post/images", images).then((res) => setImages([...images, ...res.data]));
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res.data);
+        setImages([...images, ...res.data]);
+      }
+      // onError: () => { }
+    }
+  );
+
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const imageFormData = new FormData();
       Array.from(e.target.files).forEach((file) => {
         imageFormData.append("image", file);
       });
-      Axios.post("post/images", imageFormData).then((res) => {
-        console.log(res.data);
-        setImages([...images, ...res.data]);
-      });
+      uploadImages.mutate(imageFormData);
+
+      // Axios.post("post/images", imageFormData).then((res) => {
+      //   console.log(res.data);
+      //   setImages([...images, ...res.data]);
+      // });
     }
   };
 
@@ -218,11 +234,11 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
           }}
           value={content}
         ></InputForm.TextArea>
-        {images?.length > 0 && (
+        {(images?.length > 0 || uploadImages.isLoading) && (
           <InputForm.InputImageWrapper>
             {images.map((v, i) => (
               <InputForm.InputImageBox key={i + v}>
-                <InputForm.InputImage src={`${BACK_SERVER}/${v}`} alt={v}></InputForm.InputImage>
+                <InputForm.InputImage src={`${v.replace(/\/thumb\//, "/original/")}`} alt={v}></InputForm.InputImage>
                 <InputForm.ImageDeleteButton
                   onClick={() => {
                     const tempImages = [...images];
@@ -236,6 +252,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
                 </InputForm.ImageDeleteButton>
               </InputForm.InputImageBox>
             ))}
+            {uploadImages.isLoading && <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`}></img>}
           </InputForm.InputImageWrapper>
         )}
         <InputForm.ButtonArea>

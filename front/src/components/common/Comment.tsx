@@ -167,7 +167,7 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
           }}
         >
           {commentProps?.User?.profilePic ? (
-            <ProfilePic alt="userProfilePic" src={`${BACK_SERVER}/${commentProps?.User?.profilePic}`} />
+            <ProfilePic alt="userProfilePic" src={`${commentProps?.User?.profilePic}`} />
           ) : (
             <ProfilePic alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}

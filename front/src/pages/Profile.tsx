@@ -217,7 +217,7 @@ const Profile = () => {
             <ContentBox width={500} padding={30}>
               <ProfilePicWrapper>
                 {user?.profilePic ? (
-                  <ProfilePic width={100} alt="userProfilePic" src={`${BACK_SERVER}/${user?.profilePic}`} />
+                  <ProfilePic width={100} alt="userProfilePic" src={`${user?.profilePic}`} />
                 ) : (
                   <ProfilePic
                     width={100}
@@ -428,7 +428,7 @@ const Profile = () => {
                       <div>
                         <Link to={`/userinfo/${v?.id}/cat/0`}>
                           {v.profilePic ? (
-                            <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
+                            <ProfilePic width={32} alt="ProfilePic" src={`${v.profilePic}`} />
                           ) : (
                             <ProfilePic
                               width={32}
@@ -488,7 +488,7 @@ const Profile = () => {
                       <div>
                         <Link to={`/userinfo/${v?.id}/cat/0`}>
                           {v.profilePic ? (
-                            <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
+                            <ProfilePic width={32} alt="ProfilePic" src={`${v.profilePic}`} />
                           ) : (
                             <ProfilePic
                               width={32}

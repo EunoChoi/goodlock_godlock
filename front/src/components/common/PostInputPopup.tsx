@@ -39,7 +39,6 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
   const inputType = params.type ? parseInt(params.type) : 0;
   const isMobile = useMediaQuery({ maxWidth: 720 });
 
-  const PostInputHelpText = ["공지사항 입력 설명", "모집 공고 입력 설명", "소통글 입력 설명"];
   const placeholders = ["공지사항 입력", "모집 공고 입력", "소통글 입력"];
   const [content, setContent] = useState<string>("");
   const [images, setImages] = useState<string[]>([]);
@@ -100,13 +99,28 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
     }
   );
 
+  const uploadImages = useMutation(
+    (images: any) => {
+      return Axios.post("post/images", images);
+      // return Axios.post("post/images", images).then((res) => setImages([...images, ...res.data]));
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res.data);
+        setImages([...images, ...res.data]);
+      }
+      // onError: () => { }
+    }
+  );
+
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const imageFormData = new FormData();
       Array.from(e.target.files).forEach((file) => {
         imageFormData.append("image", file);
       });
-      Axios.post("post/images", imageFormData).then((res) => setImages([...images, ...res.data]));
+      uploadImages.mutate(imageFormData);
+      // Axios.post("post/images", imageFormData).then((res) => setImages([...images, ...res.data]));
     }
   };
 
@@ -201,11 +215,12 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
           }}
           value={content}
         ></InputForm.TextArea>
-        {images.length > 0 && (
+
+        {(images.length > 0 || uploadImages.isLoading) && (
           <InputForm.InputImageWrapper>
             {images.map((v, i) => (
               <InputForm.InputImageBox key={i}>
-                <InputForm.InputImage src={`${BACK_SERVER}/${v}`} alt={v}></InputForm.InputImage>
+                <InputForm.InputImage src={`${v.replace(/\/thumb\//, "/original/")}`} alt={v}></InputForm.InputImage>
                 <InputForm.ImageDeleteButton
                   onClick={() => {
                     const tempImages = [...images];
@@ -219,6 +234,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
                 </InputForm.ImageDeleteButton>
               </InputForm.InputImageBox>
             ))}
+            {uploadImages.isLoading && <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`}></img>}
           </InputForm.InputImageWrapper>
         )}
         <InputForm.ButtonArea>

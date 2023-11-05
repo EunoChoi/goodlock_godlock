@@ -154,7 +154,7 @@ const UserInfo = () => {
       <>
         <UserInfoWrapper ref={scrollTarget}>
           {targetUser?.profilePic ? (
-            <Pic alt="userProfilePic" src={`${BACK_SERVER}/${targetUser?.profilePic}`} />
+            <Pic alt="userProfilePic" src={`${targetUser?.profilePic}`} />
           ) : (
             <Pic width={150} alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}
@@ -252,7 +252,7 @@ const UserInfo = () => {
                       <div>
                         <Link to={`/userinfo/${v?.id}/cat/0`}>
                           {v.profilePic ? (
-                            <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
+                            <ProfilePic width={32} alt="ProfilePic" src={`${v.profilePic}`} />
                           ) : (
                             <ProfilePic
                               width={32}
@@ -290,7 +290,7 @@ const UserInfo = () => {
                       <div>
                         <Link to={`/userinfo/${v?.id}/cat/0`}>
                           {v.profilePic ? (
-                            <ProfilePic width={32} alt="ProfilePic" src={`${BACK_SERVER}/${v.profilePic}`} />
+                            <ProfilePic width={32} alt="ProfilePic" src={`${v.profilePic}`} />
                           ) : (
                             <ProfilePic
                               width={32}
