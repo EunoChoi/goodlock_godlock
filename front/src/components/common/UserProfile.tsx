@@ -16,9 +16,15 @@ const UserProfile = () => {
       <UserTitle>
         <Link to="/profile/0">
           {user?.profilePic ? (
-            <ProfilePic alt="profile_Pic" src={`${user.profilePic}`} />
+            <ProfilePic
+              alt="userProfilePic"
+              src={`${user.profilePic}`}
+              onError={(e) => {
+                e.currentTarget.src = `${user.profilePic.replace(/\/thumb\//, "/original/")}`;
+              }}
+            />
           ) : (
-            <ProfilePic alt="profile_Pic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
+            <ProfilePic alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}
         </Link>
         <span>{user?.nickname}</span>

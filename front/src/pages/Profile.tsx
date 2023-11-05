@@ -89,6 +89,11 @@ const Profile = () => {
       navigate("/404");
     }
   }, [categoryNum]);
+  //프로필 이미지 변경 팝업 뜬 경우 배경 스크롤 방지
+  useEffect(() => {
+    if (toggles.image) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
+  }, [toggles.image]);
 
   //input state
   const [nickname, setNickname] = useState<string>("");
@@ -217,7 +222,14 @@ const Profile = () => {
             <ContentBox width={500} padding={30}>
               <ProfilePicWrapper>
                 {user?.profilePic ? (
-                  <ProfilePic width={100} alt="userProfilePic" src={`${user?.profilePic}`} />
+                  <ProfilePic
+                    width={100}
+                    alt="userProfilePic"
+                    src={`${user?.profilePic}`}
+                    onError={(e) => {
+                      e.currentTarget.src = `${user?.profilePic.replace(/\/thumb\//, "/original/")}`;
+                    }}
+                  />
                 ) : (
                   <ProfilePic
                     width={100}

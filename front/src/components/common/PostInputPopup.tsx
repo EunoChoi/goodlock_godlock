@@ -115,10 +115,29 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
 
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
+      console.log(e.target.files[0].size);
       const imageFormData = new FormData();
-      Array.from(e.target.files).forEach((file) => {
-        imageFormData.append("image", file);
+
+      //게시글 최대 이미지 개수 제한
+      if (images.length + e.target.files.length > 10) {
+        toast.error("이미지 파일은 최대 10개까지 삽입 가능합니다.");
+        return null;
+      }
+
+      //개별 이미지 크기 제한
+      const isOverSize = Array.from(e.target.files).find((file) => {
+        if (file.size <= 5 * 1024 * 1024) {
+          imageFormData.append("image", file);
+        } else {
+          return true;
+        }
       });
+
+      if (isOverSize) {
+        toast.error("선택된 이미지 중 5MB를 초과하는 이미지가 존재합니다.");
+        return null;
+      }
+
       uploadImages.mutate(imageFormData);
       // Axios.post("post/images", imageFormData).then((res) => setImages([...images, ...res.data]));
     }
@@ -220,7 +239,13 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
           <InputForm.InputImageWrapper>
             {images.map((v, i) => (
               <InputForm.InputImageBox key={i}>
-                <InputForm.InputImage src={`${v.replace(/\/thumb\//, "/original/")}`} alt={v}></InputForm.InputImage>
+                <InputForm.InputImage
+                  src={`${v}`}
+                  alt={v}
+                  onError={(e) => {
+                    e.currentTarget.src = `${v?.replace(/\/thumb\//, "/original/")}`;
+                  }}
+                ></InputForm.InputImage>
                 <InputForm.ImageDeleteButton
                   onClick={() => {
                     const tempImages = [...images];

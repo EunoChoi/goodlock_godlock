@@ -154,7 +154,13 @@ const UserInfo = () => {
       <>
         <UserInfoWrapper ref={scrollTarget}>
           {targetUser?.profilePic ? (
-            <Pic alt="userProfilePic" src={`${targetUser?.profilePic}`} />
+            <Pic
+              alt="userProfilePic"
+              src={`${targetUser?.profilePic}`}
+              onError={(e) => {
+                e.currentTarget.src = `${targetUser?.profilePic.replace(/\/thumb\//, "/original/")}`;
+              }}
+            />
           ) : (
             <Pic width={150} alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}

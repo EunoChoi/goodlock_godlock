@@ -73,13 +73,29 @@ const ProfileChangePopup = ({ setToggles }: setStateProps) => {
     }
   });
 
+  const uploadImage = useMutation(
+    (images: any) => {
+      return Axios.post("post/images", images);
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res.data);
+        setImage(res.data[0]);
+      }
+      // onError: () => { }
+    }
+  );
+
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const imageFormData = new FormData();
-      Array.from(e.target.files).forEach((file) => {
-        imageFormData.append("image", file);
-      });
-      Axios.post("post/images", imageFormData).then((res) => setImage(res.data[0]));
+
+      if (e.target.files[0].size > 5 * 1024 * 1024) {
+        toast.error("이미지 파일은 5MB를 초과할 수 없습니다.");
+        return null;
+      }
+      imageFormData.append("image", e.target.files[0]);
+      uploadImage.mutate(imageFormData);
     }
   };
   useEffect(() => {
@@ -96,9 +112,22 @@ const ProfileChangePopup = ({ setToggles }: setStateProps) => {
         <input ref={imageInput} type="file" accept="image/*" name="image" hidden onChange={onChangeImages} />
         <span>프로필 이미지 변경</span>
         <ProfileImageBox>
-          {image ? (
-            <ProfileImage src={`${image.replace(/\/thumb\//, "/original/")}`} alt="프로필 이미지" />
-          ) : (
+          {image && !uploadImage.isLoading && (
+            <ProfileImage
+              src={`${image}`}
+              onError={(e) => {
+                e.currentTarget.src = `${image.replace(/\/thumb\//, "/original/")}`;
+              }}
+              alt="프로필 이미지"
+            />
+          )}
+          {image && uploadImage.isLoading && (
+            <ProfileImage src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="로딩" />
+          )}
+          {!image && uploadImage.isLoading && (
+            <ProfileImage src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="로딩" />
+          )}
+          {!image && !uploadImage.isLoading && (
             <ProfileImage src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} alt="프로필 이미지" />
           )}
           <Button

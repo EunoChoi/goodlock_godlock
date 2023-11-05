@@ -121,7 +121,14 @@ const PostZoom = ({ postProps, setZoom }: props) => {
             <div>
               {postProps?.User?.profilePic ? (
                 <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                  <ProfilePic width={150} alt="userProfilePic" src={`${postProps?.User?.profilePic}`} />
+                  <ProfilePic
+                    width={150}
+                    alt="userProfilePic"
+                    src={`${postProps?.User?.profilePic}`}
+                    onError={(e) => {
+                      e.currentTarget.src = `${postProps?.User?.profilePic?.replace(/\/thumb\//, "/original/")}`;
+                    }}
+                  />
                 </Link>
               ) : (
                 <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
@@ -209,7 +216,14 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 <div>
                   {postProps?.User?.profilePic ? (
                     <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                      <ProfilePicSM width={150} alt="userProfilePic" src={`${postProps?.User?.profilePic}`} />
+                      <ProfilePicSM
+                        width={150}
+                        alt="userProfilePic"
+                        src={`${postProps?.User?.profilePic}`}
+                        onError={(e) => {
+                          e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
+                        }}
+                      />
                     </Link>
                   ) : (
                     <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
@@ -283,7 +297,14 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                   <div>
                     {postProps?.User?.profilePic ? (
                       <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                        <ProfilePicSM width={150} alt="userProfilePic" src={`${postProps?.User?.profilePic}`} />
+                        <ProfilePicSM
+                          width={150}
+                          alt="userProfilePic"
+                          src={`${postProps?.User?.profilePic}`}
+                          onError={(e) => {
+                            e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
+                          }}
+                        />
                       </Link>
                     ) : (
                       <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
@@ -353,7 +374,14 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                   <div>
                     {postProps?.User?.profilePic ? (
                       <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                        <ProfilePicSM width={150} alt="userProfilePic" src={`${postProps?.User?.profilePic}`} />
+                        <ProfilePicSM
+                          width={150}
+                          alt="userProfilePic"
+                          src={`${postProps?.User?.profilePic}`}
+                          onError={(e) => {
+                            e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
+                          }}
+                        />
                       </Link>
                     ) : (
                       <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>

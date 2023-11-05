@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => { //sequelize는 시퀄라이즈 라�
       allowNull: false //빈값 허용 X, 입력 필수
     },
     profilePic: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(500),
       allowNull: true
     },
     usertext: {
