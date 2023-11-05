@@ -1,6 +1,10 @@
 const express = require("express");
 
 const multer = require('multer');
+const multerS3 = require('multer-s3');
+const { S3Client } = require('@aws-sdk/client-s3');
+const AWS = require('aws-sdk');
+
 const path = require('path'); //path는 노드에서 기능하는 기능
 const fs = require('fs');//파일 시스템 조작 가능한 모듈
 
@@ -25,25 +29,68 @@ try {
   console.log('upload folder do not exist')
   fs.mkdirSync('uploads');
 }
-const upload = multer({
+
+//AWS 권한 획득
+AWS.config.update({
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  region: 'ap-northeast-2'
+})
+
+console.log(process.env.S3_ACCESS_KEY_ID);
+
+//로컬 멀터
+/* const upload = multer({
   storage: multer.diskStorage({
-    destination(req, file, done) { //저장위치 결정 함수
+    destination(req, file, done) { 
       done(null, 'uploads');
     },
-    filename(req, file, done) { //파일명 결정 함수
-      const ext = path.extname(file.originalname); //파일 확장자 추출
-      const basename = path.basename(file.originalname.slice(0, 10), ext); //path에서 파일명 추출
-      done(null, basename + '_' + new Date().getTime() + ext); //파일명 + 시간 + 확장자 
+    filename(req, file, done) { 
+      const ext = path.extname(file.originalname); 
+      const basename = path.basename(file.originalname.slice(0, 10), ext);
+      done(null, basename + '_' + new Date().getTime() + ext); 
     }
   }),
   limits: {
-    fileSize: 20 * 1024 * 1024 //20MB, MB=2^10*바이트, KM=2^3*바이트
+    fileSize: 20 * 1024 * 1024
   },
 });
+*/
+
+
+//AWS S3 multer
+let s3 = new S3Client({
+  region: 'ap-northeast-2',
+  credentials: {
+    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  },
+  sslEnabled: false,
+  s3ForcePathStyle: true,
+  signatureVersion: 'v4',
+});
+
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'moseoree-s3',
+    key(req, file, cb) {
+      cb(null, `original/${Date.now()}_${path.basename(file.originalname).split(' ').join('')}`)
+    }
+  }),
+  limits: {
+    fileSize: 20 * 1024 * 1024
+  },
+});
+
 router.post('/images', upload.array('image'), async (req, res, next) => {
   //router.post('/images', isLoggedIn, upload.single('image'), async (res, req, next) //한번의 파일첨부에서 1개 올릴때 array
   //router.post('/images', isLoggedIn, upload.fields('image'), async (res, req, next) //여러번의 파일첨부에서 여러개 올릴때 array
-  res.json(req.files.map((v) => v.filename));
+
+  // res.json(req.files.map((v) => v.filename));  //로컬 multer
+
+  //s3 multer
+  res.json(req.files.map((v) => decodeURIComponent(v.location).replace(/\/original\//, '/thumb/')));
 });
 
 
