@@ -28,6 +28,7 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
+import ShareIcon from "@mui/icons-material/Share";
 
 interface Image {
   src: string;
@@ -360,6 +361,10 @@ const Post = ({ postProps }: any) => {
               <MessageIcon />
               <span>{postProps?.Comments?.length}</span>
             </ToggleButton>
+            <ToggleButton>
+              <ShareIcon fontSize="small" />
+              <span>공유</span>
+            </ToggleButton>
           </FlexDiv>
         )}
         {postProps.type === 2 && (
@@ -386,6 +391,10 @@ const Post = ({ postProps }: any) => {
             >
               <MessageIcon />
               <span>{postProps?.Comments?.length}</span>
+            </ToggleButton>
+            <ToggleButton>
+              <ShareIcon fontSize="small" />
+              <span>공유</span>
             </ToggleButton>
           </FlexDiv>
         )}

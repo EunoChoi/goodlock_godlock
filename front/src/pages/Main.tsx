@@ -208,7 +208,7 @@ const Main = () => {
               <CalendarMonthIcon />
               This Week
             </span>
-            <span>신규 등록 포스트 {thisWeekNewInfo?.len + thisWeekNewComm?.len}개</span>
+            <span>신규 등록 서평단 모집 {thisWeekNewInfo?.len}개</span>
             <span>마감 예정 관심공고 {thisWeekEndLiked?.len}개</span>
           </WelcomeWrapper>
           <Pill.Wrapper>
@@ -301,7 +301,7 @@ const Main = () => {
               <CalendarMonthIcon />
               This Week
             </span>
-            <span>신규 등록 모집공고 {thisWeekNewInfo?.len}개</span>
+            <span>신규 등록 서평단 모집 {thisWeekNewInfo?.len}개</span>
           </WelcomeWrapper>
           <Pill.Wrapper>
             <Pill.Sub
@@ -446,7 +446,7 @@ const Main = () => {
               <CalendarMonthIcon />
               This Week
             </span>
-            <span>신규 등록 소통 {thisWeekNewComm?.len}개</span>
+            <span>신규 등록 소통 포스트 {thisWeekNewComm?.len}개</span>
           </WelcomeWrapper>
           <Pill.Wrapper>
             <Pill.Sub
