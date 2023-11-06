@@ -6,7 +6,7 @@ module.exports = {
   "development": {
     "username": "root",
     "password": process.env.DBPW,
-    "database": "narang",
+    "database": "moseoree",
     "host": "127.0.0.1",
     "port": "3306",
     "dialect": "mysql",
@@ -15,7 +15,7 @@ module.exports = {
   "test": {
     "username": "root",
     "password": process.env.DBPW,
-    "database": "narang",
+    "database": "moseoree",
     "host": "127.0.0.1",
     "port": "3306",
     "dialect": "mysql",
@@ -24,7 +24,7 @@ module.exports = {
   "production": {
     "username": "root",
     "password": process.env.DBPW,
-    "database": "narang",
+    "database": "moseoree",
     "host": "127.0.0.1",
     "port": "3306",
     "dialect": "mysql",
