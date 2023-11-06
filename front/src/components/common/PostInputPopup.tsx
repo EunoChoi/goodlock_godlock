@@ -39,7 +39,6 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
   const inputType = params.type ? parseInt(params.type) : 0;
   const isMobile = useMediaQuery({ maxWidth: 720 });
 
-  const PostInputHelpText = ["공지사항 입력 설명", "모집 공고 입력 설명", "소통글 입력 설명"];
   const placeholders = ["공지사항 입력", "모집 공고 입력", "소통글 입력"];
   const [content, setContent] = useState<string>("");
   const [images, setImages] = useState<string[]>([]);
@@ -100,13 +99,47 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
     }
   );
 
+  const uploadImages = useMutation(
+    (images: any) => {
+      return Axios.post("post/images", images);
+      // return Axios.post("post/images", images).then((res) => setImages([...images, ...res.data]));
+    },
+    {
+      onSuccess: (res) => {
+        console.log(res.data);
+        setImages([...images, ...res.data]);
+      }
+      // onError: () => { }
+    }
+  );
+
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
+      console.log(e.target.files[0].size);
       const imageFormData = new FormData();
-      Array.from(e.target.files).forEach((file) => {
-        imageFormData.append("image", file);
+
+      //게시글 최대 이미지 개수 제한
+      if (images.length + e.target.files.length > 10) {
+        toast.error("이미지 파일은 최대 10개까지 삽입 가능합니다.");
+        return null;
+      }
+
+      //개별 이미지 크기 제한
+      const isOverSize = Array.from(e.target.files).find((file) => {
+        if (file.size <= 5 * 1024 * 1024) {
+          imageFormData.append("image", file);
+        } else {
+          return true;
+        }
       });
-      Axios.post("post/images", imageFormData).then((res) => setImages([...images, ...res.data]));
+
+      if (isOverSize) {
+        toast.error("선택된 이미지 중 5MB를 초과하는 이미지가 존재합니다.");
+        return null;
+      }
+
+      uploadImages.mutate(imageFormData);
+      // Axios.post("post/images", imageFormData).then((res) => setImages([...images, ...res.data]));
     }
   };
 
@@ -149,6 +182,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
               optionToggle === 0 && (
                 <div>
                   <DatePicker
+                    calendarStartDay={1}
                     locale={ko}
                     dateFormat="yy년 MM월 dd일"
                     selectsStart
@@ -164,6 +198,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
                   />
                   <MoreHorizIcon />
                   <DatePicker
+                    calendarStartDay={1}
                     locale={ko}
                     dateFormat="yy년 MM월 dd일"
                     selectsEnd
@@ -199,11 +234,18 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
           }}
           value={content}
         ></InputForm.TextArea>
-        {images.length > 0 && (
+
+        {(images.length > 0 || uploadImages.isLoading) && (
           <InputForm.InputImageWrapper>
             {images.map((v, i) => (
               <InputForm.InputImageBox key={i}>
-                <InputForm.InputImage src={`${BACK_SERVER}/${v}`} alt={v}></InputForm.InputImage>
+                <InputForm.InputImage
+                  src={`${v}`}
+                  alt={v}
+                  onError={(e) => {
+                    e.currentTarget.src = `${v?.replace(/\/thumb\//, "/original/")}`;
+                  }}
+                ></InputForm.InputImage>
                 <InputForm.ImageDeleteButton
                   onClick={() => {
                     const tempImages = [...images];
@@ -217,6 +259,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
                 </InputForm.ImageDeleteButton>
               </InputForm.InputImageBox>
             ))}
+            {uploadImages.isLoading && <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`}></img>}
           </InputForm.InputImageWrapper>
         )}
         <InputForm.ButtonArea>

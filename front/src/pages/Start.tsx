@@ -221,7 +221,7 @@ const StartImg = styled.img`
   height: 80%;
   object-fit: contain;
   @media screen and (max-width: 720px) {
-    width: 40%;
+    width: 60%;
     height: 25vh;
     height: calc(var(--vh, 1vh) * 25);
     margin-right: 24px;

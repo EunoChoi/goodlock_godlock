@@ -97,8 +97,6 @@ const SignUp = ({ setToggle }: Props) => {
         ></LogInSignUp.Input>
         <LogInSignUp.WarningText>{errors.nickname?.message}</LogInSignUp.WarningText>
 
-        <LogInSignUp.FakePassword></LogInSignUp.FakePassword>
-        <LogInSignUp.FakePassword></LogInSignUp.FakePassword>
         <LogInSignUp.Input
           placeholder="비밀번호"
           type="password"
@@ -149,6 +147,9 @@ const SignUp = ({ setToggle }: Props) => {
             }
           })}
         ></LogInSignUp.Input>
+        <LogInSignUp.FakePassword></LogInSignUp.FakePassword>
+        <LogInSignUp.FakePassword></LogInSignUp.FakePassword>
+
         <LogInSignUp.WarningText>{errors.passwordCheck?.message}</LogInSignUp.WarningText>
         <LogInSignUp.Button type="submit" disabled={!isDirty || !isValid} bgColor="">
           회원가입

@@ -121,7 +121,14 @@ const PostZoom = ({ postProps, setZoom }: props) => {
             <div>
               {postProps?.User?.profilePic ? (
                 <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                  <ProfilePic width={150} alt="userProfilePic" src={`${BACK_SERVER}/${postProps?.User?.profilePic}`} />
+                  <ProfilePic
+                    width={150}
+                    alt="userProfilePic"
+                    src={`${postProps?.User?.profilePic}`}
+                    onError={(e) => {
+                      e.currentTarget.src = `${postProps?.User?.profilePic?.replace(/\/thumb\//, "/original/")}`;
+                    }}
+                  />
                 </Link>
               ) : (
                 <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
@@ -191,12 +198,14 @@ const PostZoom = ({ postProps, setZoom }: props) => {
         !isMobile && !isOnlyText && (
           <ImageText onClick={(e) => e.stopPropagation()}>
             <div>
-              {postProps.Images?.length === 1 && <Image src={`${BACK_SERVER}/${postProps.Images[0].src}`} />}
+              {postProps.Images?.length === 1 && (
+                <Image src={`${postProps.Images[0].src.replace(/\/thumb\//, "/original/")}`} />
+              )}
               {postProps.Images?.length >= 2 && (
                 <Carousel indicators={true} autoPlay={false} animation="fade">
                   {postProps.Images?.map((v: Image, i: number) => (
                     <ImageBox key={i}>
-                      <Image src={`${BACK_SERVER}/${v?.src}`} />
+                      <Image src={`${v?.src.replace(/\/thumb\//, "/original/")}`} />
                     </ImageBox>
                   ))}
                 </Carousel>
@@ -210,7 +219,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       <ProfilePicSM
                         width={150}
                         alt="userProfilePic"
-                        src={`${BACK_SERVER}/${postProps?.User?.profilePic}`}
+                        src={`${postProps?.User?.profilePic}`}
+                        onError={(e) => {
+                          e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
+                        }}
                       />
                     </Link>
                   ) : (
@@ -288,7 +300,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                         <ProfilePicSM
                           width={150}
                           alt="userProfilePic"
-                          src={`${BACK_SERVER}/${postProps?.User?.profilePic}`}
+                          src={`${postProps?.User?.profilePic}`}
+                          onError={(e) => {
+                            e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
+                          }}
                         />
                       </Link>
                     ) : (
@@ -362,7 +377,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                         <ProfilePicSM
                           width={150}
                           alt="userProfilePic"
-                          src={`${BACK_SERVER}/${postProps?.User?.profilePic}`}
+                          src={`${postProps?.User?.profilePic}`}
+                          onError={(e) => {
+                            e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
+                          }}
                         />
                       </Link>
                     ) : (
@@ -393,7 +411,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                   animation="fade"
                 >
                   {arr.map((v, i) => {
-                    if (i === 0) {
+                    if (i === postProps.Images?.length) {
                       return (
                         <TextBox key="텍스트페이지">
                           <div>{postProps.content}</div>
@@ -440,7 +458,9 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       );
                     } else {
                       return (
-                        <ImageBox key={i}>{<Image src={`${BACK_SERVER}/${postProps.Images[i - 1].src}`} />}</ImageBox>
+                        <ImageBox key={i}>
+                          {<Image src={`${postProps.Images[i].src.replace(/\/thumb\//, "/original/")}`} />}
+                        </ImageBox>
                       );
                     }
                   })}

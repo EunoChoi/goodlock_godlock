@@ -167,7 +167,13 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
           }}
         >
           {commentProps?.User?.profilePic ? (
-            <ProfilePic alt="userProfilePic" src={`${BACK_SERVER}/${commentProps?.User?.profilePic}`} />
+            <ProfilePic
+              alt="userProfilePic"
+              src={`${commentProps?.User?.profilePic}`}
+              onError={(e) => {
+                e.currentTarget.src = `${commentProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
+              }}
+            />
           ) : (
             <ProfilePic alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}

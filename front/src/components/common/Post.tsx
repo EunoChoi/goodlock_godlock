@@ -28,6 +28,7 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
+import ShareIcon from "@mui/icons-material/Share";
 
 interface Image {
   src: string;
@@ -251,7 +252,13 @@ const Post = ({ postProps }: any) => {
           }}
         >
           {postProps?.User?.profilePic ? (
-            <ProfilePic alt="userProfilePic" src={`${BACK_SERVER}/${postProps?.User?.profilePic}`} />
+            <ProfilePic
+              alt="userProfilePic"
+              src={`${postProps?.User?.profilePic}`}
+              onError={(e) => {
+                e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
+              }}
+            />
           ) : (
             <ProfilePic alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}
@@ -263,14 +270,24 @@ const Post = ({ postProps }: any) => {
         <ImageWrapper onClick={() => setZoom(true)}>
           {postProps.Images?.length === 1 && (
             <ImageBox>
-              <Image src={`${BACK_SERVER}/${postProps.Images[0].src}`} />
+              <Image
+                src={`${postProps.Images[0].src}`}
+                onError={(e) => {
+                  e.currentTarget.src = `${postProps.Images[0].src.replace(/\/thumb\//, "/original/")}`;
+                }}
+              />
             </ImageBox>
           )}
           {postProps.Images?.length >= 2 && (
             <Carousel indicators={true} autoPlay={false} animation="fade">
               {postProps.Images?.map((v: Image, i: number) => (
                 <ImageBox key={i}>
-                  <Image src={`${BACK_SERVER}/${v?.src}`} />
+                  <Image
+                    src={`${v?.src}`}
+                    onError={(e) => {
+                      e.currentTarget.src = `${v?.src.replace(/\/thumb\//, "/original/")}`;
+                    }}
+                  />
                 </ImageBox>
               ))}
             </Carousel>
@@ -344,6 +361,10 @@ const Post = ({ postProps }: any) => {
               <MessageIcon />
               <span>{postProps?.Comments?.length}</span>
             </ToggleButton>
+            <ToggleButton>
+              <ShareIcon fontSize="small" />
+              <span>공유</span>
+            </ToggleButton>
           </FlexDiv>
         )}
         {postProps.type === 2 && (
@@ -370,6 +391,10 @@ const Post = ({ postProps }: any) => {
             >
               <MessageIcon />
               <span>{postProps?.Comments?.length}</span>
+            </ToggleButton>
+            <ToggleButton>
+              <ShareIcon fontSize="small" />
+              <span>공유</span>
             </ToggleButton>
           </FlexDiv>
         )}
