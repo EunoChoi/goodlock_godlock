@@ -5,7 +5,7 @@ dotenv.config();
 module.exports = {
   "development": {
     "username": "root",
-    "password": process.envBPW,
+    "password": process.env.DBPW,
     "database": "moseoree",
     "host": "127.0.0.1",
     "port": "3306",
