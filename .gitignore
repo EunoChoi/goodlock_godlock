@@ -1,4 +1,4 @@
-narang-key.pem
+*.pem
 
 node_modules
 uploads
