@@ -77,7 +77,8 @@ const Header = () => {
                 });
               }}
             >
-              <Link to="/main/0">모서리</Link>
+              {/* <Link to="/main/0">GoodLock GodLock</Link> */}
+              <Link to="/main/0">굿 락 갓 락</Link>
             </HeaderLogoMobile>
             <MyProfile onClick={() => navigate("/profile/0")}>
               <PersonIcon></PersonIcon>
@@ -86,10 +87,10 @@ const Header = () => {
           </HeaderFixedWrapper>
           <HeaderExtendedWrapper currentPage={currentPage + 1}>
             <span onClick={() => setMountToggle(false)}>
-              <Link to="/main/0">메인</Link>
+              <Link to="/main/0">홈</Link>
             </span>
             <span onClick={() => setMountToggle(false)}>
-              <Link to="/main/1">모집 공고</Link>
+              <Link to="/main/1">팁&설정</Link>
             </span>
             <span onClick={() => setMountToggle(false)}>
               <Link to="/main/2">소통</Link>
@@ -109,16 +110,16 @@ const Header = () => {
                 })
               }
             >
-              모서리
+              굿 락 갓 락{/* GoodLock GodLock */}
             </HeaderLogo>
           </Link>
 
           <HeaderLink currentPage={currentPage + 1}>
             <span>
-              <Link to="/main/0">메인</Link>
+              <Link to="/main/0">홈</Link>
             </span>
             <span>
-              <Link to="/main/1">모집 공고</Link>
+              <Link to="/main/1">팁&설정</Link>
             </span>
             <span>
               <Link to="/main/2">소통</Link>
@@ -133,7 +134,7 @@ const Header = () => {
 export default Header;
 
 const MyProfile = styled.div`
-  width: 20%;
+  width: 15%;
   display: flex;
   justify-content: end;
   align-items: center;
@@ -211,7 +212,7 @@ const HeaderMenuButton = styled.button`
   align-items: center;
   color: rgba(0, 0, 0, 0.6);
   font-size: 29px;
-  width: 20%;
+  width: 15%;
 `;
 const HeaderExtendedWrapper = styled.div<{ currentPage: number | undefined }>`
   display: flex;
@@ -233,14 +234,15 @@ const HeaderLogo = styled.span`
   text-align: center;
   /* color: white; */
   color: rgba(0, 0, 0, 0.7);
+  /* font-size: 30px; */
   font-size: 48px;
   font-family: "Pretendard-bold";
-  letter-spacing: 12px;
+  /* letter-spacing: 12px; */
   /* font-weight: 600; */
 `;
 
 const HeaderLogoMobile = styled.span`
-  width: 60%;
+  width: 70%;
   text-align: center;
   color: white;
   color: rgba(0, 0, 0, 0.6);

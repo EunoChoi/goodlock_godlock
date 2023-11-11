@@ -64,7 +64,7 @@ const UserInfo = () => {
 
   const navigate = useNavigate();
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["팔로잉", "팔로워", "작성 모집 공고", "작성 소통글", "관심 공고"];
+  const category = ["팔로잉", "팔로워", "작성 팁&설정", "작성 소통글", "관심 팁&설정"];
 
   //useQuery, useInfiniteQuery
   const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {

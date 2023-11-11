@@ -39,7 +39,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
   const inputType = params.type ? parseInt(params.type) : 0;
   const isMobile = useMediaQuery({ maxWidth: 720 });
 
-  const placeholders = ["공지사항 입력", "모집 공고 입력", "소통글 입력"];
+  const placeholders = ["공지사항 입력", "팁&설정 입력", "소통글 입력"];
   const [content, setContent] = useState<string>("");
   const [images, setImages] = useState<string[]>([]);
 
@@ -169,7 +169,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
             <div>
               <button onClick={() => setOptionToggle(0)}>
                 <CalendarMonthIcon />
-                모집 기간
+                공유 기간
               </button>{" "}
               <button onClick={() => setOptionToggle(1)}>
                 <InsertLinkIcon />

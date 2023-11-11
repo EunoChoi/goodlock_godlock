@@ -60,8 +60,8 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
   const BACK_SERVER = process.env.REACT_APP_BACK_URL;
   const isMobile = useMediaQuery({ maxWidth: 720 });
 
-  const PostInputHelpText = ["공지사항 입력 설명", "모집 공고 입력 설명", "소통글 입력 설명"];
-  const placeholders = ["공지사항 입력", "모집 공고 입력", "소통글 입력"];
+  const PostInputHelpText = ["공지사항 입력 설명", "팁&설정 입력 설명", "소통글 입력 설명"];
+  const placeholders = ["공지사항 입력", "팁&설정 입력", "소통글 입력"];
   const [content, setContent] = useState<string>(postProps.content);
   const [images, setImages] = useState<string[]>(postProps.images.map((v) => v.src));
   const imageInput = useRef<HTMLInputElement>(null);
@@ -182,7 +182,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
             <div>
               <button onClick={() => setOptionToggle(0)}>
                 <CalendarMonthIcon />
-                모집 기간
+                공유 기간
               </button>{" "}
               <button onClick={() => setOptionToggle(1)}>
                 <InsertLinkIcon />

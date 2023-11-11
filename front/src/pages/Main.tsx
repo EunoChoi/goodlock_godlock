@@ -203,13 +203,14 @@ const Main = () => {
                 <EmojiPeopleIcon fontSize="inherit" />
               </div>
             </span>
-            <span>오늘도 행복한 하루를 만들어 보아요 :)</span>
+            <span>갤럭시 굿락 팁&설정 공유 플랫폼, 굿락갓락 :)</span>
+
             <span>
               <CalendarMonthIcon />
               This Week
             </span>
-            <span>신규 등록 서평단 모집 {thisWeekNewInfo?.len}개</span>
-            <span>마감 예정 관심공고 {thisWeekEndLiked?.len}개</span>
+            <span>신규 팁&설정 {thisWeekNewInfo?.len}개</span>
+            <span>마감 관심 팁&설정 {thisWeekEndLiked?.len}개</span>
           </WelcomeWrapper>
           <Pill.Wrapper>
             <Pill.Sub
@@ -236,7 +237,7 @@ const Main = () => {
                 });
               }}
             >
-              관심 공고
+              관심 팁&설정
             </Pill.Sub>
           </Pill.Wrapper>
 
@@ -294,14 +295,17 @@ const Main = () => {
       {toggles.main === 1 && ( // 모집 공고
         <MainEl>
           <WelcomeWrapper ref={scrollTarget}>
-            <span>모집 공고</span>
+            <span>팁&설정</span>
             <span></span>
-            <span>서평단 모집 공고를 공유해요.</span>
+            <span>
+              GTS를 이용해 굿락 팁&설정을 공유해요!!!<br></br>
+            </span>
+
             <span>
               <CalendarMonthIcon />
               This Week
             </span>
-            <span>신규 등록 서평단 모집 {thisWeekNewInfo?.len}개</span>
+            <span>신규 등록 팁&설정 {thisWeekNewInfo?.len}개</span>
           </WelcomeWrapper>
           <Pill.Wrapper>
             <Pill.Sub
@@ -328,7 +332,7 @@ const Main = () => {
                 });
               }}
             >
-              모집 중
+              공유 중
             </Pill.Sub>
             <Pill.Search
               toggle={toggles.sub === 2}
@@ -441,12 +445,12 @@ const Main = () => {
           <WelcomeWrapper ref={scrollTarget}>
             <span>소통</span>
             <span></span>
-            <span>나의 일상을 공유하고 소통해요.</span>
+            <span>질문하고 답하며 소통해요!!!</span>
             <span>
               <CalendarMonthIcon />
               This Week
             </span>
-            <span>신규 등록 소통 포스트 {thisWeekNewComm?.len}개</span>
+            <span>신규 등록 소통글 {thisWeekNewComm?.len}개</span>
           </WelcomeWrapper>
           <Pill.Wrapper>
             <Pill.Sub

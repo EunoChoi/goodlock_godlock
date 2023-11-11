@@ -45,7 +45,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const isMain = window.location.pathname.split("/")[1] === "main";
   const [goTopButton, setGoTopButton] = useState<boolean>(false);
 
-  const level = 1;
+  //공지사항 작성 가능 레벨
+  const level = 2;
 
   //useQuery
   const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {

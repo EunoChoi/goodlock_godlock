@@ -39,9 +39,9 @@ const UserProfile = () => {
         </Link>
       </UserSub>
       <UserSub>
-        <Link to="/main/0">
-          <span>{user?.Liked?.filter((v: any) => v.type === 1).length}</span>
-          <span>관심 공고</span>
+        <Link to="/profile/3">
+          <span>{user?.Posts?.filter((v: any) => v.type === 1).length}</span>
+          <span>팁&설정</span>
         </Link>
       </UserSub>
       <UserSub>

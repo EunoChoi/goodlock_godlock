@@ -25,7 +25,7 @@ const Start = () => {
   const { data: isLoggedIn } = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data));
   const navigate = useNavigate();
 
-  const text = "사랑이 부족한 이 시대 \n 공감과 위로가 전해지기를";
+  const text = "갤럭시 굿락 팁&설정 공유 플랫폼";
   useEffect(() => {
     setToggle(true);
   }, [popupOpen]);
@@ -47,16 +47,12 @@ const Start = () => {
         <div>
           <Title>
             <div>
-              <span>모</span>
-              <span>두 함께하는</span>
+              <span>g</span>
+              <span>ood Lock</span>
             </div>
             <div>
-              <span>서</span>
-              <span>평</span>
-            </div>
-            <div>
-              <span>리</span>
-              <span>뷰</span>
+              <span>g</span>
+              <span>od Lock</span>
             </div>
           </Title>
           <TextBox>{text}</TextBox>
@@ -108,18 +104,19 @@ const Title = styled.span`
   text-transform: uppercase;
   font-family: Pretendard-bold;
   > div {
-    line-height: 72px;
-    font-size: 64px;
+    line-height: 80px;
+    font-size: 72px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.7);
     @media screen and (max-width: 720px) {
-      font-size: 56px;
+      font-size: 64px;
+      line-height: 60px;
     }
     span:nth-child(2) {
-      font-size: 42px;
+      font-size: 48px;
       color: rgba(0, 0, 0, 0.4);
       @media screen and (max-width: 720px) {
-        font-size: 34px;
+        font-size: 42px;
       }
     }
   }
@@ -181,7 +178,7 @@ const StartWrapper = styled.div`
   }
 
   > div:nth-child(1) {
-    width: 40vw;
+    width: 45vw;
     height: 100vh;
 
     display: flex;
@@ -190,7 +187,7 @@ const StartWrapper = styled.div`
     align-items: start;
 
     padding-left: 10vw;
-    padding-top: 10vh;
+    padding-top: 20vh;
     @media screen and (max-width: 720px) {
       width: 100vw;
       height: 70vh;
@@ -198,12 +195,13 @@ const StartWrapper = styled.div`
     }
   }
   > div:nth-child(2) {
-    width: 60vw;
+    width: 55vw;
     height: 100vh;
 
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: end;
+    padding-bottom: 20vh;
     @media screen and (max-width: 720px) {
       justify-content: end;
       align-items: start;
@@ -218,7 +216,7 @@ const StartWrapper = styled.div`
 
 const StartImg = styled.img`
   width: 90%;
-  height: 80%;
+  height: 70%;
   object-fit: contain;
   @media screen and (max-width: 720px) {
     width: 60%;
