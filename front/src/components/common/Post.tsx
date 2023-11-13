@@ -366,17 +366,6 @@ const Post = ({ postProps }: any) => {
               <MessageIcon />
               <span>{postProps?.Comments?.length}</span>
             </ToggleButton>
-            <ToggleButton
-              onClick={() => {
-                console.log(`${BASE_URL}/postview/${postProps.id}`);
-                toast.success("공유 URL이 클립보드에 복사되었습니다.");
-              }}
-              className="btn"
-              data-clipboard-text={`${BASE_URL}/postview/${postProps.id}`}
-            >
-              <LinkIcon fontSize="small" />
-              <span>복사</span>
-            </ToggleButton>
           </FlexDiv>
         )}
         {postProps.type === 2 && (
@@ -404,32 +393,42 @@ const Post = ({ postProps }: any) => {
               <MessageIcon />
               <span>{postProps?.Comments?.length}</span>
             </ToggleButton>
-            <ToggleButton>
-              <ShareIcon fontSize="small" />
-              <span>공유</span>
-            </ToggleButton>
           </FlexDiv>
         )}
-        {isMyPost && (
+
+        <FlexDiv>
           <ToggleButton
-            onClick={(event: React.MouseEvent<HTMLElement>) => {
-              event.stopPropagation();
-              if (!morePop) {
-                setMorePop(event.currentTarget);
-                setTimer(
-                  setTimeout(() => {
-                    setMorePop(null);
-                  }, 1500)
-                );
-              } else {
-                setMorePop(null);
-                clearTimeout(timer);
-              }
+            onClick={() => {
+              // console.log(`${BASE_URL}/postview/${postProps.id}`);
+              toast.success("공유 URL이 클립보드에 복사되었습니다.");
             }}
+            className="btn"
+            data-clipboard-text={`${BASE_URL}/postview/${postProps.id}`}
           >
-            <MoreVertIcon />
+            <LinkIcon fontSize="small" />
+            <span>복사</span>
           </ToggleButton>
-        )}
+          {isMyPost && (
+            <ToggleButton
+              onClick={(event: React.MouseEvent<HTMLElement>) => {
+                event.stopPropagation();
+                if (!morePop) {
+                  setMorePop(event.currentTarget);
+                  setTimer(
+                    setTimeout(() => {
+                      setMorePop(null);
+                    }, 1500)
+                  );
+                } else {
+                  setMorePop(null);
+                  clearTimeout(timer);
+                }
+              }}
+            >
+              <MoreVertIcon />
+            </ToggleButton>
+          )}
+        </FlexDiv>
       </ToggleWrapper>
 
       {isCommentOpen && (
