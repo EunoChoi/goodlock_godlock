@@ -71,7 +71,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
   const [start, setStart] = useState<Date>(new Date(postProps.start));
   const [end, setEnd] = useState<Date>(new Date(postProps.end));
 
-  const [link, setLink] = useState<string>("");
+  const [link, setLink] = useState<string>(postProps.link);
   const isInfoPost = postProps.type === 1;
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -233,7 +233,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
               optionToggle === 1 && (
                 <div>
                   <input
-                    placeholder="추가할 링크를 입력하세요"
+                    placeholder="https://----------"
                     value={link}
                     onChange={(e) => setLink(e.target.value)}
                   ></input>

@@ -219,7 +219,11 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
               //link
               optionToggle === 1 && (
                 <div>
-                  <input placeholder="www.example.com" value={link} onChange={(e) => setLink(e.target.value)}></input>
+                  <input
+                    placeholder="https://----------"
+                    value={link}
+                    onChange={(e) => setLink(e.target.value)}
+                  ></input>
                 </div>
               )
             }
