@@ -94,7 +94,45 @@ router.post('/images', upload.array('image'), async (req, res, next) => {
 });
 
 
-
+//load posts - single post
+router.get("/single", async (req, res) => {
+  const { id } = req.query;
+  try {
+    const where = {};
+    const SinglePost = await Post.findOne({
+      where: [{
+        id
+      }],
+      include: [
+        {
+          model: User,//게시글 작성자
+          attributes: ['id', 'nickname', 'profilePic', 'email'],
+        },
+        {
+          model: User, //좋아요 누른 사람
+          as: 'Likers', //모델에서 가져온대로 설정
+          attributes: ['id', 'nickname'],
+        },
+        {
+          model: Image, //게시글의 이미지
+        },
+        {
+          model: Comment, //게시글에 달린 댓글
+          include: [
+            {
+              model: User, //댓글의 작성자
+              attributes: ['id', 'nickname', 'profilePic'],
+            }
+          ],
+        }
+      ],
+    });
+    if (!SinglePost) return res.status(403).json("포스트 id가 올바르지 않습니다.");
+    return res.status(201).json(SinglePost);
+  } catch (e) {
+    console.err(e);
+  }
+})
 //load posts - all
 router.get("/", async (req, res) => {
   const { type, pageParam, tempDataNum } = req.query;
