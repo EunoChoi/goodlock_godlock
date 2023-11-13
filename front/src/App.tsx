@@ -20,6 +20,7 @@ const Start = lazy(() => import("./pages/Start"));
 const Main = lazy(() => import("./pages/Main"));
 const Profile = lazy(() => import("./pages/Profile"));
 const UserInfo = lazy(() => import("./pages/UserInfo"));
+const PostView = lazy(() => import("./pages/PostView"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 import Loading from "./pages/Loading";
@@ -68,6 +69,7 @@ function App() {
         <GlobalStyle />
         <Suspense fallback={<Loading></Loading>}>
           <Routes>
+            <Route path="postview/:id" element={<PostView />} />
             <Route path="main/:type" element={<AuthRoute accessType="login" component={<Main />} />} />
             <Route path="profile/:cat" element={<AuthRoute accessType="login" component={<Profile />} />} />
             <Route path="userinfo/:id/cat/:cat" element={<AuthRoute accessType="login" component={<UserInfo />} />} />

@@ -603,6 +603,7 @@ const ContentWrapper = styled.div`
   }
 `;
 const ContentBox = styled.div`
+  border-radius: 6px;
   transition: all ease-in-out 0.3s;
   width: 500px;
   min-height: calc(100vh - 104px - 24px);

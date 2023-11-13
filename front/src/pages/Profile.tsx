@@ -725,6 +725,7 @@ const ContentWrapper = styled.div`
 `;
 const ContentBox = styled.div<{ width: number; padding: number }>`
   width: ${(props) => props.width + "px"};
+  border-radius: 6px;
   min-height: calc(100vh - 104px - 24px);
   padding: 40px ${(props) => props.padding + "px"};
   background-color: white;

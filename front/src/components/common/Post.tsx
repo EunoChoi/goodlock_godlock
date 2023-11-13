@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 import Axios from "../../apis/Axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import ClipboardJS from "clipboard";
 
 //components
 import Comment from "./Comment";
@@ -29,6 +30,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import ShareIcon from "@mui/icons-material/Share";
+import LinkIcon from "@mui/icons-material/Link";
 
 interface Image {
   src: string;
@@ -43,8 +45,11 @@ interface CustomError extends Error {
 }
 
 const Post = ({ postProps }: any) => {
+  const clipboard = new ClipboardJS(".btn");
+
   moment.locale("ko");
   const BACK_SERVER = process.env.REACT_APP_BACK_URL;
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
   const queryClient = useQueryClient();
 
   const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
@@ -361,9 +366,16 @@ const Post = ({ postProps }: any) => {
               <MessageIcon />
               <span>{postProps?.Comments?.length}</span>
             </ToggleButton>
-            <ToggleButton>
-              <ShareIcon fontSize="small" />
-              <span>공유</span>
+            <ToggleButton
+              onClick={() => {
+                console.log(`${BASE_URL}/postview/${postProps.id}`);
+                toast.success("공유 URL이 클립보드에 복사되었습니다.");
+              }}
+              className="btn"
+              data-clipboard-text={`${BASE_URL}/postview/${postProps.id}`}
+            >
+              <LinkIcon fontSize="small" />
+              <span>복사</span>
             </ToggleButton>
           </FlexDiv>
         )}
@@ -532,6 +544,7 @@ const PostWrapper = styled.div`
   height: auto;
   width: 500px;
 
+  border-radius: 6px;
   background-color: white;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   margin: 3px 10px;

@@ -56,6 +56,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const logout = useMutation(() => Axios.get("user/logout"), {
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
+      location.reload();
     },
     onError: (err: CustomError) => {
       toast.warning(err.response?.data);

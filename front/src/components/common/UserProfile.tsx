@@ -10,8 +10,10 @@ const UserProfile = () => {
   const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
     staleTime: 60 * 1000
   }).data;
+  const isLoggedIn = user != (null || undefined);
+  console.log(isLoggedIn);
 
-  return (
+  return isLoggedIn ? (
     <ProfileWrapper>
       <UserTitle>
         <Link to="/profile/0">
@@ -58,10 +60,34 @@ const UserProfile = () => {
       </UserSub>
       <div></div>
     </ProfileWrapper>
+  ) : (
+    <LoginBtnWrapper>
+      <span></span>
+      <button>
+        <Link to="/">로그인</Link>
+      </button>
+    </LoginBtnWrapper>
   );
 };
 
 export default UserProfile;
+
+const LoginBtnWrapper = styled.div`
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  button {
+    background-color: #fff;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+    color: #9a93b6;
+    border-radius: 100px;
+    height: 48px;
+    width: 128px;
+    font-size: 18px;
+  }
+`;
 
 const ProfileWrapper = styled.div`
   width: 100%;

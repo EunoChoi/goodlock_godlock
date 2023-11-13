@@ -16,6 +16,7 @@
     "@types/react-dom": "^18.2.7",
     "@types/react-responsive": "^8.0.5",
     "axios": "^1.5.0",
+    "clipboard": "^2.0.11",
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-prettier": "^4.2.1",
     "moment": "^2.29.4",
