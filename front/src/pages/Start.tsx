@@ -25,7 +25,7 @@ const Start = () => {
   const { data: isLoggedIn } = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data));
   const navigate = useNavigate();
 
-  const text = "갤럭시 굿락 팁&설정 공유 플랫폼";
+  const text = "굿락 팁&설정 공유 플랫폼";
   useEffect(() => {
     setToggle(true);
   }, [popupOpen]);
@@ -47,11 +47,11 @@ const Start = () => {
         <div>
           <Title>
             <div>
-              <span>g</span>
+              <span>G</span>
               <span>ood Lock</span>
             </div>
             <div>
-              <span>g</span>
+              <span>G</span>
               <span>od Lock</span>
             </div>
           </Title>
@@ -101,7 +101,7 @@ const TextBox = styled.div`
 `;
 
 const Title = styled.span`
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   font-family: Pretendard-bold;
   > div {
     line-height: 80px;
@@ -109,14 +109,14 @@ const Title = styled.span`
     font-weight: 600;
     color: rgba(0, 0, 0, 0.7);
     @media screen and (max-width: 720px) {
-      font-size: 64px;
-      line-height: 60px;
+      font-size: 72px;
+      line-height: 64px;
     }
     span:nth-child(2) {
       font-size: 48px;
       color: rgba(0, 0, 0, 0.4);
       @media screen and (max-width: 720px) {
-        font-size: 42px;
+        /* font-size: 64px; */
       }
     }
   }

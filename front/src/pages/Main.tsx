@@ -203,14 +203,14 @@ const Main = () => {
                 <EmojiPeopleIcon fontSize="inherit" />
               </div>
             </span>
-            <span>갤럭시 굿락 팁&설정 공유 플랫폼, 굿락갓락 :)</span>
+            <span>굿락 팁&설정 공유 플랫폼, 굿락갓락 :)</span>
 
             <span>
               <CalendarMonthIcon />
               This Week
             </span>
-            <span>신규 팁&설정 {thisWeekNewInfo?.len}개</span>
-            <span>마감 관심 팁&설정 {thisWeekEndLiked?.len}개</span>
+            <span>신규 등록 게시글 {thisWeekNewInfo?.len + thisWeekNewComm?.len}개</span>
+            <span>마감 예정 관심 팁&설정 {thisWeekEndLiked?.len}개</span>
           </WelcomeWrapper>
           <Pill.Wrapper>
             <Pill.Sub
@@ -260,7 +260,7 @@ const Main = () => {
                 next={() => noticePosts.fetchNextPage()}
                 dataLength={noticePosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
-                {noticePosts?.data?.pages.map((p) =>
+                {noticePosts?.data?.pages?.map((p) =>
                   p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
               </InfiniteScroll>
@@ -284,7 +284,7 @@ const Main = () => {
                 next={() => likedPosts.fetchNextPage()}
                 dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
-                {likedPosts?.data?.pages.map((p) =>
+                {likedPosts?.data?.pages?.map((p) =>
                   p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
               </InfiniteScroll>
