@@ -203,7 +203,7 @@ const Main = () => {
                 <EmojiPeopleIcon fontSize="inherit" />
               </div>
             </span>
-            <span>굿락 팁&설정 공유 플랫폼, 굿락갓락 :)</span>
+            <span>굿락 팁 공유 플랫폼, 굿락갓락 :)</span>
 
             <span>
               <CalendarMonthIcon />
@@ -298,7 +298,8 @@ const Main = () => {
             <span>팁&설정</span>
             <span></span>
             <span>
-              GTS를 이용해 굿락 팁&설정을 공유해요!!!<br></br>
+              나만의 굿락 팁&설정을 공유해요.<br></br>
+              GTS를 이용하면 공유가 쉬워집니다.
             </span>
 
             <span>
@@ -445,7 +446,9 @@ const Main = () => {
           <WelcomeWrapper ref={scrollTarget}>
             <span>소통</span>
             <span></span>
-            <span>질문하고 답하며 소통해요!!!</span>
+            <span>
+              나만의 설정을 자랑하거나 <br></br>서로 질문하고 답하며 소통해요.
+            </span>
             <span>
               <CalendarMonthIcon />
               This Week
@@ -783,6 +786,7 @@ const WelcomeWrapper = styled.div`
   }
   > span:nth-child(3) {
     margin-top: 24px;
+    line-height: 28px;
   }
   > span:nth-child(4) {
     font-size: 24px;
