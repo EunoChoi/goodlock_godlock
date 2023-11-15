@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -117,7 +117,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
       {
         //dasktop + only text
         !isMobile && isOnlyText && (
-          <OnlyText onClick={(e) => e.stopPropagation()}>
+          <PCText onClick={(e) => e.stopPropagation()}>
             <div>
               {postProps?.User?.profilePic ? (
                 <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
@@ -161,8 +161,8 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                     <PostLink>
                       <InsertLinkIcon />
                       <span>
-                        <a target="_blank" href={`https://${postProps?.link}`} rel="noreferrer">
-                          https://{postProps?.link}
+                        <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
+                          {postProps?.link}
                         </a>
                       </span>
                     </PostLink>
@@ -190,13 +190,13 @@ const PostZoom = ({ postProps, setZoom }: props) => {
             <CancelBtn onClick={() => setZoom(false)}>
               <CancelIcon fontSize="large" />
             </CancelBtn>
-          </OnlyText>
+          </PCText>
         )
       }
       {
         //desktop + image + text
         !isMobile && !isOnlyText && (
-          <ImageText onClick={(e) => e.stopPropagation()}>
+          <PCImageText onClick={(e) => e.stopPropagation()}>
             <div>
               {postProps.Images?.length === 1 && (
                 <Image src={`${postProps.Images[0].src.replace(/\/thumb\//, "/original/")}`} />
@@ -254,8 +254,8 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                     <PostLink>
                       <InsertLinkIcon />
                       <span>
-                        <a target="_blank" href={`https://${postProps?.link}`} rel="noreferrer">
-                          https://{postProps?.link}
+                        <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
+                          {postProps?.link}
                         </a>
                       </span>
                     </PostLink>
@@ -283,7 +283,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
             <CancelBtn onClick={() => setZoom(false)}>
               <CancelIcon fontSize="large" />
             </CancelBtn>
-          </ImageText>
+          </PCImageText>
         )
       }
       {
@@ -336,8 +336,8 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                         <PostLink>
                           <InsertLinkIcon />
                           <span>
-                            <a target="_blank" href={`https://${postProps?.link}`} rel="noreferrer">
-                              https://{postProps?.link}
+                            <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
+                              {postProps?.link}
                             </a>
                           </span>
                         </PostLink>
@@ -429,8 +429,8 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                                 <PostLink>
                                   <InsertLinkIcon />
                                   <span>
-                                    <a target="_blank" href={`https://${postProps?.link}`} rel="noreferrer">
-                                      https://{postProps?.link}
+                                    <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
+                                      {postProps?.link}
                                     </a>
                                   </span>
                                 </PostLink>
@@ -479,7 +479,11 @@ const PostZoom = ({ postProps, setZoom }: props) => {
 
 export default PostZoom;
 const CustomCarousel = styled(Carousel)`
-  height: calc(var(--vh, 1vh) * 100 - 64px - 32px);
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 const MobileCancelBtn = styled.button`
   height: 32px;
@@ -636,7 +640,7 @@ const TextBox = styled.div`
 
   > div:nth-child(1) {
     /* height: calc(80vh - 200px); */
-    height: 50%;
+    /* height: 50%; */
     flex-grow: 1;
     width: 100%;
     white-space: pre-wrap;
@@ -649,9 +653,9 @@ const TextBox = styled.div`
 `;
 const OnlyTextBox = styled.div`
   width: 100%;
-  height: calc(var(--vh, 1vh) * 100 - 64px - 32px);
 
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
@@ -677,8 +681,6 @@ const ImageBox = styled.div`
   justify-content: center;
   align-items: center;
   @media screen and (max-width: 720px) {
-    /* background-color: black; */
-    height: calc(80vh - 50px);
     height: calc(var(--vh, 1vh) * 95 - 64px - 32px);
   }
 `;
@@ -720,10 +722,13 @@ const PostZoomBG = styled.div`
     padding-top: 0;
   }
 `;
-const OnlyText = styled.div`
+const PCText = styled.div`
   position: relative;
   width: 70vw;
   height: calc(var(--vh, 1vh) * 90);
+  height: 90vh;
+
+  border-radius: 8px;
 
   display: flex;
   justify-content: center;
@@ -779,11 +784,12 @@ const OnlyText = styled.div`
   }
 `;
 
-const ImageText = styled.div`
+const PCImageText = styled.div`
   position: relative;
   width: 90vw;
-  height: 90vh;
   height: calc(var(--vh, 1vh) * 90);
+  height: 90vh;
+  border-radius: 8px;
 
   display: flex;
   justify-content: center;
@@ -840,7 +846,7 @@ const Mobile = styled.div`
   left: 0;
 
   width: 100vw;
-  height: 100vh;
+  /* height: 70vh; */
   height: calc(var(--vh, 1vh) * 100);
 
   display: flex;
@@ -856,5 +862,8 @@ const Mobile = styled.div`
   > div {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 `;

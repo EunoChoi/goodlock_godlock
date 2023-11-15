@@ -367,7 +367,8 @@ const MobileWrapper = styled.div`
   background: rgb(201, 220, 243);
   background: linear-gradient(180deg, rgba(201, 220, 243, 1) 0%, rgba(234, 216, 233, 1) 100%); */
 
-  background-color: #c9dbf3;
+  /* background-color: #c9dbf3; */
+  background-color: #c8daf3;
 
   height: auto;
 

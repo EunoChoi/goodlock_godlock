@@ -46,7 +46,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
   const [optionToggle, setOptionToggle] = useState<number>(0);
   const [start, setStart] = useState<Date>(new Date());
   const [end, setEnd] = useState<Date>(new Date());
-  const [link, setLink] = useState<string>("");
+  const [link, setLink] = useState<string>("https://");
   const isInfoPost =
     window.location.pathname.split("/")[2] === "1" && window.location.pathname.split("/")[1] === "main";
 
@@ -220,7 +220,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
               optionToggle === 1 && (
                 <div>
                   <input
-                    placeholder="https://----------"
+                    placeholder="https://www.url.com"
                     value={link}
                     onChange={(e) => setLink(e.target.value)}
                   ></input>

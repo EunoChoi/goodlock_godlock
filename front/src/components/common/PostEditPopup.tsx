@@ -233,7 +233,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
               optionToggle === 1 && (
                 <div>
                   <input
-                    placeholder="https://----------"
+                    placeholder="https://www.url.com"
                     value={link}
                     onChange={(e) => setLink(e.target.value)}
                   ></input>

@@ -316,8 +316,8 @@ const Post = ({ postProps }: any) => {
             <PostLink>
               <InsertLinkIcon />
               <span>
-                <a target="_blank" href={`https://${postProps?.link}`} rel="noreferrer">
-                  https://{postProps?.link}
+                <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
+                  {postProps?.link}
                 </a>
               </span>
             </PostLink>

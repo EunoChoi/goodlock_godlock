@@ -659,7 +659,7 @@ const ProfileTitle = styled.div`
     margin-top: 36px;
     width: 100vw;
     > span {
-      padding-left: 4vw;
+      padding-left: 5vw;
     }
   }
 `;
@@ -669,7 +669,7 @@ const Title = styled.div`
   line-height: 36px;
   color: rgba(0, 0, 0, 0.8);
   @media screen and (max-width: 720px) {
-    padding-left: 4vw;
+    padding-left: 5vw;
   }
 `;
 const MenuWrapper = styled.div`
