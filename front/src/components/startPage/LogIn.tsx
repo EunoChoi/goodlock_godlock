@@ -107,7 +107,7 @@ const LogIn = ({ setToggle }: Props) => {
         />
         <LogInSignUp.WarningText>{errors.password?.message}</LogInSignUp.WarningText>
         <LogInSignUp.TextWrapper>
-          <LogInSignUp.Text color="#4284F3" pointer={true} onClick={() => toast.error("구현 예정")}>
+          <LogInSignUp.Text color="#4284F3" pointer={true} onClick={() => toast.error("구현 예정입니다.")}>
             혹시 비밀번호를 잊으셨나요?
           </LogInSignUp.Text>
         </LogInSignUp.TextWrapper>
@@ -131,7 +131,7 @@ const LogIn = ({ setToggle }: Props) => {
         </LogInSignUp.Text>
       </LogInSignUp.TextWrapper>
       <LogInSignUp.Bar />
-      <LogInSignUp.Button bgColor="#4284F3" onClick={() => toast.error("구현 예정")}>
+      <LogInSignUp.Button bgColor="#4284F3" onClick={() => toast.error("구현 예정입니다.")}>
         구글 아이디로 로그인
       </LogInSignUp.Button>
     </LogInSignUp.Wrapper>

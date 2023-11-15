@@ -389,7 +389,7 @@ const Profile = () => {
               <ButtonWrapper>
                 <Button
                   onClick={() => {
-                    toast.warning("구현 예정");
+                    toast.warning("구현 예정입니다.");
                     // const password = prompt("현재 사용중인 비밀번호를 입력해주세요.");
                   }}
                 >
