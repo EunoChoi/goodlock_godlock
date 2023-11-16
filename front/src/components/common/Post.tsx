@@ -405,7 +405,7 @@ const Post = ({ postProps }: any) => {
             className="btn"
             data-clipboard-text={`${BASE_URL}/postview/${postProps.id}`}
           >
-            <LinkIcon fontSize="small" />
+            <LinkIcon fontSize="medium" />
             <span>URL</span>
           </ToggleButton>
           {isMyPost && (
