@@ -316,6 +316,9 @@ const HeaderLogoMobile = styled.span`
 
   font-size: 24px;
   font-weight: 600;
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 100%;
+  }
 `;
 
 const HeaderLink = styled.div<{ currentPage: number | undefined }>`

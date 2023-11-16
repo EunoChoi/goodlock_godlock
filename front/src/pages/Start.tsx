@@ -89,6 +89,9 @@ const TextBox = styled.div`
   @media (orientation: portrait) or (max-height: 480px) {
     margin: 48px 0;
   }
+  @media (orientation: landscape) and (max-height: 480px) {
+    margin: 36px 0;
+  }
 `;
 
 const Title = styled.span`
@@ -135,7 +138,7 @@ const BG2 = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
 `;
 const Footer = styled.div`
-  z-index: 19;
+  /* z-index: 19; */
   position: fixed;
   bottom: 0;
   left: 0;
@@ -198,7 +201,7 @@ const StartImg = styled.img`
 `;
 
 const StartButton = styled.button`
-  z-index: 100;
+  z-index: 99;
   font-size: 20px;
   color: white;
   color: rgba(0, 0, 0, 0.7);

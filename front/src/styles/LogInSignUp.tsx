@@ -12,7 +12,7 @@ const LogInSignUp = {
     position: absolute;
     top: 0;
     left: 0;
-    background: rgba(0, 0, 0, 0.3);
+    /* background: rgba(0, 0, 0, 0.05); */
     backdrop-filter: blur(12px);
 
     animation: ${(props) =>
@@ -54,7 +54,7 @@ const LogInSignUp = {
     }
     @media (orientation: landscape) and (max-height: 480px) {
       width: 45vw;
-      padding: 0px 50px;
+      padding: 0px 4vw;
       overflow-y: scroll;
     }
   `,

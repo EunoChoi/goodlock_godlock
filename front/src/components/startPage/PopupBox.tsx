@@ -48,8 +48,8 @@ const CancelBtn = styled.button`
   position: fixed;
   top: 10px;
   left: 10px;
-  color: black;
+  color: rgba(0, 0, 0, 0.8);
   @media (orientation: landscape) and (max-height: 480px) {
-    left: calc(55vw + 12px);
+    display: none;
   }
 `;
