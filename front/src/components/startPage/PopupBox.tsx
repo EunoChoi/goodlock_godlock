@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import LogInSignUp from "../../styles/LogInSignUp";
 import { ANIMATION_APPEAR, ANIMATION_DISAPPEAR } from "../../styles/Animation";
@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 //mui
 import CancelIcon from "@mui/icons-material/Cancel";
+import IsMobile from "../../styles/IsMobile";
 
 interface AppLayoutProps {
   popupOpen: boolean;
@@ -16,8 +17,7 @@ interface AppLayoutProps {
 const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, children }: AppLayoutProps) => {
   const [animation, setAnimation] = useState(ANIMATION_APPEAR);
 
-  const isMobile = useMediaQuery({ maxWidth: 720 });
-
+  const isMobile = IsMobile();
   return (
     <>
       {popupOpen && (

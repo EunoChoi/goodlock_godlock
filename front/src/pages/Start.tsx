@@ -7,12 +7,6 @@ import { useNavigate } from "react-router-dom";
 //components
 import PopupBox from "../components/startPage/PopupBox";
 
-//mui
-import Carousel from "react-material-ui-carousel";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import EscalatorWarningIcon from "@mui/icons-material/EscalatorWarning";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-
 //styles
 import SignUp from "../components/startPage/SignUp";
 import LogIn from "../components/startPage/LogIn";
@@ -32,7 +26,6 @@ const Start = () => {
 
   return (
     <>
-      {/* <BG alt="startPage_2" src={`${process.env.PUBLIC_URL}/img/startPage_4.jpg`}></BG> */}
       <BG />
       <BG2 />
       <Footer>
@@ -93,7 +86,7 @@ const TextBox = styled.div`
 
   margin: 64px 0;
 
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     margin: 48px 0;
   }
 `;
@@ -105,7 +98,7 @@ const Title = styled.span`
       font-size: 96px;
       font-weight: 700;
       color: rgba(0, 0, 0, 0.7);
-      @media screen and (max-width: 720px) {
+      @media (orientation: portrait) or (max-height: 480px) {
         font-size: 72px;
       }
     }
@@ -113,7 +106,7 @@ const Title = styled.span`
       font-size: 72px;
       font-weight: 600;
       color: rgba(0, 0, 0, 0.4);
-      @media screen and (max-width: 720px) {
+      @media (orientation: portrait) or (max-height: 480px) {
         font-size: 60px;
       }
     }
@@ -135,7 +128,7 @@ const BG2 = styled.div`
   left: 0;
   width: 100vw;
   height: 30vh;
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     height: 20vh;
   }
 
@@ -172,12 +165,11 @@ const StartWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: center;
   align-items: start;
 
   padding-left: 10vw;
-  padding-top: 20vh;
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     width: 100vw;
     height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
@@ -194,7 +186,7 @@ const StartImg = styled.img`
   width: 50%;
   height: 50%;
   object-fit: contain;
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     width: 70%;
     height: calc(var(--vh, 1vh) * 25);
     /* margin-right: 24px; */
@@ -202,7 +194,7 @@ const StartImg = styled.img`
 `;
 
 const StartButton = styled.button`
-  z-index: 10;
+  z-index: 100;
   font-size: 20px;
   color: white;
   color: rgba(0, 0, 0, 0.7);

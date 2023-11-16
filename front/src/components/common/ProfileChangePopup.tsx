@@ -241,7 +241,7 @@ const PopupBox = styled.div`
     /* font-weight: 600; */
     margin-top: 50px;
   }
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     width: 95vw;
   }
 `;

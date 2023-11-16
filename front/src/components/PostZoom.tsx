@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components/macro";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
@@ -20,6 +20,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import CloseIcon from "@mui/icons-material/Close";
+import IsMobile from "../styles/IsMobile";
 
 interface Image {
   src: string;
@@ -107,7 +108,8 @@ const PostZoom = ({ postProps, setZoom }: props) => {
     }
   });
 
-  const isMobile = useMediaQuery({ maxWidth: 720 });
+  const isMobile = IsMobile();
+
   const isOnlyText = postProps.Images.length === 0;
   const isLiked = postProps?.Likers?.find((v: any) => v.id === user?.id);
   const arr = new Array(postProps.Images.length + 1).fill(0);
@@ -504,7 +506,7 @@ const SubContentWrapper = styled.div`
   /* padding-left: 32px;
   padding-right: 32px; */
 
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     width: 100%;
     padding-left: 24px;
     padding-right: 24px;
@@ -547,7 +549,7 @@ const CancelBtn = styled.button`
 
   color: black;
 
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     top: calc(100% - 50px);
     /* left: 10%; */
     /* transform: translateX(-50%); */
@@ -586,7 +588,7 @@ const Like = styled.div`
     display: flex;
     align-items: center;
   }
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     align-items: center;
     height: 60px;
   }
@@ -680,7 +682,7 @@ const ImageBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     height: calc(var(--vh, 1vh) * 95 - 64px - 32px);
   }
 `;
@@ -716,7 +718,7 @@ const PostZoomBG = styled.div`
   > button {
     padding-top: 16px;
   }
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     justify-content: start;
     height: calc(var(--vh, 1vh) * 100);
     padding-top: 0;

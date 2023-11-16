@@ -623,7 +623,7 @@ const Pill = styled.button<{ catNum: number }>`
     background-color: #f3e0f1;
   }
 
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     margin-right: 8px;
     &:first-child {
       margin-left: 4vw;
@@ -655,7 +655,7 @@ const ProfileTitle = styled.div`
     margin-bottom: 12px;
   }
 
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     margin-top: 36px;
     width: 100vw;
     > span {
@@ -668,7 +668,7 @@ const Title = styled.div`
   font-size: 32px;
   line-height: 36px;
   color: rgba(0, 0, 0, 0.8);
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     padding-left: 5vw;
   }
 `;
@@ -693,7 +693,7 @@ const MenuWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     top: 36px;
     width: 100%;
     background: rgb(255, 255, 255);
@@ -718,7 +718,7 @@ const ContentWrapper = styled.div`
 
   /* padding-top: 24px; */
   /* padding-bottom: 24px; */
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     //haeder height : 36px
     min-height: calc(100vh - 36px - 104px);
   }
@@ -742,7 +742,7 @@ const ContentBox = styled.div<{ width: number; padding: number }>`
   button {
     color: #aaa7d4;
   }
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     transition: all ease-in-out 0.3s;
     width: 92vw;
     padding: 20px ${(props) => props.padding + "px"};
@@ -806,7 +806,7 @@ const ListTitle = styled.div`
     /* font-weight: 600; */
     color: rgba(0, 0, 0, 0.7);
   }
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     font-size: 40px;
     > div {
       font-size: 18px;

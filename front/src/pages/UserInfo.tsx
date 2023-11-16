@@ -415,7 +415,7 @@ const Pic = styled.img`
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   object-fit: cover;
 
-  /* @media screen and (max-width: 720px) {
+  /* @media (orientation: portrait) or (max-height: 480px) {
     width: 200px;
     height: 200px;
   } */
@@ -434,7 +434,7 @@ const ListTitle = styled.div`
     /* font-weight: 600; */
     color: rgba(0, 0, 0, 0.7);
   }
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     font-size: 40px;
     > div {
       font-size: 18px;
@@ -461,7 +461,7 @@ const Pill = styled.button<{ catNum: number }>`
     background-color: #f3e0f1;
   }
 
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     margin-right: 8px;
     &:last-child {
       margin-right: 0;
@@ -504,7 +504,7 @@ const UserInfoWrapper = styled.div`
     margin-bottom: 24px;
   }
 
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     width: 92vw;
     margin-top: 36px;
     > span:nth-child(2) {
@@ -539,7 +539,7 @@ const FollowButton = styled.button`
   &:hover {
     transform: scale(1.05);
   }
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     /* margin-bottom: 48px; */
   }
 `;
@@ -566,7 +566,7 @@ const MenuWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     background: rgb(255, 255, 255);
     background: linear-gradient(
       0deg,
@@ -596,7 +596,7 @@ const ContentWrapper = styled.div`
 
   /* padding-top: 24px; */
   padding-bottom: 24px;
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     //haeder height : 36px
     min-height: calc(100vh - 36px - 104px);
   }
@@ -623,7 +623,7 @@ const ContentBox = styled.div`
   button {
     color: #aaa7d4;
   }
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     width: 92vw;
     min-height: calc(100vh);
     min-height: calc(var(--vh, 1vh) * 100 - 36px - 104px - 24px);

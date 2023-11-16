@@ -19,6 +19,7 @@ import { useMediaQuery } from "react-responsive";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import IsMobile from "../../styles/IsMobile";
 
 interface props {
   setIsPostInputOpen: (b: boolean) => void;
@@ -37,8 +38,7 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
   const BACK_SERVER = process.env.REACT_APP_BACK_URL;
   const params = useParams();
   const inputType = params.type ? parseInt(params.type) : 0;
-  const isMobile = useMediaQuery({ maxWidth: 720 });
-
+  const isMobile = IsMobile();
   const placeholders = ["공지사항 입력", "팁&설정 입력", "소통글 입력"];
   const [content, setContent] = useState<string>("");
   const [images, setImages] = useState<string[]>([]);
@@ -342,7 +342,7 @@ const DateButton = styled.button`
   outline: none;
 
   text-align: center;
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     width: calc((90vw - 40px - 24px) / 2);
   }
 `;
@@ -358,7 +358,7 @@ const PostOptionWrapper = styled.div`
   padding-top: 40px;
   padding-bottom: 10px;
 
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     padding-left: 20px;
     padding-right: 20px;
   }
@@ -407,7 +407,7 @@ const PostOptionWrapper = styled.div`
       }
     }
 
-    @media screen and (max-width: 720px) {
+    @media (orientation: portrait) or (max-height: 480px) {
       justify-content: center;
     }
   }

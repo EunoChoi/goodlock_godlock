@@ -549,7 +549,7 @@ const PostWrapper = styled.div`
   margin: 3px 10px;
   margin-bottom: 30px;
   /* border-radius: 7px; */
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     width: 92vw;
     &:last-child {
       margin-bottom: 150px;
@@ -619,7 +619,7 @@ const TextWrapper = styled.div`
   -webkit-box-orient: vertical;
   overflow: hidden;
 
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     font-size: 1.1em;
   }
 `;

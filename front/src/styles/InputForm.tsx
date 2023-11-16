@@ -44,7 +44,7 @@ const InputWrapper = styled.div`
   justify-content: start;
   align-items: center;
   flex-direction: column;
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     position: fixed;
     left: 0;
     top: 0;
@@ -90,7 +90,7 @@ const TextArea = styled.textarea`
     /* font-weight: 600; */
     color: rgba(0, 0, 0, 0.3);
   }
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     /* height: 300px; */
     /* height: 30vh; */
     border-radius: 5px;
@@ -112,7 +112,7 @@ const ButtonArea = styled.div`
 
   padding: 0px 10px;
   box-shadow: 0px -3px 20px rgba(0, 0, 0, 0.15);
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     height: 50px;

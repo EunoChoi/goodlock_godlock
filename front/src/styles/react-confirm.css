@@ -45,7 +45,7 @@ body.react-confirm-alert-body-element {
   font-weight: 600;
 }
 
-@media screen and (max-width: 720px) {
+@media (orientation: portrait) or (max-height: 480px) {
   .react-confirm-alert-body {
     width: 92vw;
   }
