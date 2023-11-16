@@ -40,10 +40,10 @@ const PostView = () => {
 
   return (
     <AppLayout>
-      <SingePost>
+      <SingePostText>
         <ShareIcon />
-        <span> 공유된 포스트</span>
-      </SingePost>
+        <span> 공유 게시글</span>
+      </SingePostText>
       {single.data && <Post key={"singlePost"} postProps={single.data} />}
     </AppLayout>
   );
@@ -51,7 +51,7 @@ const PostView = () => {
 
 export default PostView;
 
-const SingePost = styled.div`
+const SingePostText = styled.div`
   width: 100%;
   padding-top: 64px;
   padding-left: calc(35vw - 285px);
@@ -61,12 +61,12 @@ const SingePost = styled.div`
   font-size: 30px;
   span {
     color: rgba(0, 0, 0, 0.7);
-    font-family: Pretendard-bold;
+    font-weight: 600;
   }
 
   @media screen and (max-width: 720px) {
     /* background-color: #fff; */
-    padding-left: 3vw;
+    padding-left: 5vw;
     padding-top: 100px;
   }
 `;

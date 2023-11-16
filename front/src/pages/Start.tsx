@@ -44,32 +44,29 @@ const Start = () => {
         </span>
       </Footer>
       <StartWrapper>
-        <div>
-          <Title>
-            <div>
-              <span>G</span>
-              <span>ood Lock</span>
-            </div>
-            <div>
-              <span>G</span>
-              <span>od Lock</span>
-            </div>
-          </Title>
-          <TextBox>{text}</TextBox>
-          <StartButton
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (isLoggedIn) navigate("/main/0");
-              else setPopupOpen(true);
-            }}
-          >
-            함께하기
-          </StartButton>
-        </div>
-        <div>
-          <StartImg alt="start_image" src={`${process.env.PUBLIC_URL}/img/start_image.png`}></StartImg>
-        </div>
+        <Title>
+          <div>
+            <span>G</span>
+            <span>ood Lock</span>
+          </div>
+          <div>
+            <span>G</span>
+            <span>od Lock</span>
+          </div>
+        </Title>
+        <TextBox>{text}</TextBox>
+        <StartButton
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (isLoggedIn) navigate("/main/0");
+            else setPopupOpen(true);
+          }}
+        >
+          함께하기
+        </StartButton>
+
+        <StartImg alt="start_image" src={`${process.env.PUBLIC_URL}/img/start_image.png`}></StartImg>
       </StartWrapper>
       {popupOpen && (
         <>
@@ -95,28 +92,29 @@ const TextBox = styled.div`
   text-align: start;
 
   margin: 64px 0;
+
   @media screen and (max-width: 720px) {
     margin: 48px 0;
   }
 `;
 
 const Title = styled.span`
-  /* text-transform: uppercase; */
-  font-family: Pretendard-bold;
   > div {
-    line-height: 80px;
-    font-size: 72px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.7);
-    @media screen and (max-width: 720px) {
-      font-size: 72px;
-      line-height: 64px;
+    margin-left: -10px;
+    span:nth-child(1) {
+      font-size: 96px;
+      font-weight: 700;
+      color: rgba(0, 0, 0, 0.7);
+      @media screen and (max-width: 720px) {
+        font-size: 72px;
+      }
     }
     span:nth-child(2) {
-      font-size: 48px;
+      font-size: 72px;
+      font-weight: 600;
       color: rgba(0, 0, 0, 0.4);
       @media screen and (max-width: 720px) {
-        /* font-size: 64px; */
+        font-size: 60px;
       }
     }
   }
@@ -173,56 +171,33 @@ const StartWrapper = styled.div`
   height: 100vh;
 
   display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+
+  padding-left: 10vw;
+  padding-top: 20vh;
   @media screen and (max-width: 720px) {
-    flex-direction: column;
-  }
-
-  > div:nth-child(1) {
-    width: 45vw;
+    width: 100vw;
     height: 100vh;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: start;
-
-    padding-left: 10vw;
-    padding-top: 20vh;
-    @media screen and (max-width: 720px) {
-      width: 100vw;
-      height: 70vh;
-      height: calc(var(--vh, 1vh) * 65);
-    }
-  }
-  > div:nth-child(2) {
-    width: 55vw;
-    height: 100vh;
-
-    display: flex;
-    justify-content: center;
-    align-items: end;
-    padding-bottom: 20vh;
-    @media screen and (max-width: 720px) {
-      justify-content: end;
-      align-items: start;
-      width: 100vw;
-      height: 30vh;
-      height: calc(var(--vh, 1vh) * 35);
-    }
+    height: calc(var(--vh, 1vh) * 100);
   }
 
   animation: ${Animation.smoothAppear} 1s;
 `;
 
 const StartImg = styled.img`
-  width: 90%;
-  height: 70%;
+  position: fixed;
+  right: 5vw;
+  bottom: calc(var(--vh, 1vh) * 12);
+
+  width: 50%;
+  height: 50%;
   object-fit: contain;
   @media screen and (max-width: 720px) {
-    width: 60%;
-    height: 25vh;
+    width: 70%;
     height: calc(var(--vh, 1vh) * 25);
-    margin-right: 24px;
+    /* margin-right: 24px; */
   }
 `;
 
@@ -234,6 +209,9 @@ const StartButton = styled.button`
   text-transform: uppercase;
 
   padding: 12px 24px;
+  font-weight: 600;
+
+  border-radius: 6px;
 
   background-color: #f4f6b1;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.15);

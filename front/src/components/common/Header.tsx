@@ -20,6 +20,11 @@ const Header = () => {
   const [mountToggle, setMountToggle] = useState(false);
   const navigate = useNavigate();
 
+  //useQuery
+  const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
+    staleTime: 60 * 1000
+  }).data;
+
   const { type } = useParams();
   let currentPage = type ? parseInt(type) : -1;
   if (window.location.pathname.split("/")[1] === "profile") currentPage = 3;
@@ -67,6 +72,7 @@ const Header = () => {
             >
               <MenuIcon fontSize="inherit" />
             </HeaderMenuButton>
+
             <HeaderLogoMobile
               onClick={() => {
                 setMountToggle(false);
@@ -80,6 +86,7 @@ const Header = () => {
               {/* <Link to="/main/0">GoodLock GodLock</Link> */}
               <Link to="/main/0">굿 락 갓 락</Link>
             </HeaderLogoMobile>
+
             <MyProfile onClick={() => navigate("/profile/0")}>
               <PersonIcon></PersonIcon>
               {/* {prevY} */}
@@ -114,17 +121,19 @@ const Header = () => {
             </HeaderLogo>
           </Link>
 
-          <HeaderLink currentPage={currentPage + 1}>
-            <span>
-              <Link to="/main/0">홈</Link>
-            </span>
-            <span>
-              <Link to="/main/1">팁&설정</Link>
-            </span>
-            <span>
-              <Link to="/main/2">소통</Link>
-            </span>
-          </HeaderLink>
+          {user && (
+            <HeaderLink currentPage={currentPage + 1}>
+              <span>
+                <Link to="/main/0">홈</Link>
+              </span>
+              <span>
+                <Link to="/main/1">팁&설정</Link>
+              </span>
+              <span>
+                <Link to="/main/2">소통</Link>
+              </span>
+            </HeaderLink>
+          )}
         </PcHeaderWrapper>
       )}
     </>
@@ -236,7 +245,7 @@ const HeaderLogo = styled.span`
   color: rgba(0, 0, 0, 0.7);
   /* font-size: 30px; */
   font-size: 48px;
-  font-family: "Pretendard-bold";
+  font-weight: 600;
   /* letter-spacing: 12px; */
   /* font-weight: 600; */
 `;
@@ -248,7 +257,7 @@ const HeaderLogoMobile = styled.span`
   color: rgba(0, 0, 0, 0.6);
 
   font-size: 24px;
-  font-family: Pretendard-bold;
+  font-weight: 600;
   /* font-weight: 600; */
 `;
 

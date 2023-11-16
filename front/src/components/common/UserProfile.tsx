@@ -62,7 +62,7 @@ const UserProfile = () => {
     </ProfileWrapper>
   ) : (
     <LoginBtnWrapper>
-      <span></span>
+      <span>로그인 후 이용 가능합니다</span>
       <button>
         <Link to="/">로그인</Link>
       </button>
@@ -78,13 +78,17 @@ const LoginBtnWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  > span:first-child {
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: 600;
+    margin-bottom: 32px;
+  }
   button {
     background-color: #fff;
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
     color: #9a93b6;
     border-radius: 100px;
-    height: 48px;
-    width: 128px;
+    padding: 8px 28px;
     font-size: 18px;
   }
 `;

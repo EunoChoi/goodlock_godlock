@@ -78,7 +78,7 @@ const LogInSignUp = {
     font-size: 28px;
     font-weight: 600;
     margin-bottom: 30px;
-    font-family: Pretendard-bold;
+    font-weight: 600;
   `,
   TextWrapper: styled.div`
     margin-top: 28px;

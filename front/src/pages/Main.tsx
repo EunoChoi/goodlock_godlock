@@ -757,7 +757,7 @@ const WelcomeWrapper = styled.div`
 
   > span:first-child,
   > span:nth-child(2) {
-    font-family: "Pretendard-bold";
+    font-weight: 600;
     display: flex;
     justify-content: center;
     align-items: center;

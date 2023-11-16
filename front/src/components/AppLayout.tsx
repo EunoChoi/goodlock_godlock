@@ -188,33 +188,37 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           </RightWrapper>
           <SideWrapper>
             <div>
-              <Button color="inherit">
-                <Link to="/profile/0">
-                  <PersonIcon fontSize="large" />
-                </Link>
-              </Button>
-              <Button
-                color="inherit"
-                onClick={() => {
-                  confirmAlert({
-                    // title: "",
-                    message: "로그아웃 하시겠습니까?",
-                    buttons: [
-                      {
-                        label: "취소",
-                        onClick: () => console.log("로그아웃 취소")
-                      },
-                      {
-                        label: "확인",
-                        onClick: () => logout.mutate()
-                      }
-                    ],
-                    keyCodeForClose: [8, 32]
-                  });
-                }}
-              >
-                <LogoutIcon fontSize="large" />
-              </Button>
+              {user && (
+                <>
+                  <Button color="inherit">
+                    <Link to="/profile/0">
+                      <PersonIcon fontSize="large" />
+                    </Link>
+                  </Button>
+                  <Button
+                    color="inherit"
+                    onClick={() => {
+                      confirmAlert({
+                        // title: "",
+                        message: "로그아웃 하시겠습니까?",
+                        buttons: [
+                          {
+                            label: "취소",
+                            onClick: () => console.log("로그아웃 취소")
+                          },
+                          {
+                            label: "확인",
+                            onClick: () => logout.mutate()
+                          }
+                        ],
+                        keyCodeForClose: [8, 32]
+                      });
+                    }}
+                  >
+                    <LogoutIcon fontSize="large" />
+                  </Button>
+                </>
+              )}
             </div>
 
             <div>

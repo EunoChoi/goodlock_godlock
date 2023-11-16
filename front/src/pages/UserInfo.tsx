@@ -484,8 +484,7 @@ const UserInfoWrapper = styled.div`
     color: rgba(0, 0, 0, 0.6);
   }
   > span:nth-child(2) {
-    font-family: "Pretendard-bold";
-
+    font-weight: 600;
     margin-top: 32px;
     font-size: 48px;
     color: rgba(0, 0, 0, 0.8);

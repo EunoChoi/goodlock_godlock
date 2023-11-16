@@ -7,7 +7,6 @@ import GlobalStyle from "./styles/GlobalStyle";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthRoute from "./components/AuthRoute";
 
-import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 
 //external css

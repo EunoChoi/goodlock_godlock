@@ -1,42 +1,26 @@
 // styles/GlobalStyle
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
-import Animation from "./Animation";
+import "../fonts/pretendard.css";
 
 const GlobalStyle = createGlobalStyle`
-@font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Medium.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Pretendard-bold';
-    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff') format('woff');
-    font-weight: 700;
-    font-style: normal;
-}
   ${reset}
   * {
+    font-family: Pretendard;
     -webkit-tap-highlight-color : transparent !important;
     box-sizing: border-box;
-    /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
-    font-family: Pretendard-Regular, system-ui, -apple-system;
+  }
+  span, div, button{
+   font-family: Pretendard;
+   font-weight: 500;
+   /* color: rgba(0,0,0,0.7) */
   }
   
   html{
     background-color: whitesmoke;
   }
-  /* @media screen and (max-width: 720px){
-    html{
-      background: rgba(246, 214, 229, 1);
-    }
-  } */
-  span, div{
-    /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
-    font-family: Pretendard-Regular, system-ui, -apple-system;
-  }
+
+  
   a {
   color: inherit;
   text-decoration: none;

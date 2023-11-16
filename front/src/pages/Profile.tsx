@@ -664,7 +664,7 @@ const ProfileTitle = styled.div`
   }
 `;
 const Title = styled.div`
-  font-family: "Pretendard-bold";
+  font-weight: 600;
   font-size: 32px;
   line-height: 36px;
   color: rgba(0, 0, 0, 0.8);
