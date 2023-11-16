@@ -64,7 +64,7 @@ const SingePostText = styled.div`
     font-weight: 600;
   }
 
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     /* background-color: #fff; */
     padding-left: 5vw;
     padding-top: 100px;

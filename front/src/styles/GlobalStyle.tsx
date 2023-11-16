@@ -18,6 +18,7 @@ const GlobalStyle = createGlobalStyle`
   
   html{
     background-color: whitesmoke;
+
   }
 
   

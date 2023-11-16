@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthRoute from "./components/AuthRoute";
 
 import { ToastContainer } from "react-toastify";
+import { useMediaQuery } from "react-responsive";
 
 //external css
 import "react-toastify/dist/ReactToastify.css";
@@ -42,6 +43,7 @@ function App() {
       document.documentElement.style.setProperty("--vh", `${vh * 0.01}px`);
     }
   };
+
   useEffect(() => {
     visualViewport?.addEventListener("resize", () => updateMobileViewport());
     updateMobileViewport();

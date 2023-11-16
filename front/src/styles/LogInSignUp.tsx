@@ -20,7 +20,7 @@ const LogInSignUp = {
         ? Animation.smoothAppear
         : Animation.smoothDisappear}
       0.5s;
-    @media screen and (max-width: 720px) {
+    @media (orientation: portrait) or (max-height: 480px) {
         height: calc(var(--vh, 1vh) * 100);
         
         display: flex;
@@ -42,7 +42,7 @@ const LogInSignUp = {
     /* transform: translate(-50%, -50%); */
     top: 0;
     right: 0;
-    @media screen and (max-width: 720px) {
+    @media (orientation: portrait) or (max-height: 480px) {
       width: 100vw;
       height: 100vh;
       height: calc(var(--vh, 1vh) * 100);
@@ -63,7 +63,7 @@ const LogInSignUp = {
     align-items: center;
 
     animation: ${Animation.smoothAppear} 0.6s;
-    @media screen and (max-width: 720px){
+    @media (orientation: portrait) or (max-height: 480px) {
       justify-content: start;
     }
   `,

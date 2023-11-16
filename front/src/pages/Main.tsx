@@ -619,7 +619,7 @@ const LoadingIconWrapper = styled.div`
 const HomeEl = styled.div`
   animation: ${Animation.smoothAppear} 0.7s;
   min-height: calc(100vh - 80px);
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     min-height: calc(100vh - 116px);
   }
 `;
@@ -657,7 +657,7 @@ const Pill = {
     width: 100%;
     overflow-x: scroll;
 
-    @media screen and (max-width: 720px) {
+    @media (orientation: portrait) or (max-height: 480px) {
       top: 36px;
       /* background-color: #c8daf3; */
       background: rgb(255, 255, 255);
@@ -718,7 +718,7 @@ const Pill = {
         text-align: center;
       }
     }
-    @media screen and (max-width: 720px) {
+    @media (orientation: portrait) or (max-height: 480px) {
       width: ${(props) => props.toggle && "50%"};
       flex-grow: ${({ toggle }) => toggle && "1"};
     }
@@ -808,7 +808,7 @@ const WelcomeWrapper = styled.div`
     padding-left: 10px;
     padding-left: calc(35vw - 285px);
   }
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     width: 100vw;
     padding-top: 88px;
     margin-top: 36px;

@@ -14,9 +14,11 @@ import { useRef } from "react";
 //mui
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
+import IsMobile from "../../styles/IsMobile";
 
 const Header = () => {
-  const isMobile = useMediaQuery({ maxWidth: 720 });
+  const isMobile = IsMobile();
+
   const [mountToggle, setMountToggle] = useState(false);
   const navigate = useNavigate();
 
@@ -163,7 +165,7 @@ const PcHeaderWrapper = styled.div<{ mountToggle: boolean }>`
   text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 
   width: 100%;
-  height: 200px;
+  height: 25vh;
 `;
 
 const MobileHeaderWrapper = styled.div<{ mountToggle: boolean }>`
@@ -262,7 +264,7 @@ const HeaderLogoMobile = styled.span`
 `;
 
 const HeaderLink = styled.div<{ currentPage: number | undefined }>`
-  padding: 20px 0;
+  padding-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;

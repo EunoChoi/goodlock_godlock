@@ -11,7 +11,6 @@ const UserProfile = () => {
     staleTime: 60 * 1000
   }).data;
   const isLoggedIn = user != (null || undefined);
-  console.log(isLoggedIn);
 
   return isLoggedIn ? (
     <ProfileWrapper>
@@ -34,31 +33,32 @@ const UserProfile = () => {
         {user?.usertext !== null ? <span>{user?.usertext}</span> : <span>-</span>}
       </UserTitle>
 
-      <UserSub>
-        <Link to="/profile/4">
-          <span>{user?.Posts?.filter((v: any) => v.type === 2).length}</span>
-          <span>소통글</span>
-        </Link>
-      </UserSub>
-      <UserSub>
-        <Link to="/profile/3">
-          <span>{user?.Posts?.filter((v: any) => v.type === 1).length}</span>
-          <span>팁&설정</span>
-        </Link>
-      </UserSub>
-      <UserSub>
-        <Link to="/profile/1">
-          <span>{user?.Followings?.length}</span>
-          <span>팔로잉</span>
-        </Link>
-      </UserSub>
-      <UserSub>
-        <Link to="/profile/2">
-          <span>{user?.Followers?.length}</span>
-          <span>팔로워</span>
-        </Link>
-      </UserSub>
-      <div></div>
+      <GridWrapper>
+        <UserSub>
+          <Link to="/profile/4">
+            <span>{user?.Posts?.filter((v: any) => v.type === 2).length}</span>
+            <span>소통글</span>
+          </Link>
+        </UserSub>
+        <UserSub>
+          <Link to="/profile/3">
+            <span>{user?.Posts?.filter((v: any) => v.type === 1).length}</span>
+            <span>팁&설정</span>
+          </Link>
+        </UserSub>
+        <UserSub>
+          <Link to="/profile/1">
+            <span>{user?.Followings?.length}</span>
+            <span>팔로잉</span>
+          </Link>
+        </UserSub>
+        <UserSub>
+          <Link to="/profile/2">
+            <span>{user?.Followers?.length}</span>
+            <span>팔로워</span>
+          </Link>
+        </UserSub>
+      </GridWrapper>
     </ProfileWrapper>
   ) : (
     <LoginBtnWrapper>
@@ -92,30 +92,32 @@ const LoginBtnWrapper = styled.div`
     font-size: 18px;
   }
 `;
-
-const ProfileWrapper = styled.div`
-  width: 100%;
-  height: calc(100% - 200px);
-
+const GridWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 4fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+`;
+const ProfileWrapper = styled.div`
+  width: 100%;
+  height: 75vh;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   padding: 0px 20px;
 
-  @media screen and (max-width: 720px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     display: none;
   }
 `;
 
 const ProfilePic = styled.img`
   height: 150px;
+  height: 20vh;
   width: 150px;
+  width: 20vh;
   border-radius: 150px;
 
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
   object-fit: cover;
 
   background-color: white;
@@ -123,23 +125,19 @@ const ProfilePic = styled.img`
 `;
 
 const UserTitle = styled.div`
-  padding: 20px 0px;
-  grid-column: 1 / 3;
-  grid-row: 1 / 2;
-
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+
+  height: 35vh;
+
   text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 
   * {
-    margin: 5px;
     &:nth-child(2) {
       font-size: 2em;
-      /* font-weight: 600; */
       color: rgba(0, 0, 0, 0.6);
-      /* color: white; */
     }
     &:nth-child(3) {
       font-size: 1.25em;
@@ -147,14 +145,10 @@ const UserTitle = styled.div`
     }
     &:nth-child(4) {
       font-size: 1.2em;
-      /* color: rgba(255, 255, 255, 0.9); */
+
       color: white;
       color: rgba(0, 0, 0, 0.4);
       text-align: center;
-      line-height: 1.3em;
-
-      /* font-weight: 600; */
-      /* text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); */
     }
   }
 `;
@@ -176,11 +170,9 @@ const UserSub = styled.div`
       color: white;
       color: rgba(0, 0, 0, 0.6);
       font-size: 1.6em;
-      /* font-weight: 600; */
     }
     span:nth-child(2) {
       font-size: 1.2em;
-      /* font-weight: 600; */
       color: rgba(0, 0, 0, 0.4);
     }
   }

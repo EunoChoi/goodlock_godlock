@@ -24,6 +24,7 @@ import UserProfile from "./common/UserProfile";
 import InputPopup from "./common/PostInputPopup";
 
 import Animation from "../styles/Animation";
+import IsMobile from "../styles/IsMobile";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -38,7 +39,9 @@ interface CustomError extends Error {
 
 const AppLayout = ({ children }: AppLayoutProps) => {
   const queryClient = useQueryClient();
-  const isMobile = useMediaQuery({ maxWidth: 720 });
+
+  const isMobile = IsMobile();
+
   const [isPostInputOpen, setPostInputOpen] = useState(false);
   const params = useParams();
   const type = params?.type && parseInt(params?.type);
@@ -365,13 +368,6 @@ const Children = styled.div`
 `;
 
 const MobileWrapper = styled.div`
-  /* background: rgb(246, 214, 229);
-  background: linear-gradient(0deg, rgba(246, 214, 229, 1) 0%, rgba(202, 221, 244, 1) 100%);
-
-  background: rgb(201, 220, 243);
-  background: linear-gradient(180deg, rgba(201, 220, 243, 1) 0%, rgba(234, 216, 233, 1) 100%); */
-
-  /* background-color: #c9dbf3; */
   background-color: #c8daf3;
 
   height: auto;
