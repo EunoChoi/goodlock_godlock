@@ -622,6 +622,9 @@ const HomeEl = styled.div`
   @media (orientation: portrait) or (max-height: 480px) {
     min-height: calc(100vh - 116px);
   }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: calc(52vw + 20px);
+  }
 `;
 const MainEl = styled.div`
   display: flex;
@@ -668,6 +671,10 @@ const Pill = {
         rgba(200, 218, 243, 1) 100%
       );
       padding: 24px 4vw;
+    }
+    @media (orientation: landscape) and (max-height: 480px) {
+      width: 60vw;
+      top: 0px;
     }
 
     -ms-overflow-style: none; /* IE and Edge */
@@ -817,5 +824,10 @@ const WelcomeWrapper = styled.div`
       padding-left: 5vw;
       padding-right: 5vw;
     }
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 60vw;
+    margin-top: 0;
+    padding-top: 24px;
   }
 `;

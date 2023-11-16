@@ -484,6 +484,9 @@ const PostWrapper = styled.div`
     /* width: 450px; */
     /* height: auto; */
   }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 52vw;
+  }
 `;
 const ImageWrapper = styled.div`
   transition: all ease-in-out 1s;

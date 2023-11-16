@@ -105,6 +105,20 @@ const Header = () => {
               <Link to="/main/2">소통</Link>
             </span>
           </HeaderExtendedWrapper>
+          <HeaderMobileLand currentPage={currentPage + 1}>
+            <span>
+              <Link to="/main/0">홈</Link>
+            </span>
+            <span>
+              <Link to="/main/1">팁&설정</Link>
+            </span>
+            <span>
+              <Link to="/main/2">소통</Link>
+            </span>
+            <span>
+              <Link to="/profile/0">프로필</Link>
+            </span>
+          </HeaderMobileLand>
         </MobileHeaderWrapper>
       ) : (
         //pc header
@@ -149,6 +163,9 @@ const MyProfile = styled.div`
   display: flex;
   justify-content: end;
   align-items: center;
+  @media (orientation: landscape) and (max-height: 480px) {
+    display: none;
+  }
 `;
 
 const PcHeaderWrapper = styled.div<{ mountToggle: boolean }>`
@@ -208,6 +225,17 @@ const MobileHeaderWrapper = styled.div<{ mountToggle: boolean }>`
       }
     }
   }
+  @media (orientation: landscape) and (max-height: 480px) {
+    position: fixed;
+    z-index: 999;
+    top: 0px;
+
+    background-color: #e3ecf9;
+
+    width: 20vw;
+    height: 100vh;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+  }
 `;
 
 const HeaderFixedWrapper = styled.div`
@@ -215,6 +243,10 @@ const HeaderFixedWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  @media (orientation: landscape) and (max-height: 480px) {
+    margin-top: 32px;
+    justify-content: center;
+  }
 `;
 
 const HeaderMenuButton = styled.button`
@@ -224,6 +256,30 @@ const HeaderMenuButton = styled.button`
   color: rgba(0, 0, 0, 0.6);
   font-size: 29px;
   width: 15%;
+  @media (orientation: landscape) and (max-height: 480px) {
+    display: none;
+  }
+`;
+const HeaderMobileLand = styled.div<{ currentPage: number | undefined }>`
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+
+  color: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 70vh;
+
+  span:nth-child(${(props) => props.currentPage}) {
+    color: rgba(0, 0, 0, 0.55);
+  }
+  span {
+    margin: 8px;
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    display: flex;
+  }
 `;
 const HeaderExtendedWrapper = styled.div<{ currentPage: number | undefined }>`
   display: flex;
@@ -260,7 +316,6 @@ const HeaderLogoMobile = styled.span`
 
   font-size: 24px;
   font-weight: 600;
-  /* font-weight: 600; */
 `;
 
 const HeaderLink = styled.div<{ currentPage: number | undefined }>`

@@ -52,6 +52,11 @@ const LogInSignUp = {
 
       /* position: static; */
     }
+    @media (orientation: landscape) and (max-height: 480px) {
+      width: 45vw;
+      padding: 0px 50px;
+      overflow-y: scroll;
+    }
   `,
   Wrapper: styled.div`
     width: 100%;
@@ -63,9 +68,18 @@ const LogInSignUp = {
     align-items: center;
 
     animation: ${Animation.smoothAppear} 0.6s;
+
+    
     @media (orientation: portrait) or (max-height: 480px) {
       justify-content: start;
     }
+    @media (orientation: landscape) and (max-height: 480px) {
+      justify-content: start;
+      
+      height: auto;
+      margin: 40px 0;
+    }
+
   `,
   Form: styled.form`
     display: flex;

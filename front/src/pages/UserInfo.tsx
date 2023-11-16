@@ -62,7 +62,7 @@ const UserInfo = () => {
 
   const navigate = useNavigate();
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["팔로잉", "팔로워", "작성 팁&설정", "작성 소통글", "관심 팁&설정"];
+  const category = ["팔로잉", "팔로워", "팁&설정", "소통글", "관심 팁&설정"];
 
   //useQuery, useInfiniteQuery
   const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
@@ -498,6 +498,14 @@ const UserInfoWrapper = styled.div`
       font-size: 18px;
     }
   }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 60vw;
+    height: auto;
+    padding-left: 32px;
+    margin-top: 0;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
 `;
 const FollowButton = styled.button`
   cursor: pointer;
@@ -558,6 +566,11 @@ const MenuWrapper = styled.div`
     padding-left: 4vw;
     padding-right: 4vw;
   }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 53vw;
+    padding-left: 4px;
+    top: 0;
+  }
 `;
 const ContentWrapper = styled.div`
   animation: ${Animation.smoothAppear} 0.7s;
@@ -577,6 +590,9 @@ const ContentWrapper = styled.div`
   @media (orientation: portrait) or (max-height: 480px) {
     //haeder height : 36px
     min-height: calc(100vh - 36px - 104px);
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 50vw;
   }
 `;
 const ContentBox = styled.div`
@@ -607,6 +623,10 @@ const ContentBox = styled.div`
     min-height: calc(var(--vh, 1vh) * 100 - 36px - 104px - 24px);
     /* background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(4px); */
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 52vw;
+    min-height: 400px;
   }
 `;
 const LoadingIcon = styled.div`

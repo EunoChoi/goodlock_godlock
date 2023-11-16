@@ -191,6 +191,10 @@ const StartImg = styled.img`
     height: calc(var(--vh, 1vh) * 25);
     /* margin-right: 24px; */
   }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 50%;
+    height: 70%;
+  }
 `;
 
 const StartButton = styled.button`

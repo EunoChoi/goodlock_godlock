@@ -154,13 +154,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                 </button>
               )
             }
-            {/* {isMain && (
-              <button>
-                <Link to="/profile/0">
-                  <SettingsIcon fontSize="large" />
-                </Link>
-              </button>
-            )} */}
           </MobileButtonWrapper>
         </MobileWrapper>
       ) : (
@@ -348,6 +341,9 @@ const Children = styled.div`
   scrollbar-width: none; /* Firefox */
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    padding-left: 20vw;
   }
 `;
 

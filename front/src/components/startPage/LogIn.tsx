@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 //styled component
 import LogInSignUp from "../../styles/LogInSignUp";
 import User from "../../functions/reactQuery/User";
+import styled from "styled-components";
 
 interface Props {
   setToggle: (b: boolean) => void;
@@ -74,7 +75,6 @@ const LogIn = ({ setToggle }: Props) => {
           로그인
         </LogInSignUp.Button>
       </LogInSignUp.Form>
-
       <LogInSignUp.TextWrapper>
         <LogInSignUp.Text color="" pointer={false}>
           아직 회원이 아니신가요?
@@ -98,3 +98,9 @@ const LogIn = ({ setToggle }: Props) => {
 };
 
 export default LogIn;
+
+const Test = styled.div`
+  background-color: red;
+  width: 100px;
+  height: 200px;
+`;

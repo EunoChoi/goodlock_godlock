@@ -69,8 +69,7 @@ interface Toggles {
 
 const Profile = () => {
   moment.locale("ko");
-  const queryClient = useQueryClient();
-  const BACK_SERVER = process.env.REACT_APP_BACK_URL;
+
   const navigate = useNavigate();
 
   //state
@@ -597,6 +596,14 @@ const Pill = styled.button<{ catNum: number }>`
       margin-right: 4vw;
     }
   }
+  @media (orientation: landscape) and (max-height: 480px) {
+    &:first-child {
+      margin-left: 4px;
+    }
+    &:last-child {
+      margin-right: 4px;
+    }
+  }
 `;
 const ProfileTitle = styled.div`
   display: flex;
@@ -626,6 +633,11 @@ const ProfileTitle = styled.div`
     > span {
       padding-left: 5vw;
     }
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    padding-top: 32px;
+    margin-top: 0;
+    width: 60vw;
   }
 `;
 const Title = styled.div`
@@ -669,6 +681,11 @@ const MenuWrapper = styled.div`
       rgba(200, 218, 243, 1) 100%
     );
   }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 52vw;
+    top: 0px;
+    padding: 18px 4px;
+  }
 `;
 const ContentWrapper = styled.div`
   animation: ${Animation.smoothAppear} 0.7s;
@@ -686,6 +703,9 @@ const ContentWrapper = styled.div`
   @media (orientation: portrait) or (max-height: 480px) {
     //haeder height : 36px
     min-height: calc(100vh - 36px - 104px);
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 60vw;
   }
 `;
 const ContentBox = styled.div<{ width: number; padding: number }>`
@@ -715,6 +735,11 @@ const ContentBox = styled.div<{ width: number; padding: number }>`
     min-height: calc(var(--vh, 1vh) * 100 - 36px - 104px - 24px);
     /* background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(4px); */
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 50vw;
+    min-height: 400px;
+    margin-bottom: 32px;
   }
 `;
 const LoadingIcon = styled.div`

@@ -51,6 +51,12 @@ body.react-confirm-alert-body-element {
   }
 }
 
+@media (orientation: landscape) and (max-height: 480px) {
+  .react-confirm-alert-body {
+    width: 50vw;
+  }
+}
+
 .react-confirm-alert-svg {
   position: absolute;
   top: 0;
