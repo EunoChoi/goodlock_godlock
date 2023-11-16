@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Axios from "../../apis/Axios";
 import { toast } from "react-toastify";
 
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
+import Comment from "../../functions/reactQuery/Comment";
 
 //mui
 import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
@@ -20,35 +21,12 @@ const CommentInputForm = ({ postId, postType }: props) => {
 
   const [content, setContent] = useState("");
 
-  const addComment = useMutation(() => Axios.post(`post/${postId}/comment`, { content }), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
-
-      queryClient.invalidateQueries(["noticePosts"]);
-      queryClient.invalidateQueries(["infoPosts"]);
-      queryClient.invalidateQueries(["searchInfo"]);
-      queryClient.invalidateQueries(["communityPosts"]);
-      queryClient.invalidateQueries(["searchComm"]);
-      queryClient.invalidateQueries(["activinfo"]);
-      queryClient.invalidateQueries(["feed"]);
-
-      queryClient.invalidateQueries(["userLikedPosts"]);
-      queryClient.invalidateQueries(["userInfoPosts"]);
-      queryClient.invalidateQueries(["userCommPosts"]);
-
-      queryClient.invalidateQueries(["likedPosts"]);
-      queryClient.invalidateQueries(["myCommPosts"]);
-      queryClient.invalidateQueries(["myInfoPosts"]);
+  const addComment = Comment.add(postId, content);
+  useEffect(() => {
+    if (addComment.isSuccess) {
       setContent("");
-      toast.success("댓글 작성이 완료되었습니다.");
-      // alert("댓글 작성이 완료되었습니다.");
-    },
-    onError: () => {
-      toast.warning("댓글 추가 중 에러 발생!!");
-      // alert("댓글 추가 중 에러 발생!!");
-      // location.reload();
     }
-  });
+  }, [addComment.isSuccess]);
 
   return (
     <form

@@ -24,22 +24,14 @@ import UserProfile from "./common/UserProfile";
 import InputPopup from "./common/PostInputPopup";
 
 import Animation from "../styles/Animation";
-import IsMobile from "../styles/IsMobile";
+import IsMobile from "../functions/IsMobile";
+import User from "../functions/reactQuery/User";
 
 interface AppLayoutProps {
   children: React.ReactNode;
 }
-interface CustomError extends Error {
-  response?: {
-    data: string;
-    status: number;
-    headers: string;
-  };
-}
 
 const AppLayout = ({ children }: AppLayoutProps) => {
-  const queryClient = useQueryClient();
-
   const isMobile = IsMobile();
 
   const [isPostInputOpen, setPostInputOpen] = useState(false);
@@ -56,16 +48,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     staleTime: 60 * 1000
   }).data;
 
-  const logout = useMutation(() => Axios.get("user/logout"), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
-      location.reload();
-    },
-    onError: (err: CustomError) => {
-      toast.warning(err.response?.data);
-      // alert(err.response?.data);
-    }
-  });
+  const logout = User.logout();
 
   const handleScroll = async () => {
     // console.log(window.scrollY);
@@ -354,6 +337,7 @@ const Children = styled.div`
   animation: ${Animation.smoothAppear} 0.7s;
 
   min-height: 100vh;
+
   height: auto;
 
   display: flex;

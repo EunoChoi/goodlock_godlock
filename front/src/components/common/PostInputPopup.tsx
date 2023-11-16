@@ -15,11 +15,11 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CancelIcon from "@mui/icons-material/Cancel";
 import styled from "styled-components";
-import { useMediaQuery } from "react-responsive";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import IsMobile from "../../styles/IsMobile";
+import Upload from "../../functions/reactQuery/Upload";
+import Post from "../../functions/reactQuery/Post";
 
 interface props {
   setIsPostInputOpen: (b: boolean) => void;
@@ -34,11 +34,8 @@ interface postDataType {
 }
 
 const InputPopup = ({ setIsPostInputOpen }: props) => {
-  const queryClient = useQueryClient();
-  const BACK_SERVER = process.env.REACT_APP_BACK_URL;
   const params = useParams();
   const inputType = params.type ? parseInt(params.type) : 0;
-  const isMobile = IsMobile();
   const placeholders = ["공지사항 입력", "팁&설정 입력", "소통글 입력"];
   const [content, setContent] = useState<string>("");
   const [images, setImages] = useState<string[]>([]);
@@ -57,62 +54,21 @@ const InputPopup = ({ setIsPostInputOpen }: props) => {
     inputRef.current?.focus();
   }, []);
 
-  const addPost = useMutation(
-    (data: postDataType) => {
-      return Axios.post<postDataType>("/post", data);
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["user"]);
-        queryClient.invalidateQueries(["thisweek/end/liked"]);
-        queryClient.invalidateQueries(["thisweek/new/1"]);
-        queryClient.invalidateQueries(["thisweek/new/2"]);
-
-        queryClient.invalidateQueries(["noticePosts"]);
-        queryClient.invalidateQueries(["infoPosts"]);
-        queryClient.invalidateQueries(["searchInfo"]);
-        queryClient.invalidateQueries(["communityPosts"]);
-        queryClient.invalidateQueries(["searchComm"]);
-        queryClient.invalidateQueries(["activinfo"]);
-        queryClient.invalidateQueries(["feed"]);
-
-        queryClient.invalidateQueries(["userLikedPosts"]);
-        queryClient.invalidateQueries(["userInfoPosts"]);
-        queryClient.invalidateQueries(["userCommPosts"]);
-
-        queryClient.invalidateQueries(["likedPosts"]);
-        queryClient.invalidateQueries(["myCommPosts"]);
-        queryClient.invalidateQueries(["myInfoPosts"]);
-
-        setIsPostInputOpen(false);
-        toast.success("게시글 등록이 완료되었습니다.");
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "smooth"
-        });
-      },
-      onError: () => {
-        toast.warning("글 등록 중 에러 발생!!");
-        // alert("글 등록 중 에러 발생!!");
-      }
+  //useMutation
+  const addPost = Post.add();
+  useEffect(() => {
+    if (addPost.isSuccess) {
+      setIsPostInputOpen(false);
     }
-  );
-
-  const uploadImages = useMutation(
-    (images: any) => {
-      return Axios.post("post/images", images);
-      // return Axios.post("post/images", images).then((res) => setImages([...images, ...res.data]));
-    },
-    {
-      onSuccess: (res) => {
-        console.log(res.data);
-        setImages([...images, ...res.data]);
-      }
-      // onError: () => { }
+  }, [addPost.isSuccess]);
+  const uploadImages = Upload.images();
+  useEffect(() => {
+    if (uploadImages.isSuccess) {
+      if (uploadImages?.data?.data) setImages([...images, ...uploadImages.data.data]);
     }
-  );
+  }, [uploadImages.isSuccess]);
 
+  //로컬에서 이미지 에러 처리
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       console.log(e.target.files[0].size);

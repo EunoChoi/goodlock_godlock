@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 //mui
 import CancelIcon from "@mui/icons-material/Cancel";
-import IsMobile from "../../styles/IsMobile";
+import IsMobile from "../../functions/IsMobile";
 
 interface AppLayoutProps {
   popupOpen: boolean;

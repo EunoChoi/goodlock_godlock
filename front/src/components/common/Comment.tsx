@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import React, { useEffect, useRef, useState } from "react";
 import moment from "moment";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import Axios from "../../apis/Axios";
-import { useQueryClient } from "@tanstack/react-query";
+import CommentFunction from "../../functions/reactQuery/Comment";
 
 //mui
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -19,20 +19,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 
 moment.locale("ko");
 
-interface CustomError extends Error {
-  response?: {
-    data: string;
-    status: number;
-    headers: string;
-  };
-}
-interface CommentType {
-  content: string;
-}
-
 const Comment = ({ commentProps, currentUserId, postType }: any) => {
-  const queryClient = useQueryClient();
-  const BACK_SERVER = process.env.REACT_APP_BACK_URL;
   const [isCommentEdit, setCommentEdit] = useState<boolean>(false);
   const [commentEditContent, setCommentEditContent] = useState<string>(commentProps.content);
 
@@ -52,66 +39,17 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
     staleTime: 60 * 1000
   }).data;
 
-  //mutation - 댓글 수정, 삭제
-  const editComment = useMutation(
-    (data: CommentType) => Axios.patch<CommentType>(`post/${commentProps.PostId}/comment/${commentProps.id}`, data),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["user"]);
-
-        queryClient.invalidateQueries(["noticePosts"]);
-        queryClient.invalidateQueries(["infoPosts"]);
-        queryClient.invalidateQueries(["searchInfo"]);
-        queryClient.invalidateQueries(["communityPosts"]);
-        queryClient.invalidateQueries(["searchComm"]);
-        queryClient.invalidateQueries(["activinfo"]);
-        queryClient.invalidateQueries(["feed"]);
-
-        queryClient.invalidateQueries(["userLikedPosts"]);
-        queryClient.invalidateQueries(["userInfoPosts"]);
-        queryClient.invalidateQueries(["userCommPosts"]);
-
-        queryClient.invalidateQueries(["likedPosts"]);
-        queryClient.invalidateQueries(["myCommPosts"]);
-        queryClient.invalidateQueries(["myInfoPosts"]);
-        setCommentEdit(false);
-        toast.success("댓글 수정이 완료되었습니다.");
-        // alert("댓글 수정이 완료되었습니다.");
-      },
-      onError: (err: CustomError) => {
-        setCommentEditContent(commentProps?.content);
-        toast.warning(err.response?.data);
-        // alert(err.response?.data);
-      }
+  //useMutation
+  const editComment = CommentFunction.edit(commentProps.PostId, commentProps.id);
+  useEffect(() => {
+    if (editComment.isSuccess) {
+      setCommentEdit(false);
+    } else {
+      setCommentEditContent(commentProps?.content);
     }
-  );
-  const deleteComment = useMutation(() => Axios.delete(`post/${commentProps.PostId}/comment/${commentProps.id}`), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
+  }, [editComment.isSuccess]);
 
-      queryClient.invalidateQueries(["noticePosts"]);
-      queryClient.invalidateQueries(["infoPosts"]);
-      queryClient.invalidateQueries(["searchInfo"]);
-      queryClient.invalidateQueries(["communityPosts"]);
-      queryClient.invalidateQueries(["searchComm"]);
-      queryClient.invalidateQueries(["activinfo"]);
-      queryClient.invalidateQueries(["feed"]);
-
-      queryClient.invalidateQueries(["userLikedPosts"]);
-      queryClient.invalidateQueries(["userInfoPosts"]);
-      queryClient.invalidateQueries(["userCommPosts"]);
-
-      queryClient.invalidateQueries(["likedPosts"]);
-      queryClient.invalidateQueries(["myCommPosts"]);
-      queryClient.invalidateQueries(["myInfoPosts"]);
-      toast.success("댓글 삭제가 완료되었습니다.");
-      // alert("댓글 삭제가 완료되었습니다.");
-    },
-    onError: (err: CustomError) => {
-      toast.warning(err.response?.data);
-      // alert(err.response?.data);
-    }
-  });
+  const deleteComment = CommentFunction.delete(commentProps.PostId, commentProps.id);
 
   return (
     <CommentBox

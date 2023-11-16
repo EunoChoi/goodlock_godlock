@@ -33,6 +33,7 @@ import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import CancelIcon from "@mui/icons-material/Cancel";
+import User from "../functions/reactQuery/User";
 
 interface userProps {
   email: string;
@@ -99,11 +100,11 @@ const Profile = () => {
   const [nickname, setNickname] = useState<string>("");
   const [usertext, setUsertext] = useState<string>("");
 
-  //useQuery, useInfiniteQuery
+  //useQuery
   const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
     staleTime: 60 * 1000
   }).data;
-
+  //useInfiniteQuery
   const myInfoPosts = useInfiniteQuery(
     ["myInfoPosts"],
     ({ pageParam = 1 }) =>
@@ -126,63 +127,27 @@ const Profile = () => {
   );
 
   //useMutation
-  const logout = useMutation(() => Axios.get("user/logout"), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
-    },
-    onError: (err: CustomError) => {
-      toast.warning(err.response?.data);
-      // alert(err.response?.data);
-    }
-  });
-  const editNickname = useMutation((data: { nickname: string }) => Axios.patch("user/edit/nickname", data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
+  const logout = User.logout();
+  const editNickname = User.editNick();
+  useEffect(() => {
+    if (editNickname.isSuccess) {
       toast.success("닉네임 변경이 완료되었습니다.");
-      // alert("닉네임 변경이 완료되었습니다.");
-
       const temp = { ...toggles };
       temp.nickname = false;
       setToggles(temp);
-    },
-    onError: (err: CustomError) => {
-      toast.warning(err.response?.data);
-      // alert(err.response?.data);
     }
-  });
-  const editUsertext = useMutation((data: { usertext: string }) => Axios.patch("user/edit/usertext", data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
+  }, [editNickname.isSuccess]);
+  const editUsertext = User.editText();
+  useEffect(() => {
+    if (editUsertext.isSuccess) {
       toast.success("상태메세지 변경이 완료되었습니다.");
-      // alert("상태메세지 변경이 완료되었습니다.");
-
       const temp = { ...toggles };
       temp.usertext = false;
       setToggles(temp);
-    },
-    onError: (err: CustomError) => {
-      toast.warning(err.response?.data);
-      // alert(err.response?.data);
     }
-  });
-  const unFollow = useMutation((data: { userId: number }) => Axios.delete(`user/${data.userId}/follow`), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
-    },
-    onError: (err: CustomError) => {
-      toast.warning(err.response?.data);
-      // alert(err.response?.data);
-    }
-  });
-  const deleteFollower = useMutation((data: { userId: number }) => Axios.delete(`user/${data.userId}/follower`), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
-    },
-    onError: (err: CustomError) => {
-      toast.warning(err.response?.data);
-      // alert(err.response?.data);
-    }
-  });
+  }, [editUsertext.isSuccess]);
+  const unFollow = User.unFollow();
+  const deleteFollower = User.deleteFollower();
 
   const scrollTarget = useRef<HTMLDivElement>(null);
   const category = ["정보", "팔로잉", "팔로워", "팁&설정", "소통글"];

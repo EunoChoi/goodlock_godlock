@@ -20,7 +20,8 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import CloseIcon from "@mui/icons-material/Close";
-import IsMobile from "../styles/IsMobile";
+import IsMobile from "../functions/IsMobile";
+import Post from "../functions/reactQuery/Post";
 
 interface Image {
   src: string;
@@ -38,76 +39,29 @@ interface CustomError extends Error {
 }
 
 const PostZoom = ({ postProps, setZoom }: props) => {
-  const BACK_SERVER = process.env.REACT_APP_BACK_URL;
-  const queryClient = useQueryClient();
-
   const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
     staleTime: 60 * 1000
   }).data;
 
-  const like = useMutation(() => Axios.patch(`post/${postProps.id}/like`), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
-
-      queryClient.invalidateQueries(["thisweek/end/liked"]);
-
-      queryClient.invalidateQueries(["noticePosts"]);
-      queryClient.invalidateQueries(["infoPosts"]);
-      queryClient.invalidateQueries(["searchInfo"]);
-      queryClient.invalidateQueries(["communityPosts"]);
-      queryClient.invalidateQueries(["searchComm"]);
-      queryClient.invalidateQueries(["activinfo"]);
-      queryClient.invalidateQueries(["feed"]);
-
-      queryClient.invalidateQueries(["userLikedPosts"]);
-      queryClient.invalidateQueries(["userInfoPosts"]);
-      queryClient.invalidateQueries(["userCommPosts"]);
-
-      queryClient.invalidateQueries(["likedPosts"]);
-      queryClient.invalidateQueries(["myCommPosts"]);
-      queryClient.invalidateQueries(["myInfoPosts"]);
-
+  //useMutation
+  const like = Post.like(postProps.id);
+  useEffect(() => {
+    if (like.isSuccess) {
       if (postProps.type === 0) toast.success("좋아요 완료");
       if (postProps.type === 1) toast.success("관심 등록 완료");
       if (postProps.type === 2) toast.success("좋아요 완료");
-    },
-    onError: (err: CustomError) => {
-      toast.error(err.response?.data);
-      // alert(err.response?.data);
     }
-  });
-  const disLike = useMutation(() => Axios.delete(`post/${postProps.id}/like`), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
-
-      queryClient.invalidateQueries(["thisweek/end/liked"]);
-
-      queryClient.invalidateQueries(["noticePosts"]);
-      queryClient.invalidateQueries(["infoPosts"]);
-      queryClient.invalidateQueries(["searchInfo"]);
-      queryClient.invalidateQueries(["communityPosts"]);
-      queryClient.invalidateQueries(["searchComm"]);
-      queryClient.invalidateQueries(["activinfo"]);
-      queryClient.invalidateQueries(["feed"]);
-
-      queryClient.invalidateQueries(["userLikedPosts"]);
-      queryClient.invalidateQueries(["userInfoPosts"]);
-      queryClient.invalidateQueries(["userCommPosts"]);
-
-      queryClient.invalidateQueries(["likedPosts"]);
-      queryClient.invalidateQueries(["myCommPosts"]);
-      queryClient.invalidateQueries(["myInfoPosts"]);
-
+  }, [like.isSuccess]);
+  const disLike = Post.disLike(postProps.id);
+  useEffect(() => {
+    if (disLike.isSuccess) {
       if (postProps.type === 0) toast.success("좋아요 취소 완료");
-      if (postProps.type === 1) toast.success("관심 해제 완료");
+      if (postProps.type === 1) toast.success("관심 등록 해제 완료");
       if (postProps.type === 2) toast.success("좋아요 취소 완료");
-    },
-    onError: (err: CustomError) => {
-      toast.error(err.response?.data);
-      // alert(err.response?.data);
     }
-  });
+  }, [disLike.isSuccess]);
 
+  //local
   const isMobile = IsMobile();
 
   const isOnlyText = postProps.Images.length === 0;

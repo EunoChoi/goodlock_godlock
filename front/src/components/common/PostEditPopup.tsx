@@ -20,7 +20,9 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import IsMobile from "../../styles/IsMobile";
+import IsMobile from "../../functions/IsMobile";
+import Upload from "../../functions/reactQuery/Upload";
+import Post from "../../functions/reactQuery/Post";
 
 interface serverImages {
   src: string;
@@ -58,8 +60,6 @@ interface CustomError extends Error {
 
 const PostEditPopup = ({ setPostEdit, postProps }: props) => {
   const queryClient = useQueryClient();
-  const BACK_SERVER = process.env.REACT_APP_BACK_URL;
-  const isMobile = IsMobile();
 
   const placeholders = ["공지사항 입력", "팁&설정 입력", "소통글 입력"];
   const [content, setContent] = useState<string>(postProps.content);
@@ -67,7 +67,6 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
   const imageInput = useRef<HTMLInputElement>(null);
 
   const [optionToggle, setOptionToggle] = useState<number>(0);
-  console.log(postProps.start);
   const [start, setStart] = useState<Date>(new Date(postProps.start));
   const [end, setEnd] = useState<Date>(new Date(postProps.end));
 
@@ -79,52 +78,22 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
     inputRef.current?.focus();
   }, []);
 
-  const editPost = useMutation((data: localPostData) => Axios.patch<localPostData>(`/post/${postProps.id}`, data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
-      queryClient.invalidateQueries(["thisweek/end/liked"]);
-      queryClient.invalidateQueries(["thisweek/new/1"]);
-      queryClient.invalidateQueries(["thisweek/new/2"]);
-
-      queryClient.invalidateQueries(["noticePosts"]);
-      queryClient.invalidateQueries(["infoPosts"]);
-      queryClient.invalidateQueries(["searchInfo"]);
-      queryClient.invalidateQueries(["communityPosts"]);
-      queryClient.invalidateQueries(["searchComm"]);
-      queryClient.invalidateQueries(["activinfo"]);
-      queryClient.invalidateQueries(["feed"]);
-
-      queryClient.invalidateQueries(["userLikedPosts"]);
-      queryClient.invalidateQueries(["userInfoPosts"]);
-      queryClient.invalidateQueries(["userCommPosts"]);
-
-      queryClient.invalidateQueries(["likedPosts"]);
-      queryClient.invalidateQueries(["myCommPosts"]);
-      queryClient.invalidateQueries(["myInfoPosts"]);
-
+  //useMutation
+  const editPost = Post.edit(postProps.id);
+  useEffect(() => {
+    if (editPost.isSuccess) {
       setPostEdit(false);
-      toast.success("게시글 수정이 완료되었습니다.");
-    },
-    onError: (err: CustomError) => {
-      toast.warning(err.response?.data);
-      // alert(err.response?.data);
     }
-  });
+  }, [editPost.isSuccess]);
 
-  const uploadImages = useMutation(
-    (images: any) => {
-      return Axios.post("post/images", images);
-      // return Axios.post("post/images", images).then((res) => setImages([...images, ...res.data]));
-    },
-    {
-      onSuccess: (res) => {
-        console.log(res.data);
-        setImages([...images, ...res.data]);
-      }
-      // onError: () => { }
+  const uploadImages = Upload.images();
+  useEffect(() => {
+    if (uploadImages.isSuccess) {
+      if (uploadImages?.data?.data) setImages([...images, ...uploadImages.data.data]);
     }
-  );
+  }, [uploadImages.isSuccess]);
 
+  //로컬에서 이미지 에러 처리
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const imageFormData = new FormData();

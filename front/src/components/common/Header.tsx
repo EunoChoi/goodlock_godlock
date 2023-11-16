@@ -14,7 +14,7 @@ import { useRef } from "react";
 //mui
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
-import IsMobile from "../../styles/IsMobile";
+import IsMobile from "../../functions/IsMobile";
 
 const Header = () => {
   const isMobile = IsMobile();

@@ -26,6 +26,7 @@ import Badge from "@mui/material/Badge";
 import InsertEmoticonRoundedIcon from "@mui/icons-material/InsertEmoticonRounded";
 import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlined";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+import User from "../functions/reactQuery/User";
 
 interface userProps {
   email: string;
@@ -55,12 +56,9 @@ interface CustomError extends Error {
 }
 
 const UserInfo = () => {
-  const BACK_SERVER = process.env.REACT_APP_BACK_URL;
-  const queryClient = useQueryClient();
   const params = useParams();
   const categoryNum = params.cat ? parseInt(params.cat) : 0;
   const id = params.id ? parseInt(params.id) : 0;
-  const [isZoom, setZoom] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const scrollTarget = useRef<HTMLDivElement>(null);
@@ -114,28 +112,8 @@ const UserInfo = () => {
     }
   );
   //useMutation
-  const follow = useMutation(() => Axios.patch(`user/${targetUser.id}/follow`), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
-      queryClient.invalidateQueries(["targetUser"]);
-      toast.success("팔로우 완료");
-    },
-    onError: (err: CustomError) => {
-      toast.warning(err.response?.data);
-      // alert(err.response?.data);
-    }
-  });
-  const unFollow = useMutation(() => Axios.delete(`user/${targetUser.id}/follow`), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
-      queryClient.invalidateQueries(["targetUser"]);
-      toast.success("언팔로우 완료");
-    },
-    onError: (err: CustomError) => {
-      toast.warning(err.response?.data);
-      // alert(err.response?.data);
-    }
-  });
+  const follow = User.follow(targetUser?.id);
+  const unFollow = User.unFollow();
 
   useEffect(() => {
     window.scrollTo({
@@ -185,7 +163,7 @@ const UserInfo = () => {
                     },
                     {
                       label: "확인",
-                      onClick: () => unFollow.mutate()
+                      onClick: () => unFollow.mutate({ userId: targetUser?.id })
                     }
                   ]
                 });

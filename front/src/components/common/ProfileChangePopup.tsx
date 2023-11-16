@@ -14,6 +14,8 @@ import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Button } from "@mui/material";
+import User from "../../functions/reactQuery/User";
+import Upload from "../../functions/reactQuery/Upload";
 
 interface state {
   image: boolean;
@@ -33,9 +35,6 @@ interface CustomError extends Error {
 }
 
 const ProfileChangePopup = ({ setToggles }: setStateProps) => {
-  const queryClient = useQueryClient();
-  const BACK_SERVER = process.env.REACT_APP_BACK_URL;
-
   const [image, setImage] = useState<string>("");
   const imageInput = useRef<HTMLInputElement>(null);
 
@@ -43,49 +42,24 @@ const ProfileChangePopup = ({ setToggles }: setStateProps) => {
   const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
     staleTime: 60 * 1000
   }).data;
-  //useMutation
-  const editProfilePic = useMutation((data: { profilePic: string }) => Axios.patch("user/edit/profilepic", data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
 
-      queryClient.invalidateQueries(["noticePosts"]);
-      queryClient.invalidateQueries(["infoPosts"]);
-      queryClient.invalidateQueries(["searchInfo"]);
-      queryClient.invalidateQueries(["communityPosts"]);
-      queryClient.invalidateQueries(["searchComm"]);
-      queryClient.invalidateQueries(["activinfo"]);
-      queryClient.invalidateQueries(["feed"]);
-
-      queryClient.invalidateQueries(["userLikedPosts"]);
-      queryClient.invalidateQueries(["userInfoPosts"]);
-      queryClient.invalidateQueries(["userCommPosts"]);
-
-      queryClient.invalidateQueries(["likedPosts"]);
-      queryClient.invalidateQueries(["myCommPosts"]);
-      queryClient.invalidateQueries(["myInfoPosts"]);
+  //useMutatton
+  const editProfilePic = User.editPic();
+  useEffect(() => {
+    if (editProfilePic.isSuccess) {
       toast.success("프로필 이미지 변경이 완료되었습니다.");
       setToggles({ image: false, nickname: false, usertext: false });
-      // alert("프로필 이미지 변경이 완료되었습니다.");
-    },
-    onError: (err: CustomError) => {
-      toast.warning(err.response?.data);
-      // alert(err.response?.data);
     }
-  });
+  }, [editProfilePic.isSuccess]);
 
-  const uploadImage = useMutation(
-    (images: any) => {
-      return Axios.post("post/images", images);
-    },
-    {
-      onSuccess: (res) => {
-        console.log(res.data);
-        setImage(res.data[0]);
-      }
-      // onError: () => { }
+  const uploadImage = Upload.images();
+  useEffect(() => {
+    if (uploadImage.isSuccess) {
+      if (uploadImage?.data?.data) setImage(uploadImage.data.data[0]);
     }
-  );
+  }, [uploadImage.isSuccess]);
 
+  //로컬에서 이미지 에러 처리
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const imageFormData = new FormData();
@@ -243,6 +217,10 @@ const PopupBox = styled.div`
   }
   @media (orientation: portrait) or (max-height: 480px) {
     width: 95vw;
+  }
+  @media (max-height: 480px) {
+    width: 100vw;
+    height: 100vh;
   }
 `;
 const PopupBackBlur = styled.div`

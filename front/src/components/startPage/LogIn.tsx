@@ -1,13 +1,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 //styled component
 import LogInSignUp from "../../styles/LogInSignUp";
-import Axios from "../../apis/Axios";
+import User from "../../functions/reactQuery/User";
 
 interface Props {
   setToggle: (b: boolean) => void;
@@ -17,47 +14,9 @@ interface LogInForm {
   email: string;
   password: string;
 }
-interface LoginValue {
-  email: string;
-  password: string;
-}
-interface CustomError extends Error {
-  response?: {
-    data: { message: string };
-    status: number;
-    headers: string;
-  };
-}
 
 const LogIn = ({ setToggle }: Props) => {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  const login = useMutation(
-    (loginValue: LoginValue) =>
-      Axios.post("/user/login", {
-        email: loginValue.email,
-        password: loginValue.password
-      }),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["user"]);
-        navigate("/main/0");
-        window.location.reload();
-      },
-      onError: (err: CustomError) => {
-        toast.error(err.response?.data?.message);
-        // alert(err.response?.data?.message);
-        if (err.response?.data?.message) {
-          console.log(err.response?.data?.message);
-        } else {
-          toast.error("로그인 중 에러 발생");
-        }
-        console.log(err);
-        console.log("로그인 중 에러 발생");
-      }
-    }
-  );
+  const login = User.login();
 
   const {
     register,
