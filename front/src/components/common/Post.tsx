@@ -5,8 +5,6 @@ import "moment/locale/ko";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
-import Axios from "../../apis/Axios";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ClipboardJS from "clipboard";
 
 //components
@@ -29,7 +27,6 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
-import ShareIcon from "@mui/icons-material/Share";
 import LinkIcon from "@mui/icons-material/Link";
 import PostFunction from "../../functions/reactQuery/Post";
 import User from "../../functions/reactQuery/User";

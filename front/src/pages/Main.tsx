@@ -28,7 +28,7 @@ interface userProps {
 interface imageProps {
   src: string;
 }
-// interface commentProps { }
+
 interface postProps {
   User: userProps;
   Images: imageProps[];

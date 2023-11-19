@@ -1,16 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import InputForm from "../../styles/InputForm";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import Axios from "../../apis/Axios";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
-import Animation from "../../styles/Animation";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import styled from "styled-components/macro";
-import { useMediaQuery } from "react-responsive";
 
 //mui
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
@@ -20,7 +16,6 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import IsMobile from "../../functions/IsMobile";
 import Upload from "../../functions/reactQuery/Upload";
 import Post from "../../functions/reactQuery/Post";
 
@@ -36,31 +31,13 @@ interface serverPostData {
   end: Date;
   link: string;
 }
-interface localPostData {
-  type: number;
-  id: number;
-  content: string;
-  images: string[];
-  start: Date;
-  end: Date;
-  link: string;
-}
+
 interface props {
   setPostEdit: (b: boolean) => void;
   postProps: serverPostData;
 }
 
-interface CustomError extends Error {
-  response?: {
-    data: string;
-    status: number;
-    headers: string;
-  };
-}
-
 const PostEditPopup = ({ setPostEdit, postProps }: props) => {
-  const queryClient = useQueryClient();
-
   const placeholders = ["공지사항 입력", "팁&설정 입력", "소통글 입력"];
   const [content, setContent] = useState<string>(postProps.content);
   const [images, setImages] = useState<string[]>(postProps.images.map((v) => v.src));

@@ -4,8 +4,6 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
-import { useQuery } from "@tanstack/react-query";
-import Axios from "../../apis/Axios";
 import CommentFunction from "../../functions/reactQuery/Comment";
 
 //mui
@@ -17,7 +15,6 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import User from "../../functions/reactQuery/User";
-import ProfileCircle from "../../styles/ProfileCircle";
 
 moment.locale("ko");
 

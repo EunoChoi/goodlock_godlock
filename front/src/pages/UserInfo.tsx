@@ -1,13 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components/macro";
 import Axios from "../apis/Axios";
 import { useQuery } from "@tanstack/react-query";
-import { useQueryClient } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 
@@ -15,13 +12,11 @@ import { confirmAlert } from "react-confirm-alert";
 import AppLayout from "../components/AppLayout";
 import Post from "../components/common/Post";
 import InfiniteScroll from "react-infinite-scroll-component";
-import PostZoom from "../components/PostZoom";
 
 //style
 import Animation from "../styles/Animation";
 
 //mui
-
 import Badge from "@mui/material/Badge";
 import InsertEmoticonRoundedIcon from "@mui/icons-material/InsertEmoticonRounded";
 import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlined";
@@ -46,13 +41,6 @@ interface user {
   nickname: string;
   id: number;
   profilePic: string;
-}
-interface CustomError extends Error {
-  response?: {
-    data: string;
-    status: number;
-    headers: string;
-  };
 }
 
 const UserInfo = () => {

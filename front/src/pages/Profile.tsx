@@ -1,9 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components/macro";
 import Axios from "../apis/Axios";
-import { useQuery } from "@tanstack/react-query";
-import { useQueryClient } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -54,13 +51,7 @@ interface user {
   id: number;
   profilePic: string;
 }
-interface CustomError extends Error {
-  response?: {
-    data: string;
-    status: number;
-    headers: string;
-  };
-}
+
 interface Toggles {
   image: boolean;
   nickname: boolean;

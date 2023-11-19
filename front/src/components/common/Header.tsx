@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
 import { Link } from "react-router-dom";
-import { useMediaQuery } from "react-responsive";
-import Animation from "../../styles/Animation";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import Axios from "../../apis/Axios";
 import { useNavigate } from "react-router-dom";
-
-import { useRef } from "react";
 
 //mui
 import MenuIcon from "@mui/icons-material/Menu";

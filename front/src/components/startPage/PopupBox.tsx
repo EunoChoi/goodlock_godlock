@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useMediaQuery } from "react-responsive";
+import React, { useState } from "react";
 import LogInSignUp from "../../styles/LogInSignUp";
 import { ANIMATION_APPEAR, ANIMATION_DISAPPEAR } from "../../styles/Animation";
 import styled from "styled-components";

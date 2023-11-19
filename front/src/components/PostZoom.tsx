@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components/macro";
-import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import Axios from "../apis/Axios";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 //style
@@ -22,7 +19,6 @@ import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import CloseIcon from "@mui/icons-material/Close";
 import IsMobile from "../functions/IsMobile";
 import Post from "../functions/reactQuery/Post";
-import { AlternateEmail } from "@mui/icons-material";
 import User from "../functions/reactQuery/User";
 import ProfileCircle from "../styles/ProfileCircle";
 
@@ -32,13 +28,6 @@ interface Image {
 interface props {
   postProps: any;
   setZoom: (b: boolean) => void;
-}
-interface CustomError extends Error {
-  response?: {
-    data: string;
-    status: number;
-    headers: string;
-  };
 }
 
 const PostZoom = ({ postProps, setZoom }: props) => {
@@ -524,28 +513,6 @@ const Like = styled.div`
     align-items: center;
     height: 60px;
   }
-`;
-
-//profile pic
-const ProfilePic = styled.img`
-  width: 200px;
-  height: 200px;
-  border-radius: 100px;
-  background-color: white;
-
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
-
-  object-fit: cover;
-`;
-const ProfilePicSM = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 100px;
-  background-color: white;
-
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
-
-  object-fit: cover;
 `;
 
 //image

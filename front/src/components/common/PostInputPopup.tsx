@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import InputForm from "../../styles/InputForm";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import Axios from "../../apis/Axios";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
@@ -23,14 +21,6 @@ import Post from "../../functions/reactQuery/Post";
 
 interface props {
   setIsPostInputOpen: (b: boolean) => void;
-}
-interface postDataType {
-  type: number;
-  content: string;
-  images: string[];
-  start: Date;
-  end: Date;
-  link: string;
 }
 
 const InputPopup = ({ setIsPostInputOpen }: props) => {

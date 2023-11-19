@@ -1,13 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import InfiniteScroll from "react-infinite-scroll-component";
+
 import Axios from "../apis/Axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Animation from "../styles/Animation";
 
 //components
 import AppLayout from "../components/AppLayout";

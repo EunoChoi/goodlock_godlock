@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import Axios from "../../apis/Axios";
 import { useState, useRef } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 //style
@@ -25,13 +23,6 @@ interface state {
 
 interface setStateProps {
   setToggles: (s: state) => void;
-}
-interface CustomError extends Error {
-  response?: {
-    data: string;
-    status: number;
-    headers: string;
-  };
 }
 
 const ProfileChangePopup = ({ setToggles }: setStateProps) => {

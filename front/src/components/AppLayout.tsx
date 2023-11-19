@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Header from "./common/Header";
 import styled from "styled-components/macro";
-import Axios from "../apis/Axios";
-import { useQuery } from "@tanstack/react-query";
-import { useQueryClient } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
-
-import { useMediaQuery } from "react-responsive";
 import { Link, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 
 //mui
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import { Button } from "@mui/material";
-import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import PersonIcon from "@mui/icons-material/Person";
