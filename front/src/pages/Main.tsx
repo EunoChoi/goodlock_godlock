@@ -178,15 +178,15 @@ const Main = () => {
   );
 
   useEffect(() => {
-    if (type < 0 || type >= 3) {
-      navigate("/404");
-    } else {
+    if (type >= 0 && type < 3) {
       setToggles({ main: type, sub: 0 });
       window.scrollTo({
         top: 0,
         left: 0,
         behavior: "smooth"
       });
+    } else {
+      navigate("/404");
     }
   }, [type]);
 

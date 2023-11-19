@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import Axios from "../apis/Axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+// import { Helmet } from "react-helmet";
 
 //components
 import AppLayout from "../components/AppLayout";
@@ -20,7 +21,6 @@ const PostView = () => {
   console.log(typeof Number(id));
 
   //리액트 쿼리 id로 단일 포스트 값 불러오기
-  //this week
   const single = useQuery(
     ["single"],
     () => Axios.get("post/single", { params: { id: Number(id) } }).then((v) => v.data),

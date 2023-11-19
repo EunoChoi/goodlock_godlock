@@ -111,6 +111,13 @@ const UserInfo = () => {
     infoPosts.refetch();
     commPosts.refetch();
   }, [id]);
+  useEffect(() => {
+    if (categoryNum >= 0 && categoryNum < 5) {
+      console.log("올바른 링크 접근");
+    } else {
+      navigate("/404");
+    }
+  }, [categoryNum]);
 
   return (
     <AppLayout>
