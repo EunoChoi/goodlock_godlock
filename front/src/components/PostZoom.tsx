@@ -6,13 +6,13 @@ import moment from "moment";
 import Axios from "../apis/Axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import Carousel from "react-material-ui-carousel";
 
 //style
 import Animation from "../styles/Animation";
 
 //mui
 import CancelIcon from "@mui/icons-material/Cancel";
+import Carousel from "react-material-ui-carousel";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
@@ -22,6 +22,7 @@ import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import CloseIcon from "@mui/icons-material/Close";
 import IsMobile from "../functions/IsMobile";
 import Post from "../functions/reactQuery/Post";
+import { AlternateEmail } from "@mui/icons-material";
 
 interface Image {
   src: string;
@@ -73,8 +74,8 @@ const PostZoom = ({ postProps, setZoom }: props) => {
       {
         //dasktop + only text
         !isMobile && isOnlyText && (
-          <PCText onClick={(e) => e.stopPropagation()}>
-            <div>
+          <PCTextPost onClick={(e) => e.stopPropagation()}>
+            <PCTextPost_Left>
               {postProps?.User?.profilePic ? (
                 <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
                   <ProfilePic
@@ -100,11 +101,11 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 <span>{postProps.User.email}</span>
               </div>
               <span>{moment(postProps?.createdAt).fromNow()}</span>
-            </div>
-            <div>
-              <Content>{postProps.content}</Content>
+            </PCTextPost_Left>
+            <PCTextPost_Right>
+              <PCText>{postProps.content}</PCText>
               {postProps.type === 1 && (
-                <SubContentWrapper onClick={() => setZoom(true)}>
+                <SubContent onClick={() => setZoom(true)}>
                   <PostStartEnd>
                     <span>
                       <CalendarMonthIcon />
@@ -123,7 +124,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       </span>
                     </PostLink>
                   )}
-                </SubContentWrapper>
+                </SubContent>
               )}
               <Like>
                 <button
@@ -142,18 +143,18 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                   <span>{postProps?.Likers?.length}</span>
                 </button>
               </Like>
-            </div>
-            <CancelBtn onClick={() => setZoom(false)}>
+            </PCTextPost_Right>
+            <PCCancelBtn onClick={() => setZoom(false)}>
               <CancelIcon fontSize="large" />
-            </CancelBtn>
-          </PCText>
+            </PCCancelBtn>
+          </PCTextPost>
         )
       }
       {
         //desktop + image + text
         !isMobile && !isOnlyText && (
-          <PCImageText onClick={(e) => e.stopPropagation()}>
-            <div>
+          <PCImagePost onClick={(e) => e.stopPropagation()}>
+            <PCImagePost_LeftWrapper>
               {postProps.Images?.length === 1 && (
                 <Image src={`${postProps.Images[0].src.replace(/\/thumb\//, "/original/")}`} />
               )}
@@ -166,9 +167,9 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                   ))}
                 </Carousel>
               )}
-            </div>
-            <div>
-              <div>
+            </PCImagePost_LeftWrapper>
+            <PCImagePost_RightWrapper>
+              <PCImagePost_Info>
                 <div>
                   {postProps?.User?.profilePic ? (
                     <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
@@ -190,14 +191,13 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       />
                     </Link>
                   )}
-                  <span>{postProps.User.nickname}</span>
+                  <Nickname>{postProps.User.nickname}</Nickname>
                 </div>
-
                 <span>{moment(postProps?.createdAt).fromNow()}</span>
-              </div>
-              <Content>{postProps.content}</Content>
+              </PCImagePost_Info>
+              <PCText>{postProps.content}</PCText>
               {postProps.type === 1 && (
-                <SubContentWrapper onClick={() => setZoom(true)}>
+                <SubContent onClick={() => setZoom(true)}>
                   <PostStartEnd>
                     <span>
                       <CalendarMonthIcon />
@@ -216,7 +216,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       </span>
                     </PostLink>
                   )}
-                </SubContentWrapper>
+                </SubContent>
               )}
               <Like>
                 <button
@@ -235,20 +235,23 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                   <span>{postProps?.Likers?.length}</span>
                 </button>
               </Like>
-            </div>
-            <CancelBtn onClick={() => setZoom(false)}>
+            </PCImagePost_RightWrapper>
+            <PCCancelBtn onClick={() => setZoom(false)}>
               <CancelIcon fontSize="large" />
-            </CancelBtn>
-          </PCImageText>
+            </PCCancelBtn>
+          </PCImagePost>
         )
       }
       {
         //mobile
         isMobile && (
-          <Mobile onClick={(e) => e.stopPropagation()}>
-            {/* only text */}
+          <MobileWrapper
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
             {postProps.Images?.length === 0 && (
-              <div>
+              <MobileTextPost>
                 <MobilePostInfo>
                   <div>
                     {postProps?.User?.profilePic ? (
@@ -271,15 +274,15 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                         />
                       </Link>
                     )}
-                    <span>{postProps.User.nickname}</span>
+                    <Nickname>{postProps.User.nickname}</Nickname>
                   </div>
 
                   <span>{moment(postProps?.createdAt).fromNow()}</span>
                 </MobilePostInfo>
-                <OnlyTextBox key="텍스트페이지">
+                <MobileText key="텍스트페이지">
                   <div>{postProps.content}</div>
                   {postProps.type === 1 && (
-                    <SubContentWrapper onClick={() => setZoom(true)}>
+                    <SubContent onClick={() => setZoom(true)}>
                       <PostStartEnd>
                         <span>
                           <CalendarMonthIcon />
@@ -298,8 +301,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                           </span>
                         </PostLink>
                       )}
-                    </SubContentWrapper>
+                    </SubContent>
                   )}
+                </MobileText>
+                <MobilePostSubInfo>
                   <Like>
                     <button
                       onClick={() => {
@@ -317,15 +322,14 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       <span>{postProps?.Likers?.length}</span>
                     </button>
                   </Like>
-                </OnlyTextBox>
-                <MobileCancelBtn onClick={() => setZoom(false)}>
-                  <CloseIcon />
-                </MobileCancelBtn>
-              </div>
+                  <MobileCancelBtn onClick={() => setZoom(false)}>
+                    <CloseIcon />
+                  </MobileCancelBtn>
+                </MobilePostSubInfo>
+              </MobileTextPost>
             )}
-            {/* image + text */}
             {postProps.Images?.length !== 0 && (
-              <div>
+              <MobileImagePost>
                 <MobilePostInfo>
                   <div>
                     {postProps?.User?.profilePic ? (
@@ -348,17 +352,24 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                         />
                       </Link>
                     )}
-                    <span>{postProps.User.nickname}</span>
+                    <Nickname>{postProps.User.nickname}</Nickname>
                   </div>
 
                   <span>{moment(postProps?.createdAt).fromNow()}</span>
                 </MobilePostInfo>
                 <CustomCarousel
-                  swipe={false}
+                  swipe={true}
                   navButtonsAlwaysVisible={true}
                   fullHeightHover={true}
                   indicators={true}
                   autoPlay={false}
+                  indicatorContainerProps={{
+                    style: {
+                      top: "0",
+                      marginTop: "50px", // 5
+                      textAlign: "center" // 4
+                    }
+                  }}
                   navButtonsProps={{
                     style: {
                       backgroundColor: "rgba(0,0,0,0.2)"
@@ -369,10 +380,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                   {arr.map((v, i) => {
                     if (i === postProps.Images?.length) {
                       return (
-                        <TextBox key="텍스트페이지">
+                        <MobileText key="텍스트페이지">
                           <div>{postProps.content}</div>
                           {postProps.type === 1 && (
-                            <SubContentWrapper onClick={() => setZoom(true)}>
+                            <SubContent onClick={() => setZoom(true)}>
                               <PostStartEnd>
                                 <span>
                                   <CalendarMonthIcon />
@@ -391,26 +402,9 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                                   </span>
                                 </PostLink>
                               )}
-                            </SubContentWrapper>
+                            </SubContent>
                           )}
-                          <Like>
-                            <button
-                              onClick={() => {
-                                if (!isLiked) {
-                                  like.mutate();
-                                } else {
-                                  disLike.mutate();
-                                }
-                              }}
-                            >
-                              {postProps.type === 1 &&
-                                (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
-                              {postProps.type === 1 ||
-                                (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
-                              <span>{postProps?.Likers?.length}</span>
-                            </button>
-                          </Like>
-                        </TextBox>
+                        </MobileText>
                       );
                     } else {
                       return (
@@ -421,12 +415,31 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                     }
                   })}
                 </CustomCarousel>
-                <MobileCancelBtn onClick={() => setZoom(false)}>
-                  <CloseIcon />
-                </MobileCancelBtn>
-              </div>
+                <MobilePostSubInfo>
+                  <Like>
+                    <button
+                      onClick={() => {
+                        if (!isLiked) {
+                          like.mutate();
+                        } else {
+                          disLike.mutate();
+                        }
+                      }}
+                    >
+                      {postProps.type === 1 &&
+                        (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
+                      {postProps.type === 1 ||
+                        (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
+                      <span>{postProps?.Likers?.length}</span>
+                    </button>
+                  </Like>
+                  <MobileCancelBtn onClick={() => setZoom(false)}>
+                    <CloseIcon />
+                  </MobileCancelBtn>
+                </MobilePostSubInfo>
+              </MobileImagePost>
             )}
-          </Mobile>
+          </MobileWrapper>
         )
       }
     </PostZoomBG>
@@ -434,41 +447,40 @@ const PostZoom = ({ postProps, setZoom }: props) => {
 };
 
 export default PostZoom;
+
 const CustomCarousel = styled(Carousel)`
-  flex-grow: 1;
+  height: calc(100vh - 64px - 92px);
+  height: calc(var(--vh, 1vh) * 100 - 64px - 92px);
 
   display: flex;
   flex-direction: column;
   justify-content: center;
 `;
-const MobileCancelBtn = styled.button`
-  height: 32px;
-  width: 100%;
-  background-color: #a9aed4;
-  background-color: #c8daf3;
-  color: white;
-  color: rgba(0, 0, 0, 0.7);
+const Nickname = styled.span`
+  font-weight: 500;
+  font-weight: 600;
+  padding: 8px;
+  font-size: 1.2em !important;
 `;
 
-const SubContentWrapper = styled.div`
+//share range, link component
+const SubContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: start;
 
-  width: 90%;
-  /* padding-left: 32px;
-  padding-right: 32px; */
+  width: 100%;
 
-  @media (orientation: portrait) or (max-height: 480px) {
-    width: 100%;
-    padding-left: 24px;
-    padding-right: 24px;
-  }
+  margin-top: 12px;
 
   font-size: 18px;
+  @media (orientation: portrait) or (max-height: 480px) {
+    width: 100%;
+    margin-top: 0px;
+    padding: 12px 24px;
+  }
 
-  margin: 10px 20px;
   > div {
     display: flex;
     justify-content: start;
@@ -493,40 +505,6 @@ const PostLink = styled.div`
     margin-left: 4px;
   }
 `;
-
-const CancelBtn = styled.button`
-  position: absolute;
-  left: 10px;
-  top: 10px;
-
-  z-index: 1005;
-
-  color: black;
-
-  @media (orientation: portrait) or (max-height: 480px) {
-    top: calc(100% - 50px);
-    /* left: 10%; */
-    /* transform: translateX(-50%); */
-  }
-`;
-const Content = styled.div`
-  display: flex;
-  justify-content: start;
-  align-items: start;
-
-  height: calc(100% - 160px);
-  height: 100%;
-  width: 90%;
-  padding-top: 24px;
-
-  /* padding: 16px; */
-
-  font-size: 1.2em;
-  overflow-y: scroll;
-  /* overflow-x: */
-  white-space: pre-wrap;
-  line-height: 1.3em;
-`;
 const Like = styled.div`
   height: 50px;
   /* width: 100%; */
@@ -548,6 +526,7 @@ const Like = styled.div`
   }
 `;
 
+//profile pic
 const ProfilePic = styled.img`
   width: 200px;
   height: 200px;
@@ -568,67 +547,8 @@ const ProfilePicSM = styled.img`
 
   object-fit: cover;
 `;
-const MobilePostInfo = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  height: 64px;
-  div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  span {
-    padding: 8px;
-    font-size: 1.1em;
-  }
-`;
-const TextBox = styled.div`
-  width: 100%;
-  height: calc(var(--vh, 1vh) * 95 - 64px - 32px);
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-
-  > div:nth-child(1) {
-    /* height: calc(80vh - 200px); */
-    /* height: 50%; */
-    flex-grow: 1;
-    width: 100%;
-    white-space: pre-wrap;
-    line-height: 1.3em;
-    overflow-y: scroll;
-    padding: 24px;
-
-    font-size: 1.2em;
-  }
-`;
-const OnlyTextBox = styled.div`
-  width: 100%;
-
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-
-  > div:nth-child(1) {
-    /* height: calc(80vh - 200px); */
-    height: 50%;
-    flex-grow: 1;
-    width: 100%;
-    white-space: pre-wrap;
-    line-height: 1.3em;
-    overflow-y: scroll;
-    padding: 24px;
-
-    font-size: 1.2em;
-  }
-`;
+//image
 const ImageBox = styled.div`
   width: 100%;
   height: calc(90vh - 50px);
@@ -638,6 +558,7 @@ const ImageBox = styled.div`
   align-items: center;
   @media (orientation: portrait) or (max-height: 480px) {
     height: calc(var(--vh, 1vh) * 95 - 64px - 32px);
+    /* height: calc(95vh - 64px - 32px); */
   }
 `;
 const Image = styled.img`
@@ -648,6 +569,7 @@ const Image = styled.img`
   transition: all ease-in-out 1s;
 `;
 
+//pc post zoom
 const PostZoomBG = styled.div`
   overflow: hidden;
 
@@ -667,7 +589,7 @@ const PostZoomBG = styled.div`
   justify-content: start;
   align-items: center;
 
-  padding-top: calc(var(--vh, 1vh) * 5);
+  padding-top: 5vh;
 
   > button {
     padding-top: 16px;
@@ -678,10 +600,9 @@ const PostZoomBG = styled.div`
     padding-top: 0;
   }
 `;
-const PCText = styled.div`
+const PCTextPost = styled.div`
   position: relative;
   width: 70vw;
-  height: calc(var(--vh, 1vh) * 90);
   height: 90vh;
 
   border-radius: 8px;
@@ -695,55 +616,53 @@ const PCText = styled.div`
   box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.2);
 
   animation: ${Animation.smoothAppear} 0.7s;
-  > div:first-child {
-    width: 40%;
-    height: 100%;
-    padding: 36px;
-    padding-top: 15%;
+`;
+const PCTextPost_Left = styled.div`
+  width: 40%;
+  height: 100%;
+  padding: 36px;
+  padding-top: 15%;
 
-    background-color: rgba(0, 0, 0, 0.04);
+  background-color: rgba(0, 0, 0, 0.04);
 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    > div:nth-child(2) {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      > span {
-        padding: 5px;
-        font-size: 24px;
-        color: rgba(0, 0, 0, 0.5);
-      }
-      > span:first-child {
-        /* font-weight: 600; */
-        color: rgba(0, 0, 0, 0.7);
-        font-size: 32px;
-      }
-    }
-    > span:nth-child(3) {
-      width: 100%;
-      text-align: center;
-      font-size: 1.1em;
-    }
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
   > div:nth-child(2) {
-    width: 60%;
-    height: 90%;
-    /* padding: 48px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    > span {
+      padding: 5px;
+      font-size: 24px;
+      color: rgba(0, 0, 0, 0.5);
+    }
+    > span:first-child {
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.7);
+      font-size: 32px;
+    }
+  }
+  > span:nth-child(3) {
+    width: 100%;
+    text-align: center;
+    font-size: 1.1em;
   }
 `;
-
-const PCImageText = styled.div`
+const PCTextPost_Right = styled.div`
+  width: 60%;
+  height: 100%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const PCImagePost = styled.div`
   position: relative;
   width: 90vw;
-  height: calc(var(--vh, 1vh) * 90);
   height: 90vh;
   border-radius: 8px;
 
@@ -756,54 +675,82 @@ const PCImageText = styled.div`
   box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.2);
 
   animation: ${Animation.smoothAppear} 0.7s;
+`;
+const PCImagePost_LeftWrapper = styled.div`
+  width: 65%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.04);
+`;
+const PCImagePost_RightWrapper = styled.div`
+  width: 35%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 
-  > div:first-child {
-    width: 65%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.04);
-  }
-  > div:nth-child(2) {
-    width: 35%;
-    height: 100%;
+  padding: 12px;
+`;
+const PCImagePost_Info = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 12px;
+
+  div {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 20px 0;
-    > div:first-child {
-      width: 90%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 80px;
-      /* padding: 0px 32px; */
-      div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        span {
-          color: rgba(0, 0, 0, 0.8);
-        }
-      }
-      span {
-        padding: 8px;
-        font-size: 1.1em;
-        color: rgba(0, 0, 0, 0.5);
-      }
+    span {
+      color: rgba(0, 0, 0, 0.8);
     }
+  }
+  span {
+    padding: 8px;
+    font-size: 1.1em;
+    color: rgba(0, 0, 0, 0.5);
+  }
+`;
+const PCText = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: start;
+
+  width: 100%;
+  flex-grow: 1;
+
+  font-size: 1.2em;
+  overflow-y: scroll;
+  white-space: pre-wrap;
+  line-height: 1.3em;
+`;
+const PCCancelBtn = styled.button`
+  position: absolute;
+  left: 10px;
+  top: 10px;
+
+  z-index: 1005;
+
+  color: black;
+
+  @media (orientation: portrait) or (max-height: 480px) {
+    top: calc(100% - 50px);
+    /* left: 10%; */
+    /* transform: translateX(-50%); */
   }
 `;
 
-const Mobile = styled.div`
+//mobile post zoom
+const MobileWrapper = styled.div`
   transition: all ease-in-out 0.5s;
   position: relative;
 
-  top: 0;
+  bottom: 0;
   left: 0;
 
   width: 100vw;
-  /* height: 70vh; */
-  height: calc(var(--vh, 1vh) * 100);
 
   display: flex;
   justify-content: center;
@@ -814,12 +761,70 @@ const Mobile = styled.div`
   box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.2);
 
   animation: ${Animation.smoothAppear} 0.7s;
+`;
+const MobileTextPost = styled.div`
+  width: 100%;
+  height: 100%;
 
-  > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+const MobileImagePost = styled.div`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+const MobileText = styled.div`
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100 - 64px - 92px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  > div:nth-child(1) {
+    flex-grow: 1;
     width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    white-space: pre-wrap;
+    line-height: 1.3em;
+    overflow-y: scroll;
+    padding: 0 24px;
+
+    font-size: 1.2em;
   }
+`;
+const MobilePostInfo = styled.div`
+  //component height = 64px
+
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  height: 64px;
+
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+const MobilePostSubInfo = styled.div`
+  //component height = 92px
+
+  z-index: 100;
+  width: 100vw;
+`;
+const MobileCancelBtn = styled.button`
+  height: 32px;
+  width: 100%;
+  background-color: #a9aed4;
+  background-color: #c8daf3;
+  color: white;
+  color: rgba(0, 0, 0, 0.7);
 `;

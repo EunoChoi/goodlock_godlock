@@ -37,10 +37,16 @@ function App() {
   });
 
   const updateMobileViewport = () => {
-    // console.log("visual viewport resized");
     const vh = window.visualViewport?.height;
+    const vw = window.visualViewport?.width;
+
+    console.log(vw, window.screen.width, window.innerWidth);
+
     if (vh) {
-      document.documentElement.style.setProperty("--vh", `${vh * 0.01}px`);
+      if (vw == window.innerWidth) {
+        console.log("Resized");
+        document.documentElement.style.setProperty("--vh", `${vh * 0.01}px`);
+      }
     }
   };
 

@@ -237,7 +237,7 @@ const Main = () => {
                 });
               }}
             >
-              관심 팁&설정
+              관심 설정
             </Pill.Sub>
           </Pill.Wrapper>
 
@@ -447,7 +447,7 @@ const Main = () => {
             <span>소통</span>
             <span></span>
             <span>
-              나만의 설정을 자랑하거나 <br></br>서로 질문하고 답하며 소통해요.
+              이해와 공감을 바탕으로 <br></br>서로 존중하는 대화를 해요.
             </span>
             <span>
               <CalendarMonthIcon />
@@ -715,6 +715,8 @@ const Pill = {
       border-radius: 100px;
       border: none;
 
+      font-weight: 500;
+
       background-color: ${({ toggle }) => toggle && "rgba(255, 255, 255, 0.8)"};
       opacity: ${({ toggle }) => toggle && "1"};
       padding: ${({ toggle }) => toggle && "0 10px"};
@@ -733,15 +735,16 @@ const Pill = {
   Sub: styled.div<{ toggle: number }>`
     transition: all ease-in-out 0.5s;
     height: 32px;
-    padding: 6px 16px;
+    padding: 0px 16px;
     margin-right: 8px;
     border-radius: 100px;
 
     font-size: 18px;
-    /* font-weight: 600; */
+    font-weight: 500;
 
     display: flex;
     align-items: center;
+    justify-content: center;
 
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
     color: #464b53;
@@ -783,7 +786,7 @@ const WelcomeWrapper = styled.div`
   > span:nth-child(5),
   > span:nth-child(6) {
     font-size: 20px;
-    /* font-weight: 400; */
+    font-weight: 500;
     color: rgba(0, 0, 0, 0.5);
 
     margin: 8px 0;
@@ -797,7 +800,7 @@ const WelcomeWrapper = styled.div`
   }
   > span:nth-child(4) {
     font-size: 24px;
-    /* font-weight: 600; */
+    font-weight: 600;
     line-height: 36px;
     margin-top: 32px;
     color: rgba(0, 0, 0, 0.65);

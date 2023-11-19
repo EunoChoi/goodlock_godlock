@@ -90,9 +90,8 @@ const LogInSignUp = {
   `,
   Title: styled.span`
     font-size: 28px;
-    font-weight: 600;
     margin-bottom: 30px;
-    font-weight: 600;
+    font-weight: 700;
   `,
   TextWrapper: styled.div`
     margin-top: 28px;

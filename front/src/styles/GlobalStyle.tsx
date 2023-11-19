@@ -4,6 +4,12 @@ import reset from "styled-reset";
 import "../fonts/pretendard.css";
 
 const GlobalStyle = createGlobalStyle`
+  @font-face {
+      font-family: 'OAGothic-ExtraBold';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/OAGothic-ExtraBold.woff2') format('woff2');
+      font-weight: 800;
+      font-style: normal;
+  }
   ${reset}
   * {
     font-family: Pretendard;
@@ -12,7 +18,8 @@ const GlobalStyle = createGlobalStyle`
   }
   span, div, button{
    font-family: Pretendard;
-   font-weight: 500;
+   font-weight: 400;
+   /* font-weight: 500; */
    /* color: rgba(0,0,0,0.7) */
   }
   

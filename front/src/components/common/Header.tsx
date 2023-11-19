@@ -116,7 +116,7 @@ const Header = () => {
               <Link to="/main/2">소통</Link>
             </span>
             <span>
-              <Link to="/profile/0">프로필</Link>
+              <Link to="/profile/0">내 정보</Link>
             </span>
           </HeaderMobileLand>
         </MobileHeaderWrapper>
@@ -273,8 +273,11 @@ const HeaderMobileLand = styled.div<{ currentPage: number | undefined }>`
 
   span:nth-child(${(props) => props.currentPage}) {
     color: rgba(0, 0, 0, 0.55);
+    font-weight: 600;
   }
   span {
+    font-weight: 500;
+    /* font-weight: 600; */
     margin: 8px;
   }
   @media (orientation: landscape) and (max-height: 480px) {
@@ -287,28 +290,40 @@ const HeaderExtendedWrapper = styled.div<{ currentPage: number | undefined }>`
   justify-content: center;
   align-items: center;
   font-size: 20px;
-  /* font-weight: 600; */
+
   color: white;
   color: rgba(0, 0, 0, 0.4);
   width: 100%;
 
+  span {
+    font-weight: 500;
+    /* font-weight: 600; */
+  }
+
   span:nth-child(${(props) => props.currentPage}) {
     color: rgba(0, 0, 0, 0.55);
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    display: none;
   }
 `;
 
 const HeaderLogo = styled.span`
+  font-family: OAGothic-ExtraBold;
+
   text-align: center;
   /* color: white; */
   color: rgba(0, 0, 0, 0.7);
   /* font-size: 30px; */
-  font-size: 48px;
+  font-size: 42px;
   font-weight: 600;
   /* letter-spacing: 12px; */
   /* font-weight: 600; */
 `;
 
 const HeaderLogoMobile = styled.span`
+  font-family: OAGothic-ExtraBold;
+
   width: 70%;
   text-align: center;
   color: white;
@@ -331,6 +346,8 @@ const HeaderLink = styled.div<{ currentPage: number | undefined }>`
   width: 100%;
 
   span {
+    font-weight: 500;
+    /* font-weight: 600; */
     white-space: nowrap;
     flex-shrink: 0;
     width: 35%;
@@ -344,6 +361,6 @@ const HeaderLink = styled.div<{ currentPage: number | undefined }>`
   }
   span:nth-child(${(props) => props.currentPage}) {
     color: rgba(0, 0, 0, 0.6);
-    /* font-weight: 800; */
+    font-weight: 600;
   }
 `;

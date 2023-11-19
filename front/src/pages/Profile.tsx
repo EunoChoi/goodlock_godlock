@@ -156,7 +156,7 @@ const Profile = () => {
       <>
         {toggles.image && <ProfileChangePopup setToggles={setToggles} />}
         <ProfileTitle ref={scrollTarget}>
-          <Title>마이 페이지</Title>
+          <Title>내 정보</Title>
           <span>정보 수정 및 작성 글 확인이 가능합니다.</span>
           <span>마지막 수정 ⋯ {moment(user?.updatedAt).fromNow()}</span>
         </ProfileTitle>
@@ -357,7 +357,7 @@ const Profile = () => {
                     // const password = prompt("현재 사용중인 비밀번호를 입력해주세요.");
                   }}
                 >
-                  비밀번호 변경
+                  <span>비밀번호 변경</span>
                 </Button>
                 <Button
                   onClick={() => {
@@ -377,7 +377,7 @@ const Profile = () => {
                     });
                   }}
                 >
-                  로그아웃
+                  <span>로그아웃</span>
                 </Button>
               </ButtonWrapper>
             </ContentBox>
@@ -793,7 +793,7 @@ const ListTitle = styled.div`
   > div {
     margin-top: 5px;
     font-size: 20px;
-    /* font-weight: 600; */
+    font-weight: 500;
     color: rgba(0, 0, 0, 0.7);
   }
   @media (orientation: portrait) or (max-height: 480px) {
@@ -803,7 +803,11 @@ const ListTitle = styled.div`
     }
   }
 `;
-const ButtonWrapper = styled.div``;
+const ButtonWrapper = styled.div`
+  span {
+    font-weight: 500;
+  }
+`;
 const List = styled.div`
   padding: 20px 0;
   width: 80%;
@@ -818,7 +822,7 @@ const ListItem = styled.div`
   width: 100%;
   padding: 5px 5px;
   font-size: 18px;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.7);
 
   display: flex;
   justify-content: space-between;
@@ -829,6 +833,7 @@ const ListItem = styled.div`
     align-items: center;
     > span {
       margin-left: 10px;
+      font-weight: 500;
     }
   }
   > button {
@@ -864,7 +869,7 @@ const InfoTitle = styled.div`
   > span {
     font-size: 1.5em;
     color: rgba(0, 0, 0, 0.8);
-    /* font-weight: 600; */
+    font-weight: 500;
   }
 `;
 const InfoValue = styled.div`

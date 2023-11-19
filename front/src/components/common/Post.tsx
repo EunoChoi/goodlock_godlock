@@ -518,6 +518,7 @@ const PostInfoWrapper = styled.div`
     justify-content: center;
     align-items: center;
     span {
+      font-weight: 500;
       /* font-weight: 600; */
       font-size: 1.2em;
     }

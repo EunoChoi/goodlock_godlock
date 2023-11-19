@@ -116,7 +116,6 @@ const User = {
       },
       onError: (err: CustomError2) => {
         toast.warning(err.response?.data);
-        // alert(err.response?.data);
       }
     });
   },

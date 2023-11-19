@@ -76,6 +76,8 @@ const Start = () => {
 export default Start;
 
 const TextBox = styled.div`
+  /* font-family: OAGothic-ExtraBold; */
+
   font-size: 24px;
   white-space: pre-line;
   color: rgba(0, 0, 0, 0.5);
@@ -97,7 +99,9 @@ const TextBox = styled.div`
 const Title = styled.span`
   > div {
     margin-left: -10px;
+
     span:nth-child(1) {
+      font-family: OAGothic-ExtraBold;
       font-size: 96px;
       font-weight: 700;
       color: rgba(0, 0, 0, 0.7);
@@ -106,6 +110,7 @@ const Title = styled.span`
       }
     }
     span:nth-child(2) {
+      /* font-family: OAGothic-ExtraBold; */
       font-size: 72px;
       font-weight: 600;
       color: rgba(0, 0, 0, 0.4);
@@ -138,7 +143,7 @@ const BG2 = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
 `;
 const Footer = styled.div`
-  /* z-index: 19; */
+  z-index: 19;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -201,6 +206,8 @@ const StartImg = styled.img`
 `;
 
 const StartButton = styled.button`
+  /* font-family: OAGothic-ExtraBold; */
+
   z-index: 99;
   font-size: 20px;
   color: white;
