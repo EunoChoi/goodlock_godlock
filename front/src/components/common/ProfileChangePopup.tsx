@@ -39,9 +39,7 @@ const ProfileChangePopup = ({ setToggles }: setStateProps) => {
   const imageInput = useRef<HTMLInputElement>(null);
 
   //useQuery
-  const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
-    staleTime: 60 * 1000
-  }).data;
+  const user = User.getData();
 
   //useMutatton
   const editProfilePic = User.editPic();

@@ -23,6 +23,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import IsMobile from "../functions/IsMobile";
 import Post from "../functions/reactQuery/Post";
 import { AlternateEmail } from "@mui/icons-material";
+import User from "../functions/reactQuery/User";
+import ProfileCircle from "../styles/ProfileCircle";
 
 interface Image {
   src: string;
@@ -40,9 +42,7 @@ interface CustomError extends Error {
 }
 
 const PostZoom = ({ postProps, setZoom }: props) => {
-  const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
-    staleTime: 60 * 1000
-  }).data;
+  const user = User.getData();
 
   //useMutation
   const like = Post.like(postProps.id);
@@ -78,22 +78,22 @@ const PostZoom = ({ postProps, setZoom }: props) => {
             <PCTextPost_Left>
               {postProps?.User?.profilePic ? (
                 <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                  <ProfilePic
-                    width={150}
-                    alt="userProfilePic"
+                  <ProfileCircle
+                    diameter={150}
                     src={`${postProps?.User?.profilePic}`}
+                    alt="profilePic"
                     onError={(e) => {
                       e.currentTarget.src = `${postProps?.User?.profilePic?.replace(/\/thumb\//, "/original/")}`;
                     }}
-                  />
+                  ></ProfileCircle>
                 </Link>
               ) : (
                 <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                  <ProfilePic
-                    width={150}
-                    alt="userProfilePic"
+                  <ProfileCircle
+                    diameter={150}
                     src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                  />
+                    alt="profilePic"
+                  ></ProfileCircle>
                 </Link>
               )}
               <div>
@@ -173,22 +173,22 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 <div>
                   {postProps?.User?.profilePic ? (
                     <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                      <ProfilePicSM
-                        width={150}
-                        alt="userProfilePic"
+                      <ProfileCircle
+                        diameter={40}
                         src={`${postProps?.User?.profilePic}`}
+                        alt="profilePic"
                         onError={(e) => {
-                          e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
+                          e.currentTarget.src = `${postProps?.User?.profilePic?.replace(/\/thumb\//, "/original/")}`;
                         }}
-                      />
+                      ></ProfileCircle>
                     </Link>
                   ) : (
                     <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                      <ProfilePicSM
-                        width={150}
-                        alt="userProfilePic"
+                      <ProfileCircle
+                        diameter={40}
                         src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                      />
+                        alt="profilePic"
+                      ></ProfileCircle>
                     </Link>
                   )}
                   <Nickname>{postProps.User.nickname}</Nickname>
@@ -256,22 +256,22 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                   <div>
                     {postProps?.User?.profilePic ? (
                       <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                        <ProfilePicSM
-                          width={150}
-                          alt="userProfilePic"
+                        <ProfileCircle
+                          diameter={40}
                           src={`${postProps?.User?.profilePic}`}
+                          alt="profilePic"
                           onError={(e) => {
-                            e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
+                            e.currentTarget.src = `${postProps?.User?.profilePic?.replace(/\/thumb\//, "/original/")}`;
                           }}
-                        />
+                        ></ProfileCircle>
                       </Link>
                     ) : (
                       <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                        <ProfilePicSM
-                          width={150}
-                          alt="userProfilePic"
+                        <ProfileCircle
+                          diameter={40}
                           src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                        />
+                          alt="profilePic"
+                        ></ProfileCircle>
                       </Link>
                     )}
                     <Nickname>{postProps.User.nickname}</Nickname>
@@ -334,22 +334,22 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                   <div>
                     {postProps?.User?.profilePic ? (
                       <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                        <ProfilePicSM
-                          width={150}
-                          alt="userProfilePic"
+                        <ProfileCircle
+                          diameter={40}
                           src={`${postProps?.User?.profilePic}`}
+                          alt="profilePic"
                           onError={(e) => {
-                            e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
+                            e.currentTarget.src = `${postProps?.User?.profilePic?.replace(/\/thumb\//, "/original/")}`;
                           }}
-                        />
+                        ></ProfileCircle>
                       </Link>
                     ) : (
                       <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                        <ProfilePicSM
-                          width={150}
-                          alt="userProfilePic"
+                        <ProfileCircle
+                          diameter={40}
                           src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                        />
+                          alt="profilePic"
+                        ></ProfileCircle>
                       </Link>
                     )}
                     <Nickname>{postProps.User.nickname}</Nickname>
@@ -786,6 +786,8 @@ const MobileText = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+
+  padding: 12px 0;
 
   > div:nth-child(1) {
     flex-grow: 1;

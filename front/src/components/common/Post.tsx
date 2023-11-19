@@ -32,6 +32,7 @@ import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import ShareIcon from "@mui/icons-material/Share";
 import LinkIcon from "@mui/icons-material/Link";
 import PostFunction from "../../functions/reactQuery/Post";
+import User from "../../functions/reactQuery/User";
 
 interface Image {
   src: string;
@@ -51,9 +52,7 @@ const Post = ({ postProps }: any) => {
   moment.locale("ko");
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-  const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
-    staleTime: 60 * 1000
-  }).data;
+  const user = User.getData();
 
   const [commentLoadLength, setCommentLoadLength] = useState<number>(5);
   const [isPostEdit, setPostEdit] = useState<boolean>(false);

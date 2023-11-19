@@ -44,10 +44,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const level = 2;
 
   //useQuery
-  const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
-    staleTime: 60 * 1000
-  }).data;
-
+  const user = User.getData();
   const logout = User.logout();
 
   const handleScroll = async () => {

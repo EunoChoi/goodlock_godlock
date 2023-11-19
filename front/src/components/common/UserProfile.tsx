@@ -4,15 +4,12 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Axios from "../../apis/Axios";
 import { useQuery } from "@tanstack/react-query";
+import User from "../../functions/reactQuery/User";
 
 const UserProfile = () => {
-  const BACK_SERVER = process.env.REACT_APP_BACK_URL;
-  const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
-    staleTime: 60 * 1000
-  }).data;
-  const isLoggedIn = user != (null || undefined);
+  const user = User.getData();
 
-  return isLoggedIn ? (
+  return user ? (
     <ProfileWrapper>
       <UserTitle>
         <Link to="/profile/0">

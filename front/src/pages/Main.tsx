@@ -18,6 +18,7 @@ import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import SearchIcon from "@mui/icons-material/Search";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+import User from "../functions/reactQuery/User";
 
 interface userProps {
   email: string;
@@ -52,9 +53,7 @@ const Main = () => {
 
   const navigate = useNavigate();
 
-  const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
-    staleTime: 60 * 1000
-  }).data;
+  const user = User.getData();
 
   //this week
   const thisWeekNewInfo = useQuery(

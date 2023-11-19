@@ -15,6 +15,7 @@ import { useRef } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import IsMobile from "../../functions/IsMobile";
+import User from "../../functions/reactQuery/User";
 
 const Header = () => {
   const isMobile = IsMobile();
@@ -23,9 +24,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   //useQuery
-  const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
-    staleTime: 60 * 1000
-  }).data;
+  const user = User.getData();
 
   const { type } = useParams();
   let currentPage = type ? parseInt(type) : -1;

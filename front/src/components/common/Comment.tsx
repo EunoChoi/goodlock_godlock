@@ -16,6 +16,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import User from "../../functions/reactQuery/User";
+import ProfileCircle from "../../styles/ProfileCircle";
 
 moment.locale("ko");
 
@@ -35,9 +37,7 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
     commentRef.current?.focus();
   }, [isCommentEdit]);
 
-  const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
-    staleTime: 60 * 1000
-  }).data;
+  const user = User.getData();
 
   //useMutation
   const editComment = CommentFunction.edit(commentProps.PostId, commentProps.id);
@@ -106,7 +106,7 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
         >
           {commentProps?.User?.profilePic ? (
             <ProfilePic
-              alt="userProfilePic"
+              alt="profilePic"
               src={`${commentProps?.User?.profilePic}`}
               onError={(e) => {
                 e.currentTarget.src = `${commentProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;

@@ -100,9 +100,7 @@ const Profile = () => {
   const [usertext, setUsertext] = useState<string>("");
 
   //useQuery
-  const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
-    staleTime: 60 * 1000
-  }).data;
+  const user = User.getData();
   //useInfiniteQuery
   const myInfoPosts = useInfiniteQuery(
     ["myInfoPosts"],

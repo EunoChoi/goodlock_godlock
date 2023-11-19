@@ -64,10 +64,7 @@ const UserInfo = () => {
   const scrollTarget = useRef<HTMLDivElement>(null);
   const category = ["팔로잉", "팔로워", "팁&설정", "소통글", "관심 팁&설정"];
 
-  //useQuery, useInfiniteQuery
-  const user = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
-    staleTime: 60 * 1000
-  }).data;
+  const user = User.getData();
   const { data: targetUser, refetch } = useQuery(
     ["targetUser"],
     () => Axios.get("user/info", { params: { id } }).then((res) => res.data),
