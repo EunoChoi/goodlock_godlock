@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 //components
 import AppLayout from "../components/AppLayout";
 import Post from "../components/common/Post";
+import { Helmet } from "react-helmet";
 
 //mui
 import ShareIcon from "@mui/icons-material/Share";
@@ -35,9 +36,22 @@ const PostView = () => {
       navigate("/");
     }
   }, [single.isError]);
+  console.log(`${process.env.REACT_APP_BASE_URL}/postview/${single?.data?.User?.id}`);
+  console.log(`${single?.data?.User?.nickname}님의 글`);
+  console.log(single?.data?.content);
+  console.log(single?.data?.Images[0]?.src);
 
   return (
     <AppLayout>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <meta name="description" content={single?.data?.content} />
+        <meta property="og:title" content={`${single?.data?.User?.nickname}님의 글`} />
+        <meta property="og:description" content={single?.data?.content} />
+        <meta property="og:image" content={single?.data?.Images[0]?.src} />
+        <meta property="og:url" content={`${process.env.REACT_APP_BASE_URL}/postview/${single?.data?.User?.id}`} />
+        <title>{`굿락갓락 - ${single?.data?.User?.nickname}님의 글`}</title>
+      </Helmet>
       <SingePostText>
         <ShareIcon />
         <span> 공유 게시글</span>

@@ -71,6 +71,7 @@
   },
   "devDependencies": {
     "@types/react-datepicker": "^4.15.0",
+    "@types/react-helmet": "^6.1.9",
     "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
