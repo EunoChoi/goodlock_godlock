@@ -418,6 +418,7 @@ const Pill = styled.button<{ catNum: number }>`
   padding: 6px 20px;
   border-radius: 100px;
 
+  font-weight: 500;
   font-size: 18px;
 
   display: flex;

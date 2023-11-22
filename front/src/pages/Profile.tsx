@@ -564,6 +564,7 @@ const Pill = styled.button<{ catNum: number }>`
   padding: 6px 20px;
   border-radius: 100px;
 
+  font-weight: 500;
   font-size: 18px;
 
   cursor: pointer;
@@ -610,12 +611,14 @@ const ProfileTitle = styled.div`
     font-size: 20px;
     color: rgba(0, 0, 0, 0.5);
     margin-top: 24px;
+    font-weight: 500;
   }
   > span:nth-child(3) {
     font-size: 20px;
     color: rgba(0, 0, 0, 0.5);
     margin-top: 8px;
     margin-bottom: 12px;
+    font-weight: 500;
   }
 
   @media (orientation: portrait) or (max-height: 480px) {

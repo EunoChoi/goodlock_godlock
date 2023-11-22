@@ -50,7 +50,6 @@ const PostView = () => {
         <meta property="og:description" content={single?.data?.content} />
         <meta property="og:image" content={single?.data?.Images[0]?.src} />
         <meta property="og:url" content={`${process.env.REACT_APP_BASE_URL}/postview/${single?.data?.User?.id}`} />
-        <title>{`굿락갓락 - ${single?.data?.User?.nickname}님의 글`}</title>
       </Helmet>
       <SingePostText>
         <ShareIcon />
