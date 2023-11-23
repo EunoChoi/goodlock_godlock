@@ -11,6 +11,7 @@ import PopupBox from "../components/startPage/PopupBox";
 import SignUp from "../components/startPage/SignUp";
 import LogIn from "../components/startPage/LogIn";
 import Animation from "../styles/Animation";
+import LocalHospitalRoundedIcon from "@mui/icons-material/LocalHospitalRounded";
 
 const Start = () => {
   const [popupOpen, setPopupOpen] = useState(false);
@@ -19,7 +20,6 @@ const Start = () => {
   const { data: isLoggedIn } = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data));
   const navigate = useNavigate();
 
-  const text = "굿락 팁&설정 공유 플랫폼";
   useEffect(() => {
     setToggle(true);
   }, [popupOpen]);
@@ -47,7 +47,11 @@ const Start = () => {
             <span>od Lock</span>
           </div>
         </Title>
-        <TextBox>{text}</TextBox>
+        <TextBox>
+          <span>나만의 감성 더하기</span>
+          <LocalHospitalRoundedIcon fontSize="inherit"></LocalHospitalRoundedIcon>
+          <span>, 굿락갓락</span>
+        </TextBox>
         <StartButton
           onClick={(e) => {
             e.preventDefault();
@@ -78,15 +82,20 @@ export default Start;
 const TextBox = styled.div`
   /* font-family: OAGothic-ExtraBold; */
 
-  font-size: 24px;
-  white-space: pre-line;
-  color: rgba(0, 0, 0, 0.5);
-  font-weight: 600;
-
   line-height: 36px;
-  text-align: start;
+  font-size: 24px;
+  color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: start;
+  align-items: center;
 
   margin: 64px 0;
+
+  span {
+    white-space: pre-line;
+    font-weight: 600;
+    margin-right: 5px;
+  }
 
   @media (orientation: portrait) or (max-height: 480px) {
     margin: 48px 0;
