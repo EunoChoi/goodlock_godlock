@@ -11,7 +11,7 @@ import PopupBox from "../components/startPage/PopupBox";
 import SignUp from "../components/startPage/SignUp";
 import LogIn from "../components/startPage/LogIn";
 import Animation from "../styles/Animation";
-import LocalHospitalRoundedIcon from "@mui/icons-material/LocalHospitalRounded";
+import ExtensionRoundedIcon from "@mui/icons-material/ExtensionRounded";
 
 const Start = () => {
   const [popupOpen, setPopupOpen] = useState(false);
@@ -48,9 +48,8 @@ const Start = () => {
           </div>
         </Title>
         <TextBox>
-          <span>나만의 감성 더하기</span>
-          <LocalHospitalRoundedIcon fontSize="inherit"></LocalHospitalRoundedIcon>
-          <span>, 굿락갓락</span>
+          <span>나만의 감성 더하기, 굿락갓락</span>
+          <ExtensionRoundedIcon fontSize="inherit" />
         </TextBox>
         <StartButton
           onClick={(e) => {
