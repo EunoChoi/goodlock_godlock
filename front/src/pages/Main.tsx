@@ -763,7 +763,9 @@ const WelcomeWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: start;
-
+  > span {
+    font-weight: 500;
+  }
   > span:first-child,
   > span:nth-child(2) {
     font-weight: 600;
@@ -771,7 +773,7 @@ const WelcomeWrapper = styled.div`
     justify-content: center;
     align-items: center;
     font-size: 30px;
-    /* font-weight: 600; */
+
     line-height: 36px;
     color: rgba(0, 0, 0, 0.7);
     /* text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2); */
@@ -785,13 +787,10 @@ const WelcomeWrapper = styled.div`
   > span:nth-child(5),
   > span:nth-child(6) {
     font-size: 20px;
-    font-weight: 500;
     color: rgba(0, 0, 0, 0.5);
 
     margin: 8px 0;
     margin-bottom: 0;
-    /* margin-left: 2px; */
-    /* text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); */
   }
   > span:nth-child(3) {
     margin-top: 24px;

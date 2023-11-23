@@ -13,14 +13,13 @@ const GlobalStyle = createGlobalStyle`
   ${reset}
   * {
     font-family: Pretendard;
+    font-weight: 400;
     -webkit-tap-highlight-color : transparent !important;
     box-sizing: border-box;
   }
   span, div, button{
    font-family: Pretendard;
    font-weight: 400;
-   /* font-weight: 500; */
-   /* color: rgba(0,0,0,0.7) */
   }
   
   html{
