@@ -35,14 +35,6 @@ interface Image {
   src: string;
 }
 
-interface CustomError extends Error {
-  response?: {
-    data: string;
-    status: number;
-    headers: string;
-  };
-}
-
 const Post = ({ postProps }: any) => {
   new ClipboardJS(".btn");
 
@@ -64,6 +56,11 @@ const Post = ({ postProps }: any) => {
 
   const open = Boolean(morePop);
   const [timer, setTimer] = useState<NodeJS.Timeout>();
+
+  const modalClose = () => {
+    history.back();
+    setZoom(false);
+  };
 
   //useMutation
   const like = PostFunction.like(postProps?.id);
@@ -100,14 +97,20 @@ const Post = ({ postProps }: any) => {
   }, [postProps?.Comments.length]);
 
   const navigate = useNavigate();
+
+  //관심 상태 포스트 줌 상태에서 좋아요 해제면 다음 게시글이 줌되는 오류 해결
   useEffect(() => {
     setZoom(false);
   }, [postProps.id]);
 
+  window.addEventListener("popstate", () => {
+    setZoom(false);
+  });
+
   return (
     <PostWrapper onClick={() => setMorePop(null)}>
       {/* 포스트 줌 팝업 */}
-      {isZoom && <PostZoom setZoom={setZoom} postProps={postProps} />}
+      {isZoom && <PostZoom modalClose={modalClose} postProps={postProps} />}
       <Popper open={open} anchorEl={morePop} placement="top-end">
         <EditPopup>
           <Button
@@ -195,7 +198,13 @@ const Post = ({ postProps }: any) => {
         <span>{moment(postProps?.createdAt).fromNow()}</span>
       </PostInfoWrapper>
       {postProps?.Images?.length > 0 && (
-        <ImageWrapper onClick={() => setZoom(true)}>
+        <ImageWrapper
+          onClick={() => {
+            const url = document.URL + ":modal";
+            history.pushState({ page: "modal" }, "", url);
+            setZoom(true);
+          }}
+        >
           {postProps.Images?.length === 1 && (
             <ImageBox>
               <Image
@@ -223,7 +232,15 @@ const Post = ({ postProps }: any) => {
         </ImageWrapper>
       )}
 
-      <TextWrapper onClick={() => setZoom(true)}>{postProps?.content}</TextWrapper>
+      <TextWrapper
+        onClick={() => {
+          const url = document.URL + ":modal";
+          history.pushState({ page: "modal" }, "", url);
+          setZoom(true);
+        }}
+      >
+        {postProps?.content}
+      </TextWrapper>
 
       {postProps.type === 1 && (
         <SubContentWrapper>

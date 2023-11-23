@@ -27,10 +27,10 @@ interface Image {
 }
 interface props {
   postProps: any;
-  setZoom: (b: boolean) => void;
+  modalClose: () => void;
 }
 
-const PostZoom = ({ postProps, setZoom }: props) => {
+const PostZoom = ({ postProps, modalClose }: props) => {
   const user = User.getData();
 
   //useMutation
@@ -59,7 +59,11 @@ const PostZoom = ({ postProps, setZoom }: props) => {
   const arr = new Array(postProps.Images.length + 1).fill(0);
 
   return (
-    <PostZoomBG onClick={() => setZoom(false)}>
+    <PostZoomBG
+      onClick={() => {
+        modalClose();
+      }}
+    >
       {
         //dasktop + only text
         !isMobile && isOnlyText && (
@@ -94,7 +98,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
             <PCTextPost_Right>
               <PCText>{postProps.content}</PCText>
               {postProps.type === 1 && (
-                <SubContent onClick={() => setZoom(true)}>
+                <SubContent>
                   <PostStartEnd>
                     <span>
                       <CalendarMonthIcon />
@@ -133,7 +137,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 </button>
               </Like>
             </PCTextPost_Right>
-            <PCCancelBtn onClick={() => setZoom(false)}>
+            <PCCancelBtn onClick={() => modalClose()}>
               <CancelIcon fontSize="large" />
             </PCCancelBtn>
           </PCTextPost>
@@ -186,7 +190,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
               </PCImagePost_Info>
               <PCText>{postProps.content}</PCText>
               {postProps.type === 1 && (
-                <SubContent onClick={() => setZoom(true)}>
+                <SubContent>
                   <PostStartEnd>
                     <span>
                       <CalendarMonthIcon />
@@ -225,7 +229,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 </button>
               </Like>
             </PCImagePost_RightWrapper>
-            <PCCancelBtn onClick={() => setZoom(false)}>
+            <PCCancelBtn onClick={() => modalClose()}>
               <CancelIcon fontSize="large" />
             </PCCancelBtn>
           </PCImagePost>
@@ -271,7 +275,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 <MobileText key="텍스트페이지">
                   <div>{postProps.content}</div>
                   {postProps.type === 1 && (
-                    <SubContent onClick={() => setZoom(true)}>
+                    <SubContent>
                       <PostStartEnd>
                         <span>
                           <CalendarMonthIcon />
@@ -311,7 +315,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       <span>{postProps?.Likers?.length}</span>
                     </button>
                   </Like>
-                  <MobileCancelBtn onClick={() => setZoom(false)}>
+                  <MobileCancelBtn onClick={() => modalClose()}>
                     <CloseIcon />
                   </MobileCancelBtn>
                 </MobilePostSubInfo>
@@ -372,7 +376,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                         <MobileText key="텍스트페이지">
                           <div>{postProps.content}</div>
                           {postProps.type === 1 && (
-                            <SubContent onClick={() => setZoom(true)}>
+                            <SubContent>
                               <PostStartEnd>
                                 <span>
                                   <CalendarMonthIcon />
@@ -422,7 +426,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       <span>{postProps?.Likers?.length}</span>
                     </button>
                   </Like>
-                  <MobileCancelBtn onClick={() => setZoom(false)}>
+                  <MobileCancelBtn onClick={() => modalClose()}>
                     <CloseIcon />
                   </MobileCancelBtn>
                 </MobilePostSubInfo>

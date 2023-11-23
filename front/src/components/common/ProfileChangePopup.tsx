@@ -22,10 +22,10 @@ interface state {
 }
 
 interface setStateProps {
-  setToggles: (s: state) => void;
+  modalClose: () => void;
 }
 
-const ProfileChangePopup = ({ setToggles }: setStateProps) => {
+const ProfileChangePopup = ({ modalClose }: setStateProps) => {
   const [image, setImage] = useState<string>("");
   const imageInput = useRef<HTMLInputElement>(null);
 
@@ -37,7 +37,7 @@ const ProfileChangePopup = ({ setToggles }: setStateProps) => {
   useEffect(() => {
     if (editProfilePic.isSuccess) {
       toast.success("프로필 이미지 변경이 완료되었습니다.");
-      setToggles({ image: false, nickname: false, usertext: false });
+      modalClose();
     }
   }, [editProfilePic.isSuccess]);
 
@@ -66,7 +66,7 @@ const ProfileChangePopup = ({ setToggles }: setStateProps) => {
   }, []);
 
   return (
-    <PopupBackBlur onClick={() => setToggles({ image: false, nickname: false, usertext: false })}>
+    <PopupBackBlur onClick={() => modalClose()}>
       <PopupBox
         onClick={(e) => {
           e.stopPropagation();
@@ -104,7 +104,7 @@ const ProfileChangePopup = ({ setToggles }: setStateProps) => {
         </ProfileImageBox>
 
         <ButtonArea>
-          <Button onClick={() => setToggles({ image: false, nickname: false, usertext: false })}>
+          <Button onClick={() => modalClose()}>
             <CancelIcon />
             <span>취소</span>
           </Button>

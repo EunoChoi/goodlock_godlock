@@ -68,6 +68,11 @@ const Profile = () => {
   const params = useParams();
   const categoryNum = params.cat ? parseInt(params.cat) : -1;
 
+  const modalClose = () => {
+    history.back();
+    setToggles({ image: false, nickname: false, usertext: false });
+  };
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -142,10 +147,14 @@ const Profile = () => {
   const scrollTarget = useRef<HTMLDivElement>(null);
   const category = ["정보", "팔로잉", "팔로워", "팁&설정", "소통글"];
 
+  window.addEventListener("popstate", () => {
+    setToggles({ image: false, nickname: false, usertext: false });
+  });
+
   return (
     <AppLayout>
       <>
-        {toggles.image && <ProfileChangePopup setToggles={setToggles} />}
+        {toggles.image && <ProfileChangePopup modalClose={modalClose} />}
         <ProfileTitle ref={scrollTarget}>
           <Title>내 정보</Title>
           <span>정보 수정 및 작성 글 확인이 가능합니다.</span>
@@ -196,6 +205,8 @@ const Profile = () => {
                 <Button
                   color="inherit"
                   onClick={() => {
+                    const url = document.URL + ":modal";
+                    history.pushState({ page: "modal" }, "", url);
                     setToggles({ nickname: false, usertext: false, image: !toggles.image });
                   }}
                 >
