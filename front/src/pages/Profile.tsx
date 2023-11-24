@@ -151,6 +151,14 @@ const Profile = () => {
     setToggles({ image: false, nickname: false, usertext: false });
   });
 
+  //모달 열린 상태에서 새로고침시 history.back 처리
+  useEffect(() => {
+    console.log(history.state);
+    if (history.state.page === "modal") {
+      history.back();
+    }
+  }, []);
+
   return (
     <AppLayout>
       <>

@@ -190,6 +190,14 @@ const Main = () => {
     }
   }, [type]);
 
+  //모달 열린 상태에서 새로고침시 history.back 처리, url 더러워짐 방지
+  useEffect(() => {
+    console.log(history.state);
+    if (history.state.page === "modal") {
+      history.back();
+    }
+  }, []);
+
   return (
     <AppLayout>
       {toggles.main === 0 && (

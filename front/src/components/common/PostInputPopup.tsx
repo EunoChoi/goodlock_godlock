@@ -34,8 +34,7 @@ const InputPopup = ({ modalClose }: props) => {
   const [start, setStart] = useState<Date>(new Date());
   const [end, setEnd] = useState<Date>(new Date());
   const [link, setLink] = useState<string>("");
-  const isInfoPost =
-    window.location.pathname.split("/")[2] === "1" && window.location.pathname.split("/")[1] === "main";
+  const isInfoPost = inputType === 1;
 
   const imageInput = useRef<HTMLInputElement>(null);
 
