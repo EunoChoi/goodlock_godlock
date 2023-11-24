@@ -60,6 +60,7 @@ const Post = ({ postProps }: any) => {
   const modalClose = () => {
     history.back();
     setZoom(false);
+    setPostEdit(false);
   };
 
   //useMutation
@@ -104,6 +105,7 @@ const Post = ({ postProps }: any) => {
   }, [postProps.id]);
 
   window.addEventListener("popstate", () => {
+    setPostEdit(false);
     setZoom(false);
   });
 
@@ -119,7 +121,10 @@ const Post = ({ postProps }: any) => {
             onClick={() => {
               setMorePop(null);
               clearTimeout(timer);
-              setPostEdit((c) => !c);
+
+              const url = document.URL + ":modal";
+              history.pushState({ page: "modal" }, "", url);
+              setPostEdit(true);
             }}
           >
             <EditIcon />
@@ -154,7 +159,7 @@ const Post = ({ postProps }: any) => {
       {/* 포스트 수정 팝업 */}
       {isPostEdit ? (
         <PostEditPopup
-          setPostEdit={setPostEdit}
+          modalClose={modalClose}
           postProps={{
             type: postProps.type,
             id: postProps.id,

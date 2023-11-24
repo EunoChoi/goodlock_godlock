@@ -351,7 +351,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                   <span>{moment(postProps?.createdAt).fromNow()}</span>
                 </MobilePostInfo>
                 <CustomCarousel
-                  swipe={true}
+                  swipe={false}
                   navButtonsAlwaysVisible={true}
                   fullHeightHover={true}
                   indicators={true}

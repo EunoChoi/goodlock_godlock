@@ -33,11 +33,11 @@ interface serverPostData {
 }
 
 interface props {
-  setPostEdit: (b: boolean) => void;
+  modalClose: () => void;
   postProps: serverPostData;
 }
 
-const PostEditPopup = ({ setPostEdit, postProps }: props) => {
+const PostEditPopup = ({ modalClose, postProps }: props) => {
   const placeholders = ["공지사항 입력", "팁&설정 입력", "소통글 입력"];
   const [content, setContent] = useState<string>(postProps.content);
   const [images, setImages] = useState<string[]>(postProps.images.map((v) => v.src));
@@ -59,7 +59,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
   const editPost = Post.edit(postProps.id);
   useEffect(() => {
     if (editPost.isSuccess) {
-      setPostEdit(false);
+      modalClose();
     }
   }, [editPost.isSuccess]);
 
@@ -115,7 +115,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
             },
             {
               label: "확인",
-              onClick: () => setPostEdit(false)
+              onClick: () => modalClose()
             }
           ]
         });
@@ -238,7 +238,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
                   },
                   {
                     label: "확인",
-                    onClick: () => setPostEdit(false)
+                    onClick: () => modalClose()
                   }
                 ]
               });
@@ -318,7 +318,9 @@ const PostOptionWrapper = styled.div`
 
   @media (orientation: portrait) or (max-height: 480px) {
     padding-left: 20px;
+    padding-top: 20px;
     padding-right: 20px;
+    height: 110px;
   }
 
   > div:first-child {
@@ -331,6 +333,8 @@ const PostOptionWrapper = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
+
+      font-weight: 500;
 
       font-size: 18px;
       color: rgba(0, 0, 0, 0.7);
@@ -371,18 +375,6 @@ const PostOptionWrapper = styled.div`
   }
 `;
 
-const PostInputHelp = styled.div`
-  width: calc(100vw - 500px);
-  height: 100vh;
-  font-size: 1.7em;
-  color: white;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5%;
-`;
-
 const FlexButton = styled.button`
   display: flex;
   justify-content: center;
@@ -393,6 +385,7 @@ const FlexButton = styled.button`
   /* font-weight: 600; */
   font-size: 1.1em;
   span {
+    font-weight: 500;
     padding-left: 5px;
   }
 `;

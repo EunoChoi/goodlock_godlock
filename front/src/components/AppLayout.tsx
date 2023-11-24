@@ -39,6 +39,11 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const user = User.getData();
   const logout = User.logout();
 
+  const modalClose = () => {
+    history.back();
+    setPostInputOpen(false);
+  };
+
   const handleScroll = async () => {
     // console.log(window.scrollY);
     if (window.scrollY > 2000) {
@@ -47,6 +52,10 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       setGoTopButton(false);
     }
   };
+
+  window.addEventListener("popstate", () => {
+    setPostInputOpen(false);
+  });
 
   useEffect(() => {
     window.addEventListener("scroll", () => handleScroll());
@@ -62,7 +71,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   return (
     <>
-      {isPostInputOpen && <InputPopup setIsPostInputOpen={setPostInputOpen} />}
+      {isPostInputOpen && <InputPopup modalClose={modalClose} />}
       {isMobile ? (
         <MobileWrapper>
           <Header />
@@ -89,24 +98,9 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                 <button
                   color="inherit"
                   onClick={() => {
-                    if (isPostInputOpen === false) {
-                      setPostInputOpen((c) => !c);
-                    } else {
-                      confirmAlert({
-                        // title: "",
-                        message: "게시글 작성을 중단하시겠습니까?",
-                        buttons: [
-                          {
-                            label: "취소",
-                            onClick: () => console.log("취소")
-                          },
-                          {
-                            label: "확인",
-                            onClick: () => setPostInputOpen((c) => !c)
-                          }
-                        ]
-                      });
-                    }
+                    const url = document.URL + ":modal";
+                    history.pushState({ page: "modal" }, "", url);
+                    setPostInputOpen(true);
                   }}
                 >
                   <PostAddIcon fontSize="medium" />
@@ -119,24 +113,9 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                 <button
                   color="inherit"
                   onClick={() => {
-                    if (isPostInputOpen === false) {
-                      setPostInputOpen((c) => !c);
-                    } else {
-                      confirmAlert({
-                        // title: "",
-                        message: "게시글 작성을 중단하시겠습니까?",
-                        buttons: [
-                          {
-                            label: "취소",
-                            onClick: () => console.log("취소")
-                          },
-                          {
-                            label: "확인",
-                            onClick: () => setPostInputOpen((c) => !c)
-                          }
-                        ]
-                      });
-                    }
+                    const url = document.URL + ":modal";
+                    history.pushState({ page: "modal" }, "", url);
+                    setPostInputOpen(true);
                   }}
                 >
                   <PostAddIcon fontSize="medium" />
