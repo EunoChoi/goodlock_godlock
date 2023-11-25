@@ -29,7 +29,7 @@ const Start = () => {
       <BG />
       <BG2 />
       <Footer>
-        <span>문의 : pixel@kakao.com</span>
+        <span>문의 : goodlockgodlock@gmail.com</span>
         <span>
           <a href="https://kr.freepik.com/free-vector/student-with-laptop-studying-on-online-course_7732666.htm#from_view=detail_author">
             ❖ Freepik, pch.vector
