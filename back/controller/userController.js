@@ -7,7 +7,7 @@ const User = db.User;
 const userController = {
   register: async (data) => {
     let message;
-    const { email, nickname, password } = data;
+    const { email, nickname, password, profilePic } = data;
     const isEmailExist = await User.findOne({
       where: { email }
     });
@@ -36,6 +36,7 @@ const userController = {
           level: 1,
           usertext: "상태메세지를 입력하세요.",
           email,
+          profilePic,
           nickname,
           password: hashedPassword //암호화된 비밀번호로 회원가입
         }

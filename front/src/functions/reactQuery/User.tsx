@@ -4,9 +4,14 @@ import Axios from "../../apis/Axios";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
+interface SignUpValue {
+  email: string;
+  password: any;
+  nickname: string;
+}
 interface LoginValue {
   email: string;
-  password: string;
+  password: any;
 }
 interface CustomError extends Error {
   response?: {
@@ -29,7 +34,25 @@ const User = {
       staleTime: 60 * 1000
     }).data;
   },
-  login: () => {
+  signUp: () => {
+    return useMutation(
+      ({ email, nickname, password }: SignUpValue) =>
+        Axios.post("/user/register", {
+          email,
+          nickname,
+          password
+        }),
+      {
+        onSuccess: (res) => {
+          toast.success(res.data);
+        },
+        onError: (err: any) => {
+          toast.error(err.response.data);
+        }
+      }
+    );
+  },
+  logIn: () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
@@ -47,12 +70,29 @@ const User = {
         },
         onError: (err: CustomError) => {
           toast.error(err.response?.data?.message);
-          if (err.response?.data?.message) {
-            console.log(err.response?.data?.message);
-          } else {
-            toast.error("로그인 중 에러 발생");
-          }
-          console.log(err);
+          console.log("로그인 중 에러 발생");
+        }
+      }
+    );
+  },
+  socialLogIn: () => {
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
+
+    return useMutation(
+      ({ email, profilePic }: any) =>
+        Axios.post("/user/login/social", {
+          email,
+          profilePic
+        }),
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries(["user"]);
+          navigate("/main/0");
+          window.location.reload();
+        },
+        onError: (err: CustomError) => {
+          toast.error(err.response?.data?.message);
           console.log("로그인 중 에러 발생");
         }
       }

@@ -60,7 +60,7 @@ const LogInSignUp = {
   `,
   Wrapper: styled.div`
     width: 100%;
-    height: 100%;
+    height: auto;
 
     display: flex;
     flex-direction: column;
@@ -101,6 +101,8 @@ const LogInSignUp = {
     font-weight: 400;
     margin: 0px 5px;
 
+    font-weight: 500;
+
     cursor: ${(props) => props.pointer && "Pointer"};
     color: ${(props) => props.color || "black"};
   `,
@@ -114,7 +116,9 @@ const LogInSignUp = {
     color: white;
     margin-top: 28px;
     font-size: 16px;
+    font-weight: 500;
     flex-shrink: 0;
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
     &:disabled{
       background-color: lightgrey;
     }
@@ -129,6 +133,7 @@ const LogInSignUp = {
     padding: 0 15px;
 
     font-size: 16px;
+    font-weight: 500;
 
     outline: none;
   `,
@@ -151,7 +156,10 @@ const LogInSignUp = {
     height: 1px;
     position: relative;
     &::before {
-      content: "Or";
+      content: "간편 로그인";
+
+      font-weight: 500;
+      
       position: absolute;
       transform: translate(-50%, -50%);
       top: 50%;

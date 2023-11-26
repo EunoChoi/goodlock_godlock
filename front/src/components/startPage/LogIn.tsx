@@ -17,7 +17,7 @@ interface LogInForm {
 }
 
 const LogIn = ({ setToggle }: Props) => {
-  const login = User.login();
+  const login = User.logIn();
 
   const {
     register,
@@ -89,18 +89,8 @@ const LogIn = ({ setToggle }: Props) => {
           회원가입
         </LogInSignUp.Text>
       </LogInSignUp.TextWrapper>
-      <LogInSignUp.Bar />
-      <LogInSignUp.Button bgColor="#4284F3" onClick={() => toast.error("구현 예정입니다.")}>
-        구글 아이디로 로그인
-      </LogInSignUp.Button>
     </LogInSignUp.Wrapper>
   );
 };
 
 export default LogIn;
-
-const Test = styled.div`
-  background-color: red;
-  width: 100px;
-  height: 200px;
-`;

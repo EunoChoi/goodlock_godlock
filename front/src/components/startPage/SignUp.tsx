@@ -6,6 +6,7 @@ import Axios from "../../apis/Axios";
 
 //styled component
 import LogInSignUp from "../../styles/LogInSignUp";
+import User from "../../functions/reactQuery/User";
 
 interface SignInForm {
   email: string;
@@ -34,24 +35,12 @@ const SignUp = ({ setToggle }: Props) => {
     }
   });
 
+  const signUpFunction = User.signUp();
+
   const onSubmit = () => {
     const { email, nickname, password } = getValues();
 
-    Axios.post("/user/register", {
-      email,
-      nickname,
-      password
-    })
-      .then((res) => {
-        setToggle(true);
-        toast.success(res.data);
-        // alert(res.data);
-      })
-      .catch((res) => {
-        console.log(res);
-        toast.error(res?.response?.data);
-        // alert(res.response.data);
-      });
+    signUpFunction.mutate({ email, nickname, password });
   };
 
   return (
@@ -164,10 +153,6 @@ const SignUp = ({ setToggle }: Props) => {
           로그인
         </LogInSignUp.Text>
       </LogInSignUp.TextWrapper>
-      <LogInSignUp.Bar></LogInSignUp.Bar>
-      <LogInSignUp.Button bgColor="#4284F3" onClick={() => toast.error("구현 예정입니다.")}>
-        구글 아이디로 로그인
-      </LogInSignUp.Button>
     </LogInSignUp.Wrapper>
   );
 };

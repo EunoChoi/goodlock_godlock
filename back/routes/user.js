@@ -45,6 +45,67 @@ router.post("/login", async (req, res) => {
     console.error(error);
   }
 })
+//구글 로그인
+router.post("/login/social", async (req, res) => {
+  try {
+    const email = req.body.email;
+    const nickname = email.split("@")[0] + "#";
+    const password = process.env.SOCIAL_PW;
+    const profilePic = req.body.profilePic;
+
+    console.log(email);
+
+    const isEmailExist = await User.findOne({
+      where: { email }
+    });
+
+    //가입되어있지 않은 경우 -> 회원가입
+    if (!isEmailExist) {
+      //회원가입 
+      const newUser = await userController.register({ email, password, nickname, profilePic });
+      console.log(newUser);
+      //로그인
+      const user = await userController.login({ email, password });
+      if (user.status === 200) {
+        res.cookie("accessToken", user.accessToken, {
+          secure: false,
+          httpOnly: true,
+        })
+        res.cookie("refreshToken", user.refreshToken, {
+          secure: false,
+          httpOnly: true,
+        })
+        res.status(200).json("로그인 성공, 토큰 발급 완료");
+      }
+      else {
+        res.status(user.status).json({ message: user.message });
+      }
+    }
+    //이메일이 존재한 경우 -> 로그인 시도
+    else {
+      const user = await userController.login({ email, password });
+      if (user.status === 200) {
+        res.cookie("accessToken", user.accessToken, {
+          secure: false,
+          httpOnly: true,
+        })
+        res.cookie("refreshToken", user.refreshToken, {
+          secure: false,
+          httpOnly: true,
+        })
+        res.status(200).json("로그인 성공, 토큰 발급 완료");
+      }
+      else {
+        return res.status(user.status).json({ message: "이미 가입된 일반 계정이 존재합니다." });
+      }
+    }
+    return res.status(401).json({ errr: "error" });
+
+  }
+  catch (error) {
+    console.error(error);
+  }
+})
 
 //유저 정보 불러오기 - 엑세스 토큰 확인 및 리프레시 토큰으로 엑세스 토큰을 발급받는 미들웨어를 만들고 미들웨어 거친 후 라우터에서 유저정보를 클라로 뿌랴줘야 한다.
 router.get("/current", tokenCheck, async (req, res) => {
