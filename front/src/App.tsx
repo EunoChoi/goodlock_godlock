@@ -61,7 +61,7 @@ function App() {
   }, []);
 
   return (
-    <GoogleOAuthProvider clientId="924886272655-820oc9gc8tgge2ddf9bm0d59ip57gvbt.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID as string}>
       <QueryClientProvider client={queryClient}>
         <ToastContainer
           position="top-right"
