@@ -28,19 +28,41 @@ const userController = {
         "이 닉네임은 현재 사용중입니다. 다른 닉네임을 입력해 주세요.";
       return { status: 400, message };
     }
+
+    //간편가입의 경우 이메일 주소와 닉네임이 동일하다.
+    //닉네임에 특수문자 사용이 불가능하기 때문에 일반 가입의 경우 불가능한 경우
+    //따라서 이 경우 유저 레벨을 2로 설정해서 간편 가입 회원 구분이 가능하다.
+    //유저레벨 1 : 일반 가입 유저, 유저레벨 2 : 간편 가입 유저, 유저레벨 3 : 공지작성 가능 유저
+
     //회원가입이 가능한 경우
     else {
+
       const hashedPassword = await bcrypt.hash(password, 12);
-      await User.create(
-        {
-          level: 1,
-          usertext: "상태메세지를 입력하세요.",
-          email,
-          profilePic,
-          nickname,
-          password: hashedPassword //암호화된 비밀번호로 회원가입
-        }
-      );
+      if (email === nickname) {
+        await User.create(
+          {
+            level: 2,
+            usertext: "상태메세지를 입력하세요.",
+            email,
+            profilePic,
+            nickname,
+            password: hashedPassword //암호화된 비밀번호로 회원가입
+          }
+        );
+      }
+      else {
+        await User.create(
+          {
+            level: 1,
+            usertext: "상태메세지를 입력하세요.",
+            email,
+            profilePic,
+            nickname,
+            password: hashedPassword //암호화된 비밀번호로 회원가입
+          }
+        );
+      }
+
       message =
         "회원가입이 완료되었습니다.";
       return { status: 200, message };

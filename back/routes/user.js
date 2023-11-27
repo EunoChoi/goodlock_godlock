@@ -49,7 +49,7 @@ router.post("/login", async (req, res) => {
 router.post("/login/social", async (req, res) => {
   try {
     const email = req.body.email;
-    const nickname = email.split("@")[0] + "#";
+    const nickname = email;
     const password = process.env.SOCIAL_PW;
     const profilePic = req.body.profilePic;
 
@@ -62,9 +62,11 @@ router.post("/login/social", async (req, res) => {
     //가입되어있지 않은 경우 -> 회원가입
     if (!isEmailExist) {
       //회원가입 
+      console.log("가입되어있지 않음, 회원가입 진행 중...");
       const newUser = await userController.register({ email, password, nickname, profilePic });
       console.log(newUser);
       //로그인
+      console.log("로그인 진행 중...");
       const user = await userController.login({ email, password });
       if (user.status === 200) {
         res.cookie("accessToken", user.accessToken, {

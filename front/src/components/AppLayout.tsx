@@ -33,7 +33,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const [goTopButton, setGoTopButton] = useState<boolean>(false);
 
   //공지사항 작성 가능 레벨
-  const level = 2;
+  const level = 10;
 
   //useQuery
   const user = User.getData();
