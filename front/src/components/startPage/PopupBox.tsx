@@ -4,7 +4,6 @@ import { ANIMATION_APPEAR, ANIMATION_DISAPPEAR } from "../../styles/Animation";
 import styled from "styled-components";
 import { googleLogout } from "@react-oauth/google";
 import { useGoogleLogin } from "@react-oauth/google";
-import KakaoLogin from "react-kakao-login";
 
 import axios from "axios";
 
@@ -12,7 +11,6 @@ import axios from "axios";
 import CancelIcon from "@mui/icons-material/Cancel";
 import IsMobile from "../../functions/IsMobile";
 import User from "../../functions/reactQuery/User";
-import { useNavigate } from "react-router-dom";
 
 interface AppLayoutProps {
   popupOpen: boolean;
@@ -21,8 +19,6 @@ interface AppLayoutProps {
 }
 
 const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, children }: AppLayoutProps) => {
-  const navigate = useNavigate();
-
   const [animation, setAnimation] = useState(ANIMATION_APPEAR);
   const isMobile = IsMobile();
 
