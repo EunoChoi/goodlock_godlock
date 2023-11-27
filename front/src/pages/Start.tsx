@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import Axios from "../apis/Axios";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 //components
 import PopupBox from "../components/startPage/PopupBox";
@@ -12,6 +13,7 @@ import SignUp from "../components/startPage/SignUp";
 import LogIn from "../components/startPage/LogIn";
 import Animation from "../styles/Animation";
 import ExtensionRoundedIcon from "@mui/icons-material/ExtensionRounded";
+import User from "../functions/reactQuery/User";
 
 const Start = () => {
   const [popupOpen, setPopupOpen] = useState(false);
@@ -23,6 +25,47 @@ const Start = () => {
   useEffect(() => {
     setToggle(true);
   }, [popupOpen]);
+
+  //kakao login
+  const socialLogIn = User.socialLogIn();
+
+  const REST_KEY = process.env.REACT_APP_KAKAO_REST_KEY;
+  const REDIRECT_URI = process.env.REACT_APP_BASE_URL;
+  const code = new URL(window.location.href).searchParams.get("code");
+  if (code) {
+    axios
+      .post(
+        `https://kauth.kakao.com/oauth/token`,
+        {
+          grant_type: "authorization_code",
+          client_id: REST_KEY,
+          redirect_uri: REDIRECT_URI,
+          code
+        },
+        {
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded;charset=utf-8"
+          }
+        }
+      )
+      .then(async (res) => {
+        const access_token = res.data.access_token;
+        console.log("access_token 발급");
+        await axios
+          .get("https://kapi.kakao.com/v2/user/me", {
+            headers: {
+              Authorization: `Bearer ${access_token}`
+            }
+          })
+          .then((res) => {
+            // console.log(res);
+            const email = res.data.kakao_account.email;
+            const profilePic = res.data.properties.profile_image;
+            console.log(email, profilePic);
+            socialLogIn.mutate({ email, profilePic });
+          });
+      });
+  }
 
   return (
     <>
