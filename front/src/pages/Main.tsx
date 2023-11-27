@@ -192,11 +192,17 @@ const Main = () => {
 
   //모달 열린 상태에서 새로고침시 history.back 처리, url 더러워짐 방지
   useEffect(() => {
-    console.log(history.state);
+    // console.log(history.state);
     if (history.state.page === "modal") {
       history.back();
     }
   }, []);
+
+  const isTextTooLong = (text: string) => {
+    if (text.length >= 13) {
+      return text.slice(0, 12) + "...";
+    } else return text;
+  };
 
   return (
     <AppLayout>
@@ -205,7 +211,7 @@ const Main = () => {
           <WelcomeWrapper ref={scrollTarget}>
             <span>반갑습니다.</span>
             <span>
-              <Link to={`/profile/0`}>{user?.nickname}님!</Link>
+              <Link to={`/profile/0`}>{isTextTooLong(user?.nickname)}님!</Link>
               <div>
                 <EmojiPeopleIcon fontSize="inherit" />
               </div>

@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LogInSignUp from "../../styles/LogInSignUp";
 import { ANIMATION_APPEAR, ANIMATION_DISAPPEAR } from "../../styles/Animation";
 import styled from "styled-components";
-import { GoogleLogin } from "@react-oauth/google";
 import { googleLogout } from "@react-oauth/google";
 import { useGoogleLogin } from "@react-oauth/google";
+import KakaoLogin from "react-kakao-login";
+
 import axios from "axios";
 
 //mui
 import CancelIcon from "@mui/icons-material/Cancel";
 import IsMobile from "../../functions/IsMobile";
 import User from "../../functions/reactQuery/User";
+import { useNavigate } from "react-router-dom";
 
 interface AppLayoutProps {
   popupOpen: boolean;
@@ -19,11 +21,14 @@ interface AppLayoutProps {
 }
 
 const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, children }: AppLayoutProps) => {
+  const navigate = useNavigate();
+
   const [animation, setAnimation] = useState(ANIMATION_APPEAR);
   const isMobile = IsMobile();
 
   const socialLogIn = User.socialLogIn();
 
+  //google login
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       console.log(tokenResponse);
@@ -42,6 +47,13 @@ const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, children 
       googleLogout();
     }
   });
+
+  //kakao login
+  const kakaoLogin = () => {
+    const REST_KEY = process.env.REACT_APP_KAKAO_REST_KEY;
+    const REDIRECT_URI = process.env.REACT_APP_BASE_URL;
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  };
 
   return (
     <>
@@ -62,9 +74,11 @@ const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, children 
               <SNSLoginButton color="white" onClick={() => googleLogin()}>
                 <Logo src={`${process.env.PUBLIC_URL}/img/google.png`} alt="google" />
               </SNSLoginButton>
-              <SNSLoginButton color="#FAE100">
+
+              <SNSLoginButton color="#FAE100" onClick={() => kakaoLogin()}>
                 <Logo src={`${process.env.PUBLIC_URL}/img/kakao.png`} alt="kakao" />
               </SNSLoginButton>
+
               <SNSLoginButton color="#02C73C">
                 <Logo src={`${process.env.PUBLIC_URL}/img/naver.png`} alt="naver" />
               </SNSLoginButton>
