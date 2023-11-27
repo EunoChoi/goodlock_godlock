@@ -198,6 +198,12 @@ const Main = () => {
     }
   }, []);
 
+  const isTextTooLong = (text: string) => {
+    if (text.length >= 13) {
+      return text.slice(0, 12) + "...";
+    } else return text;
+  };
+
   return (
     <AppLayout>
       {toggles.main === 0 && (
@@ -205,7 +211,7 @@ const Main = () => {
           <WelcomeWrapper ref={scrollTarget}>
             <span>반갑습니다.</span>
             <span>
-              <Link to={`/profile/0`}>{user?.nickname}님!</Link>
+              <Link to={`/profile/0`}>{isTextTooLong(user?.nickname)}님!</Link>
               <div>
                 <EmojiPeopleIcon fontSize="inherit" />
               </div>
