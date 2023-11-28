@@ -93,6 +93,7 @@ const User = {
         },
         onError: (err: CustomError) => {
           toast.error(err.response?.data?.message);
+          navigate("/");
           console.log("로그인 중 에러 발생");
         }
       }

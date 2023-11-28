@@ -22,21 +22,29 @@ const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, children 
   const [animation, setAnimation] = useState(ANIMATION_APPEAR);
   const isMobile = IsMobile();
 
-  const socialLogIn = User.socialLogIn();
   const KAKAO_REST_KEY = process.env.REACT_APP_KAKAO_REST_KEY;
   const REDIRECT_URI_KAKAO = process.env.REACT_APP_BASE_URL + "/auth/kakao";
 
-  const GOOGLE_CLIENT_KEY = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
   const REDIRECT_URI_GOOGLE = process.env.REACT_APP_BASE_URL + "/auth/google";
+
+  const NAVER_CLIENT_ID = process.env.REACT_APP_NAVER_CLIENT_ID;
+  const REDIRECT_URI_NAVER = process.env.REACT_APP_BASE_URL + "/auth/naver";
+  const NAVER_STATE_CODE = process.env.REACT_APP_NAVER_STATE_CODE;
 
   //google login
   const googleLogin = () => {
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_KEY}&redirect_uri=${REDIRECT_URI_GOOGLE}&response_type=code&scope=email profile&prompt=select_account`;
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${REDIRECT_URI_GOOGLE}&response_type=code&scope=email profile&prompt=select_account`;
   };
 
   //kakao login
   const kakaoLogin = () => {
     window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_KEY}&redirect_uri=${REDIRECT_URI_KAKAO}&response_type=code&prompt=select_account`;
+  };
+
+  //naver login
+  const naverLogin = () => {
+    window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${REDIRECT_URI_NAVER}&state=${NAVER_STATE_CODE}`;
   };
 
   return (
@@ -63,7 +71,7 @@ const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, children 
                 <Logo src={`${process.env.PUBLIC_URL}/img/kakao.png`} alt="kakao" />
               </SNSLoginButton>
 
-              <SNSLoginButton color="#02C73C">
+              <SNSLoginButton color="#02C73C" onClick={() => naverLogin()}>
                 <Logo src={`${process.env.PUBLIC_URL}/img/naver.png`} alt="naver" />
               </SNSLoginButton>
             </SNSLoginWrapper>

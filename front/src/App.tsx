@@ -28,6 +28,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 import Loading from "./pages/Loading";
 import Kakao from "./pages/auth/Kakao";
 import Google from "./pages/auth/Google";
+import Naver from "./pages/auth/Naver";
 
 function App() {
   console.log("===== App 리렌더 =====");
@@ -88,6 +89,7 @@ function App() {
               <Route path="/" element={<Start />} />
               <Route path="/auth/kakao" element={<Kakao />} />
               <Route path="/auth/google" element={<Google />} />
+              <Route path="/auth/naver" element={<Naver />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
