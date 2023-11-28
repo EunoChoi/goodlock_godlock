@@ -26,6 +26,8 @@ const PostView = lazy(() => import("./pages/PostView"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 import Loading from "./pages/Loading";
+import Kakao from "./pages/auth/Kakao";
+import Google from "./pages/auth/Google";
 
 function App() {
   console.log("===== App 리렌더 =====");
@@ -84,6 +86,8 @@ function App() {
               <Route path="profile/:cat" element={<AuthRoute accessType="login" component={<Profile />} />} />
               <Route path="userinfo/:id/cat/:cat" element={<AuthRoute accessType="login" component={<UserInfo />} />} />
               <Route path="/" element={<Start />} />
+              <Route path="/auth/kakao" element={<Kakao />} />
+              <Route path="/auth/google" element={<Google />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

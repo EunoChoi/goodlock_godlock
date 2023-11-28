@@ -85,6 +85,7 @@ router.post("/login/social", async (req, res) => {
     }
     //이메일이 존재한 경우 -> 로그인 시도
     else {
+      console.log("간편가입 되어있음, 로그인 진행 중...");
       const user = await userController.login({ email, password });
       if (user.status === 200) {
         res.cookie("accessToken", user.accessToken, {

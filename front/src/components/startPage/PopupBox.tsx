@@ -23,32 +23,20 @@ const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, children 
   const isMobile = IsMobile();
 
   const socialLogIn = User.socialLogIn();
+  const KAKAO_REST_KEY = process.env.REACT_APP_KAKAO_REST_KEY;
+  const REDIRECT_URI_KAKAO = process.env.REACT_APP_BASE_URL + "/auth/kakao";
+
+  const GOOGLE_CLIENT_KEY = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+  const REDIRECT_URI_GOOGLE = process.env.REACT_APP_BASE_URL + "/auth/google";
 
   //google login
-  const googleLogin = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      console.log(tokenResponse);
-      const userInfo = await axios
-        .get("https://www.googleapis.com/oauth2/v3/userinfo", {
-          headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
-        })
-        .then((res) => res.data);
-
-      console.log(userInfo);
-
-      const email = userInfo.email;
-      const profilePic = userInfo.picture;
-      socialLogIn.mutate({ email, profilePic });
-
-      googleLogout();
-    }
-  });
+  const googleLogin = () => {
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_KEY}&redirect_uri=${REDIRECT_URI_GOOGLE}&response_type=code&scope=email profile&prompt=select_account`;
+  };
 
   //kakao login
   const kakaoLogin = () => {
-    const REST_KEY = process.env.REACT_APP_KAKAO_REST_KEY;
-    const REDIRECT_URI = process.env.REACT_APP_BASE_URL;
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_KEY}&redirect_uri=${REDIRECT_URI_KAKAO}&response_type=code&prompt=select_account`;
   };
 
   return (
