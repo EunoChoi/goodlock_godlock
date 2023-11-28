@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
-import axios from "axios";
+import Axios from "../../apis/Axios";
 
 import User from "../../functions/reactQuery/User";
 import { useNavigate } from "react-router-dom";
@@ -16,52 +16,26 @@ const Naver = () => {
   const REDIRECT_URI = process.env.REACT_APP_BASE_URL + "/auth/naver";
   const code = new URL(window.location.href).searchParams.get("code");
 
+  //naver 로그인의 경우 front에서 바로 네이버 api를 보내면 cors 에러가 발생한다.
+  //구글이나 카카오와 다르게 요청을 백엔드에서 보내야 한다.
+
   if (code) {
     console.log(code);
-    let getTokenUrl = "https://nid.naver.com/oauth2.0/token";
-    getTokenUrl += `?grant_type=authorization_code`;
-    getTokenUrl += `&client_id=${NAVER_CLIENT_ID}`;
-    getTokenUrl += `&client_secret=${NAVER_CLIENT_SECRET}`;
-    // getTokenUrl += `&redirect_uri=${REDIRECT_URI}`;
-    getTokenUrl += `&code=${code}`;
-    getTokenUrl += `&state=${NAVER_STATE_CODE}`;
-    try {
-      axios
-        .post(
-          "https://nid.naver.com/oauth2.0/token",
-          {
-            grant_type: "authorization_code",
-            client_id: NAVER_CLIENT_ID,
-            client_secret: NAVER_CLIENT_SECRET,
-            redirect_uri: REDIRECT_URI,
-            code,
-            state: NAVER_STATE_CODE
-          },
-          {
-            headers: { "X-Naver-Client-Id": NAVER_CLIENT_ID, "X-Naver-Client-Secret": NAVER_CLIENT_SECRET }
-          }
-        )
-        .then(async (res) => {
-          console.log(res);
-          // const access_token = res.data.access_token;
-          // console.log("access_token 발급");
-          // await axios
-          //   .get("https://kapi.kakao.com/v2/user/me", {
-          //     headers: {
-          //       Authorization: `Bearer ${access_token}`
-          //     }
-          //   })
-          //   .then((res) => {
-          //     // console.log(res);
-          //     const email = res.data.kakao_account.email;
-          //     const profilePic = res.data.properties.profile_image;
-          //     console.log(email, profilePic);
-          //     socialLogIn.mutate({ email, profilePic });
-          //   });
-        });
-    } catch (err) {
-      navigate("/");
-    }
+
+    Axios.post("auth/naverlogin", {
+      client_id: NAVER_CLIENT_ID,
+      client_secret: NAVER_CLIENT_SECRET,
+      redirect_uri: REDIRECT_URI,
+      code,
+      state: NAVER_STATE_CODE
+    })
+      .then((res) => {
+        const email = res.data.email;
+        const profilePic = res.data.profilePic;
+        console.log(email, profilePic);
+        socialLogIn.mutate({ email, profilePic });
+      })
+      .catch(() => navigate("/"));
   }
 
   return (

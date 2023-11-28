@@ -7,6 +7,7 @@ const cookies = require("cookie-parser"); //요청시 보내지는 쿠키 사용
 
 const userRouter = require('./routes/user');
 const postRouter = require('./routes/post');
+const authRouter = require('./routes/auth');
 
 
 // db.sequelize.sync({ force: true }).then(() => {
@@ -39,6 +40,7 @@ app.use(cookies());
 //라우터 연결
 app.use("/user", userRouter);
 app.use("/post", postRouter);
+app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
     res.send("server 실행중");

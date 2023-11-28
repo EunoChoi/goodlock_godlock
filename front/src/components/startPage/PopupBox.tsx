@@ -45,6 +45,9 @@ const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, children 
   //naver login
   const naverLogin = () => {
     window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${REDIRECT_URI_NAVER}&state=${NAVER_STATE_CODE}`;
+
+    // 권한 재동의 필요시
+    // window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${REDIRECT_URI_NAVER}&state=${NAVER_STATE_CODE}&auth_type=reprompt`;
   };
 
   return (
