@@ -34,6 +34,7 @@ const LogInSignUp = {
     height: 100vh; //모바일에서 380px, 데스크탑에선 500px
 
     padding: 60px 100px;
+    padding-top: 90px;
     background-color: white;
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.7);
     /* border-radius: 24px; */
@@ -49,6 +50,7 @@ const LogInSignUp = {
       overflow-y: scroll;
 
       padding: 60px 50px;
+      padding-top: 90px;
 
       /* position: static; */
     }
