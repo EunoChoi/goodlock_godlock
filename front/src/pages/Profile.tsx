@@ -74,6 +74,7 @@ const Profile = () => {
   const scrollTarget = useRef<HTMLDivElement>(null);
   const category = ["정보", "팔로잉", "팔로워", "팁&설정", "소통글"];
 
+  //function
   const profilePicChangeModalClose = () => {
     setImageChangeModal(false);
     history.back();
@@ -82,17 +83,109 @@ const Profile = () => {
     setUserDeleteModal(false);
     history.back();
   };
+  const scrollTop = () => {
+    window.scrollTo({
+      top: scrollTarget.current?.scrollHeight,
+      left: 0,
+      behavior: "smooth"
+    });
+  };
+  const nickUpdateConfirm = () => {
+    const pattern = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,10}$/;
+    if (!nickname.match(pattern)) {
+      toast.warning("2자 이상 10자 이하, 영어 또는 숫자 또는 한글로 구성되어야 합니다.");
+    } else {
+      confirmAlert({
+        // title: "",
+        message: "닉네임을 변경하시겠습니까?",
+        buttons: [
+          {
+            label: "취소",
+            onClick: () => console.log("닉네임 변경 취소")
+          },
+          {
+            label: "확인",
+            onClick: () => editNickname.mutate({ nickname })
+          }
+        ]
+      });
+    }
+  };
+  const usertestUpdateConfirm = () => {
+    if (usertext.length > 30) {
+      toast.warning("상태메세지는 최대 30자까지 가능합니다.");
+    } else {
+      confirmAlert({
+        // title: "",
+        message: "상태메세지를 변경하시겠습니까?",
+        buttons: [
+          {
+            label: "취소",
+            onClick: () => console.log("상태메세지 변경 취소")
+          },
+          {
+            label: "확인",
+            onClick: () => editUsertext.mutate({ usertext })
+          }
+        ]
+      });
+    }
+  };
+  const logoutConfirm = () => {
+    confirmAlert({
+      // title: "",
+      message: "로그아웃 하시겠습니까?",
+      buttons: [
+        {
+          label: "취소",
+          onClick: () => console.log("로그아웃 취소")
+        },
+        {
+          label: "확인",
+          onClick: () => logout.mutate()
+        }
+      ]
+    });
+  };
+  const unFollowConfirm = (userId: number) => {
+    confirmAlert({
+      // title: "",
+      message: "언팔로우 하시겠습니까?",
+      buttons: [
+        {
+          label: "취소",
+          onClick: () => console.log("취소")
+        },
+        {
+          label: "확인",
+          onClick: () => unFollow.mutate({ userId })
+        }
+      ]
+    });
+  };
+  const followerDeleteConfirm = (userId: number) => {
+    confirmAlert({
+      // title: "",
+      message: "팔로워를 삭제하시겠습니까?",
+      buttons: [
+        {
+          label: "취소",
+          onClick: () => console.log("취소")
+        },
+        {
+          label: "확인",
+          onClick: () => deleteFollower.mutate({ userId })
+        }
+      ]
+    });
+  };
 
   //모달 열린 상태에서 새로고침시 history.back 처리
   useEffect(() => {
     if (history.state.page === "modal") {
       history.back();
     }
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth"
-    });
+    scrollTop();
   }, []);
   useEffect(() => {
     if (categoryNum >= 0 && categoryNum < 5) {
@@ -150,6 +243,7 @@ const Profile = () => {
   const unFollow = User.unFollow();
   const deleteFollower = User.deleteFollower();
 
+  //뒤로가기시 이벤트 발생
   window.addEventListener("popstate", () => {
     setUserDeleteModal(false);
     setImageChangeModal(false);
@@ -173,11 +267,7 @@ const Profile = () => {
               catNum={categoryNum}
               key={"catNum" + i}
               onClick={() => {
-                window.scrollTo({
-                  top: scrollTarget.current?.scrollHeight,
-                  left: 0,
-                  behavior: "smooth"
-                });
+                scrollTop();
                 setTimeout(() => {
                   navigate(`/profile/${i}`);
                 }, 0);
@@ -249,29 +339,7 @@ const Profile = () => {
                           setNickname(e.target.value);
                         }}
                       />
-                      <Button
-                        onClick={() => {
-                          const pattern = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,10}$/;
-                          if (!nickname.match(pattern)) {
-                            toast.warning("2자 이상 10자 이하, 영어 또는 숫자 또는 한글로 구성되어야 합니다.");
-                          } else {
-                            confirmAlert({
-                              // title: "",
-                              message: "닉네임을 변경하시겠습니까?",
-                              buttons: [
-                                {
-                                  label: "취소",
-                                  onClick: () => console.log("닉네임 변경 취소")
-                                },
-                                {
-                                  label: "확인",
-                                  onClick: () => editNickname.mutate({ nickname })
-                                }
-                              ]
-                            });
-                          }
-                        }}
-                      >
+                      <Button onClick={() => nickUpdateConfirm()}>
                         <CheckCircleIcon />
                       </Button>
                       <Button
@@ -323,28 +391,7 @@ const Profile = () => {
                           setUsertext(e.target.value);
                         }}
                       />
-                      <Button
-                        onClick={() => {
-                          if (usertext.length > 30) {
-                            toast.warning("상태메세지는 최대 30자까지 가능합니다.");
-                          } else {
-                            confirmAlert({
-                              // title: "",
-                              message: "상태메세지를 변경하시겠습니까?",
-                              buttons: [
-                                {
-                                  label: "취소",
-                                  onClick: () => console.log("상태메세지 변경 취소")
-                                },
-                                {
-                                  label: "확인",
-                                  onClick: () => editUsertext.mutate({ usertext })
-                                }
-                              ]
-                            });
-                          }
-                        }}
-                      >
+                      <Button onClick={() => usertestUpdateConfirm()}>
                         <CheckCircleIcon />
                       </Button>
                       <Button
@@ -380,24 +427,7 @@ const Profile = () => {
                   <span>회원 탈퇴</span>
                 </Button>
 
-                <Button
-                  onClick={() => {
-                    confirmAlert({
-                      // title: "",
-                      message: "로그아웃 하시겠습니까?",
-                      buttons: [
-                        {
-                          label: "취소",
-                          onClick: () => console.log("로그아웃 취소")
-                        },
-                        {
-                          label: "확인",
-                          onClick: () => logout.mutate()
-                        }
-                      ]
-                    });
-                  }}
-                >
+                <Button onClick={() => logoutConfirm()}>
                   <span>로그아웃</span>
                 </Button>
               </ButtonWrapper>
@@ -437,24 +467,7 @@ const Profile = () => {
                         <span>{v.nickname}</span>
                       </div>
 
-                      <Button
-                        onClick={() => {
-                          confirmAlert({
-                            // title: "",
-                            message: "언팔로우 하시겠습니까?",
-                            buttons: [
-                              {
-                                label: "취소",
-                                onClick: () => console.log("취소")
-                              },
-                              {
-                                label: "확인",
-                                onClick: () => unFollow.mutate({ userId: v.id })
-                              }
-                            ]
-                          });
-                        }}
-                      >
+                      <Button onClick={() => unFollowConfirm(v.id)}>
                         <PersonRemoveIcon color="error" />
                       </Button>
                     </ListItem>
@@ -497,24 +510,7 @@ const Profile = () => {
                         <span>{v.nickname}</span>
                       </div>
 
-                      <Button
-                        onClick={() =>
-                          confirmAlert({
-                            // title: "",
-                            message: "팔로워를 삭제하시겠습니까?",
-                            buttons: [
-                              {
-                                label: "취소",
-                                onClick: () => console.log("취소")
-                              },
-                              {
-                                label: "확인",
-                                onClick: () => deleteFollower.mutate({ userId: v.id })
-                              }
-                            ]
-                          })
-                        }
-                      >
+                      <Button onClick={() => followerDeleteConfirm(v.id)}>
                         <RemoveCircleOutlinedIcon color="error" />
                       </Button>
                     </ListItem>

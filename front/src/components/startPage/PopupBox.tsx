@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import LogInSignUp from "../../styles/LogInSignUp";
 import { ANIMATION_APPEAR, ANIMATION_DISAPPEAR } from "../../styles/Animation";
 import styled from "styled-components";
-import { googleLogout } from "@react-oauth/google";
-import { useGoogleLogin } from "@react-oauth/google";
-
-import axios from "axios";
 
 //mui
 import CancelIcon from "@mui/icons-material/Cancel";
 import IsMobile from "../../functions/IsMobile";
-import User from "../../functions/reactQuery/User";
 
 interface AppLayoutProps {
   popupOpen: boolean;

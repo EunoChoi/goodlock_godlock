@@ -3,13 +3,6 @@ import Axios from "../../apis/Axios";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
-interface CustomError extends Error {
-  response?: {
-    data: { message: string };
-    status: number;
-    headers: string;
-  };
-}
 interface CustomError2 extends Error {
   response?: {
     data: string;
@@ -17,9 +10,7 @@ interface CustomError2 extends Error {
     headers: string;
   };
 }
-interface props {
-  setIsPostInputOpen: (b: boolean) => void;
-}
+
 interface postDataType {
   type: number;
   content: string;
