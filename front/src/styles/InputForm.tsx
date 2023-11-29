@@ -66,8 +66,7 @@ const InputWrapper = styled.div`
 `;
 
 const TextArea = styled.textarea`
-  padding: 40px;
-  padding-top: 20px;
+  padding: 25px 40px;
   resize: none;
 
   width: 100%;
@@ -84,17 +83,18 @@ const TextArea = styled.textarea`
     outline: none;
   }
   &::placeholder {
-    text-align: center;
-    padding: 60px 0px;
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    transform: translate(-50%, -50%);
     font-size: 1.5em;
-    /* font-weight: 600; */
     color: rgba(0, 0, 0, 0.3);
   }
   @media (orientation: portrait) or (max-height: 480px) {
     /* height: 300px; */
     /* height: 30vh; */
     border-radius: 5px;
-    padding: 20px;
+    padding: 15px 20px;
   }
 `;
 

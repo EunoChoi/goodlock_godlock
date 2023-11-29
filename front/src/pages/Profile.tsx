@@ -31,6 +31,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import CancelIcon from "@mui/icons-material/Cancel";
 import User from "../functions/reactQuery/User";
+import UserDeleteConfirm from "../components/UserDeleteConfirm";
 
 interface userProps {
   email: string;
@@ -52,28 +53,41 @@ interface user {
   profilePic: string;
 }
 
-interface Toggles {
-  image: boolean;
-  nickname: boolean;
-  usertext: boolean;
-}
-
 const Profile = () => {
   moment.locale("ko");
 
   const navigate = useNavigate();
 
   //state
-  const [toggles, setToggles] = useState<Toggles>({ image: false, nickname: false, usertext: false });
+  const [nicknameInputToggle, setNicknameInputToggle] = useState<boolean>(false);
+  const [usertextInputToggle, setUsertextInputToggle] = useState<boolean>(false);
+  const [userDeleteModal, setUserDeleteModal] = useState<boolean>(false);
+  const [imageChangeModal, setImageChangeModal] = useState<boolean>(false);
+
   const params = useParams();
   const categoryNum = params.cat ? parseInt(params.cat) : -1;
 
-  const modalClose = () => {
+  //input state
+  const [nickname, setNickname] = useState<string>("");
+  const [usertext, setUsertext] = useState<string>("");
+
+  const scrollTarget = useRef<HTMLDivElement>(null);
+  const category = ["정보", "팔로잉", "팔로워", "팁&설정", "소통글"];
+
+  const profilePicChangeModalClose = () => {
+    setImageChangeModal(false);
     history.back();
-    setToggles({ image: false, nickname: false, usertext: false });
+  };
+  const userDeleteModalClose = () => {
+    setUserDeleteModal(false);
+    history.back();
   };
 
+  //모달 열린 상태에서 새로고침시 history.back 처리
   useEffect(() => {
+    if (history.state.page === "modal") {
+      history.back();
+    }
     window.scrollTo({
       top: 0,
       left: 0,
@@ -89,13 +103,9 @@ const Profile = () => {
   }, [categoryNum]);
   //프로필 이미지 변경 팝업 뜬 경우 배경 스크롤 방지
   useEffect(() => {
-    if (toggles.image) document.body.style.overflow = "hidden";
+    if (imageChangeModal) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "auto";
-  }, [toggles.image]);
-
-  //input state
-  const [nickname, setNickname] = useState<string>("");
-  const [usertext, setUsertext] = useState<string>("");
+  }, [imageChangeModal]);
 
   //useQuery
   const user = User.getData();
@@ -127,42 +137,31 @@ const Profile = () => {
   useEffect(() => {
     if (editNickname.isSuccess) {
       toast.success("닉네임 변경이 완료되었습니다.");
-      const temp = { ...toggles };
-      temp.nickname = false;
-      setToggles(temp);
+      setNicknameInputToggle(false);
     }
   }, [editNickname.isSuccess]);
   const editUsertext = User.editText();
   useEffect(() => {
     if (editUsertext.isSuccess) {
       toast.success("상태메세지 변경이 완료되었습니다.");
-      const temp = { ...toggles };
-      temp.usertext = false;
-      setToggles(temp);
+      setUsertextInputToggle(false);
     }
   }, [editUsertext.isSuccess]);
   const unFollow = User.unFollow();
   const deleteFollower = User.deleteFollower();
 
-  const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["정보", "팔로잉", "팔로워", "팁&설정", "소통글"];
-
   window.addEventListener("popstate", () => {
-    setToggles({ image: false, nickname: false, usertext: false });
+    setUserDeleteModal(false);
+    setImageChangeModal(false);
+    setUsertextInputToggle(false);
+    setNicknameInputToggle(false);
   });
-
-  //모달 열린 상태에서 새로고침시 history.back 처리
-  useEffect(() => {
-    // console.log(history.state);
-    if (history.state.page === "modal") {
-      history.back();
-    }
-  }, []);
 
   return (
     <AppLayout>
       <>
-        {toggles.image && <ProfileChangePopup modalClose={modalClose} />}
+        {imageChangeModal && <ProfileChangePopup modalClose={profilePicChangeModalClose} />}
+        {userDeleteModal && <UserDeleteConfirm modalClose={userDeleteModalClose} />}
         <ProfileTitle ref={scrollTarget}>
           <Title>내 정보</Title>
           <span>정보 수정 및 작성 글 확인이 가능합니다.</span>
@@ -215,7 +214,7 @@ const Profile = () => {
                   onClick={() => {
                     const url = document.URL + ":modal";
                     history.pushState({ page: "modal" }, "", url);
-                    setToggles({ nickname: false, usertext: false, image: !toggles.image });
+                    setImageChangeModal((c) => !c);
                   }}
                 >
                   <EditIcon />
@@ -228,19 +227,19 @@ const Profile = () => {
                   <Button
                     color="inherit"
                     onClick={() => {
-                      setToggles({ nickname: !toggles.nickname, usertext: false, image: false });
+                      setNicknameInputToggle((c) => !c);
                     }}
                   >
                     <EditIcon />
                   </Button>
                 </InfoTitle>
 
-                {toggles.nickname || (
+                {nicknameInputToggle || (
                   <InfoValue>
                     <span>{user?.nickname}</span>
                   </InfoValue>
                 )}
-                {toggles.nickname && (
+                {nicknameInputToggle && (
                   <InfoValue>
                     <div>
                       <input
@@ -277,7 +276,7 @@ const Profile = () => {
                       </Button>
                       <Button
                         onClick={() => {
-                          setToggles({ nickname: !toggles.nickname, usertext: false, image: false });
+                          setNicknameInputToggle((c) => !c);
                         }}
                       >
                         <CancelIcon color="error" />
@@ -302,19 +301,19 @@ const Profile = () => {
                   <Button
                     color="inherit"
                     onClick={() => {
-                      setToggles({ usertext: !toggles.usertext, nickname: false, image: false });
+                      setUsertextInputToggle((c) => !c);
                     }}
                   >
                     <EditIcon />
                   </Button>
                 </InfoTitle>
 
-                {toggles.usertext || (
+                {usertextInputToggle || (
                   <InfoValue>
                     <span>{user?.usertext ? user?.usertext : "-"}</span>
                   </InfoValue>
                 )}
-                {toggles.usertext && (
+                {usertextInputToggle && (
                   <InfoValue>
                     <div>
                       <input
@@ -350,7 +349,7 @@ const Profile = () => {
                       </Button>
                       <Button
                         onClick={() => {
-                          setToggles({ usertext: !toggles.usertext, nickname: false, image: false });
+                          setUsertextInputToggle((c) => !c);
                         }}
                       >
                         <CancelIcon color="error" />
@@ -371,6 +370,15 @@ const Profile = () => {
                     <span>비밀번호 변경</span>
                   </Button>
                 )}
+                <Button
+                  onClick={() => {
+                    const url = document.URL + ":modal";
+                    history.pushState({ page: "modal" }, "", url);
+                    setUserDeleteModal(true);
+                  }}
+                >
+                  <span>회원 탈퇴</span>
+                </Button>
 
                 <Button
                   onClick={() => {

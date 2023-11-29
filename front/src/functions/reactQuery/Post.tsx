@@ -24,8 +24,8 @@ interface postDataType {
   type: number;
   content: string;
   images: string[];
-  start: Date;
-  end: Date;
+  start: Date | null;
+  end: Date | null;
   link: string;
 }
 interface localPostData {
@@ -33,8 +33,8 @@ interface localPostData {
   id: number;
   content: string;
   images: string[];
-  start: Date;
-  end: Date;
+  start: Date | null;
+  end: Date | null;
   link: string;
 }
 

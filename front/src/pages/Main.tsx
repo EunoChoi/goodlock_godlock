@@ -250,7 +250,7 @@ const Main = () => {
                 });
               }}
             >
-              관심 설정
+              관심 팁
             </Pill.Sub>
           </Pill.Wrapper>
 

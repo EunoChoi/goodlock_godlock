@@ -249,14 +249,17 @@ const Post = ({ postProps }: any) => {
 
       {postProps.type === 1 && (
         <SubContentWrapper>
-          <PostStartEnd>
-            <span>
-              <CalendarMonthIcon />
-            </span>
-            <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
-            <span>~</span>
-            <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
-          </PostStartEnd>
+          {postProps?.start && postProps?.end && (
+            <PostStartEnd>
+              <span>
+                <CalendarMonthIcon />
+              </span>
+              <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
+              <span>~</span>
+              <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
+            </PostStartEnd>
+          )}
+
           {postProps?.link && (
             <PostLink>
               <InsertLinkIcon />

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import InputForm from "../../styles/InputForm";
-import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 import DatePicker from "react-datepicker";
@@ -43,9 +42,10 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
   const [images, setImages] = useState<string[]>(postProps.images.map((v) => v.src));
   const imageInput = useRef<HTMLInputElement>(null);
 
-  const [optionToggle, setOptionToggle] = useState<number>(0);
-  const [start, setStart] = useState<Date>(new Date(postProps.start));
-  const [end, setEnd] = useState<Date>(new Date(postProps.end));
+  const [dateToggle, setDateToggle] = useState<boolean>(postProps.start && postProps.end ? true : false);
+  const [linkToggle, setLinkToggle] = useState<boolean>(false);
+  const [start, setStart] = useState<Date>(postProps.start ? new Date(postProps.start) : new Date());
+  const [end, setEnd] = useState<Date>(postProps.end ? new Date(postProps.end) : new Date());
 
   const [link, setLink] = useState<string>(postProps.link);
   const isInfoPost = postProps.type === 1;
@@ -54,6 +54,61 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  //function
+  const cancleConfirm = () => {
+    confirmAlert({
+      // title: "",
+      message: "게시글 수정을 중단하시겠습니까?",
+      buttons: [
+        {
+          label: "취소",
+          onClick: () => console.log("취소")
+        },
+        {
+          label: "확인",
+          onClick: () => modalClose()
+        }
+      ]
+    });
+  };
+  const postEditSubmit = () => {
+    if (start > end) {
+      toast.warning("기간 설정이 잘못되었습니다.");
+    } else if (content.length < 8 || content.length > 2200) {
+      toast.warning("게시글은 최소 8자 최대 2200자 작성이 가능합니다.");
+    } else {
+      const startY = start.getFullYear();
+      const startM = start.getMonth();
+      const startD = start.getDate();
+
+      const endY = end.getFullYear();
+      const endM = end.getMonth();
+      const endD = end.getDate();
+
+      if (dateToggle) {
+        editPost.mutate({
+          content,
+          images,
+          type: postProps.type,
+          id: postProps.id,
+          start: new Date(startY, startM, startD, 0, 0, 0),
+          end: new Date(endY, endM, endD, 0, 0, 0),
+          link
+        });
+      } else {
+        editPost.mutate({
+          content,
+          images,
+          type: postProps.type,
+          id: postProps.id,
+          start: null,
+          end: null,
+          link
+        });
+      }
+    }
+  };
 
   //useMutation
   const editPost = Post.edit(postProps.id);
@@ -103,34 +158,26 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
   };
 
   return (
-    <InputForm.EditBG
-      onClick={() => {
-        confirmAlert({
-          // title: "",
-          message: "게시글 수정을 중단하시겠습니까?",
-          buttons: [
-            {
-              label: "취소",
-              onClick: () => console.log("취소")
-            },
-            {
-              label: "확인",
-              onClick: () => modalClose()
-            }
-          ]
-        });
-      }}
-    >
-      {/* {isMobile || <PostInputHelp>{PostInputHelpText[postProps.type]}</PostInputHelp>} */}
+    <InputForm.EditBG onClick={() => cancleConfirm()}>
       <InputForm.InputWrapper onClick={(e) => e.stopPropagation()}>
         {isInfoPost && (
           <PostOptionWrapper>
             <div>
-              <button onClick={() => setOptionToggle(0)}>
+              <button
+                onClick={() => {
+                  setDateToggle((c) => !c);
+                  setLinkToggle(false);
+                }}
+              >
                 <CalendarMonthIcon />
                 공유 기간
               </button>{" "}
-              <button onClick={() => setOptionToggle(1)}>
+              <button
+                onClick={() => {
+                  setLinkToggle((c) => !c);
+                  setDateToggle(false);
+                }}
+              >
                 <InsertLinkIcon />
                 링크
               </button>
@@ -138,7 +185,7 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
 
             {
               //start, end date
-              optionToggle === 0 && (
+              dateToggle && (
                 <div>
                   <DatePicker
                     calendarStartDay={1}
@@ -176,7 +223,7 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
             }
             {
               //link
-              optionToggle === 1 && (
+              linkToggle && (
                 <div>
                   <input
                     placeholder="https://www.url.com"
@@ -226,24 +273,7 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
         )}
         <InputForm.ButtonArea>
           <input ref={imageInput} type="file" accept="image/*" name="image" multiple hidden onChange={onChangeImages} />
-          <FlexButton
-            onClick={() => {
-              confirmAlert({
-                // title: "",
-                message: "게시글 수정을 중단하시겠습니까?",
-                buttons: [
-                  {
-                    label: "취소",
-                    onClick: () => console.log("취소")
-                  },
-                  {
-                    label: "확인",
-                    onClick: () => modalClose()
-                  }
-                ]
-              });
-            }}
-          >
+          <FlexButton onClick={() => cancleConfirm()}>
             <CancelIcon />
             <span>취소</span>
           </FlexButton>
@@ -252,33 +282,7 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
               <InsertPhotoIcon />
               <span>이미지 삽입</span>
             </FlexButton>
-            <FlexButton
-              onClick={() => {
-                if (start > end) {
-                  toast.warning("기간 설정이 잘못되었습니다.");
-                } else if (content.length < 8 || content.length > 2200) {
-                  toast.warning("게시글은 최소 8자 최대 2200자 작성이 가능합니다.");
-                } else {
-                  const startY = start.getFullYear();
-                  const startM = start.getMonth();
-                  const startD = start.getDate();
-
-                  const endY = end.getFullYear();
-                  const endM = end.getMonth();
-                  const endD = end.getDate();
-
-                  editPost.mutate({
-                    content,
-                    images,
-                    type: postProps.type,
-                    id: postProps.id,
-                    start: new Date(startY, startM, startD, 0, 0, 0),
-                    end: new Date(endY, endM, endD, 0, 0, 0),
-                    link
-                  });
-                }
-              }}
-            >
+            <FlexButton onClick={() => postEditSubmit()}>
               <PostAddIcon />
               <span>수정</span>
             </FlexButton>
@@ -290,7 +294,6 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
 };
 
 export default PostEditPopup;
-
 const DateButton = styled.button`
   font-size: 16px;
   width: 150px;
@@ -312,15 +315,16 @@ const PostOptionWrapper = styled.div`
 
   width: 100%;
   height: 130px;
-  padding: 0 40px;
-  padding-top: 40px;
-  padding-bottom: 10px;
+  height: auto;
+
+  padding: 30px 40px;
+  padding-bottom: 5px;
 
   @media (orientation: portrait) or (max-height: 480px) {
-    padding-left: 20px;
-    padding-top: 20px;
-    padding-right: 20px;
+    padding: 20px;
+    padding-bottom: 5px;
     height: 110px;
+    height: auto;
   }
 
   > div:first-child {
@@ -353,6 +357,8 @@ const PostOptionWrapper = styled.div`
     display: flex;
     justify-content: start;
     align-items: center;
+
+    margin-top: 12px;
 
     input {
       font-size: 16px;

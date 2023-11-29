@@ -88,8 +88,10 @@ const User = {
       {
         onSuccess: () => {
           queryClient.invalidateQueries(["user"]);
-          navigate("/main/0");
-          window.location.reload();
+          setTimeout(() => {
+            navigate("/main/0");
+            // window.location.reload();
+          }, 500);
         },
         onError: (err: CustomError) => {
           toast.error(err.response?.data?.message);

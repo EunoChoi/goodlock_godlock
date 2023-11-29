@@ -43,14 +43,58 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     history.back();
     setPostInputOpen(false);
   };
-
   const handleScroll = async () => {
-    // console.log(window.scrollY);
     if (window.scrollY > 2000) {
       setGoTopButton(true);
     } else {
       setGoTopButton(false);
     }
+  };
+  const InputEditOpenCloseToggle = () => {
+    if (isPostInputOpen === false) {
+      const url = document.URL + ":modal";
+      history.pushState({ page: "modal" }, "", url);
+      setPostInputOpen(true);
+    } else {
+      confirmAlert({
+        // title: "",
+        message: "게시글 작성을 중단하시겠습니까?",
+        buttons: [
+          {
+            label: "취소",
+            onClick: () => console.log("취소")
+          },
+          {
+            label: "확인",
+            onClick: () => setPostInputOpen((c) => !c)
+          }
+        ]
+      });
+    }
+  };
+  const scrollTop = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    });
+  };
+  const logoutConfrim = () => {
+    confirmAlert({
+      // title: "",
+      message: "로그아웃 하시겠습니까?",
+      buttons: [
+        {
+          label: "취소",
+          onClick: () => console.log("로그아웃 취소")
+        },
+        {
+          label: "확인",
+          onClick: () => logout.mutate()
+        }
+      ],
+      keyCodeForClose: [8, 32]
+    });
   };
 
   window.addEventListener("popstate", () => {
@@ -79,49 +123,23 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
           <MobileButtonWrapper isPostInputOpen={isPostInputOpen}>
             {goTopButton && (
-              <button
-                color="inherit"
-                onClick={() =>
-                  window.scrollTo({
-                    top: 0,
-                    left: 0,
-                    behavior: "smooth"
-                  })
-                }
-              >
+              <button color="inherit" onClick={() => scrollTop()}>
                 <ArrowUpwardIcon fontSize="medium" />
               </button>
             )}
             {
-              //user level이 2이상이여야 공지사항 작성이 가능
+              //user level이 10이상이여야 공지사항 작성이 가능
               isMain && type == 0 && user?.level >= level && (
-                <button
-                  color="inherit"
-                  onClick={() => {
-                    const url = document.URL + ":modal";
-                    history.pushState({ page: "modal" }, "", url);
-                    setPostInputOpen(true);
-                  }}
-                >
+                <button color="inherit" onClick={() => InputEditOpenCloseToggle()}>
                   <PostAddIcon fontSize="medium" />
                 </button>
               )
             }
-            {
-              //user level이 2미만일때 공지 외 게시글 작성 가능
-              isMain && type != 0 && (
-                <button
-                  color="inherit"
-                  onClick={() => {
-                    const url = document.URL + ":modal";
-                    history.pushState({ page: "modal" }, "", url);
-                    setPostInputOpen(true);
-                  }}
-                >
-                  <PostAddIcon fontSize="medium" />
-                </button>
-              )
-            }
+            {isMain && type != 0 && (
+              <button color="inherit" onClick={() => InputEditOpenCloseToggle()}>
+                <PostAddIcon fontSize="medium" />
+              </button>
+            )}
           </MobileButtonWrapper>
         </MobileWrapper>
       ) : (
@@ -142,26 +160,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                       <PersonIcon fontSize="large" />
                     </Link>
                   </Button>
-                  <Button
-                    color="inherit"
-                    onClick={() => {
-                      confirmAlert({
-                        // title: "",
-                        message: "로그아웃 하시겠습니까?",
-                        buttons: [
-                          {
-                            label: "취소",
-                            onClick: () => console.log("로그아웃 취소")
-                          },
-                          {
-                            label: "확인",
-                            onClick: () => logout.mutate()
-                          }
-                        ],
-                        keyCodeForClose: [8, 32]
-                      });
-                    }}
-                  >
+                  <Button color="inherit" onClick={() => logoutConfrim()}>
                     <LogoutIcon fontSize="large" />
                   </Button>
                 </>
@@ -169,79 +168,23 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             </div>
 
             <div>
-              <Button
-                color="inherit"
-                onClick={() => {
-                  window.scrollTo({
-                    top: 0,
-                    left: 0,
-                    behavior: "smooth"
-                  });
-                }}
-              >
+              <Button color="inherit" onClick={() => scrollTop()}>
                 <ArrowUpwardIcon fontSize="large" />
               </Button>
 
               {
-                //user level이 2이상이여야 공지사항 작성이 가능
+                //user level이 10이상이여야 공지사항 작성이 가능
                 isMain && type == 0 && user?.level >= level && (
-                  <Button
-                    color="inherit"
-                    onClick={() => {
-                      if (isPostInputOpen === false) {
-                        setPostInputOpen((c) => !c);
-                      } else {
-                        confirmAlert({
-                          // title: "",
-                          message: "게시글 작성을 중단하시겠습니까?",
-                          buttons: [
-                            {
-                              label: "취소",
-                              onClick: () => console.log("취소")
-                            },
-                            {
-                              label: "확인",
-                              onClick: () => setPostInputOpen((c) => !c)
-                            }
-                          ]
-                        });
-                      }
-                    }}
-                  >
+                  <Button color="inherit" onClick={() => InputEditOpenCloseToggle()}>
                     <PostAddIcon fontSize="large" />
                   </Button>
                 )
               }
-              {
-                //user level이 2미만일때 공지 외 게시글 작성 가능
-                isMain && type != 0 && (
-                  <Button
-                    color="inherit"
-                    onClick={() => {
-                      if (isPostInputOpen === false) {
-                        setPostInputOpen((c) => !c);
-                      } else {
-                        confirmAlert({
-                          // title: "",
-                          message: "게시글 작성을 중단하시겠습니까?",
-                          buttons: [
-                            {
-                              label: "취소",
-                              onClick: () => console.log("취소")
-                            },
-                            {
-                              label: "확인",
-                              onClick: () => setPostInputOpen((c) => !c)
-                            }
-                          ]
-                        });
-                      }
-                    }}
-                  >
-                    <PostAddIcon fontSize="large" />
-                  </Button>
-                )
-              }
+              {isMain && type != 0 && (
+                <Button color="inherit" onClick={() => InputEditOpenCloseToggle()}>
+                  <PostAddIcon fontSize="large" />
+                </Button>
+              )}
             </div>
           </SideWrapper>
         </PcWrapper>
