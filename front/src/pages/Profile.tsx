@@ -32,6 +32,7 @@ import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDiss
 import CancelIcon from "@mui/icons-material/Cancel";
 import User from "../functions/reactQuery/User";
 import UserDeleteConfirm from "../components/UserDeleteConfirm";
+import PasswordChangeConfirm from "../components/PasswordChangeConfirm";
 
 interface userProps {
   email: string;
@@ -63,6 +64,7 @@ const Profile = () => {
   const [usertextInputToggle, setUsertextInputToggle] = useState<boolean>(false);
   const [userDeleteModal, setUserDeleteModal] = useState<boolean>(false);
   const [imageChangeModal, setImageChangeModal] = useState<boolean>(false);
+  const [passwordChangeModal, setPasswordChangeModal] = useState<boolean>(false);
 
   const params = useParams();
   const categoryNum = params.cat ? parseInt(params.cat) : -1;
@@ -81,6 +83,10 @@ const Profile = () => {
   };
   const userDeleteModalClose = () => {
     setUserDeleteModal(false);
+    history.back();
+  };
+  const passwordChangeModalClose = () => {
+    setPasswordChangeModal(false);
     history.back();
   };
   const scrollTop = () => {
@@ -249,6 +255,7 @@ const Profile = () => {
     setImageChangeModal(false);
     setUsertextInputToggle(false);
     setNicknameInputToggle(false);
+    setPasswordChangeModal(false);
   });
 
   return (
@@ -256,6 +263,7 @@ const Profile = () => {
       <>
         {imageChangeModal && <ProfileChangePopup modalClose={profilePicChangeModalClose} />}
         {userDeleteModal && <UserDeleteConfirm modalClose={userDeleteModalClose} />}
+        {passwordChangeModal && <PasswordChangeConfirm modalClose={passwordChangeModalClose} />}
         <ProfileTitle ref={scrollTarget}>
           <Title>내 정보</Title>
           <span>정보 수정 및 작성 글 확인이 가능합니다.</span>
@@ -407,11 +415,12 @@ const Profile = () => {
               </InfoAttribute>
 
               <ButtonWrapper>
-                {user.level === 1 && (
+                {user?.level === 1 && (
                   <Button
                     onClick={() => {
-                      toast.warning("구현 예정입니다.");
-                      // const password = prompt("현재 사용중인 비밀번호를 입력해주세요.");
+                      const url = document.URL + ":modal";
+                      history.pushState({ page: "modal" }, "", url);
+                      setPasswordChangeModal(true);
                     }}
                   >
                     <span>비밀번호 변경</span>

@@ -246,32 +246,29 @@ const Post = ({ postProps }: any) => {
       >
         {postProps?.content}
       </TextWrapper>
+      <SubContentWrapper>
+        {postProps?.start && postProps?.end && (
+          <PostStartEnd>
+            <span>
+              <CalendarMonthIcon />
+            </span>
+            <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
+            <span>~</span>
+            <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
+          </PostStartEnd>
+        )}
 
-      {postProps.type === 1 && (
-        <SubContentWrapper>
-          {postProps?.start && postProps?.end && (
-            <PostStartEnd>
-              <span>
-                <CalendarMonthIcon />
-              </span>
-              <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
-              <span>~</span>
-              <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
-            </PostStartEnd>
-          )}
-
-          {postProps?.link && (
-            <PostLink>
-              <InsertLinkIcon />
-              <span>
-                <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
-                  {postProps?.link}
-                </a>
-              </span>
-            </PostLink>
-          )}
-        </SubContentWrapper>
-      )}
+        {postProps?.link && (
+          <PostLink>
+            <InsertLinkIcon />
+            <span>
+              <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
+                {postProps?.link}
+              </a>
+            </span>
+          </PostLink>
+        )}
+      </SubContentWrapper>
 
       {/* 토글 버튼(좋아요, 댓글창, 수정, 삭제) */}
       <ToggleWrapper>

@@ -22,6 +22,34 @@ router.post("/register", async (req, res) => {
     console.error(error);
   };
 })
+//회원탈퇴
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const isUserExist = await User.findOne({
+      where: { id }
+    });
+    if (isUserExist) {
+      //유저가 작성한 게시글도 모두 삭제
+      await Post.destroy({
+        where: { UserId: id }
+      });
+      console.log("탈퇴 유저가 작성한 게시글 모두 삭제 완료");
+
+      //유저 삭제 처리
+      await User.destroy({
+        where: { id }
+      });
+      console.log("탈퇴 처리 완료");
+
+      return res.status(200).json("탈퇴가 완료되었습니다.");
+    }
+    else return res.status(401).json("존재하지 않은 유저입니다.");
+  } catch (err) {
+    console.err(err);
+  }
+});
 //로그인
 router.post("/login", async (req, res) => {
   try {
@@ -110,6 +138,43 @@ router.post("/login/social", async (req, res) => {
   }
 })
 
+//비밀번호 확인
+router.post("/password/confirm", async (req, res) => {
+  try {
+    //사용자가 입력한 비밀번호로 userController.login()
+    //user가 존재하지 않다면 틀린 비밀번호를 입력
+    const user = await userController.login(req.body);
+    if (user.status === 200) {
+      console.log("비밀번호 확인 완료");
+      return res.status(200).json({ result: true, message: "비밀번호 확인 완료" });
+    }
+    else {
+      return res.status(user.status).json({ result: false, message: "비밀번호가 올바르지 않습니다." });
+    }
+  }
+  catch (error) {
+    console.error(error);
+  }
+})
+//비밀번호 변경
+router.patch("/password", async (req, res) => {
+  try {
+    const { userId, afterPassword } = req.body;
+
+    const hashedPassword = await bcrypt.hash(afterPassword, 12);
+
+    await User.update({
+      password: hashedPassword
+    }, {
+      where: { id: userId }
+    });
+    return res.status(200).json("비밀번호 변경이 완료되었습니다.");
+  }
+  catch (error) {
+    console.error(error);
+  }
+})
+
 //유저 정보 불러오기 - 엑세스 토큰 확인 및 리프레시 토큰으로 엑세스 토큰을 발급받는 미들웨어를 만들고 미들웨어 거친 후 라우터에서 유저정보를 클라로 뿌랴줘야 한다.
 router.get("/current", tokenCheck, async (req, res) => {
   console.log(req.body);
@@ -155,6 +220,7 @@ router.get("/current", tokenCheck, async (req, res) => {
     }
   }
 })
+//로그아웃
 router.get("/logout", (req, res) => {
   res.cookie("accessToken", "", {
     secure: false,

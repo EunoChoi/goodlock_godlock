@@ -34,10 +34,19 @@ const User = {
       staleTime: 60 * 1000
     }).data;
   },
+  delete: () => {
+    const navigate = useNavigate();
+    return useMutation((id: number) => Axios.delete(`user/${id}`), {
+      onSuccess: () => {
+        navigate("/");
+        toast.success("회원탈퇴가 완료되었습니다.");
+      }
+    });
+  },
   signUp: () => {
     return useMutation(
       ({ email, nickname, password }: SignUpValue) =>
-        Axios.post("/user/register", {
+        Axios.post("user/register", {
           email,
           nickname,
           password
@@ -46,8 +55,8 @@ const User = {
         onSuccess: (res) => {
           toast.success(res.data);
         },
-        onError: (err: any) => {
-          toast.error(err.response.data);
+        onError: (err: CustomError2) => {
+          toast.error(err.response?.data);
         }
       }
     );
@@ -58,7 +67,7 @@ const User = {
 
     return useMutation(
       ({ email, password }: LoginValue) =>
-        Axios.post("/user/login", {
+        Axios.post("user/login", {
           email: email,
           password: password
         }),
@@ -81,7 +90,7 @@ const User = {
 
     return useMutation(
       ({ email, profilePic }: any) =>
-        Axios.post("/user/login/social", {
+        Axios.post("user/login/social", {
           email,
           profilePic
         }),
