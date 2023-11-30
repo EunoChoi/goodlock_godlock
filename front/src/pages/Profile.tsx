@@ -89,9 +89,16 @@ const Profile = () => {
     setPasswordChangeModal(false);
     history.back();
   };
-  const scrollTop = () => {
+  const scrollToPill = () => {
     window.scrollTo({
       top: scrollTarget.current?.scrollHeight,
+      left: 0,
+      behavior: "smooth"
+    });
+  };
+  const scrollTop = () => {
+    window.scrollTo({
+      top: 0,
       left: 0,
       behavior: "smooth"
     });
@@ -275,7 +282,7 @@ const Profile = () => {
               catNum={categoryNum}
               key={"catNum" + i}
               onClick={() => {
-                scrollTop();
+                scrollToPill();
                 setTimeout(() => {
                   navigate(`/profile/${i}`);
                 }, 0);
