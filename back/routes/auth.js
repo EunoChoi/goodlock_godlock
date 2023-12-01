@@ -1,6 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const router = express.Router();
+const nodemailer = require("nodemailer");
 
 //naver login
 router.post("/naverlogin", async (req, res) => {
@@ -24,5 +25,50 @@ router.post("/naverlogin", async (req, res) => {
 
   res.status(200).json({ email, profilePic })
 });
+
+router.post("/code/signup", async (req, res) => {
+
+  let { email } = req.body;
+  console.log(email);
+  try {
+    //인증 코드 생성
+    let code = "";
+    for (let i = 0; i < 6; i++) {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+      let index = Math.floor(Math.random() * 26) //0 ~ 25
+      code += characters[index];
+    }
+    console.log(code);
+
+
+    //인증 코드 발송
+    let transporter = nodemailer.createTransport({
+      service: 'gmail'
+      , port: 587
+      , host: 'smtp.gmlail.com'
+      , secure: false
+      , requireTLS: true
+      , auth: {
+        user: process.env.AUTH_EMAIL
+        , pass: process.env.AUTH_PW
+      }
+    });
+    await transporter.sendMail({
+      from: 'goodlockgodlock@gmail.com',
+      to: email,
+      subject: '굿락갓락, 회원가입 인증코드입니다.',
+      text: code,
+      html: `<div><b>안녕하세요. 굿락갓락입니다.</b></div>
+      <div>회원가입을 위한 인증코드 입니다.</div>
+      <div>${code}</div>`
+    });
+
+    return res.status(200).json({ code });
+  } catch (err) {
+    console.err(err);
+    return res.status(401).json("인증코드 발송 실패");
+  }
+});
+
 
 module.exports = router;

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import Axios from "../../apis/Axios";
 
 //styled component
 import LogInSignUp from "../../styles/LogInSignUp";
@@ -37,8 +38,31 @@ const SignUp = ({ setToggle }: Props) => {
 
   const [authCodeConfirm, setAuthCodeConfirm] = useState(false);
   const [codeRequest, setCodeRequest] = useState(false);
+
   const [code, setCode] = useState("");
+  const [authCode, setAuthCode] = useState("");
+
+  const [counter, setCounter] = useState<number>(181);
   const signUpFunction = User.signUp();
+  const [timer, setTimer] = useState<NodeJS.Timeout>();
+
+  const counteDownStart = () => {
+    countDownStop();
+    setTimer(
+      setInterval(() => {
+        setCounter((c) => c - 1);
+      }, 1000)
+    );
+  };
+  const countDownStop = () => {
+    setCounter(181);
+    clearTimeout(timer);
+  };
+  useEffect(() => {
+    if (counter === 0) {
+      countDownStop();
+    }
+  }, [counter]);
 
   const onSubmit = () => {
     const { email, nickname, password } = getValues();
@@ -47,7 +71,7 @@ const SignUp = ({ setToggle }: Props) => {
 
   return (
     <LogInSignUp.Wrapper>
-      <LogInSignUp.Title>회원가입</LogInSignUp.Title>
+      <LogInSignUp.Title>회원가입{authCode}</LogInSignUp.Title>
       <LogInSignUp.Form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <LogInSignUp.Input
           placeholder="이메일"
@@ -150,39 +174,49 @@ const SignUp = ({ setToggle }: Props) => {
         ) : (
           <AuthCodeWrapper>
             <input placeholder="인증 코드" value={code} onChange={(e) => setCode(e.target.value)} />
-            {codeRequest ? (
-              <button
+            {codeRequest && (
+              <AuthCodeConfirmButton
                 onClick={() => {
                   //인증코드 확인
-                  //setauthcode로 결정되는 authcode와 비교해서 인증코드와 일치하는지 확인
-                  if ("authcode" === code) {
+                  if (authCode === code) {
                     setAuthCodeConfirm(true);
-                  }
-                }}
-              >
-                확인
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  const email = getValues();
-                  if (email) {
-                    //이메일로 보낸 코드를 리턴 = axios 코드 발송 api
-                    //setauthcode() 이메일 발송되면 바로 setauthcode로 코드 업데이트
-                    //어찌되었든 발송 버튼 눌리기만 하면 authcode가 업데이트 된다.
-                    //3분 제한 이런거 필요한가.?
-                    //settimeout으로 authcode 변경하면 될듯
-                    toast.success("인증번호가 발송되었습니다.");
-                    console.log(email);
+                    clearTimeout(timer);
+                    toast.success("인증코드 확인 완료");
                   } else {
-                    toast.error("이메일 정보가 입력되어있지않습니다.");
+                    toast.error("인증코드가 올바르지 않습니다.");
                   }
-                  // setCodeRequest(true);
                 }}
               >
-                인증코드 받기
-              </button>
+                <span>확인</span>
+                <span>{counter !== 181 && `(${counter})`}</span>
+              </AuthCodeConfirmButton>
             )}
+
+            <AuthCodeSendButton
+              onClick={() => {
+                const { email } = getValues();
+                if (email) {
+                  //이메일로 보낸 코드를 리턴 = axios 코드 발송 api
+                  Axios.post("auth/code/signup", { email })
+                    .then((res) => {
+                      setAuthCode(res.data.code);
+                      setCodeRequest(true);
+                      countDownStop();
+                      counteDownStart();
+
+                      console.log(email);
+                      console.log(res.data.code);
+                      toast.success("인증코드가 발송되었습니다.");
+                    })
+                    .catch(() => toast.error("인증코드가 발송이 실패하였습니다."));
+                } else {
+                  toast.error("이메일 정보가 올바르지않습니다.");
+                }
+              }}
+            >
+              <span>인증코드</span>
+              <span>발송</span>
+            </AuthCodeSendButton>
           </AuthCodeWrapper>
         )}
       </LogInSignUp.Form>
@@ -198,6 +232,8 @@ const SignUp = ({ setToggle }: Props) => {
             setToggle(true);
             setCodeRequest(false); //인증 코드 요청 state
             setAuthCodeConfirm(false); //인증 코드 확인 state
+            setCounter(181); //인증 코드 대기 시간 초기화
+            setAuthCode("");
           }}
         >
           로그인
@@ -249,17 +285,55 @@ const AuthCodeWrapper = styled.div`
     border-right: none;
     outline: none;
   }
-  button {
-    width: 100px;
-    height: 50px;
-    background-color: #c7d7ff;
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
+`;
 
-    border: 1px solid #cacaca;
+const AuthCodeSendButton = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-    font-size: 14px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.6);
+  width: 100px;
+  height: 50px;
+  background-color: #c7d7ff;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+
+  border: 1px solid #cacaca;
+
+  cursor: pointer;
+
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  span {
+    font-weight: 500;
+  }
+  span:nth-child(2) {
+    margin-top: 4px;
+  }
+`;
+
+const AuthCodeConfirmButton = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100px;
+  height: 50px;
+  background-color: #d8e3ff;
+
+  border: 1px solid #cacaca;
+  border-right: none;
+
+  cursor: pointer;
+
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  span {
+    font-weight: 500;
+  }
+  span:nth-child(2) {
+    margin-top: 4px;
   }
 `;
