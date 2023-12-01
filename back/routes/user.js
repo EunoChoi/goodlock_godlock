@@ -47,7 +47,7 @@ router.delete("/:id", async (req, res) => {
     }
     else return res.status(401).json("존재하지 않은 유저입니다.");
   } catch (err) {
-    console.err(err);
+    console.error(err);
   }
 });
 //로그인
@@ -251,7 +251,7 @@ router.patch("/edit/nickname", tokenCheck, async (req, res) => {
     );
     res.status(200).json("nickname edit success");
   } catch (e) {
-    console.err(e)
+    console.error(e)
   };
 })
 //유저 정보 변경 - 상태메세지
@@ -268,7 +268,7 @@ router.patch("/edit/usertext", tokenCheck, async (req, res) => {
     );
     res.status(200).json("usertext edit success");
   } catch (e) {
-    console.err(e)
+    console.error(e)
   };
 })
 //유저 정보 변경 - 프로필 이미지
@@ -285,7 +285,7 @@ router.patch("/edit/profilepic", tokenCheck, async (req, res) => {
     );
     res.status(200).json("profilePic change success");
   } catch (e) {
-    console.err(e)
+    console.error(e)
   };
 })
 
@@ -306,7 +306,7 @@ router.patch("/:userId/follow", tokenCheck, async (req, res) => {
     return res.status(200).json(targetUserId)
   }
   catch (err) {
-    console.err(err);
+    console.error(err);
   }
 });
 //팔로잉팔로워 관련 - 언팔로우
@@ -324,7 +324,7 @@ router.delete("/:userId/follow", tokenCheck, async (req, res) => {
     return res.status(200).json(targetUserId)
   }
   catch (err) {
-    console.err(err);
+    console.error(err);
   }
 });
 router.delete("/:userId/follower", tokenCheck, async (req, res) => {
@@ -341,7 +341,7 @@ router.delete("/:userId/follower", tokenCheck, async (req, res) => {
     return res.status(200).json(targetUser)
   }
   catch (err) {
-    console.err(err);
+    console.error(err);
   }
 });
 
@@ -357,7 +357,7 @@ router.get("/followings", tokenCheck, async (req, res) => {
     return res.status(200).json(followings)
   }
   catch (err) {
-    console.err(err);
+    console.error(err);
   }
 });
 //팔로잉팔로워 관련 - 팔로워 정보 불러오기
@@ -372,7 +372,7 @@ router.get("/followers", tokenCheck, async (req, res) => {
     return res.status(200).json(followers)
   }
   catch (err) {
-    console.err(err);
+    console.error(err);
   }
 });
 
@@ -407,7 +407,7 @@ router.get("/info", tokenCheck, async (req, res) => {
     return res.status(200).json(user)
   }
   catch (err) {
-    console.err(err);
+    console.error(err);
   }
 });
 module.exports = router;

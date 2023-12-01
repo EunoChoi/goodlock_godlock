@@ -130,7 +130,7 @@ router.get("/single", async (req, res) => {
     if (!SinglePost) return res.status(403).json("포스트 id가 올바르지 않습니다.");
     return res.status(201).json(SinglePost);
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
 })
 //load posts - all
@@ -174,7 +174,7 @@ router.get("/", async (req, res) => {
 
     return res.status(201).json(Posts.slice(tempDataNum * (pageParam - 1), tempDataNum * pageParam));
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
 })
 //load posts - info active
@@ -225,7 +225,7 @@ router.get("/activinfo", async (req, res) => {
 
     return res.status(201).json(Posts.slice(tempDataNum * (pageParam - 1), tempDataNum * pageParam));
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
 })
 
@@ -273,7 +273,7 @@ router.get("/thisweek/new", tokenCheck, async (req, res) => {
     // return res.status(201).json({ Posts });
     return res.status(201).json({ len: Posts.length });
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
 })
 //length - end post this week
@@ -320,7 +320,7 @@ router.get("/thisweek/liked", tokenCheck, async (req, res) => {
     }
     else return res.status(201).json({ len: 0 });
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
 })
 
@@ -377,7 +377,7 @@ router.get("/feed", tokenCheck, async (req, res) => {
     // return res.status(201).json(Posts);
     return res.status(201).json(Posts.slice(tempDataNum * (pageParam - 1), tempDataNum * pageParam));
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
 })
 
@@ -424,7 +424,7 @@ router.get("/my", tokenCheck, async (req, res) => {
 
     return res.status(201).json(Posts.slice(tempDataNum * (pageParam - 1), tempDataNum * pageParam));
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
 })
 //load posts - my liked
@@ -477,7 +477,7 @@ router.get("/liked", tokenCheck, async (req, res) => {
 
     return res.status(201).json(Posts.slice(tempDataNum * (pageParam - 1), tempDataNum * pageParam));
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
 })
 
@@ -525,7 +525,7 @@ router.get("/search", async (req, res) => {
     // return res.status(201).json({ search, Posts });
     return res.status(201).json(Posts.slice(tempDataNum * (pageParam - 1), tempDataNum * pageParam));
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
 })
 
@@ -573,7 +573,7 @@ router.get("/user", tokenCheck, async (req, res) => {
 
     return res.status(201).json(Posts.slice(tempDataNum * (pageParam - 1), tempDataNum * pageParam));
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
 })
 //load posts - target user liked
@@ -627,7 +627,7 @@ router.get("/user/liked", tokenCheck, async (req, res) => {
 
     return res.status(201).json(Posts.slice(tempDataNum * (pageParam - 1), tempDataNum * pageParam));
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
 })
 
@@ -654,7 +654,7 @@ router.post("/", tokenCheck, async (req, res) => {
       post.addImages(images);
     }
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
   res.status(200).json("post upload success");
 })
@@ -693,7 +693,7 @@ router.patch("/:postId", tokenCheck, async (req, res) => {
       post.addImages(images);
     }
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
   res.status(200).json("post edit success");
 })
@@ -710,7 +710,7 @@ router.delete("/:postId", tokenCheck, async (req, res) => {
       where: { id: postId, UserId: req.currentUserId }
     });
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
   res.status(200).json("post edit success");
 })
@@ -753,7 +753,7 @@ router.delete("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
       where: { id: commentId, PostId: postId, UserId: req.currentUserId }
     });
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
   res.status(200).json("comment delete success");
 })
@@ -777,7 +777,7 @@ router.patch("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
     );
     res.status(200).json("post edit success");
   } catch (e) {
-    console.err(e);
+    console.error(e);
   }
 })
 

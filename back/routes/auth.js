@@ -72,7 +72,7 @@ router.post("/code", async (req, res) => {
 
     return res.status(200).json({ code: hashedCode });
   } catch (err) {
-    console.err(err);
+    console.error(err);
     return res.status(401).json("인증코드 발송 실패");
   }
 });
@@ -131,7 +131,7 @@ router.post("/code/find/password", async (req, res) => {
 
     return res.status(200).json({ code: hashedCode });
   } catch (err) {
-    console.err(err);
+    console.error(err);
     return res.status(401).json("인증코드 발송 실패");
   }
 });
@@ -150,7 +150,7 @@ router.post("/code/check", async (req, res) => {
       return res.status(200).json({ result: false });
     }
   } catch (err) {
-    console.err(err);
+    console.error(err);
     return res.status(400).json("확인 과정 중 에러 발생");
   }
 })
@@ -181,7 +181,7 @@ router.post("/password/reset", async (req, res) => {
     let transporter = nodemailer.createTransport({
       service: 'gmail'
       , port: 587
-      , host: 'smtp.gmlail.com'
+      , host: 'smtp.gmail.com'
       , secure: false
       , requireTLS: true
       , auth: {
@@ -190,7 +190,7 @@ router.post("/password/reset", async (req, res) => {
       }
     });
     await transporter.sendMail({
-      from: 'test@gmail.com',
+      from: 'goodlockgodlock@gmail.com',
       to: email,
       subject: '굿락갓락, 임시 비밀번호 입니다.',
       text: tempPassword,
@@ -201,7 +201,7 @@ router.post("/password/reset", async (req, res) => {
 
     return res.status(200).json("비밀번호 초기화가 완료되었습니다.");
   } catch (err) {
-    console.err(err);
+    console.error(err);
     return res.status(401).json("인증코드 발송 실패");
   }
 });
