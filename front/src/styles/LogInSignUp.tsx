@@ -32,9 +32,14 @@ const LogInSignUp = {
   Box: styled.div`
     width: 500px;
     height: 100vh; //모바일에서 380px, 데스크탑에선 500px
+    height: calc(var(--vh, 1vh) * 100);
 
-    padding: 60px 100px;
-    padding-top: 90px;
+    padding: 0 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* padding-top: 90px; */
     background-color: white;
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.7);
     /* border-radius: 24px; */
@@ -172,7 +177,8 @@ const LogInSignUp = {
   `,
   WarningText: styled.span`
     color: salmon;
-    margin: 10px 0px;
+    font-size: 14px;
+    margin: 8px 0px;
     text-align: center;
   `
 };

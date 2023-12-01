@@ -36,7 +36,6 @@ const userController = {
 
     //회원가입이 가능한 경우
     else {
-
       const hashedPassword = await bcrypt.hash(password, 12);
       if (email === nickname) {
         await User.create(

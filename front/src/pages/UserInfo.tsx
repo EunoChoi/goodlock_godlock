@@ -101,6 +101,11 @@ const UserInfo = () => {
   const unFollow = User.unFollow();
 
   useEffect(() => {
+    if (history.state.page === "modal") {
+      history.back();
+    }
+  }, []);
+  useEffect(() => {
     window.scrollTo({
       top: 0,
       left: 0,

@@ -9,11 +9,11 @@ import IsMobile from "../../functions/IsMobile";
 
 interface AppLayoutProps {
   popupOpen: boolean;
-  setPopupOpen: (b: boolean) => void;
+  modalClose: () => void;
   children: React.ReactNode;
 }
 
-const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, children }: AppLayoutProps) => {
+const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, modalClose, children }: AppLayoutProps) => {
   const [animation, setAnimation] = useState(ANIMATION_APPEAR);
   const isMobile = IsMobile();
 
@@ -51,10 +51,7 @@ const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, setPopupOpen, children 
         <LogInSignUp.Background
           animation={animation}
           onClick={() => {
-            setAnimation(ANIMATION_DISAPPEAR);
-            setTimeout(() => {
-              setPopupOpen(false);
-            }, 400);
+            modalClose();
           }}
         >
           <LogInSignUp.Box onClick={(e) => e.stopPropagation()}>
@@ -98,9 +95,9 @@ const SNSLoginWrapper = styled.div`
   padding: 32px 0;
 `;
 const SNSLoginButton = styled.button<{ color: string }>`
-  width: 54px;
-  height: 54px;
-  border-radius: 54px;
+  width: 48px;
+  height: 48px;
+  border-radius: 48px;
 
   border: 1px solid rgba(0, 0, 0, 0.1);
 

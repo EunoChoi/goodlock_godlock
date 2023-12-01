@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import Axios from "../apis/Axios";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 //components
 import PopupBox from "../components/startPage/PopupBox";
@@ -13,7 +12,6 @@ import SignUp from "../components/startPage/SignUp";
 import LogIn from "../components/startPage/LogIn";
 import Animation from "../styles/Animation";
 import ExtensionRoundedIcon from "@mui/icons-material/ExtensionRounded";
-import User from "../functions/reactQuery/User";
 
 const Start = () => {
   const [popupOpen, setPopupOpen] = useState(false);
@@ -22,9 +20,34 @@ const Start = () => {
   const { data: isLoggedIn } = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data));
   const navigate = useNavigate();
 
+  const modalClose = () => {
+    history.back();
+    setPopupOpen(false);
+  };
+
+  const start = () => {
+    if (isLoggedIn) navigate("/main/0");
+    else {
+      const url = document.URL + "/modal";
+      history.pushState({ page: "modal" }, "", url);
+      setPopupOpen(true);
+    }
+  };
+
+  useEffect(() => {
+    console.log(history.state.page);
+    if (history.state.page === "modal") {
+      history.back();
+    }
+  }, []);
+
   useEffect(() => {
     setToggle(true);
   }, [popupOpen]);
+
+  window.addEventListener("popstate", () => {
+    setPopupOpen(false);
+  });
 
   return (
     <>
@@ -32,11 +55,6 @@ const Start = () => {
       <BG2 />
       <Footer>
         <span>문의 : goodlockgodlock@gmail.com</span>
-        <span>
-          <a href="https://kr.freepik.com/free-vector/student-with-laptop-studying-on-online-course_7732666.htm#from_view=detail_author">
-            ❖ Freepik, pch.vector
-          </a>
-        </span>
       </Footer>
       <StartWrapper>
         <Title>
@@ -57,8 +75,7 @@ const Start = () => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            if (isLoggedIn) navigate("/main/0");
-            else setPopupOpen(true);
+            start();
           }}
         >
           함께하기
@@ -68,7 +85,7 @@ const Start = () => {
       </StartWrapper>
       {popupOpen && (
         <>
-          <PopupBox popupOpen={popupOpen} setPopupOpen={setPopupOpen}>
+          <PopupBox popupOpen={popupOpen} modalClose={modalClose}>
             {toggle && <LogIn setToggle={setToggle} setPopupOpen={setPopupOpen}></LogIn>}
             {!toggle && <SignUp setToggle={setToggle}></SignUp>}
           </PopupBox>
@@ -160,7 +177,7 @@ const Footer = styled.div`
   width: 100vw;
   height: 32px;
 
-  font-size: 14px;
+  font-size: 12px;
   background-color: rgba(0, 0, 0, 0.2);
   color: rgba(0, 0, 0, 0.5);
 

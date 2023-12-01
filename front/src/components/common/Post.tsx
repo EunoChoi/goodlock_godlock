@@ -122,7 +122,7 @@ const Post = ({ postProps }: any) => {
               setMorePop(null);
               clearTimeout(timer);
 
-              const url = document.URL + ":modal";
+              const url = document.URL + "/modal";
               history.pushState({ page: "modal" }, "", url);
               setPostEdit(true);
             }}
@@ -205,7 +205,7 @@ const Post = ({ postProps }: any) => {
       {postProps?.Images?.length > 0 && (
         <ImageWrapper
           onClick={() => {
-            const url = document.URL + ":modal";
+            const url = document.URL + "/modal";
             history.pushState({ page: "modal" }, "", url);
             setZoom(true);
           }}
@@ -239,7 +239,7 @@ const Post = ({ postProps }: any) => {
 
       <TextWrapper
         onClick={() => {
-          const url = document.URL + ":modal";
+          const url = document.URL + "/modal";
           history.pushState({ page: "modal" }, "", url);
           setZoom(true);
         }}

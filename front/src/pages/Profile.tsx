@@ -317,7 +317,7 @@ const Profile = () => {
                 <Button
                   color="inherit"
                   onClick={() => {
-                    const url = document.URL + ":modal";
+                    const url = document.URL + "/modal";
                     history.pushState({ page: "modal" }, "", url);
                     setImageChangeModal((c) => !c);
                   }}
@@ -425,7 +425,7 @@ const Profile = () => {
                 {user?.level === 1 && (
                   <Button
                     onClick={() => {
-                      const url = document.URL + ":modal";
+                      const url = document.URL + "/modal";
                       history.pushState({ page: "modal" }, "", url);
                       setPasswordChangeModal(true);
                     }}
@@ -435,7 +435,7 @@ const Profile = () => {
                 )}
                 <Button
                   onClick={() => {
-                    const url = document.URL + ":modal";
+                    const url = document.URL + "/modal";
                     history.pushState({ page: "modal" }, "", url);
                     setUserDeleteModal(true);
                   }}

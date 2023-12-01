@@ -52,7 +52,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   };
   const InputEditOpenCloseToggle = () => {
     if (isPostInputOpen === false) {
-      const url = document.URL + ":modal";
+      const url = document.URL + "/modal";
       history.pushState({ page: "modal" }, "", url);
       setPostInputOpen(true);
     } else {
