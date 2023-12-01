@@ -71,7 +71,7 @@ const SignUp = ({ setToggle }: Props) => {
 
   return (
     <LogInSignUp.Wrapper>
-      <LogInSignUp.Title>회원가입{authCode}</LogInSignUp.Title>
+      <LogInSignUp.Title>회원가입</LogInSignUp.Title>
       <LogInSignUp.Form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <LogInSignUp.Input
           placeholder="이메일"
@@ -176,15 +176,18 @@ const SignUp = ({ setToggle }: Props) => {
             <input placeholder="인증 코드" value={code} onChange={(e) => setCode(e.target.value)} />
             {codeRequest && (
               <AuthCodeConfirmButton
-                onClick={() => {
+                onClick={async () => {
                   //인증코드 확인
-                  if (authCode === code) {
-                    setAuthCodeConfirm(true);
-                    clearTimeout(timer);
-                    toast.success("인증코드 확인 완료");
-                  } else {
-                    toast.error("인증코드가 올바르지 않습니다.");
-                  }
+                  //code : 입력한 코드, authCode : 인증 코드(해쉬)
+                  Axios.post("auth/code/check", { code, authCode }).then((res) => {
+                    if (res.data.result) {
+                      setAuthCodeConfirm(true);
+                      clearTimeout(timer);
+                      toast.success("인증코드 확인 완료");
+                    } else {
+                      toast.error("인증코드가 올바르지 않습니다.");
+                    }
+                  });
                 }}
               >
                 <span>확인</span>
@@ -293,7 +296,7 @@ const AuthCodeSendButton = styled.div`
   justify-content: center;
   align-items: center;
 
-  width: 100px;
+  width: 140px;
   height: 50px;
   background-color: #c7d7ff;
   border-top-right-radius: 6px;
@@ -319,7 +322,7 @@ const AuthCodeConfirmButton = styled.div`
   justify-content: center;
   align-items: center;
 
-  width: 100px;
+  width: 140px !important;
   height: 50px;
   background-color: #d8e3ff;
 
