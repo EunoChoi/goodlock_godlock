@@ -50,7 +50,7 @@ router.post("/code", async (req, res) => {
     let transporter = nodemailer.createTransport({
       service: 'gmail'
       , port: 587
-      , host: 'smtp.gmlail.com'
+      , host: 'smtp.gmail.com'
       , secure: false
       , requireTLS: true
       , auth: {
@@ -59,7 +59,7 @@ router.post("/code", async (req, res) => {
       }
     });
     await transporter.sendMail({
-      from: 'test@gmail.com',
+      from: 'goodlockgodlock@gmail.com',
       to: email,
       subject: '굿락갓락, 인증코드입니다.',
       text: code,
@@ -109,7 +109,7 @@ router.post("/code/find/password", async (req, res) => {
     let transporter = nodemailer.createTransport({
       service: 'gmail'
       , port: 587
-      , host: 'smtp.gmlail.com'
+      , host: 'smtp.gmail.com'
       , secure: false
       , requireTLS: true
       , auth: {
@@ -118,7 +118,7 @@ router.post("/code/find/password", async (req, res) => {
       }
     });
     await transporter.sendMail({
-      from: 'test@gmail.com',
+      from: 'goodlockgodlock@gmail.com',
       to: email,
       subject: '굿락갓락, 회원가입 인증코드입니다.',
       text: code,

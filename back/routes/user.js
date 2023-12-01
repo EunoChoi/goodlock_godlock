@@ -127,7 +127,7 @@ router.post("/login/social", async (req, res) => {
         res.status(200).json("로그인 성공, 토큰 발급 완료");
       }
       else {
-        return res.status(user.status).json({ message: "이미 가입된 일반 계정이 존재합니다." });
+        return res.status(user.status).json({ message: "일반 계정으로 가입된 계정입니다." });
       }
     }
     return res.status(401).json({ errr: "error" });
