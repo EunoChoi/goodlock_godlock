@@ -12,10 +12,11 @@ import SignUp from "../components/startPage/SignUp";
 import LogIn from "../components/startPage/LogIn";
 import Animation from "../styles/Animation";
 import ExtensionRoundedIcon from "@mui/icons-material/ExtensionRounded";
+import FindPassword from "../components/startPage/FindPassword";
 
 const Start = () => {
   const [popupOpen, setPopupOpen] = useState(false);
-  const [toggle, setToggle] = useState(true); //login - signup toggle
+  const [toggle, setToggle] = useState<number>(0); //login - signup toggle
 
   const { data: isLoggedIn } = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data));
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Start = () => {
   const start = () => {
     if (isLoggedIn) navigate("/main/0");
     else {
-      const url = document.URL + "/modal";
+      const url = document.URL + "modal";
       history.pushState({ page: "modal" }, "", url);
       setPopupOpen(true);
     }
@@ -42,7 +43,7 @@ const Start = () => {
   }, []);
 
   useEffect(() => {
-    setToggle(true);
+    setToggle(0);
   }, [popupOpen]);
 
   window.addEventListener("popstate", () => {
@@ -86,8 +87,9 @@ const Start = () => {
       {popupOpen && (
         <>
           <PopupBox popupOpen={popupOpen} modalClose={modalClose}>
-            {toggle && <LogIn setToggle={setToggle} setPopupOpen={setPopupOpen}></LogIn>}
-            {!toggle && <SignUp setToggle={setToggle}></SignUp>}
+            {toggle === 0 && <LogIn setToggle={setToggle} setPopupOpen={setPopupOpen}></LogIn>}
+            {toggle === 1 && <SignUp setToggle={setToggle}></SignUp>}
+            {toggle === 2 && <FindPassword setToggle={setToggle}></FindPassword>}
           </PopupBox>
         </>
       )}

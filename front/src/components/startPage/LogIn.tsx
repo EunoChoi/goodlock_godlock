@@ -8,7 +8,7 @@ import User from "../../functions/reactQuery/User";
 import styled from "styled-components";
 
 interface Props {
-  setToggle: (b: boolean) => void;
+  setToggle: (n: number) => void;
   setPopupOpen: (b: boolean) => void;
 }
 interface LogInForm {
@@ -67,7 +67,7 @@ const LogIn = ({ setToggle }: Props) => {
         />
         <LogInSignUp.WarningText>{errors.password?.message}</LogInSignUp.WarningText>
         <LogInSignUp.TextWrapper>
-          <LogInSignUp.Text color="#4284F3" pointer={true} onClick={() => toast.error("구현 예정입니다.")}>
+          <LogInSignUp.Text color="#4284F3" pointer={true} onClick={() => setToggle(2)}>
             혹시 비밀번호를 잊으셨나요?
           </LogInSignUp.Text>
         </LogInSignUp.TextWrapper>
@@ -83,7 +83,7 @@ const LogIn = ({ setToggle }: Props) => {
           color="#4284F3"
           pointer={true}
           onClick={() => {
-            setToggle(false);
+            setToggle(1);
           }}
         >
           회원가입
