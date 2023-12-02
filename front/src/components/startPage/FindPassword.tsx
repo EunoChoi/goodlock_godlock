@@ -9,6 +9,10 @@ import LogInSignUp from "../../styles/LogInSignUp";
 import User from "../../functions/reactQuery/User";
 import styled from "styled-components";
 
+//mui
+import CircularProgress from "@mui/material/CircularProgress";
+import Auth from "../../functions/reactQuery/Auth";
+
 interface Props {
   setToggle: (n: number) => void;
 }
@@ -25,6 +29,11 @@ const FindPassword = ({ setToggle }: Props) => {
   const [counter, setCounter] = useState<number>(181);
   const [timer, setTimer] = useState<NodeJS.Timeout>();
 
+  //mutation
+  const codeSendForFindPW = Auth.codeSendForFindPW();
+  const passwordUpdate = Auth.passwordUpdate();
+  const codeCheck = Auth.codeCheck();
+
   const counteDownStart = () => {
     countDownStop();
     setTimer(
@@ -39,21 +48,25 @@ const FindPassword = ({ setToggle }: Props) => {
   };
   useEffect(() => {
     if (counter === 0) {
+      setAuthCode("");
       countDownStop();
     }
   }, [counter]);
 
   const onSubmit = () => {
-    //submit
     const { email } = getValues();
-    Axios.post("auth/password/reset", { email })
-      .then(() => {
-        toast.success("이메일로 임시 비밀번호가 발송되었습니다.");
-        setToggle(0);
-      })
-      .catch(() => {
-        toast.error("에러 발생 임시 비밀번호 발송 실패");
-      });
+    passwordUpdate.mutate(
+      { email },
+      {
+        onSuccess: () => {
+          toast.success("이메일로 임시 비밀번호가 발송되었습니다.");
+          setToggle(0);
+        },
+        onError: () => {
+          toast.error("에러 발생 임시 비밀번호 발송 실패");
+        }
+      }
+    );
   };
 
   const {
@@ -96,7 +109,7 @@ const FindPassword = ({ setToggle }: Props) => {
       <LogInSignUp.Form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         {authCodeConfirm ? (
           <SignUpButton type="submit" bgColor="">
-            비밀번호 초기화
+            {passwordUpdate.isLoading ? <CircularProgress color="inherit" size={24} /> : <span>비밀번호 초기화</span>}
           </SignUpButton>
         ) : (
           <AuthCodeWrapper>
@@ -104,17 +117,24 @@ const FindPassword = ({ setToggle }: Props) => {
             {codeRequest && (
               <AuthCodeConfirmButton
                 onClick={async () => {
-                  //인증코드 확인
-                  //code : 입력한 코드, authCode : 인증 코드(해쉬)
-                  Axios.post("auth/code/check", { code, authCode }).then((res) => {
-                    if (res.data.result) {
-                      setAuthCodeConfirm(true);
-                      clearTimeout(timer);
-                      toast.success("인증코드 확인 완료");
-                    } else {
-                      toast.error("인증코드가 올바르지 않습니다.");
+                  //인증코드 확인, code : 입력한 코드, authCode : 인증 코드(해쉬)
+                  codeCheck.mutate(
+                    { code, authCode },
+                    {
+                      onSuccess: (res) => {
+                        if (res.data.result) {
+                          setAuthCodeConfirm(true);
+                          clearTimeout(timer);
+                          toast.success("인증코드 확인 완료");
+                        } else {
+                          toast.error("인증코드가 올바르지 않습니다.");
+                        }
+                      },
+                      onError: () => {
+                        toast.error("인증코드 확인 과정 중 오류 발생.");
+                      }
                     }
-                  });
+                  );
                 }}
               >
                 <span>확인</span>
@@ -127,28 +147,35 @@ const FindPassword = ({ setToggle }: Props) => {
                 const { email } = getValues();
                 if (email) {
                   //이메일로 보낸 코드를 리턴 = axios 코드 발송 api
-                  Axios.post("auth/code/find/password", { email })
-                    .then((res) => {
-                      setAuthCode(res.data.code);
-                      setCodeRequest(true);
-                      countDownStop();
-                      counteDownStart();
+                  codeSendForFindPW.mutate(
+                    { email },
+                    {
+                      onSuccess: (res) => {
+                        setAuthCode(res.data.code);
+                        setCodeRequest(true);
+                        countDownStop();
+                        counteDownStart();
 
-                      console.log(email);
-                      console.log(res.data.code);
-                      toast.success("인증코드가 발송되었습니다.");
-                    })
-                    .catch((res) => {
-                      console.log(res.response.data);
-                      toast.error(res.response.data);
-                    });
+                        toast.success("인증코드가 발송되었습니다.");
+                      },
+                      onError: () => {
+                        toast.error("인증코드가 발송이 실패하였습니다.");
+                      }
+                    }
+                  );
                 } else {
                   toast.error("입력이 올바르지않습니다.");
                 }
               }}
             >
-              <span>인증 코드</span>
-              <span>발송</span>
+              {codeSendForFindPW.isLoading ? (
+                <CircularProgress color="inherit" size={24} />
+              ) : (
+                <>
+                  <span>인증 코드</span>
+                  <span>발송</span>
+                </>
+              )}
             </AuthCodeSendButton>
           </AuthCodeWrapper>
         )}

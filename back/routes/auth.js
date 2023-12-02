@@ -30,7 +30,7 @@ router.post("/naverlogin", async (req, res) => {
 
   res.status(200).json({ email, profilePic })
 });
-
+//code send for sign up
 router.post("/code", async (req, res) => {
 
   let { email } = req.body;
@@ -40,7 +40,7 @@ router.post("/code", async (req, res) => {
     let code = "";
     for (let i = 0; i < 6; i++) {
       const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-      let index = Math.floor(Math.random() * 26) //0 ~ 25
+      let index = Math.floor(Math.random() * 52) //0 ~ 25
       code += characters[index];
     }
     // console.log(code);
@@ -77,6 +77,7 @@ router.post("/code", async (req, res) => {
   }
 });
 
+//code send for find password
 router.post("/code/find/password", async (req, res) => {
 
   let { email } = req.body;
@@ -99,7 +100,7 @@ router.post("/code/find/password", async (req, res) => {
     let code = "";
     for (let i = 0; i < 6; i++) {
       const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-      let index = Math.floor(Math.random() * 26) //0 ~ 25
+      let index = Math.floor(Math.random() * 52) //0 ~ 25
       code += characters[index];
     }
     // console.log(code);
@@ -135,7 +136,7 @@ router.post("/code/find/password", async (req, res) => {
     return res.status(401).json("인증코드 발송 실패");
   }
 });
-
+//code valid check
 router.post("/code/check", async (req, res) => {
   try {
     const { code, authCode } = req.body;
@@ -163,7 +164,7 @@ router.post("/password/reset", async (req, res) => {
     let tempPassword = "";
     for (let i = 0; i < 8; i++) {
       const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-      let index = Math.floor(Math.random() * 26) //0 ~ 25
+      let index = Math.floor(Math.random() * 52) //0 ~ 25
       tempPassword += characters[index];
     }
 

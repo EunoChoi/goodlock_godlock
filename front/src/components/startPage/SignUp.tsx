@@ -8,6 +8,11 @@ import Axios from "../../apis/Axios";
 import LogInSignUp from "../../styles/LogInSignUp";
 import User from "../../functions/reactQuery/User";
 import styled from "styled-components";
+import Auth from "../../functions/reactQuery/Auth";
+
+//mui
+import CircularProgress from "@mui/material/CircularProgress";
+import { Navigate } from "react-router-dom";
 
 interface SignInForm {
   email: string;
@@ -45,7 +50,10 @@ const SignUp = ({ setToggle }: Props) => {
   const [counter, setCounter] = useState<number>(181);
   const [timer, setTimer] = useState<NodeJS.Timeout>();
 
-  const signUpFunction = User.signUp();
+  //mutation
+  const signUP = User.signUp();
+  const codeSendForSignUP = Auth.codeSendForSignUp();
+  const codeCheck = Auth.codeCheck();
 
   const counteDownStart = () => {
     countDownStop();
@@ -61,13 +69,21 @@ const SignUp = ({ setToggle }: Props) => {
   };
   useEffect(() => {
     if (counter === 0) {
+      setAuthCode("");
       countDownStop();
     }
   }, [counter]);
 
   const onSubmit = () => {
     const { email, nickname, password } = getValues();
-    signUpFunction.mutate({ email, nickname, password });
+    signUP.mutate(
+      { email, nickname, password },
+      {
+        onSuccess: () => {
+          setToggle(0);
+        }
+      }
+    );
   };
 
   return (
@@ -170,7 +186,7 @@ const SignUp = ({ setToggle }: Props) => {
         <LogInSignUp.WarningText>{errors.passwordCheck?.message}</LogInSignUp.WarningText>
         {authCodeConfirm ? (
           <SignUpButton type="submit" disabled={!isDirty || !isValid} bgColor="">
-            회원가입
+            {signUP.isLoading ? <CircularProgress size={24} color="inherit" /> : "회원가입"}
           </SignUpButton>
         ) : (
           <AuthCodeWrapper>
@@ -178,17 +194,24 @@ const SignUp = ({ setToggle }: Props) => {
             {codeRequest && (
               <AuthCodeConfirmButton
                 onClick={async () => {
-                  //인증코드 확인
-                  //code : 입력한 코드, authCode : 인증 코드(해쉬)
-                  Axios.post("auth/code/check", { code, authCode }).then((res) => {
-                    if (res.data.result) {
-                      setAuthCodeConfirm(true);
-                      clearTimeout(timer);
-                      toast.success("인증코드 확인 완료");
-                    } else {
-                      toast.error("인증코드가 올바르지 않습니다.");
+                  //인증코드 확인, code : 입력한 코드, authCode : 인증 코드(해쉬)
+                  codeCheck.mutate(
+                    { code, authCode },
+                    {
+                      onSuccess: (res) => {
+                        if (res.data.result) {
+                          setAuthCodeConfirm(true);
+                          clearTimeout(timer);
+                          toast.success("인증코드 확인 완료");
+                        } else {
+                          toast.error("인증코드가 올바르지 않습니다.");
+                        }
+                      },
+                      onError: () => {
+                        toast.error("인증코드 확인 과정 중 오류 발생.");
+                      }
                     }
-                  });
+                  );
                 }}
               >
                 <span>확인</span>
@@ -201,25 +224,35 @@ const SignUp = ({ setToggle }: Props) => {
                 const { email } = getValues();
                 if (email) {
                   //이메일로 보낸 코드를 리턴 = axios 코드 발송 api
-                  Axios.post("auth/code", { email })
-                    .then((res) => {
-                      setAuthCode(res.data.code);
-                      setCodeRequest(true);
-                      countDownStop();
-                      counteDownStart();
+                  codeSendForSignUP.mutate(
+                    { email },
+                    {
+                      onSuccess: (res) => {
+                        setAuthCode(res.data.code);
+                        setCodeRequest(true);
+                        countDownStop();
+                        counteDownStart();
 
-                      console.log(email);
-                      console.log(res.data.code);
-                      toast.success("인증코드가 발송되었습니다.");
-                    })
-                    .catch(() => toast.error("인증코드가 발송이 실패하였습니다."));
+                        toast.success("인증코드가 발송되었습니다.");
+                      },
+                      onError: () => {
+                        toast.error("인증코드가 발송이 실패하였습니다.");
+                      }
+                    }
+                  );
                 } else {
                   toast.error("이메일 정보가 올바르지않습니다.");
                 }
               }}
             >
-              <span>인증 코드</span>
-              <span>발송</span>
+              {codeSendForSignUP.isLoading ? (
+                <CircularProgress color="inherit" size={24} />
+              ) : (
+                <>
+                  <span>인증 코드</span>
+                  <span>발송</span>
+                </>
+              )}
             </AuthCodeSendButton>
           </AuthCodeWrapper>
         )}
