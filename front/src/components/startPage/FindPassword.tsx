@@ -49,6 +49,7 @@ const FindPassword = ({ setToggle }: Props) => {
     Axios.post("auth/password/reset", { email })
       .then(() => {
         toast.success("이메일로 임시 비밀번호가 발송되었습니다.");
+        setToggle(0);
       })
       .catch(() => {
         toast.error("에러 발생 임시 비밀번호 발송 실패");

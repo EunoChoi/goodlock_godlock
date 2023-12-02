@@ -9,7 +9,7 @@ const Axios = axios.create({
   // headers: { accept: "application/json", "Content-Type": "application/json" },
 
   withCredentials: true, //쿠키를 첨부해서 요청
-  timeout: 10000 //10s
+  timeout: 30000 //30s
 });
 
 export default Axios;
