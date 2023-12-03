@@ -84,7 +84,7 @@ const FindPassword = ({ setToggle }: Props) => {
 
   return (
     <LogInSignUp.Wrapper>
-      <LogInSignUp.Title>비밀번호 찾기</LogInSignUp.Title>
+      <LogInSignUp.Title>비밀번호 초기화</LogInSignUp.Title>
 
       <LogInSignUp.Input
         placeholder="이메일"

@@ -83,7 +83,7 @@ router.post("/code", async (req, res) => {
           <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">인증코드 : ${code}</div>
         </div>
       </div>
-      <img src="https://i.ibb.co/B66T06q/Screenshot-2023-12-04-at-3-00-30-AM.png" style="width: 100%;object-fit: contain;">
+      <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="width: 100%;object-fit: contain;">
       `
 
     });
@@ -157,8 +157,8 @@ router.post("/code/find/password", async (req, res) => {
             <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">인증코드 : ${code}</div>
           </div>
         </div>
-        <img src="https://i.ibb.co/B66T06q/Screenshot-2023-12-04-at-3-00-30-AM.png" style="width: 100%;object-fit: contain;">
-      `
+        <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="width: 100%;object-fit: contain;">
+        `
     });
 
     const hashedCode = await bcrypt.hash(code, 8);
@@ -243,8 +243,8 @@ router.post("/password/reset", async (req, res) => {
             <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">임시 비밀번호 : ${tempPassword}</div>
           </div>
         </div>
-        <img src="https://i.ibb.co/B66T06q/Screenshot-2023-12-04-at-3-00-30-AM.png" style="width: 100%;object-fit: contain;">
-      `
+        <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="width: 100%;object-fit: contain;">
+        `
     });
 
     return res.status(200).json("비밀번호 초기화가 완료되었습니다.");

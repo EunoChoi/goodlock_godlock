@@ -56,6 +56,9 @@ const Start = () => {
       <BG2 />
       <Footer>
         <span>문의 : goodlockgodlock@gmail.com</span>
+        <span>
+          <a href="http://www.freepik.com">그림 : Designed by rawpixel.com / Freepik</a>
+        </span>
       </Footer>
       <StartWrapper>
         <Title>
@@ -101,7 +104,7 @@ export default Start;
 
 const TextBox = styled.div`
   /* font-family: OAGothic-ExtraBold; */
-
+  z-index: 99;
   line-height: 36px;
   font-size: 24px;
   color: rgba(0, 0, 0, 0.5);
@@ -126,6 +129,7 @@ const TextBox = styled.div`
 `;
 
 const Title = styled.span`
+  z-index: 99;
   > div {
     margin-left: -10px;
 
@@ -142,7 +146,7 @@ const Title = styled.span`
       /* font-family: OAGothic-ExtraBold; */
       font-size: 72px;
       font-weight: 600;
-      color: rgba(0, 0, 0, 0.4);
+      color: #778199;
       @media (orientation: portrait) or (max-height: 480px) {
         font-size: 52px;
       }
@@ -178,18 +182,20 @@ const Footer = styled.div`
   left: 0;
   width: 100vw;
   height: 32px;
+  height: auto;
 
   font-size: 12px;
   background-color: rgba(0, 0, 0, 0.2);
   color: rgba(0, 0, 0, 0.5);
 
   display: flex;
-  justify-content: end;
-  align-items: center;
-  padding: 0 12px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+  padding: 6px 12px;
 
-  span {
-    margin-left: 16px;
+  span:first-child {
+    margin-bottom: 4px;
   }
 `;
 
@@ -217,15 +223,16 @@ const StartWrapper = styled.div`
 
 const StartImg = styled.img`
   position: fixed;
-  right: 5vw;
+  right: 2vw;
   bottom: calc(var(--vh, 1vh) * 12);
 
-  width: 50%;
-  height: 50%;
+  width: 60%;
+  height: 60%;
   object-fit: contain;
   @media (orientation: portrait) or (max-height: 480px) {
     width: 70%;
-    height: calc(var(--vh, 1vh) * 25);
+    height: calc(var(--vh, 1vh) * 30);
+    bottom: calc(var(--vh, 1vh) * 6);
     /* margin-right: 24px; */
   }
   @media (orientation: landscape) and (max-height: 480px) {
