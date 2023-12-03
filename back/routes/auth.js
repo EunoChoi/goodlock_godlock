@@ -32,10 +32,17 @@ router.post("/naverlogin", async (req, res) => {
 });
 //code send for sign up
 router.post("/code", async (req, res) => {
-
   let { email } = req.body;
   console.log(email);
   try {
+    const user = await User.findOne(
+      { where: { email } }
+    );
+    if (user) {
+      if (user.level === 1) return res.status(401).json("이미 가입된 이메일입니다.");
+      if (user.level === 2) return res.status(401).json("간편 로그인으로 가입된 이메일입니다.");
+    }
+
     //인증 코드 생성
     let code = "";
     for (let i = 0; i < 6; i++) {
@@ -61,10 +68,24 @@ router.post("/code", async (req, res) => {
     await transporter.sendMail({
       from: 'goodlockgodlock@gmail.com',
       to: email,
-      subject: '굿락갓락, 인증코드입니다.',
+      subject: '굿락갓락, 회원가입 인증코드 안내',
       text: code,
-      html: `<div><b>안녕하세요. 굿락갓락입니다.</b></div>
-      <div>${code}</div>`
+      html: `
+      <div style="width: 100%;height: 12px;background-color: #C7D7FF;margin-bottom: 40px;"></div>
+      <div style="background-color: white;width: 100%; border-radius: 8px; padding: 24px;">
+        <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
+        <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">회원가입 인증코드 안내 </div>
+        <div>
+          <div style="font-size: 16px;line-height: 24px;">안녕하세요.</div>
+          <div style="font-size: 16px;line-height: 24px;">굿락갓락을 방문해주셔서 감사드립니다.</div>
+          <div style="font-size: 16px;line-height: 24px;">아래 인증코드로 인증 후 회원가입을 완료해주시기 바랍니다.</div>
+          <div style="font-size: 16px;line-height: 24px;">감사합니다.</div>
+          <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">인증코드 : ${code}</div>
+        </div>
+      </div>
+      <img src="https://i.ibb.co/B66T06q/Screenshot-2023-12-04-at-3-00-30-AM.png" style="width: 100%;object-fit: contain;">
+      `
+
     });
 
     const hashedCode = await bcrypt.hash(code, 8);
@@ -121,10 +142,23 @@ router.post("/code/find/password", async (req, res) => {
     await transporter.sendMail({
       from: 'goodlockgodlock@gmail.com',
       to: email,
-      subject: '굿락갓락, 회원가입 인증코드입니다.',
+      subject: '굿락갓락, 비밀번호 초기화 인증코드 안내',
       text: code,
-      html: `<div><b>안녕하세요. 굿락갓락입니다.</b></div>
-      <div>${code}</div>`
+      html: `
+        <div div style="width: 100%;height: 12px;background-color: #C7D7FF;margin-bottom: 40px;" ></div>
+        <div style="background-color: white;width: 100%; border-radius: 8px; padding: 24px;">
+          <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
+          <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">비밀번호 초기화 인증코드 안내 </div>
+          <div>
+            <div style="font-size: 16px;line-height: 24px;">안녕하세요.</div>
+            <div style="font-size: 16px;line-height: 24px;">굿락갓락을 이용해주셔서 감사드립니다.</div>
+            <div style="font-size: 16px;line-height: 24px;">아래 인증코드로 인증 후 비밀번호 초기화를 완료해주시기 바랍니다.</div>
+            <div style="font-size: 16px;line-height: 24px;">감사합니다.</div>
+            <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">인증코드 : ${code}</div>
+          </div>
+        </div>
+        <img src="https://i.ibb.co/B66T06q/Screenshot-2023-12-04-at-3-00-30-AM.png" style="width: 100%;object-fit: contain;">
+      `
     });
 
     const hashedCode = await bcrypt.hash(code, 8);
@@ -193,11 +227,24 @@ router.post("/password/reset", async (req, res) => {
     await transporter.sendMail({
       from: 'goodlockgodlock@gmail.com',
       to: email,
-      subject: '굿락갓락, 임시 비밀번호 입니다.',
+      subject: '굿락갓락, 비밀번호 초기화 안내',
       text: tempPassword,
-      html: `<div><b>안녕하세요. 굿락갓락입니다.</b></div>
-      <span>임시 비밀번호입니다. 로그인 후 비밀번호 재설정하시기 바랍니다.</span>
-      <div>${tempPassword}</div>`
+      html: `
+        <div div style="width: 100%;height: 12px;background-color: #C7D7FF;margin-bottom: 40px;" ></div>
+        <div style="background-color: white;width: 100%; border-radius: 8px; padding: 24px;">
+          <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
+          <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">임시 비밀번호 안내 </div>
+          <div>
+            <div style="font-size: 16px;line-height: 24px;">안녕하세요.</div>
+            <div style="font-size: 16px;line-height: 24px;">굿락갓락을 이용해주셔서 감사드립니다.</div>
+            <div style="font-size: 16px;line-height: 24px;">아래 임시 비밀번호로 변경되었습니다.</div>
+            <div style="font-size: 16px;line-height: 24px;">보안을 위해 로그인 후 즉시 비밀번호를 변경해주시기 바랍니다.</div>
+            <div style="font-size: 16px;line-height: 24px;">감사합니다.</div>
+            <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">임시 비밀번호 : ${tempPassword}</div>
+          </div>
+        </div>
+        <img src="https://i.ibb.co/B66T06q/Screenshot-2023-12-04-at-3-00-30-AM.png" style="width: 100%;object-fit: contain;">
+      `
     });
 
     return res.status(200).json("비밀번호 초기화가 완료되었습니다.");

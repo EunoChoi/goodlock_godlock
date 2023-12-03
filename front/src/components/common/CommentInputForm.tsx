@@ -1,40 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import Axios from "../../apis/Axios";
 import { toast } from "react-toastify";
 
-import { useMutation } from "@tanstack/react-query";
-import { useQueryClient } from "@tanstack/react-query";
 import Comment from "../../functions/reactQuery/Comment";
 
 //mui
-import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
 import SendIcon from "@mui/icons-material/Send";
 
-interface props {
-  postId: number;
-  postType: number;
-}
-
-const CommentInputForm = ({ postId, postType }: props) => {
-  const queryClient = useQueryClient();
-
+const CommentInputForm = ({ postId }: { postId: number }) => {
   const [content, setContent] = useState("");
 
-  const addComment = Comment.add(postId, content);
-  useEffect(() => {
-    if (addComment.isSuccess) {
-      setContent("");
-    }
-  }, [addComment.isSuccess]);
+  const addComment = Comment.add();
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        // if (content.length === 0) console.log("게시글 내용 X");
         if (content.length > 60 || content.length < 5) toast.warning("댓글은 최소 5자 최대 60자 입력이 가능합니다.");
-        else addComment.mutate();
+        else
+          addComment.mutate(
+            { postId, content },
+            {
+              onSuccess: () => {
+                setContent("");
+              }
+            }
+          );
       }}
     >
       <CommentInputArea>
@@ -47,7 +38,6 @@ const CommentInputForm = ({ postId, postType }: props) => {
         ></CommentInput>
         <CommentSendButton>
           <SendIcon />
-          {/* <AddCommentOutlinedIcon /> */}
         </CommentSendButton>
       </CommentInputArea>
     </form>

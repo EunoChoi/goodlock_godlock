@@ -75,40 +75,45 @@ const InputPopup = ({ modalClose }: props) => {
       const endM = end.getMonth();
       const endD = end.getDate();
       if (dateToggle) {
-        addPost.mutate({
-          content,
-          images,
-          type: inputType,
-          start: new Date(startY, startM, startD, 0, 0, 0),
-          end: new Date(endY, endM, endD, 0, 0, 0),
-          link
-        });
+        addPost.mutate(
+          {
+            content,
+            images,
+            type: inputType,
+            start: new Date(startY, startM, startD, 0, 0, 0),
+            end: new Date(endY, endM, endD, 0, 0, 0),
+            link
+          },
+          {
+            onSuccess: () => {
+              modalClose();
+            }
+          }
+        );
       } else {
-        addPost.mutate({
-          content,
-          images,
-          type: inputType,
-          start: null,
-          end: null,
-          link
-        });
+        addPost.mutate(
+          {
+            content,
+            images,
+            type: inputType,
+            start: null,
+            end: null,
+            link
+          },
+          {
+            onSuccess: () => {
+              modalClose();
+            }
+          }
+        );
       }
     }
   };
 
   //useMutation
   const addPost = Post.add();
-  useEffect(() => {
-    if (addPost.isSuccess) {
-      modalClose();
-    }
-  }, [addPost.isSuccess]);
+
   const uploadImages = Upload.images();
-  useEffect(() => {
-    if (uploadImages.isSuccess) {
-      if (uploadImages?.data?.data) setImages([...images, ...uploadImages.data.data]);
-    }
-  }, [uploadImages.isSuccess]);
 
   //로컬에서 이미지 에러 처리
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,7 +141,11 @@ const InputPopup = ({ modalClose }: props) => {
         return null;
       }
 
-      uploadImages.mutate(imageFormData);
+      uploadImages.mutate(imageFormData, {
+        onSuccess: (res) => {
+          setImages([...images, ...res.data]);
+        }
+      });
     }
   };
 

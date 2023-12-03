@@ -87,43 +87,45 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
       const endD = end.getDate();
 
       if (dateToggle) {
-        editPost.mutate({
-          content,
-          images,
-          type: postProps.type,
-          id: postProps.id,
-          start: new Date(startY, startM, startD, 0, 0, 0),
-          end: new Date(endY, endM, endD, 0, 0, 0),
-          link
-        });
+        editPost.mutate(
+          {
+            id: postProps.id,
+            data: {
+              content,
+              images,
+              type: postProps.type,
+              id: postProps.id,
+              start: new Date(startY, startM, startD, 0, 0, 0),
+              end: new Date(endY, endM, endD, 0, 0, 0),
+              link
+            }
+          },
+          {
+            onSuccess: () => {
+              modalClose();
+            }
+          }
+        );
       } else {
-        editPost.mutate({
-          content,
-          images,
-          type: postProps.type,
-          id: postProps.id,
-          start: null,
-          end: null,
-          link
-        });
+        editPost.mutate(
+          {
+            id: postProps.id,
+            data: { content, images, type: postProps.type, id: postProps.id, start: null, end: null, link }
+          },
+          {
+            onSuccess: () => {
+              modalClose();
+            }
+          }
+        );
       }
     }
   };
 
   //useMutation
-  const editPost = Post.edit(postProps.id);
-  useEffect(() => {
-    if (editPost.isSuccess) {
-      modalClose();
-    }
-  }, [editPost.isSuccess]);
+  const editPost = Post.edit();
 
   const uploadImages = Upload.images();
-  useEffect(() => {
-    if (uploadImages.isSuccess) {
-      if (uploadImages?.data?.data) setImages([...images, ...uploadImages.data.data]);
-    }
-  }, [uploadImages.isSuccess]);
 
   //로컬에서 이미지 에러 처리
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -149,11 +151,11 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
         toast.error("선택된 이미지 중 5MB를 초과하는 이미지가 존재합니다.");
         return null;
       }
-      uploadImages.mutate(imageFormData);
-      // Axios.post("post/images", imageFormData).then((res) => {
-      //   console.log(res.data);
-      //   setImages([...images, ...res.data]);
-      // });
+      uploadImages.mutate(imageFormData, {
+        onSuccess: (res) => {
+          setImages([...images, ...res.data]);
+        }
+      });
     }
   };
 

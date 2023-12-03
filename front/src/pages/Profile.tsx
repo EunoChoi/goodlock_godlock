@@ -118,7 +118,15 @@ const Profile = () => {
           },
           {
             label: "확인",
-            onClick: () => editNickname.mutate({ nickname })
+            onClick: () =>
+              editNickname.mutate(
+                { nickname },
+                {
+                  onSuccess: () => {
+                    setNicknameInputToggle(false);
+                  }
+                }
+              )
           }
         ]
       });
@@ -138,7 +146,15 @@ const Profile = () => {
           },
           {
             label: "확인",
-            onClick: () => editUsertext.mutate({ usertext })
+            onClick: () =>
+              editUsertext.mutate(
+                { usertext },
+                {
+                  onSuccess: () => {
+                    setUsertextInputToggle(false);
+                  }
+                }
+              )
           }
         ]
       });
@@ -240,19 +256,7 @@ const Profile = () => {
   //useMutation
   const logout = User.logout();
   const editNickname = User.editNick();
-  useEffect(() => {
-    if (editNickname.isSuccess) {
-      toast.success("닉네임 변경이 완료되었습니다.");
-      setNicknameInputToggle(false);
-    }
-  }, [editNickname.isSuccess]);
   const editUsertext = User.editText();
-  useEffect(() => {
-    if (editUsertext.isSuccess) {
-      toast.success("상태메세지 변경이 완료되었습니다.");
-      setUsertextInputToggle(false);
-    }
-  }, [editUsertext.isSuccess]);
   const unFollow = User.unFollow();
   const deleteFollower = User.deleteFollower();
 

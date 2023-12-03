@@ -97,7 +97,7 @@ const UserInfo = () => {
     }
   );
   //useMutation
-  const follow = User.follow(targetUser?.id);
+  const follow = User.follow();
   const unFollow = User.unFollow();
 
   useEffect(() => {
@@ -181,7 +181,7 @@ const UserInfo = () => {
                     },
                     {
                       label: "확인",
-                      onClick: () => follow.mutate()
+                      onClick: () => follow.mutate(targetUser?.id)
                     }
                   ]
                 });

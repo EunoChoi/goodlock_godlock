@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components/macro";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import { toast } from "react-toastify";
 
 //style
 import Animation from "../styles/Animation";
@@ -34,22 +33,8 @@ const PostZoom = ({ postProps, modalClose }: props) => {
   const user = User.getData();
 
   //useMutation
-  const like = Post.like(postProps.id);
-  useEffect(() => {
-    if (like.isSuccess) {
-      if (postProps.type === 0) toast.success("좋아요 완료");
-      if (postProps.type === 1) toast.success("관심 등록 완료");
-      if (postProps.type === 2) toast.success("좋아요 완료");
-    }
-  }, [like.isSuccess]);
-  const disLike = Post.disLike(postProps.id);
-  useEffect(() => {
-    if (disLike.isSuccess) {
-      if (postProps.type === 0) toast.success("좋아요 취소 완료");
-      if (postProps.type === 1) toast.success("관심 등록 해제 완료");
-      if (postProps.type === 2) toast.success("좋아요 취소 완료");
-    }
-  }, [disLike.isSuccess]);
+  const like = Post.like();
+  const disLike = Post.disLike();
 
   //local
   const isMobile = IsMobile();
@@ -123,9 +108,9 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                 <button
                   onClick={() => {
                     if (!isLiked) {
-                      like.mutate();
+                      like.mutate(postProps.id);
                     } else {
-                      disLike.mutate();
+                      disLike.mutate(postProps.id);
                     }
                   }}
                 >
@@ -215,9 +200,9 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                 <button
                   onClick={() => {
                     if (!isLiked) {
-                      like.mutate();
+                      like.mutate(postProps.id);
                     } else {
-                      disLike.mutate();
+                      disLike.mutate(postProps.id);
                     }
                   }}
                 >
@@ -302,9 +287,9 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                     <button
                       onClick={() => {
                         if (!isLiked) {
-                          like.mutate();
+                          like.mutate(postProps.id);
                         } else {
-                          disLike.mutate();
+                          disLike.mutate(postProps.id);
                         }
                       }}
                     >
@@ -413,9 +398,9 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                     <button
                       onClick={() => {
                         if (!isLiked) {
-                          like.mutate();
+                          like.mutate(postProps.id);
                         } else {
-                          disLike.mutate();
+                          disLike.mutate(postProps.id);
                         }
                       }}
                     >

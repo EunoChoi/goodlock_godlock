@@ -799,7 +799,7 @@ router.patch("/:postId/like", tokenCheck, async (req, res) => {
 
     if (req.currentUserId) {
       await post.addLikers(req.currentUserId);
-      return res.status(200).json("좋아요 완료");
+      return res.status(200).json({ type: post.type, result: "좋아요 완료" });
     }
     else {
       return res.status(400).json("오류 발생");
@@ -823,7 +823,7 @@ router.delete("/:postId/like", tokenCheck, async (req, res) => {
 
     if (req.currentUserId) {
       await post.removeLikers(req.currentUserId);
-      return res.status(200).json("좋아요 해제 완료");
+      return res.status(200).json({ type: post.type, result: "좋아요 해제 완료" });
     }
     else {
       return res.status(400).json("오류 발생");

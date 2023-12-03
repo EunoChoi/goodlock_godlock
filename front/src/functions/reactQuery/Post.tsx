@@ -73,9 +73,9 @@ const Post = {
       }
     );
   },
-  edit: (id: number) => {
+  edit: () => {
     const queryClient = useQueryClient();
-    return useMutation((data: localPostData) => Axios.patch<localPostData>(`/post/${id}`, data), {
+    return useMutation(({ id, data }: { id: number; data: localPostData }) => Axios.patch(`/post/${id}`, data), {
       onSuccess: () => {
         queryClient.invalidateQueries(["user"]);
         queryClient.invalidateQueries(["thisweek/end/liked"]);
@@ -105,10 +105,10 @@ const Post = {
       }
     });
   },
-  delete: (id: number) => {
+  delete: () => {
     const queryClient = useQueryClient();
 
-    return useMutation(() => Axios.delete(`post/${id}`), {
+    return useMutation((id: number) => Axios.delete(`post/${id}`), {
       onSuccess: () => {
         queryClient.invalidateQueries(["user"]);
         queryClient.invalidateQueries(["thisweek/end/liked"]);
@@ -138,11 +138,11 @@ const Post = {
       }
     });
   },
-  like: (id: number) => {
+  like: () => {
     const queryClient = useQueryClient();
 
-    return useMutation(() => Axios.patch(`post/${id}/like`), {
-      onSuccess: () => {
+    return useMutation((id: number) => Axios.patch(`post/${id}/like`), {
+      onSuccess: (res) => {
         queryClient.invalidateQueries(["user"]);
 
         queryClient.invalidateQueries(["thisweek/end/liked"]);
@@ -162,17 +162,19 @@ const Post = {
         queryClient.invalidateQueries(["likedPosts"]);
         queryClient.invalidateQueries(["myCommPosts"]);
         queryClient.invalidateQueries(["myInfoPosts"]);
+
+        if (res.data.type === 1) toast.success("관심 등록 완료");
+        else if (res.data.type !== 1) toast.success("좋아요 완료");
       },
       onError: (err: CustomError2) => {
         toast.error(err.response?.data);
-        // alert(err.response?.data);
       }
     });
   },
-  disLike: (id: number) => {
+  disLike: () => {
     const queryClient = useQueryClient();
-    return useMutation(() => Axios.delete(`post/${id}/like`), {
-      onSuccess: () => {
+    return useMutation((id: number) => Axios.delete(`post/${id}/like`), {
+      onSuccess: (res) => {
         queryClient.invalidateQueries(["user"]);
 
         queryClient.invalidateQueries(["thisweek/end/liked"]);
@@ -192,6 +194,9 @@ const Post = {
         queryClient.invalidateQueries(["likedPosts"]);
         queryClient.invalidateQueries(["myCommPosts"]);
         queryClient.invalidateQueries(["myInfoPosts"]);
+
+        if (res.data.type === 1) toast.success("관심 등록 해제 완료");
+        else if (res.data.type !== 1) toast.success("좋아요 해제 완료");
       },
       onError: (err: CustomError2) => {
         toast.error(err.response?.data);

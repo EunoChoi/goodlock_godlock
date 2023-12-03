@@ -235,8 +235,8 @@ const SignUp = ({ setToggle }: Props) => {
 
                         toast.success("인증코드가 발송되었습니다.");
                       },
-                      onError: () => {
-                        toast.error("인증코드가 발송이 실패하였습니다.");
+                      onError: (res: any) => {
+                        toast.error(res.response.data);
                       }
                     }
                   );

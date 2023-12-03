@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import Axios from "../../apis/Axios";
-import { toast } from "react-toastify";
 
 const Auth = {
   codeSendForSignUp: () => {

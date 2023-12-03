@@ -145,6 +145,8 @@ const User = {
         queryClient.invalidateQueries(["likedPosts"]);
         queryClient.invalidateQueries(["myCommPosts"]);
         queryClient.invalidateQueries(["myInfoPosts"]);
+
+        toast.success("프로필 이미지 변경이 완료되었습니다.");
       },
       onError: (err: CustomError2) => {
         toast.warning(err.response?.data);
@@ -157,6 +159,8 @@ const User = {
     return useMutation((data: { nickname: string }) => Axios.patch("user/edit/nickname", data), {
       onSuccess: () => {
         queryClient.invalidateQueries(["user"]);
+
+        toast.success("닉네임 변경이 완료되었습니다.");
       },
       onError: (err: CustomError2) => {
         toast.warning(err.response?.data);
@@ -170,16 +174,18 @@ const User = {
     return useMutation((data: { usertext: string }) => Axios.patch("user/edit/usertext", data), {
       onSuccess: () => {
         queryClient.invalidateQueries(["user"]);
+
+        toast.success("상태메세지 변경이 완료되었습니다.");
       },
       onError: (err: CustomError2) => {
         toast.warning(err.response?.data);
       }
     });
   },
-  follow: (id: number) => {
+  follow: () => {
     const queryClient = useQueryClient();
 
-    return useMutation(() => Axios.patch(`user/${id}/follow`), {
+    return useMutation((id: number) => Axios.patch(`user/${id}/follow`), {
       onSuccess: () => {
         queryClient.invalidateQueries(["user"]);
         queryClient.invalidateQueries(["targetUser"]);

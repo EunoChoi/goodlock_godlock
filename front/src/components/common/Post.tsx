@@ -64,23 +64,9 @@ const Post = ({ postProps }: any) => {
   };
 
   //useMutation
-  const like = PostFunction.like(postProps?.id);
-  useEffect(() => {
-    if (like.isSuccess) {
-      if (postProps.type === 0) toast.success("좋아요 완료");
-      if (postProps.type === 1) toast.success("관심 등록 완료");
-      if (postProps.type === 2) toast.success("좋아요 완료");
-    }
-  }, [like.isSuccess]);
-  const disLike = PostFunction.disLike(postProps?.id);
-  useEffect(() => {
-    if (disLike.isSuccess) {
-      if (postProps.type === 0) toast.success("좋아요 취소 완료");
-      if (postProps.type === 1) toast.success("관심 등록 해제 완료");
-      if (postProps.type === 2) toast.success("좋아요 취소 완료");
-    }
-  }, [disLike.isSuccess]);
-  const deletePost = PostFunction.delete(postProps?.id);
+  const like = PostFunction.like();
+  const disLike = PostFunction.disLike();
+  const deletePost = PostFunction.delete();
 
   //포스트 팝업 뜬 경우 백그라운드 스크롤 방지
   useEffect(() => {
@@ -145,7 +131,7 @@ const Post = ({ postProps }: any) => {
                   },
                   {
                     label: "확인",
-                    onClick: () => deletePost.mutate()
+                    onClick: () => deletePost.mutate(postProps?.id)
                   }
                 ]
               });
@@ -276,9 +262,9 @@ const Post = ({ postProps }: any) => {
           <ToggleButton
             onClick={() => {
               if (!isLiked) {
-                like.mutate();
+                like.mutate(postProps.id);
               } else {
-                disLike.mutate();
+                disLike.mutate(postProps.id);
               }
             }}
           >
@@ -292,9 +278,9 @@ const Post = ({ postProps }: any) => {
             <ToggleButton
               onClick={() => {
                 if (!isLiked) {
-                  like.mutate();
+                  like.mutate(postProps.id);
                 } else {
-                  disLike.mutate();
+                  disLike.mutate(postProps.id);
                 }
               }}
             >
@@ -319,9 +305,9 @@ const Post = ({ postProps }: any) => {
             <ToggleButton
               onClick={() => {
                 if (!isLiked) {
-                  like.mutate();
+                  like.mutate(postProps.id);
                 } else {
-                  disLike.mutate();
+                  disLike.mutate(postProps.id);
                 }
               }}
             >
@@ -378,7 +364,7 @@ const Post = ({ postProps }: any) => {
 
       {isCommentOpen && (
         <>
-          <CommentInputForm postId={postProps?.id} postType={postProps?.type}></CommentInputForm>
+          <CommentInputForm postId={postProps?.id}></CommentInputForm>
           <CommentWrapper ref={commentScroll}>
             {postProps?.Comments.slice(0, commentLoadLength).map((v: any, i: number) => (
               <Comment

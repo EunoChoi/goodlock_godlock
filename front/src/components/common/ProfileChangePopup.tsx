@@ -34,19 +34,8 @@ const ProfileChangePopup = ({ modalClose }: setStateProps) => {
 
   //useMutatton
   const editProfilePic = User.editPic();
-  useEffect(() => {
-    if (editProfilePic.isSuccess) {
-      toast.success("프로필 이미지 변경이 완료되었습니다.");
-      modalClose();
-    }
-  }, [editProfilePic.isSuccess]);
 
   const uploadImage = Upload.images();
-  useEffect(() => {
-    if (uploadImage.isSuccess) {
-      if (uploadImage?.data?.data) setImage(uploadImage.data.data[0]);
-    }
-  }, [uploadImage.isSuccess]);
 
   //로컬에서 이미지 에러 처리
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +47,11 @@ const ProfileChangePopup = ({ modalClose }: setStateProps) => {
         return null;
       }
       imageFormData.append("image", e.target.files[0]);
-      uploadImage.mutate(imageFormData);
+      uploadImage.mutate(imageFormData, {
+        onSuccess: (res) => {
+          setImage(res.data[0]);
+        }
+      });
     }
   };
   useEffect(() => {
@@ -115,7 +108,14 @@ const ProfileChangePopup = ({ modalClose }: setStateProps) => {
             </Button>
             <Button
               onClick={() => {
-                editProfilePic.mutate({ profilePic: image });
+                editProfilePic.mutate(
+                  { profilePic: image },
+                  {
+                    onSuccess: () => {
+                      modalClose();
+                    }
+                  }
+                );
                 console.log(image);
               }}
             >

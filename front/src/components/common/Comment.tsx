@@ -37,16 +37,8 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
   const user = User.getData();
 
   //useMutation
-  const editComment = CommentFunction.edit(commentProps.PostId, commentProps.id);
-  useEffect(() => {
-    if (editComment.isSuccess) {
-      setCommentEdit(false);
-    } else {
-      setCommentEditContent(commentProps?.content);
-    }
-  }, [editComment.isSuccess]);
-
-  const deleteComment = CommentFunction.delete(commentProps.PostId, commentProps.id);
+  const editComment = CommentFunction.edit();
+  const deleteComment = CommentFunction.delete();
 
   return (
     <CommentBox
@@ -84,7 +76,7 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
                   },
                   {
                     label: "확인",
-                    onClick: () => deleteComment.mutate()
+                    onClick: () => deleteComment.mutate({ postId: commentProps.PostId, commentId: commentProps.id })
                   }
                 ]
               });
@@ -147,7 +139,21 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
             if (commentEditContent.length > 60 || commentEditContent.length < 5)
               toast.warning("댓글은 최소 5자 최대 60자 입력이 가능합니다.");
             else {
-              editComment.mutate({ content: commentEditContent });
+              editComment.mutate(
+                {
+                  postId: commentProps.PostId,
+                  commentId: commentProps.id,
+                  content: commentEditContent
+                },
+                {
+                  onSuccess: () => {
+                    setCommentEdit(false);
+                  },
+                  onError: () => {
+                    setCommentEditContent(commentProps?.content);
+                  }
+                }
+              );
               setCommentEdit(false);
             }
           }}
