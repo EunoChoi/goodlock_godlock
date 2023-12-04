@@ -38,6 +38,10 @@ const PostZoom = ({ postProps, modalClose }: props) => {
 
   //local
   const isMobile = IsMobile();
+  const makeCorectUrl = (url: string) => {
+    url = url.toLowerCase();
+    return "https://" + url.replace("https:/", "").replace("http:/", "");
+  };
 
   const isOnlyText = postProps.Images.length === 0;
   const isLiked = postProps?.Likers?.find((v: any) => v.id === user?.id);
@@ -98,8 +102,8 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                   <PostLink>
                     <InsertLinkIcon />
                     <span>
-                      <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
-                        {postProps?.link}
+                      <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
+                        {makeCorectUrl(postProps?.link)}
                       </a>
                     </span>
                   </PostLink>
@@ -191,8 +195,8 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                   <PostLink>
                     <InsertLinkIcon />
                     <span>
-                      <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
-                        {postProps?.link}
+                      <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
+                        {makeCorectUrl(postProps?.link)}
                       </a>
                     </span>
                   </PostLink>
@@ -277,8 +281,8 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                       <PostLink>
                         <InsertLinkIcon />
                         <span>
-                          <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
-                            {postProps?.link}
+                          <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
+                            {makeCorectUrl(postProps?.link)}
                           </a>
                         </span>
                       </PostLink>
@@ -376,8 +380,8 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                               <PostLink>
                                 <InsertLinkIcon />
                                 <span>
-                                  <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
-                                    {postProps?.link}
+                                  <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
+                                    {makeCorectUrl(postProps?.link)}
                                   </a>
                                 </span>
                               </PostLink>

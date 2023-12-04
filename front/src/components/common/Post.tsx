@@ -63,6 +63,11 @@ const Post = ({ postProps }: any) => {
     setPostEdit(false);
   };
 
+  const makeCorectUrl = (url: string) => {
+    url = url.toLowerCase();
+    return "https://" + url.replace("https:/", "").replace("http:/", "");
+  };
+
   //useMutation
   const like = PostFunction.like();
   const disLike = PostFunction.disLike();
@@ -248,8 +253,8 @@ const Post = ({ postProps }: any) => {
           <PostLink>
             <InsertLinkIcon />
             <span>
-              <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
-                {postProps?.link}
+              <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
+                {makeCorectUrl(postProps?.link)}
               </a>
             </span>
           </PostLink>
