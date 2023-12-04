@@ -222,9 +222,11 @@ const BotWrapper = styled.div`
   .rsc-container {
     /* height: auto; */
     @media (orientation: landscape) and (max-height: 480px) {
-      bottom: auto;
-      top: 0px;
       height: 320px;
+    }
+    @media (orientation: landscape) and (max-height: 480px) {
+      bottom: auto;
+      top: 0;
     }
   }
   .rsc-content {
