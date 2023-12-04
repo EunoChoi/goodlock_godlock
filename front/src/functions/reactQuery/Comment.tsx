@@ -21,6 +21,8 @@ const Comment = {
         onSuccess: () => {
           queryClient.invalidateQueries(["user"]);
 
+          queryClient.invalidateQueries(["single"]);
+
           queryClient.invalidateQueries(["noticePosts"]);
           queryClient.invalidateQueries(["infoPosts"]);
           queryClient.invalidateQueries(["searchInfo"]);
@@ -55,6 +57,8 @@ const Comment = {
         onSuccess: () => {
           queryClient.invalidateQueries(["user"]);
 
+          queryClient.invalidateQueries(["single"]);
+
           queryClient.invalidateQueries(["noticePosts"]);
           queryClient.invalidateQueries(["infoPosts"]);
           queryClient.invalidateQueries(["searchInfo"]);
@@ -88,6 +92,8 @@ const Comment = {
       {
         onSuccess: () => {
           queryClient.invalidateQueries(["user"]);
+
+          queryClient.invalidateQueries(["single"]);
 
           queryClient.invalidateQueries(["noticePosts"]);
           queryClient.invalidateQueries(["infoPosts"]);
