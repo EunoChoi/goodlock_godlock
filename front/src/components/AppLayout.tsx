@@ -146,51 +146,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           <RightWrapper>
             <Children id="scrollWrapper">{children}</Children>
           </RightWrapper>
-          {/* <SideWrapper>
-            <div>
-              {user && (
-                <>
-                  <Button color="inherit">
-                    <Link to="/profile/0">
-                      <PersonIcon fontSize="large" />
-                    </Link>
-                  </Button>
-                  <Button color="inherit" onClick={() => logoutConfrim()}>
-                    <LogoutIcon fontSize="large" />
-                  </Button>
-                </>
-              )}
-            </div>
-
-            <div>
-              <Button color="inherit" onClick={() => scrollTop()}>
-                <ArrowUpwardIcon fontSize="large" />
-              </Button>
-
-              {
-                //user level이 10이상이여야 공지사항 작성이 가능
-                isMain && type == 0 && user?.level >= level && (
-                  <Button color="inherit" onClick={() => InputEditOpenCloseToggle()}>
-                    <PostAddIcon fontSize="large" />
-                  </Button>
-                )
-              }
-              {isMain && type != 0 && (
-                <Button color="inherit" onClick={() => InputEditOpenCloseToggle()}>
-                  <PostAddIcon fontSize="large" />
-                </Button>
-              )}
-
-              <Button
-                color="inherit"
-                onClick={() => {
-                  // setChatBotOpen((c) => !c);
-                }}
-              >
-                <SmartToyIcon fontSize="large" />
-              </Button>
-            </div>
-          </SideWrapper> */}
         </PcWrapper>
       )}
     </>
@@ -198,21 +153,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 };
 
 export default AppLayout;
-
-const BotPCWrapper = styled.div`
-  z-index: 999;
-  width: auto;
-  height: auto;
-  position: fixed;
-  bottom: 20px;
-  right: 90px;
-
-  * {
-    font-weight: 600 !important;
-  }
-
-  animation: ${Animation.smoothAppear} 0.3s;
-`;
 
 const BotWrapper = styled.div`
   .rsc-float-button {
@@ -224,9 +164,9 @@ const BotWrapper = styled.div`
     @media (orientation: landscape) and (max-height: 480px) {
       height: 320px;
     }
-    @media (orientation: landscape) and (max-height: 480px) {
+    @media (orientation: portrait) and (max-width: 480px) {
+      top: 0 !important;
       bottom: auto;
-      top: 0;
     }
   }
   .rsc-content {
