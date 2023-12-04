@@ -103,6 +103,9 @@ router.get("/single", async (req, res) => {
       where: [{
         id
       }],
+      order: [
+        [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+      ],
       include: [
         {
           model: User,//게시글 작성자

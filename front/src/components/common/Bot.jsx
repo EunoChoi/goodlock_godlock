@@ -66,11 +66,15 @@ const Bot = () => {
           {
             id: "3",
             message: "Wrong answer, try again.",
-            trigger: "2"
+            trigger: "4"
           },
           {
-            id: "3",
-            options: [{ value: 1, label: "go back", trigger: "1" }]
+            id: "4",
+            options: [
+              { value: 1, label: "Number 1", trigger: "3" },
+              { value: 2, label: "Number 2", trigger: "3" },
+              { value: 3, label: "Number 3", trigger: "3" }
+            ]
           }
         ]}
       />
