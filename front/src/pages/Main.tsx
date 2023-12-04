@@ -197,6 +197,11 @@ const Main = () => {
     }
   }, []);
 
+  const shortNickname = (nick: string) => {
+    if (nick.length >= 11) return nick.slice(0, 10) + "...";
+    else return nick;
+  };
+
   return (
     <AppLayout>
       {toggles.main === 0 && (
@@ -205,7 +210,7 @@ const Main = () => {
             <span>반갑습니다.</span>
 
             <span>
-              <Link to={`/profile/0`}>{user?.nickname}님!</Link>
+              <Link to={`/profile/0`}>{shortNickname(user?.nickname)}님!</Link>
               <div>
                 <EmojiPeopleIcon fontSize="inherit" />
               </div>
@@ -783,9 +788,10 @@ const WelcomeWrapper = styled.div`
 
     line-height: 36px;
     color: rgba(0, 0, 0, 0.7);
-    /* text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2); */
     > div {
-      margin-left: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       font-size: 44px;
     }
   }
@@ -830,7 +836,7 @@ const WelcomeWrapper = styled.div`
     padding-bottom: 24px;
     > span {
       padding-left: 5vw;
-      padding-right: 5vw;
+      /* padding-right: 5vw; */
     }
   }
   @media (orientation: landscape) and (max-height: 480px) {

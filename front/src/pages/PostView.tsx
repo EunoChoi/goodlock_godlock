@@ -43,14 +43,14 @@ const PostView = () => {
 
   return (
     <AppLayout>
-      <Helmet>
+      {/* <Helmet>
         <meta charSet="utf-8" />
         <meta name="description" content={single?.data?.content} />
         <meta property="og:title" content={`${single?.data?.User?.nickname}님의 글`} />
         <meta property="og:description" content={single?.data?.content} />
         <meta property="og:image" content={single?.data?.Images[0]?.src} />
         <meta property="og:url" content={`${process.env.REACT_APP_BASE_URL}/postview/${single?.data?.User?.id}`} />
-      </Helmet>
+      </Helmet> */}
       <SingePostText>
         <ShareIcon />
         <span> 공유 게시글</span>

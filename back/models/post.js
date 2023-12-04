@@ -4,6 +4,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    warning: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    blind: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
+    },
     content: {
       type: DataTypes.TEXT,
       allowNull: false
