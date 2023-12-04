@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ChatBot from "react-simple-chatbot";
 import styled, { ThemeProvider } from "styled-components";
+import IsMobile from "../../functions/IsMobile";
 
 import User from "../../functions/reactQuery/User";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
@@ -21,7 +22,15 @@ const theme = {
 
 const Bot = () => {
   const user = User.getData();
+  const isMobile = IsMobile();
+  const [open, setOpen] = useState(false);
   console.log(user?.profilePic);
+
+  useEffect(() => {
+    if (open && isMobile) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
+  }, [open]);
+
   return (
     <ThemeProvider theme={theme}>
       <ChatBot
@@ -30,6 +39,11 @@ const Bot = () => {
             <SmartToyIcon color="inherit" />
           </IconWrapper>
         }
+        opened={open}
+        toggleFloating={(res) => {
+          console.log(res);
+          setOpen(res.opened);
+        }}
         floating={true}
         headerTitle={"굿락갓락 Bot"}
         botAvatar={"/img/loading.png"}
