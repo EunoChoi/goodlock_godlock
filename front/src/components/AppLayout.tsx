@@ -121,11 +121,13 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             <PostAddIcon fontSize="medium" />
           </button>
         )}
-        <button color="inherit">
-          <Link to="/profile/0">
-            <PersonIcon fontSize="large" />
-          </Link>
-        </button>
+        {isMobile || (
+          <button color="inherit">
+            <Link to="/profile/0">
+              <PersonIcon fontSize="large" />
+            </Link>
+          </button>
+        )}
       </ButtonWrapper>
       {isMobile ? (
         <MobileWrapper>
