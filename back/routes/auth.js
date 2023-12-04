@@ -72,8 +72,8 @@ router.post("/code", async (req, res) => {
       text: code,
       html: `
       <div style="width: 100%;height: 12px;background-color: #C7D7FF;margin-bottom: 40px;"></div>
-      <div style="background-color: white;width: 100%; border-radius: 8px; padding: 24px;">
-        <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
+      <div style="background-color: white; width: 100%; box-sizing: border-box; border-radius: 8px; padding: 24px;">
+      <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
         <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">회원가입 인증코드 안내 </div>
         <div>
           <div style="font-size: 16px;line-height: 24px;">안녕하세요.</div>
@@ -83,7 +83,7 @@ router.post("/code", async (req, res) => {
           <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">인증코드 : ${code}</div>
         </div>
       </div>
-      <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="width: 100%;object-fit: contain;">
+      <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
       `
 
     });
@@ -146,7 +146,7 @@ router.post("/code/find/password", async (req, res) => {
       text: code,
       html: `
         <div div style="width: 100%;height: 12px;background-color: #C7D7FF;margin-bottom: 40px;" ></div>
-        <div style="background-color: white;width: 100%; border-radius: 8px; padding: 24px;">
+        <div style="background-color: white; width: 100%; box-sizing: border-box; border-radius: 8px; padding: 24px;">
           <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
           <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">비밀번호 초기화 인증코드 안내 </div>
           <div>
@@ -157,7 +157,7 @@ router.post("/code/find/password", async (req, res) => {
             <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">인증코드 : ${code}</div>
           </div>
         </div>
-        <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="width: 100%;object-fit: contain;">
+        <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
         `
     });
 
@@ -231,7 +231,7 @@ router.post("/password/reset", async (req, res) => {
       text: tempPassword,
       html: `
         <div div style="width: 100%;height: 12px;background-color: #C7D7FF;margin-bottom: 40px;" ></div>
-        <div style="background-color: white;width: 100%; border-radius: 8px; padding: 24px;">
+        <div style="background-color: white; width: 100%; box-sizing: border-box; border-radius: 8px; padding: 24px;">
           <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
           <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">임시 비밀번호 안내 </div>
           <div>
@@ -243,7 +243,7 @@ router.post("/password/reset", async (req, res) => {
             <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">임시 비밀번호 : ${tempPassword}</div>
           </div>
         </div>
-        <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="width: 100%;object-fit: contain;">
+        <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
         `
     });
 
