@@ -20,7 +20,8 @@ const theme = {
 // const avatar = `${process.env.PUBLIC_URL}/img/loading.png`;
 
 const Bot = () => {
-  const { profilePic } = User.getData();
+  const user = User.getData();
+  console.log(user?.profilePic);
   return (
     <ThemeProvider theme={theme}>
       <ChatBot
@@ -32,7 +33,7 @@ const Bot = () => {
         floating={true}
         headerTitle={"굿락갓락 Bot"}
         botAvatar={"/img/loading.png"}
-        userAvatar={profilePic}
+        userAvatar={user?.profilePic ? user?.profilePic : "/img/loading.png"}
         placeholder={"..."}
         steps={[
           {

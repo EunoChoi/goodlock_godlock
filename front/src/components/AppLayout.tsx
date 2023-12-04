@@ -99,9 +99,12 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <>
       {isPostInputOpen && <InputPopup modalClose={modalClose} />}
-      <BotWrapper>
-        <Bot />
-      </BotWrapper>
+      {isMain && (
+        <BotWrapper>
+          <Bot />
+        </BotWrapper>
+      )}
+
       <ButtonWrapper isPostInputOpen={isPostInputOpen}>
         {goTopButton && (
           <button color="inherit" onClick={() => scrollTop()}>
@@ -121,7 +124,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             <PostAddIcon fontSize="medium" />
           </button>
         )}
-        {isMobile || (
+        {!isMobile && isMain && (
           <button color="inherit">
             <Link to="/profile/0">
               <PersonIcon fontSize="large" />
