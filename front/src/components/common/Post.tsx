@@ -524,7 +524,12 @@ const PostInfoWrapper = styled.div`
     span {
       font-weight: 500;
       /* font-weight: 600; */
+      height: 100%;
       font-size: 1.2em;
+      line-height: 1.3em;
+      max-width: 50vw;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     button {
       margin-left: 10px;

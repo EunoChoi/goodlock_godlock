@@ -118,7 +118,7 @@ const Logo = styled.img`
 const CancelBtn = styled.button`
   position: fixed;
   top: 10px;
-  left: 10px;
+  right: 10px;
   color: rgba(0, 0, 0, 0.8);
   @media (orientation: landscape) and (max-height: 480px) {
     display: none;

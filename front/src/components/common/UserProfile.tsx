@@ -27,7 +27,7 @@ const UserProfile = () => {
             <ProfilePic alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}
         </Link>
-        <span>{isTextTooLong(user?.nickname)}</span>
+        <span>{user?.nickname}</span>
         <span>{user?.email}</span>
         {user?.usertext !== null ? <span>{user?.usertext}</span> : <span>-</span>}
       </UserTitle>
@@ -129,28 +129,37 @@ const UserTitle = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  height: 35vh;
+  height: 40vh;
 
   text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 
-  * {
-    &:nth-child(2) {
-      font-size: 2em;
-      color: rgba(0, 0, 0, 0.6);
-      font-weight: 600;
-    }
-    &:nth-child(3) {
-      font-size: 1.25em;
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.5);
-    }
-    &:nth-child(4) {
-      font-size: 1.2em;
-
-      color: white;
-      color: rgba(0, 0, 0, 0.4);
-      text-align: center;
-    }
+  > span {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis !important;
+  }
+  > span:nth-child(2) {
+    /* max-width: 70%; */
+    font-size: 28px;
+    line-height: 36px;
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: 600;
+  }
+  > span:nth-child(3) {
+    /* max-width: 80%; */
+    font-size: 22px;
+    line-height: 30px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.5);
+  }
+  > span:nth-child(4) {
+    white-space: normal;
+    font-size: 18px;
+    line-height: 26px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.4);
+    text-align: center;
   }
 `;
 
