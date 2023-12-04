@@ -3,8 +3,6 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import { GoogleOAuthProvider } from "@react-oauth/google";
-
 import GlobalStyle from "./styles/GlobalStyle";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthRoute from "./components/AuthRoute";
@@ -63,42 +61,37 @@ function App() {
   }, []);
 
   return (
-    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID as string}>
-      <QueryClientProvider client={queryClient}>
-        <ToastContainer
-          position="top-right"
-          autoClose={1500}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable={false}
-          pauseOnHover
-          theme="light"
-        />
-        <Router>
-          <GlobalStyle />
-          <Suspense fallback={<Loading></Loading>}>
-            <Routes>
-              <Route path="postview/:id" element={<PostView />} />
-              <Route path="main/:type/*" element={<AuthRoute accessType="login" component={<Main />} />} />
-              <Route path="profile/:cat/*" element={<AuthRoute accessType="login" component={<Profile />} />} />
-              <Route
-                path="userinfo/:id/cat/:cat/*"
-                element={<AuthRoute accessType="login" component={<UserInfo />} />}
-              />
-              <Route path="/*" element={<Start />} />
-              <Route path="/auth/kakao" element={<Kakao />} />
-              <Route path="/auth/google" element={<Google />} />
-              <Route path="/auth/naver" element={<Naver />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </Router>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </GoogleOAuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable={false}
+        pauseOnHover
+        theme="light"
+      />
+      <Router>
+        <GlobalStyle />
+        <Suspense fallback={<Loading></Loading>}>
+          <Routes>
+            <Route path="postview/:id" element={<PostView />} />
+            <Route path="main/:type/*" element={<AuthRoute accessType="login" component={<Main />} />} />
+            <Route path="profile/:cat/*" element={<AuthRoute accessType="login" component={<Profile />} />} />
+            <Route path="userinfo/:id/cat/:cat/*" element={<AuthRoute accessType="login" component={<UserInfo />} />} />
+            <Route path="/*" element={<Start />} />
+            <Route path="/auth/kakao" element={<Kakao />} />
+            <Route path="/auth/google" element={<Google />} />
+            <Route path="/auth/naver" element={<Naver />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </Router>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }
 
