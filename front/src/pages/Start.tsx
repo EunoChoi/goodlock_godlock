@@ -210,6 +210,7 @@ const StartWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: start;
+  padding-bottom: 80px;
 
   padding-left: 10vw;
   @media (orientation: portrait) or (max-height: 480px) {
@@ -230,7 +231,7 @@ const StartImg = styled.img`
   height: 60%;
   object-fit: contain;
   @media (orientation: portrait) or (max-height: 480px) {
-    width: 70%;
+    width: 80%;
     height: calc(var(--vh, 1vh) * 30);
     bottom: calc(var(--vh, 1vh) * 6);
     /* margin-right: 24px; */

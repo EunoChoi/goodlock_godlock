@@ -20,12 +20,21 @@ const GlobalStyle = createGlobalStyle`
   span, div, button{
    font-family: Pretendard;
    font-weight: 400;
+
+
   }
   
   html{
     background-color: whitesmoke;
 
+    -ms-overflow-style: none !important; /* IE and Edge */
+    scrollbar-width: none !important; /* Firefox */
   }
+  html::-webkit-scrollbar {
+    display: none;
+  }
+
+
 
   
   a {

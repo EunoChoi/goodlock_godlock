@@ -197,24 +197,20 @@ const Main = () => {
     }
   }, []);
 
-  const isTextTooLong = (text: string) => {
-    if (text.length >= 13) {
-      return text.slice(0, 12) + "...";
-    } else return text;
-  };
-
   return (
     <AppLayout>
       {toggles.main === 0 && (
         <MainEl>
           <WelcomeWrapper ref={scrollTarget}>
             <span>반갑습니다.</span>
+
             <span>
-              <Link to={`/profile/0`}>{isTextTooLong(user?.nickname)}님!</Link>
+              <Link to={`/profile/0`}>{user?.nickname}님!</Link>
               <div>
                 <EmojiPeopleIcon fontSize="inherit" />
               </div>
             </span>
+
             <span>굿락 팁 공유 플랫폼, 굿락갓락 :)</span>
 
             <span>
@@ -458,9 +454,7 @@ const Main = () => {
           <WelcomeWrapper ref={scrollTarget}>
             <span>소통</span>
             <span></span>
-            <span>
-              이해와 공감을 바탕으로 <br></br>서로 존중하는 대화를 해요.
-            </span>
+            <span>서로 존중하는 대화를 해요.</span>
             <span>
               <CalendarMonthIcon />
               This Week

@@ -54,8 +54,8 @@ const PostZoom = ({ postProps, modalClose }: props) => {
         !isMobile && isOnlyText && (
           <PCTextPost onClick={(e) => e.stopPropagation()}>
             <PCTextPost_Left>
-              {postProps?.User?.profilePic ? (
-                <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+              <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                {postProps?.User?.profilePic ? (
                   <ProfileCircle
                     diameter={150}
                     src={`${postProps?.User?.profilePic}`}
@@ -64,16 +64,15 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                       e.currentTarget.src = `${postProps?.User?.profilePic?.replace(/\/thumb\//, "/original/")}`;
                     }}
                   ></ProfileCircle>
-                </Link>
-              ) : (
-                <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                ) : (
                   <ProfileCircle
                     diameter={150}
                     src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
                     alt="profilePic"
                   ></ProfileCircle>
-                </Link>
-              )}
+                )}
+              </Link>
+
               <div>
                 <span>{postProps.User.nickname}</span>
                 <span>{postProps.User.email}</span>
@@ -82,8 +81,9 @@ const PostZoom = ({ postProps, modalClose }: props) => {
             </PCTextPost_Left>
             <PCTextPost_Right>
               <PCText>{postProps.content}</PCText>
-              {postProps.type === 1 && (
-                <SubContent>
+
+              <SubContent>
+                {postProps?.start && postProps?.end && (
                   <PostStartEnd>
                     <span>
                       <CalendarMonthIcon />
@@ -92,18 +92,20 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                     <span>~</span>
                     <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
                   </PostStartEnd>
-                  {postProps?.link && (
-                    <PostLink>
-                      <InsertLinkIcon />
-                      <span>
-                        <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
-                          {postProps?.link}
-                        </a>
-                      </span>
-                    </PostLink>
-                  )}
-                </SubContent>
-              )}
+                )}
+
+                {postProps?.link && (
+                  <PostLink>
+                    <InsertLinkIcon />
+                    <span>
+                      <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
+                        {postProps?.link}
+                      </a>
+                    </span>
+                  </PostLink>
+                )}
+              </SubContent>
+
               <Like>
                 <button
                   onClick={() => {
@@ -149,8 +151,8 @@ const PostZoom = ({ postProps, modalClose }: props) => {
             <PCImagePost_RightWrapper>
               <PCImagePost_Info>
                 <div>
-                  {postProps?.User?.profilePic ? (
-                    <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                  <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                    {postProps?.User?.profilePic ? (
                       <ProfileCircle
                         diameter={40}
                         src={`${postProps?.User?.profilePic}`}
@@ -159,23 +161,22 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                           e.currentTarget.src = `${postProps?.User?.profilePic?.replace(/\/thumb\//, "/original/")}`;
                         }}
                       ></ProfileCircle>
-                    </Link>
-                  ) : (
-                    <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                    ) : (
                       <ProfileCircle
                         diameter={40}
                         src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
                         alt="profilePic"
                       ></ProfileCircle>
-                    </Link>
-                  )}
-                  <Nickname>{postProps.User.nickname}</Nickname>
+                    )}
+                  </Link>
+                  <span>{postProps.User.nickname}</span>
                 </div>
                 <span>{moment(postProps?.createdAt).fromNow()}</span>
               </PCImagePost_Info>
               <PCText>{postProps.content}</PCText>
-              {postProps.type === 1 && (
-                <SubContent>
+
+              <SubContent>
+                {postProps?.start && postProps?.end && (
                   <PostStartEnd>
                     <span>
                       <CalendarMonthIcon />
@@ -184,18 +185,20 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                     <span>~</span>
                     <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
                   </PostStartEnd>
-                  {postProps?.link && (
-                    <PostLink>
-                      <InsertLinkIcon />
-                      <span>
-                        <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
-                          {postProps?.link}
-                        </a>
-                      </span>
-                    </PostLink>
-                  )}
-                </SubContent>
-              )}
+                )}
+
+                {postProps?.link && (
+                  <PostLink>
+                    <InsertLinkIcon />
+                    <span>
+                      <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
+                        {postProps?.link}
+                      </a>
+                    </span>
+                  </PostLink>
+                )}
+              </SubContent>
+
               <Like>
                 <button
                   onClick={() => {
@@ -232,8 +235,8 @@ const PostZoom = ({ postProps, modalClose }: props) => {
               <MobileTextPost>
                 <MobilePostInfo>
                   <div>
-                    {postProps?.User?.profilePic ? (
-                      <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                    <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                      {postProps?.User?.profilePic ? (
                         <ProfileCircle
                           diameter={40}
                           src={`${postProps?.User?.profilePic}`}
@@ -242,16 +245,14 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                             e.currentTarget.src = `${postProps?.User?.profilePic?.replace(/\/thumb\//, "/original/")}`;
                           }}
                         ></ProfileCircle>
-                      </Link>
-                    ) : (
-                      <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                      ) : (
                         <ProfileCircle
                           diameter={40}
                           src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
                           alt="profilePic"
                         ></ProfileCircle>
-                      </Link>
-                    )}
+                      )}
+                    </Link>
                     <Nickname>{postProps.User.nickname}</Nickname>
                   </div>
 
@@ -259,8 +260,9 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                 </MobilePostInfo>
                 <MobileText key="텍스트페이지">
                   <div>{postProps.content}</div>
-                  {postProps.type === 1 && (
-                    <SubContent>
+
+                  <SubContent>
+                    {postProps?.start && postProps.end && (
                       <PostStartEnd>
                         <span>
                           <CalendarMonthIcon />
@@ -269,18 +271,19 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                         <span>~</span>
                         <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
                       </PostStartEnd>
-                      {postProps?.link && (
-                        <PostLink>
-                          <InsertLinkIcon />
-                          <span>
-                            <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
-                              {postProps?.link}
-                            </a>
-                          </span>
-                        </PostLink>
-                      )}
-                    </SubContent>
-                  )}
+                    )}
+
+                    {postProps?.link && (
+                      <PostLink>
+                        <InsertLinkIcon />
+                        <span>
+                          <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
+                            {postProps?.link}
+                          </a>
+                        </span>
+                      </PostLink>
+                    )}
+                  </SubContent>
                 </MobileText>
                 <MobilePostSubInfo>
                   <Like>
@@ -310,8 +313,8 @@ const PostZoom = ({ postProps, modalClose }: props) => {
               <MobileImagePost>
                 <MobilePostInfo>
                   <div>
-                    {postProps?.User?.profilePic ? (
-                      <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                    <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                      {postProps?.User?.profilePic ? (
                         <ProfileCircle
                           diameter={40}
                           src={`${postProps?.User?.profilePic}`}
@@ -320,19 +323,16 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                             e.currentTarget.src = `${postProps?.User?.profilePic?.replace(/\/thumb\//, "/original/")}`;
                           }}
                         ></ProfileCircle>
-                      </Link>
-                    ) : (
-                      <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                      ) : (
                         <ProfileCircle
                           diameter={40}
                           src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
                           alt="profilePic"
                         ></ProfileCircle>
-                      </Link>
-                    )}
+                      )}
+                    </Link>
                     <Nickname>{postProps.User.nickname}</Nickname>
                   </div>
-
                   <span>{moment(postProps?.createdAt).fromNow()}</span>
                 </MobilePostInfo>
                 <CustomCarousel
@@ -360,8 +360,8 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                       return (
                         <MobileText key="텍스트페이지">
                           <div>{postProps.content}</div>
-                          {postProps.type === 1 && (
-                            <SubContent>
+                          <SubContent>
+                            {postProps?.start && postProps?.end && (
                               <PostStartEnd>
                                 <span>
                                   <CalendarMonthIcon />
@@ -370,18 +370,19 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                                 <span>~</span>
                                 <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
                               </PostStartEnd>
-                              {postProps?.link && (
-                                <PostLink>
-                                  <InsertLinkIcon />
-                                  <span>
-                                    <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
-                                      {postProps?.link}
-                                    </a>
-                                  </span>
-                                </PostLink>
-                              )}
-                            </SubContent>
-                          )}
+                            )}
+
+                            {postProps?.link && (
+                              <PostLink>
+                                <InsertLinkIcon />
+                                <span>
+                                  <a target="_blank" href={`${postProps?.link}`} rel="noreferrer">
+                                    {postProps?.link}
+                                  </a>
+                                </span>
+                              </PostLink>
+                            )}
+                          </SubContent>
                         </MobileText>
                       );
                     } else {
@@ -437,6 +438,11 @@ const CustomCarousel = styled(Carousel)`
 const Nickname = styled.span`
   font-weight: 500;
   font-weight: 600;
+
+  /* max-width: 50%; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+
   padding: 8px;
   font-size: 1.2em !important;
 `;
@@ -576,7 +582,7 @@ const PCTextPost = styled.div`
 const PCTextPost_Left = styled.div`
   width: 40%;
   height: 100%;
-  padding: 36px;
+  padding: 36px 20px;
   padding-top: 15%;
 
   background-color: rgba(0, 0, 0, 0.04);
@@ -586,16 +592,28 @@ const PCTextPost_Left = styled.div`
   justify-content: space-around;
   align-items: center;
   > div:nth-child(2) {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     > span {
+      text-align: center !important;
+
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
       padding: 5px;
       font-size: 24px;
       color: rgba(0, 0, 0, 0.5);
     }
     > span:first-child {
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
       font-weight: 500;
       color: rgba(0, 0, 0, 0.7);
       font-size: 32px;
@@ -652,20 +670,27 @@ const PCImagePost_Info = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   margin-bottom: 12px;
 
   div {
+    width: 70%;
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     span {
-      color: rgba(0, 0, 0, 0.8);
+      font-size: 1.1em;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
+      margin-left: 8px;
+      color: rgba(0, 0, 0, 0.9);
     }
   }
   span {
-    padding: 8px;
-    font-size: 1.1em;
+    white-space: nowrap;
+    padding: 8px 0;
+    font-size: 1em;
     color: rgba(0, 0, 0, 0.5);
   }
 `;
@@ -681,6 +706,8 @@ const PCText = styled.div`
   overflow-y: scroll;
   white-space: pre-wrap;
   line-height: 1.3em;
+
+  /* color: rgba(0, 0, 0, 0.8); */
 `;
 const PCCancelBtn = styled.button`
   position: absolute;

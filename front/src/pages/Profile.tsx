@@ -921,6 +921,7 @@ const InfoValue = styled.div`
   /* height: 36px;
   line-height: 36px; */
   margin-top: 8px;
+  line-height: 32px;
 
   input {
     width: 50%;

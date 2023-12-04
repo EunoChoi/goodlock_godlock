@@ -162,9 +162,9 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
   return (
     <InputForm.EditBG onClick={() => cancleConfirm()}>
       <InputForm.InputWrapper onClick={(e) => e.stopPropagation()}>
-        {isInfoPost && (
-          <PostOptionWrapper>
-            <div>
+        <PostOptionWrapper>
+          <div>
+            {isInfoPost && (
               <button
                 onClick={() => {
                   setDateToggle((c) => !c);
@@ -173,70 +173,67 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
               >
                 <CalendarMonthIcon />
                 공유 기간
-              </button>{" "}
-              <button
-                onClick={() => {
-                  setLinkToggle((c) => !c);
-                  setDateToggle(false);
-                }}
-              >
-                <InsertLinkIcon />
-                링크
               </button>
-            </div>
+            )}
 
-            {
-              //start, end date
-              dateToggle && (
-                <div>
-                  <DatePicker
-                    calendarStartDay={1}
-                    locale={ko}
-                    dateFormat="yy년 MM월 dd일"
-                    selectsStart
-                    selected={start}
-                    startDate={start}
-                    endDate={end}
-                    customInput={
-                      <DateButton>
-                        {start.getFullYear()}년 {start.getMonth() + 1}월 {start.getDate()}일
-                      </DateButton>
-                    }
-                    onChange={(date: Date) => setStart(date)}
-                  />
-                  <MoreHorizIcon />
-                  <DatePicker
-                    calendarStartDay={1}
-                    locale={ko}
-                    dateFormat="yy년 MM월 dd일"
-                    selectsEnd
-                    selected={end}
-                    startDate={start}
-                    endDate={end}
-                    customInput={
-                      <DateButton>
-                        {end.getFullYear()}년 {end.getMonth() + 1}월 {end.getDate()}일
-                      </DateButton>
-                    }
-                    onChange={(date: Date) => setEnd(date)}
-                  />
-                </div>
-              )
-            }
-            {
-              //link
-              linkToggle && (
-                <div>
-                  <input
-                    placeholder="https://www.url.com"
-                    value={link}
-                    onChange={(e) => setLink(e.target.value)}
-                  ></input>
-                </div>
-              )
-            }
-          </PostOptionWrapper>
-        )}
+            <button
+              onClick={() => {
+                setLinkToggle((c) => !c);
+                setDateToggle(false);
+              }}
+            >
+              <InsertLinkIcon />
+              링크
+            </button>
+          </div>
+
+          {
+            //start, end date
+            dateToggle && (
+              <div>
+                <DatePicker
+                  calendarStartDay={1}
+                  locale={ko}
+                  dateFormat="yy년 MM월 dd일"
+                  selectsStart
+                  selected={start}
+                  startDate={start}
+                  endDate={end}
+                  customInput={
+                    <DateButton>
+                      {start.getFullYear()}년 {start.getMonth() + 1}월 {start.getDate()}일
+                    </DateButton>
+                  }
+                  onChange={(date: Date) => setStart(date)}
+                />
+                <MoreHorizIcon />
+                <DatePicker
+                  calendarStartDay={1}
+                  locale={ko}
+                  dateFormat="yy년 MM월 dd일"
+                  selectsEnd
+                  selected={end}
+                  startDate={start}
+                  endDate={end}
+                  customInput={
+                    <DateButton>
+                      {end.getFullYear()}년 {end.getMonth() + 1}월 {end.getDate()}일
+                    </DateButton>
+                  }
+                  onChange={(date: Date) => setEnd(date)}
+                />
+              </div>
+            )
+          }
+          {
+            //link
+            linkToggle && (
+              <div>
+                <input placeholder="https://www.url.com" value={link} onChange={(e) => setLink(e.target.value)}></input>
+              </div>
+            )
+          }
+        </PostOptionWrapper>
         <InputForm.TextArea
           ref={inputRef}
           minLength={12}
@@ -296,6 +293,7 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
 };
 
 export default PostEditPopup;
+
 const DateButton = styled.button`
   font-size: 16px;
   width: 150px;
@@ -306,7 +304,7 @@ const DateButton = styled.button`
 
   text-align: center;
   @media (orientation: portrait) or (max-height: 480px) {
-    width: calc((90vw - 40px - 24px) / 2);
+    width: calc((100vw - 40px - 24px) / 2);
   }
 `;
 const PostOptionWrapper = styled.div`

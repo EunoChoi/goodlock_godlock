@@ -10,6 +10,7 @@ import { Button } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import PersonIcon from "@mui/icons-material/Person";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
 
 //component
 import UserProfile from "./common/UserProfile";
@@ -18,6 +19,7 @@ import InputPopup from "./common/PostInputPopup";
 import Animation from "../styles/Animation";
 import IsMobile from "../functions/IsMobile";
 import User from "../functions/reactQuery/User";
+import Bot from "./common/Bot";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -37,7 +39,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   //useQuery
   const user = User.getData();
-  const logout = User.logout();
 
   const modalClose = () => {
     history.back();
@@ -57,7 +58,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       setPostInputOpen(true);
     } else {
       confirmAlert({
-        // title: "",
         message: "게시글 작성을 중단하시겠습니까?",
         buttons: [
           {
@@ -77,23 +77,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       top: 0,
       left: 0,
       behavior: "smooth"
-    });
-  };
-  const logoutConfrim = () => {
-    confirmAlert({
-      // title: "",
-      message: "로그아웃 하시겠습니까?",
-      buttons: [
-        {
-          label: "취소",
-          onClick: () => console.log("로그아웃 취소")
-        },
-        {
-          label: "확인",
-          onClick: () => logout.mutate()
-        }
-      ],
-      keyCodeForClose: [8, 32]
     });
   };
 
@@ -116,31 +99,38 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <>
       {isPostInputOpen && <InputPopup modalClose={modalClose} />}
+      <BotWrapper>
+        <Bot />
+      </BotWrapper>
+      <ButtonWrapper isPostInputOpen={isPostInputOpen}>
+        {goTopButton && (
+          <button color="inherit" onClick={() => scrollTop()}>
+            <ArrowUpwardIcon fontSize="medium" />
+          </button>
+        )}
+        {
+          //user level이 10이상이여야 공지사항 작성이 가능
+          isMain && type == 0 && user?.level >= level && (
+            <button color="inherit" onClick={() => InputEditOpenCloseToggle()}>
+              <PostAddIcon fontSize="medium" />
+            </button>
+          )
+        }
+        {isMain && type != 0 && (
+          <button color="inherit" onClick={() => InputEditOpenCloseToggle()}>
+            <PostAddIcon fontSize="medium" />
+          </button>
+        )}
+        <button color="inherit">
+          <Link to="/profile/0">
+            <PersonIcon fontSize="large" />
+          </Link>
+        </button>
+      </ButtonWrapper>
       {isMobile ? (
         <MobileWrapper>
-          <Header />
           <Children>{children}</Children>
-
-          <MobileButtonWrapper isPostInputOpen={isPostInputOpen}>
-            {goTopButton && (
-              <button color="inherit" onClick={() => scrollTop()}>
-                <ArrowUpwardIcon fontSize="medium" />
-              </button>
-            )}
-            {
-              //user level이 10이상이여야 공지사항 작성이 가능
-              isMain && type == 0 && user?.level >= level && (
-                <button color="inherit" onClick={() => InputEditOpenCloseToggle()}>
-                  <PostAddIcon fontSize="medium" />
-                </button>
-              )
-            }
-            {isMain && type != 0 && (
-              <button color="inherit" onClick={() => InputEditOpenCloseToggle()}>
-                <PostAddIcon fontSize="medium" />
-              </button>
-            )}
-          </MobileButtonWrapper>
+          <Header />
         </MobileWrapper>
       ) : (
         <PcWrapper>
@@ -151,7 +141,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           <RightWrapper>
             <Children id="scrollWrapper">{children}</Children>
           </RightWrapper>
-          <SideWrapper>
+          {/* <SideWrapper>
             <div>
               {user && (
                 <>
@@ -185,8 +175,17 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                   <PostAddIcon fontSize="large" />
                 </Button>
               )}
+
+              <Button
+                color="inherit"
+                onClick={() => {
+                  // setChatBotOpen((c) => !c);
+                }}
+              >
+                <SmartToyIcon fontSize="large" />
+              </Button>
             </div>
-          </SideWrapper>
+          </SideWrapper> */}
         </PcWrapper>
       )}
     </>
@@ -195,31 +194,77 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
 export default AppLayout;
 
-const MobileButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
+const BotPCWrapper = styled.div`
+  z-index: 999;
+  width: auto;
+  height: auto;
+  position: fixed;
+  bottom: 20px;
+  right: 90px;
+
+  * {
+    font-weight: 600 !important;
+  }
+
+  animation: ${Animation.smoothAppear} 0.3s;
+`;
+
+const BotWrapper = styled.div`
+  .rsc-float-button {
+    background-color: #f3e0f1 !important;
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  }
+  .rsc-container {
+    /* height: auto; */
+    @media (orientation: landscape) and (max-height: 480px) {
+      height: 320px;
+    }
+  }
+  .rsc-content {
+    @media (orientation: landscape) and (max-height: 480px) {
+      height: calc(320px - 56px - 56px);
+    }
+  }
+  .rsc-footer {
+    /* @media (orientation: landscape) and (max-height: 480px) {
+      display: none;
+    } */
+  }
+  * {
+    z-index: 1000;
+    font-weight: 600 !important;
+  }
+`;
+
+const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: end;
 
-  z-index: 1001;
+  z-index: 999;
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: calc(32px + 56px + 12px);
+  right: 32px;
 
   > button {
-    width: 50px;
-    height: 50px;
+    width: 56px;
+    height: 56px;
 
     padding: 0px;
-    margin: 5px;
+    margin-top: 12px;
     border-radius: 100px;
 
     color: rgba(0, 0, 0, 0.6);
     box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
     /* background-color: #d5dbf0; */
     background-color: #f3e0f1;
+    /* background-color: #dfbadc; */
   }
   > button:nth-child(1) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     display: ${(props) => props.isPostInputOpen && "none"};
   }
   > button:nth-child(2) {
@@ -229,12 +274,10 @@ const MobileButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
     display: ${(props) => props.isPostInputOpen && "none"};
   }
   > button:nth-child(3) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     display: ${(props) => props.isPostInputOpen && "none"};
-    * {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
   }
 `;
 const Children = styled.div`
@@ -291,7 +334,7 @@ const LeftWrapper = styled.div`
 `;
 const RightWrapper = styled.div`
   margin-left: 30vw;
-  margin-right: 70px;
+  /* margin-right: 70px; */
 
   flex-grow: 1;
   -webkit-box-flex: 1;

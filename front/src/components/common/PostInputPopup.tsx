@@ -297,7 +297,7 @@ const DateButton = styled.button`
 
   text-align: center;
   @media (orientation: portrait) or (max-height: 480px) {
-    width: calc((90vw - 40px - 24px) / 2);
+    width: calc((100vw - 40px - 24px) / 2);
   }
 `;
 const PostOptionWrapper = styled.div`
