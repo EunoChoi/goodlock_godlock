@@ -22,6 +22,7 @@ import InsertEmoticonRoundedIcon from "@mui/icons-material/InsertEmoticonRounded
 import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlined";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import User from "../functions/reactQuery/User";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface userProps {
   email: string;
@@ -133,7 +134,7 @@ const UserInfo = () => {
               alt="userProfilePic"
               src={`${targetUser?.profilePic}`}
               onError={(e) => {
-                e.currentTarget.src = `${targetUser?.profilePic.replace(/\/thumb\//, "/original/")}`;
+                e.currentTarget.src = `/img/defaultProfilePic.png`;
               }}
             />
           ) : (
@@ -302,9 +303,9 @@ const UserInfo = () => {
                 <InfiniteScroll
                   hasMore={infoPosts.hasNextPage || false}
                   loader={
-                    <LoadingIcon>
-                      <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
-                    </LoadingIcon>
+                    <LoadingIconWrapper>
+                      <CircularProgress size={96} color="inherit" />
+                    </LoadingIconWrapper>
                   }
                   next={() => infoPosts.fetchNextPage()}
                   dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
@@ -330,9 +331,9 @@ const UserInfo = () => {
                 <InfiniteScroll
                   hasMore={commPosts.hasNextPage || false}
                   loader={
-                    <LoadingIcon>
-                      <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
-                    </LoadingIcon>
+                    <LoadingIconWrapper>
+                      <CircularProgress size={96} color="inherit" />
+                    </LoadingIconWrapper>
                   }
                   next={() => commPosts.fetchNextPage()}
                   dataLength={commPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
@@ -358,9 +359,9 @@ const UserInfo = () => {
                 <InfiniteScroll
                   hasMore={likedPosts.hasNextPage || false}
                   loader={
-                    <LoadingIcon>
-                      <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
-                    </LoadingIcon>
+                    <LoadingIconWrapper>
+                      <CircularProgress size={96} color="inherit" />
+                    </LoadingIconWrapper>
                   }
                   next={() => likedPosts.fetchNextPage()}
                   dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
@@ -379,6 +380,14 @@ const UserInfo = () => {
 };
 
 export default UserInfo;
+
+const LoadingIconWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f3e0f1;
+  margin: 32px 0;
+`;
 
 const Pic = styled.img`
   /* position: absolute;

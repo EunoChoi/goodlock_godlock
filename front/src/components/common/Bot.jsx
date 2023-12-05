@@ -24,7 +24,7 @@ const Bot = () => {
   const user = User.getData();
   const isMobile = IsMobile();
   const [open, setOpen] = useState(false);
-  console.log(user?.profilePic);
+  // console.log(user?.profilePic);
 
   useEffect(() => {
     if (open && isMobile) document.body.style.overflow = "hidden";

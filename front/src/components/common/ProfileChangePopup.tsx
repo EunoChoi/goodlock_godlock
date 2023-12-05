@@ -14,12 +14,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { Button } from "@mui/material";
 import User from "../../functions/reactQuery/User";
 import Upload from "../../functions/reactQuery/Upload";
-
-interface state {
-  image: boolean;
-  usertext: boolean;
-  nickname: boolean;
-}
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface setStateProps {
   modalClose: () => void;
@@ -28,6 +23,7 @@ interface setStateProps {
 const ProfileChangePopup = ({ modalClose }: setStateProps) => {
   const [image, setImage] = useState<string>("");
   const imageInput = useRef<HTMLInputElement>(null);
+  const [uploadLoading, setUploadLoading] = useState<boolean>(false);
 
   //useQuery
   const user = User.getData();
@@ -88,6 +84,7 @@ const ProfileChangePopup = ({ modalClose }: setStateProps) => {
           )}
           <Button
             color="error"
+            disabled={uploadLoading}
             onClick={() => {
               setImage("");
             }}
@@ -102,25 +99,37 @@ const ProfileChangePopup = ({ modalClose }: setStateProps) => {
             <span>취소</span>
           </Button>
           <FlexBox>
-            <Button onClick={() => imageInput.current?.click()}>
+            <Button disabled={uploadLoading} onClick={() => imageInput.current?.click()}>
               <InsertPhotoIcon />
               <span>이미지 업로드</span>
             </Button>
             <Button
+              disabled={uploadLoading}
               onClick={() => {
-                editProfilePic.mutate(
-                  { profilePic: image },
-                  {
-                    onSuccess: () => {
-                      modalClose();
+                setUploadLoading(true);
+                setTimeout(() => {
+                  //이미지 압축을 위한 대기시간
+                  editProfilePic.mutate(
+                    { profilePic: image },
+                    {
+                      onSuccess: () => {
+                        modalClose();
+                        setUploadLoading(false);
+                      }
                     }
-                  }
-                );
-                console.log(image);
+                  );
+                  console.log(image);
+                }, 2000);
               }}
             >
-              <CheckCircleIcon />
-              <span>확인</span>
+              {uploadLoading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                <>
+                  <CheckCircleIcon />
+                  <span>확인</span>
+                </>
+              )}
             </Button>
           </FlexBox>
         </ButtonArea>
@@ -159,10 +168,10 @@ const ButtonArea = styled.div`
     justify-content: center;
     align-items: center;
 
-    /* font-weight: 600; */
     font-size: 18px;
     color: rgba(0, 0, 0, 0.7);
     span {
+      font-weight: 500;
       margin-left: 6px;
     }
   }

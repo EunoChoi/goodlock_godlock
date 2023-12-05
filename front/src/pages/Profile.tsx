@@ -33,6 +33,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import User from "../functions/reactQuery/User";
 import UserDeleteConfirm from "../components/UserDeleteConfirm";
 import PasswordChangeConfirm from "../components/PasswordChangeConfirm";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface userProps {
   email: string;
@@ -308,7 +309,7 @@ const Profile = () => {
                     alt="userProfilePic"
                     src={`${user?.profilePic}`}
                     onError={(e) => {
-                      e.currentTarget.src = `${user?.profilePic.replace(/\/thumb\//, "/original/")}`;
+                      e.currentTarget.src = `/img/defaultProfilePic.png`;
                     }}
                   />
                 ) : (
@@ -554,9 +555,9 @@ const Profile = () => {
                 <InfiniteScroll
                   hasMore={myInfoPosts.hasNextPage || false}
                   loader={
-                    <LoadingIcon>
-                      <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
-                    </LoadingIcon>
+                    <LoadingIconWrapper>
+                      <CircularProgress size={96} color="inherit" />
+                    </LoadingIconWrapper>
                   }
                   next={() => myInfoPosts.fetchNextPage()}
                   dataLength={myInfoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
@@ -582,9 +583,9 @@ const Profile = () => {
                 <InfiniteScroll
                   hasMore={myCommPosts.hasNextPage || false}
                   loader={
-                    <LoadingIcon>
-                      <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
-                    </LoadingIcon>
+                    <LoadingIconWrapper>
+                      <CircularProgress size={96} color="inherit" />
+                    </LoadingIconWrapper>
                   }
                   next={() => myCommPosts.fetchNextPage()}
                   dataLength={myCommPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
@@ -603,6 +604,14 @@ const Profile = () => {
 };
 
 export default Profile;
+
+const LoadingIconWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f3e0f1;
+  margin: 32px 0;
+`;
 
 const Pill = styled.button<{ catNum: number }>`
   transition: all ease-in-out 0.5s;

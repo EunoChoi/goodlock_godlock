@@ -19,6 +19,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import User from "../functions/reactQuery/User";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface userProps {
   email: string;
@@ -267,7 +268,7 @@ const Main = () => {
                 hasMore={noticePosts.hasNextPage || false}
                 loader={
                   <LoadingIconWrapper>
-                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    <CircularProgress size={96} color="inherit" />
                   </LoadingIconWrapper>
                 }
                 next={() => noticePosts.fetchNextPage()}
@@ -291,7 +292,7 @@ const Main = () => {
                 hasMore={likedPosts.hasNextPage || false}
                 loader={
                   <LoadingIconWrapper>
-                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    <CircularProgress size={96} color="inherit" />
                   </LoadingIconWrapper>
                 }
                 next={() => likedPosts.fetchNextPage()}
@@ -374,7 +375,7 @@ const Main = () => {
               </form>
             </Pill.Search>
           </Pill.Wrapper>
-          {toggles.sub === 0 && (
+          {toggles.sub === 0 && ( //팁&설정 포스트
             <HomeEl>
               {infoPosts.data?.pages[0].length === 0 && (
                 <EmptyNoti>
@@ -387,7 +388,7 @@ const Main = () => {
                 hasMore={infoPosts.hasNextPage || false}
                 loader={
                   <LoadingIconWrapper>
-                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    <CircularProgress size={96} color="inherit" />
                   </LoadingIconWrapper>
                 }
                 next={() => infoPosts.fetchNextPage()}
@@ -412,7 +413,7 @@ const Main = () => {
                 hasMore={activInfo.hasNextPage || false}
                 loader={
                   <LoadingIconWrapper>
-                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    <CircularProgress size={96} color="inherit" />
                   </LoadingIconWrapper>
                 }
                 next={() => activInfo.fetchNextPage()}
@@ -439,7 +440,7 @@ const Main = () => {
                 hasMore={searchInfoPosts.hasNextPage || false}
                 loader={
                   <LoadingIconWrapper>
-                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    <CircularProgress size={96} color="inherit" />
                   </LoadingIconWrapper>
                 }
                 next={() => searchInfoPosts.fetchNextPage()}
@@ -533,7 +534,7 @@ const Main = () => {
                 hasMore={communityPosts.hasNextPage || false}
                 loader={
                   <LoadingIconWrapper>
-                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    <CircularProgress size={96} color="inherit" />
                   </LoadingIconWrapper>
                 }
                 next={() => communityPosts.fetchNextPage()}
@@ -559,7 +560,7 @@ const Main = () => {
                 hasMore={feedPosts?.hasNextPage || false}
                 loader={
                   <LoadingIconWrapper>
-                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    <CircularProgress size={96} color="inherit" />
                   </LoadingIconWrapper>
                 }
                 next={() => feedPosts?.fetchNextPage()}
@@ -583,7 +584,7 @@ const Main = () => {
                 hasMore={searchCommPosts.hasNextPage || false}
                 loader={
                   <LoadingIconWrapper>
-                    <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`} alt="loading" />
+                    <CircularProgress size={96} color="inherit" />
                   </LoadingIconWrapper>
                 }
                 next={() => searchCommPosts.fetchNextPage()}
@@ -622,9 +623,9 @@ const EmptyNoti = styled.div`
 const LoadingIconWrapper = styled.div`
   display: flex;
   justify-content: center;
-  img {
-    width: 25%;
-  }
+  align-items: center;
+  color: #f3e0f1;
+  margin: 32px 0;
 `;
 
 const HomeEl = styled.div`

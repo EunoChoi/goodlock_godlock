@@ -20,7 +20,7 @@ const UserProfile = () => {
               alt="userProfilePic"
               src={`${user.profilePic}`}
               onError={(e) => {
-                e.currentTarget.src = `${user.profilePic.replace(/\/thumb\//, "/original/")}`;
+                e.currentTarget.src = `/img/defaultProfilePic.png`;
               }}
             />
           ) : (

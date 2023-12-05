@@ -65,7 +65,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                     src={`${postProps?.User?.profilePic}`}
                     alt="profilePic"
                     onError={(e) => {
-                      e.currentTarget.src = `${postProps?.User?.profilePic?.replace(/\/thumb\//, "/original/")}`;
+                      e.currentTarget.src = `/img/defaultProfilePic.png`;
                     }}
                   ></ProfileCircle>
                 ) : (
@@ -162,7 +162,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                         src={`${postProps?.User?.profilePic}`}
                         alt="profilePic"
                         onError={(e) => {
-                          e.currentTarget.src = `${postProps?.User?.profilePic?.replace(/\/thumb\//, "/original/")}`;
+                          e.currentTarget.src = `/img/defaultProfilePic.png`;
                         }}
                       ></ProfileCircle>
                     ) : (
@@ -246,7 +246,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                           src={`${postProps?.User?.profilePic}`}
                           alt="profilePic"
                           onError={(e) => {
-                            e.currentTarget.src = `${postProps?.User?.profilePic?.replace(/\/thumb\//, "/original/")}`;
+                            e.currentTarget.src = `/img/defaultProfilePic.png`;
                           }}
                         ></ProfileCircle>
                       ) : (
@@ -324,7 +324,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                           src={`${postProps?.User?.profilePic}`}
                           alt="profilePic"
                           onError={(e) => {
-                            e.currentTarget.src = `${postProps?.User?.profilePic?.replace(/\/thumb\//, "/original/")}`;
+                            e.currentTarget.src = `/img/defaultProfilePic.png`;
                           }}
                         ></ProfileCircle>
                       ) : (
