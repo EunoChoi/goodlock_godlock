@@ -107,7 +107,8 @@ const TextBox = styled.div`
   z-index: 99;
   line-height: 36px;
   font-size: 24px;
-  color: rgba(0, 0, 0, 0.5);
+  color: #636b80;
+
   display: flex;
   justify-content: start;
   align-items: center;
@@ -115,6 +116,8 @@ const TextBox = styled.div`
   margin: 64px 0;
 
   span {
+    text-shadow: 10px 10px 10px #c7d7ff;
+
     white-space: pre-line;
     font-weight: 600;
     margin-right: 5px;

@@ -15,12 +15,12 @@ db.sequelize.sync().then(() => {
     console.log("db 연결 성공")
 }).catch(console.error);
 
-// app.use(cors({
-//     origin: true,
-//     credentials: true
-// }));
+app.use(cors({
+    origin: true,
+    credentials: true
+}));
 
-app.use(cors({ origin: "https://goodlock.com", credentials: true }));
+// app.use(cors({ origin: "https://goodlock.site", credentials: true }));
 
 
 //이미지 업로드를 위한 미들웨어

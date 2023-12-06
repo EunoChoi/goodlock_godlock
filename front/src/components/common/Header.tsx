@@ -78,6 +78,7 @@ const Header = () => {
               }}
             >
               {/* <Link to="/main/0">GoodLock GodLock</Link> */}
+              {/* <Link to="/main/0">God Lock</Link> */}
               <Link to="/main/0">굿 락 갓 락</Link>
             </HeaderLogoMobile>
 
@@ -126,6 +127,7 @@ const Header = () => {
               }
             >
               굿 락 갓 락{/* GoodLock GodLock */}
+              {/* God Lock */}
             </HeaderLogo>
           </Link>
 

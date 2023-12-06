@@ -1,11 +1,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 
 //styled component
 import LogInSignUp from "../../styles/LogInSignUp";
 import User from "../../functions/reactQuery/User";
-import styled from "styled-components";
+
+//mui
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface Props {
   setToggle: (n: number) => void;
@@ -71,8 +72,8 @@ const LogIn = ({ setToggle }: Props) => {
             혹시 비밀번호를 잊으셨나요?
           </LogInSignUp.Text>
         </LogInSignUp.TextWrapper>
-        <LogInSignUp.Button disabled={!isDirty || !isValid} bgColor="">
-          로그인
+        <LogInSignUp.Button disabled={!isDirty || !isValid || login.isLoading} bgColor="">
+          {login.isLoading ? <CircularProgress size={24} /> : "로그인"}
         </LogInSignUp.Button>
       </LogInSignUp.Form>
       <LogInSignUp.TextWrapper>

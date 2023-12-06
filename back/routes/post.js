@@ -640,6 +640,15 @@ router.post("/", tokenCheck, async (req, res) => {
   try {
     //현재 로그인된 유저의 id와 포스트 text로 post 모델의 요소 생성
     console.log(req.body);
+    const { type, UserId } = req.body;
+    if (type === 0) {
+      const user = await User.findOne({
+        id: UserId
+      })
+      if (user.level !== 10) {
+        return res.status(400).json("유저 레벨이 올바르지 않습니다.");
+      }
+    }
     const post = await Post.create({
       type: req.body.type,
       content: req.body.content,
@@ -659,7 +668,7 @@ router.post("/", tokenCheck, async (req, res) => {
   } catch (e) {
     console.error(e);
   }
-  res.status(200).json("post upload success");
+  return res.status(200).json("post upload success");
 })
 router.patch("/:postId", tokenCheck, async (req, res) => {
   try {
