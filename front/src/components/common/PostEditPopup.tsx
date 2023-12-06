@@ -45,7 +45,7 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
   const [images, setImages] = useState<string[]>(postProps.images.map((v) => v.src));
   const imageInput = useRef<HTMLInputElement>(null);
 
-  const [postOptionToggle, setPostOptionToggle] = useState<number>(0);
+  const [postOptionToggle, setPostOptionToggle] = useState<number>(-1);
   const [start, setStart] = useState<Date | null>(postProps.start ? new Date(postProps.start) : null);
   const [end, setEnd] = useState<Date | null>(postProps.end ? new Date(postProps.end) : null);
 
@@ -190,6 +190,7 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
                       onDelete={() => {
                         setStart(null);
                         setEnd(null);
+                        setPostOptionToggle(-1);
                       }}
                     />
                   ) : (
@@ -215,8 +216,8 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
                 postOptionToggle === 1 ? (
                   <ChipDelete
                     onDelete={() => {
-                      setStart(null);
-                      setEnd(null);
+                      setLink("");
+                      setPostOptionToggle(-1);
                     }}
                   />
                 ) : (

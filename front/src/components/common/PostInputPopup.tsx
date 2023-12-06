@@ -33,7 +33,7 @@ const InputPopup = ({ modalClose }: props) => {
   const [content, setContent] = useState<string>("");
   const [images, setImages] = useState<string[]>([]);
 
-  const [postOptionToggle, setPostOptionToggle] = useState<number>(0);
+  const [postOptionToggle, setPostOptionToggle] = useState<number>(-1);
   const [start, setStart] = useState<Date | null>(null);
   const [end, setEnd] = useState<Date | null>(null);
   const [link, setLink] = useState<string>("");
@@ -173,6 +173,7 @@ const InputPopup = ({ modalClose }: props) => {
                       onDelete={() => {
                         setStart(null);
                         setEnd(null);
+                        setPostOptionToggle(-1);
                       }}
                     />
                   ) : (
@@ -198,8 +199,8 @@ const InputPopup = ({ modalClose }: props) => {
                 postOptionToggle === 1 ? (
                   <ChipDelete
                     onDelete={() => {
-                      setStart(null);
-                      setEnd(null);
+                      setLink("");
+                      setPostOptionToggle(-1);
                     }}
                   />
                 ) : (

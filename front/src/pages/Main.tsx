@@ -20,6 +20,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import User from "../functions/reactQuery/User";
 import CircularProgress from "@mui/material/CircularProgress";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
 
 interface userProps {
   email: string;
@@ -224,7 +225,7 @@ const Main = () => {
               This Week
             </span>
             <span>신규 등록 게시글 {thisWeekNewInfo?.len + thisWeekNewComm?.len}개</span>
-            <span>마감 예정 관심 팁&설정 {thisWeekEndLiked?.len}개</span>
+            <span>공유 마감 관심 팁&설정 {thisWeekEndLiked?.len}개</span>
           </WelcomeWrapper>
           <Pill.Wrapper>
             <Pill.Sub
@@ -251,7 +252,8 @@ const Main = () => {
                 });
               }}
             >
-              관심 팁
+              <BookmarksIcon fontSize="small" />
+              <span>팁&설정</span>
             </Pill.Sub>
           </Pill.Wrapper>
 
@@ -761,6 +763,10 @@ const Pill = {
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
     color: #464b53;
     background-color: #e3ecf9;
+    > span {
+      margin-left: 4px;
+      font-weight: 500;
+    }
     &:nth-child(${(props) => props.toggle + 1}) {
       background-color: #f3e0f1;
     }
