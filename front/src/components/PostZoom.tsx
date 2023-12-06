@@ -31,6 +31,8 @@ interface props {
 
 const PostZoom = ({ postProps, modalClose }: props) => {
   const user = User.getData();
+  const postHaveDate = postProps?.start && postProps?.end;
+  const postHaveLink = postProps?.link && true;
 
   //useMutation
   const like = Post.like();
@@ -85,30 +87,31 @@ const PostZoom = ({ postProps, modalClose }: props) => {
             </PCTextPost_Left>
             <PCTextPost_Right>
               <PCText>{postProps.content}</PCText>
+              {(postHaveDate || postHaveLink) && (
+                <SubContent>
+                  {postHaveDate && (
+                    <PostStartEnd>
+                      <span>
+                        <CalendarMonthIcon />
+                      </span>
+                      <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
+                      <span>~</span>
+                      <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
+                    </PostStartEnd>
+                  )}
 
-              <SubContent>
-                {postProps?.start && postProps?.end && (
-                  <PostStartEnd>
-                    <span>
-                      <CalendarMonthIcon />
-                    </span>
-                    <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
-                    <span>~</span>
-                    <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
-                  </PostStartEnd>
-                )}
-
-                {postProps?.link && (
-                  <PostLink>
-                    <InsertLinkIcon />
-                    <span>
-                      <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
-                        {makeCorectUrl(postProps?.link)}
-                      </a>
-                    </span>
-                  </PostLink>
-                )}
-              </SubContent>
+                  {postHaveLink && (
+                    <PostLink>
+                      <InsertLinkIcon />
+                      <span>
+                        <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
+                          {makeCorectUrl(postProps?.link)}
+                        </a>
+                      </span>
+                    </PostLink>
+                  )}
+                </SubContent>
+              )}
 
               <Like>
                 <button
@@ -179,29 +182,30 @@ const PostZoom = ({ postProps, modalClose }: props) => {
               </PCImagePost_Info>
               <PCText>{postProps.content}</PCText>
 
-              <SubContent>
-                {postProps?.start && postProps?.end && (
-                  <PostStartEnd>
-                    <span>
-                      <CalendarMonthIcon />
-                    </span>
-                    <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
-                    <span>~</span>
-                    <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
-                  </PostStartEnd>
-                )}
-
-                {postProps?.link && (
-                  <PostLink>
-                    <InsertLinkIcon />
-                    <span>
-                      <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
-                        {makeCorectUrl(postProps?.link)}
-                      </a>
-                    </span>
-                  </PostLink>
-                )}
-              </SubContent>
+              {(postHaveDate || postHaveLink) && (
+                <SubContent>
+                  {postHaveDate && (
+                    <PostStartEnd>
+                      <span>
+                        <CalendarMonthIcon />
+                      </span>
+                      <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
+                      <span>~</span>
+                      <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
+                    </PostStartEnd>
+                  )}
+                  {postHaveLink && (
+                    <PostLink>
+                      <InsertLinkIcon />
+                      <span>
+                        <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
+                          {makeCorectUrl(postProps?.link)}
+                        </a>
+                      </span>
+                    </PostLink>
+                  )}
+                </SubContent>
+              )}
 
               <Like>
                 <button
@@ -264,30 +268,30 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                 </MobilePostInfo>
                 <MobileText key="텍스트페이지">
                   <div>{postProps.content}</div>
-
-                  <SubContent>
-                    {postProps?.start && postProps.end && (
-                      <PostStartEnd>
-                        <span>
-                          <CalendarMonthIcon />
-                        </span>
-                        <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
-                        <span>~</span>
-                        <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
-                      </PostStartEnd>
-                    )}
-
-                    {postProps?.link && (
-                      <PostLink>
-                        <InsertLinkIcon />
-                        <span>
-                          <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
-                            {makeCorectUrl(postProps?.link)}
-                          </a>
-                        </span>
-                      </PostLink>
-                    )}
-                  </SubContent>
+                  {(postHaveDate || postHaveLink) && (
+                    <SubContent>
+                      {postHaveDate && (
+                        <PostStartEnd>
+                          <span>
+                            <CalendarMonthIcon />
+                          </span>
+                          <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
+                          <span>~</span>
+                          <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
+                        </PostStartEnd>
+                      )}
+                      {postHaveLink && (
+                        <PostLink>
+                          <InsertLinkIcon />
+                          <span>
+                            <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
+                              {makeCorectUrl(postProps?.link)}
+                            </a>
+                          </span>
+                        </PostLink>
+                      )}
+                    </SubContent>
+                  )}
                 </MobileText>
                 <MobilePostSubInfo>
                   <Like>
@@ -364,29 +368,31 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                       return (
                         <MobileText key="텍스트페이지">
                           <div>{postProps.content}</div>
-                          <SubContent>
-                            {postProps?.start && postProps?.end && (
-                              <PostStartEnd>
-                                <span>
-                                  <CalendarMonthIcon />
-                                </span>
-                                <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
-                                <span>~</span>
-                                <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
-                              </PostStartEnd>
-                            )}
+                          {(postHaveDate || postHaveLink) && (
+                            <SubContent>
+                              {postHaveDate && (
+                                <PostStartEnd>
+                                  <span>
+                                    <CalendarMonthIcon />
+                                  </span>
+                                  <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
+                                  <span>~</span>
+                                  <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
+                                </PostStartEnd>
+                              )}
 
-                            {postProps?.link && (
-                              <PostLink>
-                                <InsertLinkIcon />
-                                <span>
-                                  <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
-                                    {makeCorectUrl(postProps?.link)}
-                                  </a>
-                                </span>
-                              </PostLink>
-                            )}
-                          </SubContent>
+                              {postHaveLink && (
+                                <PostLink>
+                                  <InsertLinkIcon />
+                                  <span>
+                                    <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
+                                      {makeCorectUrl(postProps?.link)}
+                                    </a>
+                                  </span>
+                                </PostLink>
+                              )}
+                            </SubContent>
+                          )}
                         </MobileText>
                       );
                     } else {
@@ -466,7 +472,7 @@ const SubContent = styled.div`
   @media (orientation: portrait) or (max-height: 480px) {
     width: 100%;
     margin-top: 0px;
-    padding: 12px 24px;
+    padding: 8px 24px;
   }
 
   > div {
@@ -704,6 +710,7 @@ const PCText = styled.div`
   align-items: start;
 
   width: 100%;
+  height: 50%;
   flex-grow: 1;
 
   font-size: 1.2em;
@@ -775,10 +782,12 @@ const MobileText = styled.div`
   align-items: center;
 
   padding: 12px 0;
+  padding: 0px 0;
 
   > div:nth-child(1) {
     flex-grow: 1;
     width: 100%;
+    height: 70%;
     white-space: pre-wrap;
     line-height: 1.3em;
     overflow-y: scroll;

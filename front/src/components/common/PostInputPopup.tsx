@@ -18,6 +18,9 @@ import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Upload from "../../functions/reactQuery/Upload";
 import Post from "../../functions/reactQuery/Post";
+import Chip from "@mui/joy/Chip";
+import ChipDelete from "@mui/joy/ChipDelete";
+import Box from "@mui/joy/Box";
 
 interface props {
   modalClose: () => void;
@@ -30,10 +33,9 @@ const InputPopup = ({ modalClose }: props) => {
   const [content, setContent] = useState<string>("");
   const [images, setImages] = useState<string[]>([]);
 
-  const [dateToggle, setDateToggle] = useState<boolean>(false);
-  const [linkToggle, setLinkToggle] = useState<boolean>(false);
-  const [start, setStart] = useState<Date>(new Date());
-  const [end, setEnd] = useState<Date>(new Date());
+  const [postOptionToggle, setPostOptionToggle] = useState<number>(0);
+  const [start, setStart] = useState<Date | null>(null);
+  const [end, setEnd] = useState<Date | null>(null);
   const [link, setLink] = useState<string>("");
   const isInfoPost = inputType === 1;
 
@@ -62,7 +64,23 @@ const InputPopup = ({ modalClose }: props) => {
     });
   };
   const postCreateSubmit = () => {
-    if (start > end) {
+    if (start === null || end === null) {
+      addPost.mutate(
+        {
+          content,
+          images,
+          type: inputType,
+          start: null,
+          end: null,
+          link
+        },
+        {
+          onSuccess: () => {
+            modalClose();
+          }
+        }
+      );
+    } else if (start > end) {
       toast.warning("기간 설정이 잘못되었습니다.");
     } else if (content.length < 8 || content.length > 2200) {
       toast.warning("게시글은 최소 8자 최대 2200자 작성이 가능합니다.");
@@ -74,39 +92,22 @@ const InputPopup = ({ modalClose }: props) => {
       const endY = end.getFullYear();
       const endM = end.getMonth();
       const endD = end.getDate();
-      if (dateToggle) {
-        addPost.mutate(
-          {
-            content,
-            images,
-            type: inputType,
-            start: new Date(startY, startM, startD, 0, 0, 0),
-            end: new Date(endY, endM, endD, 0, 0, 0),
-            link
-          },
-          {
-            onSuccess: () => {
-              modalClose();
-            }
+
+      addPost.mutate(
+        {
+          content,
+          images,
+          type: inputType,
+          start: new Date(startY, startM, startD, 0, 0, 0),
+          end: new Date(endY, endM, endD, 0, 0, 0),
+          link
+        },
+        {
+          onSuccess: () => {
+            modalClose();
           }
-        );
-      } else {
-        addPost.mutate(
-          {
-            content,
-            images,
-            type: inputType,
-            start: null,
-            end: null,
-            link
-          },
-          {
-            onSuccess: () => {
-              modalClose();
-            }
-          }
-        );
-      }
+        }
+      );
     }
   };
 
@@ -153,34 +154,67 @@ const InputPopup = ({ modalClose }: props) => {
     <InputForm.InputBG onClick={() => cancleConfirm()}>
       <InputForm.InputWrapper onClick={(e) => e.stopPropagation()}>
         <PostOptionWrapper>
-          <div>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
             {isInfoPost && (
-              <button
-                onClick={() => {
-                  setDateToggle((c) => !c);
-                  setLinkToggle(false);
+              <Chip
+                sx={{
+                  "--Chip-minHeight": "36px"
                 }}
+                startDecorator={<CalendarMonthIcon />}
+                onClick={() => {
+                  setPostOptionToggle(0);
+                }}
+                size="lg"
+                variant="soft"
+                color={postOptionToggle === 0 ? "primary" : "neutral"}
+                endDecorator={
+                  postOptionToggle === 0 ? (
+                    <ChipDelete
+                      onDelete={() => {
+                        setStart(null);
+                        setEnd(null);
+                      }}
+                    />
+                  ) : (
+                    <></>
+                  )
+                }
               >
-                <CalendarMonthIcon />
                 공유 기간
-              </button>
+              </Chip>
             )}
-
-            <button
-              onClick={() => {
-                setLinkToggle((c) => !c);
-                setDateToggle(false);
+            <Chip
+              sx={{
+                "--Chip-minHeight": "36px"
               }}
+              startDecorator={<InsertLinkIcon />}
+              onClick={() => {
+                setPostOptionToggle(1);
+              }}
+              size="lg"
+              variant="soft"
+              color={postOptionToggle === 1 ? "primary" : "neutral"}
+              endDecorator={
+                postOptionToggle === 1 ? (
+                  <ChipDelete
+                    onDelete={() => {
+                      setStart(null);
+                      setEnd(null);
+                    }}
+                  />
+                ) : (
+                  <></>
+                )
+              }
             >
-              <InsertLinkIcon />
               링크
-            </button>
-          </div>
+            </Chip>
+          </Box>
 
           {
             //start, end date
-            dateToggle && (
-              <div>
+            postOptionToggle === 0 && (
+              <PostOptionValue>
                 <DatePicker
                   calendarStartDay={1}
                   locale={ko}
@@ -190,13 +224,17 @@ const InputPopup = ({ modalClose }: props) => {
                   startDate={start}
                   endDate={end}
                   customInput={
-                    <DateButton>
-                      {start.getFullYear()}년 {start.getMonth() + 1}월 {start.getDate()}일
-                    </DateButton>
+                    start ? (
+                      <DateButton>
+                        {start?.getFullYear()}년 {start?.getMonth() + 1}월 {start?.getDate()}일
+                      </DateButton>
+                    ) : (
+                      <DateButton>공유 시작일</DateButton>
+                    )
                   }
                   onChange={(date: Date) => setStart(date)}
                 />
-                <MoreHorizIcon />
+                <MoreHorizIcon color="inherit" />
                 <DatePicker
                   calendarStartDay={1}
                   locale={ko}
@@ -206,21 +244,25 @@ const InputPopup = ({ modalClose }: props) => {
                   startDate={start}
                   endDate={end}
                   customInput={
-                    <DateButton>
-                      {end.getFullYear()}년 {end.getMonth() + 1}월 {end.getDate()}일
-                    </DateButton>
+                    end ? (
+                      <DateButton>
+                        {end?.getFullYear()}년 {end?.getMonth() + 1}월 {end?.getDate()}일
+                      </DateButton>
+                    ) : (
+                      <DateButton>공유 종료일</DateButton>
+                    )
                   }
                   onChange={(date: Date) => setEnd(date)}
                 />
-              </div>
+              </PostOptionValue>
             )
           }
           {
             //link
-            linkToggle && (
-              <div>
+            postOptionToggle === 1 && (
+              <PostOptionValue>
                 <input placeholder="https://www.url.com" value={link} onChange={(e) => setLink(e.target.value)}></input>
-              </div>
+              </PostOptionValue>
             )
           }
         </PostOptionWrapper>
@@ -289,9 +331,12 @@ export default InputPopup;
 
 const DateButton = styled.button`
   font-size: 16px;
+  font-weight: 500;
   width: 150px;
   height: 32px;
   border: 2px solid #cbdbf3;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.7);
   border-radius: 8px;
   outline: none;
 
@@ -313,6 +358,8 @@ const PostOptionWrapper = styled.div`
   padding: 30px 40px;
   padding-bottom: 5px;
 
+  color: rgba(0, 0, 0, 0.8);
+
   @media (orientation: portrait) or (max-height: 480px) {
     padding: 20px;
     padding-bottom: 5px;
@@ -326,51 +373,42 @@ const PostOptionWrapper = styled.div`
     justify-content: start;
     align-items: center;
 
-    button {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
+    span {
       font-weight: 500;
-
       font-size: 18px;
       color: rgba(0, 0, 0, 0.7);
-      background-color: #cbdbf3;
-      border-radius: 32px;
-      padding: 4px 12px;
-      margin-right: 8px;
-      box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
-      * {
-        margin-right: 4px;
-      }
     }
   }
-  > div:nth-child(2) {
+`;
+
+const PostOptionValue = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+
+  margin-top: 12px;
+  color: rgba(0, 0, 0, 0.6);
+
+  input {
+    color: rgba(0, 0, 0, 0.8);
+    font-size: 16px;
     width: 100%;
-    display: flex;
-    justify-content: start;
-    align-items: center;
 
-    margin-top: 12px;
+    height: 32px;
+    border: 2px solid #cbdbf3;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    outline: none;
+    padding: 0 8px;
 
-    input {
-      font-size: 16px;
-      width: 100%;
-
-      height: 32px;
-      border: 2px solid #cbdbf3;
-      border-radius: 8px;
-      outline: none;
-      padding: 0 8px;
-
-      &::placeholder {
-        text-align: center;
-      }
+    &::placeholder {
+      text-align: center;
     }
+  }
 
-    @media (orientation: portrait) or (max-height: 480px) {
-      justify-content: center;
-    }
+  @media (orientation: portrait) or (max-height: 480px) {
+    justify-content: center;
   }
 `;
 

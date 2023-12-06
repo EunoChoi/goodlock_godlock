@@ -52,6 +52,9 @@ const Post = ({ postProps }: any) => {
   const isLiked = postProps?.Likers?.find((v: any) => v.id === user?.id);
   const isMyPost = user?.id === postProps?.UserId;
 
+  const postHaveDate = postProps?.start && postProps?.end;
+  const postHaveLink = postProps?.link && true;
+
   const commentScroll = useRef<null | HTMLDivElement>(null);
 
   const open = Boolean(morePop);
@@ -237,29 +240,31 @@ const Post = ({ postProps }: any) => {
       >
         {postProps?.content}
       </TextWrapper>
-      <SubContentWrapper>
-        {postProps?.start && postProps?.end && (
-          <PostStartEnd>
-            <span>
-              <CalendarMonthIcon />
-            </span>
-            <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
-            <span>~</span>
-            <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
-          </PostStartEnd>
-        )}
+      {(postHaveDate || postHaveLink) && (
+        <SubContentWrapper>
+          {postHaveDate && (
+            <PostStartEnd>
+              <span>
+                <CalendarMonthIcon />
+              </span>
+              <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
+              <span>~</span>
+              <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
+            </PostStartEnd>
+          )}
 
-        {postProps?.link && (
-          <PostLink>
-            <InsertLinkIcon />
-            <span>
-              <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
-                {makeCorectUrl(postProps?.link)}
-              </a>
-            </span>
-          </PostLink>
-        )}
-      </SubContentWrapper>
+          {postHaveLink && (
+            <PostLink>
+              <InsertLinkIcon />
+              <span>
+                <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
+                  {makeCorectUrl(postProps?.link)}
+                </a>
+              </span>
+            </PostLink>
+          )}
+        </SubContentWrapper>
+      )}
 
       {/* 토글 버튼(좋아요, 댓글창, 수정, 삭제) */}
       <ToggleWrapper>
@@ -414,6 +419,7 @@ const SubContentWrapper = styled.div`
   font-size: 18px;
 
   margin: 10px 20px;
+  margin-top: 0;
   > div {
     display: flex;
     justify-content: start;
@@ -552,7 +558,7 @@ const TextWrapper = styled.div`
 
   font-size: 18px;
 
-  margin: 28px 20px;
+  margin: 16px 20px;
 
   /* max-height: 100px; */
   overflow-y: scroll;

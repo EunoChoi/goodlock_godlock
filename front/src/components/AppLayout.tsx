@@ -19,7 +19,7 @@ import InputPopup from "./common/PostInputPopup";
 import Animation from "../styles/Animation";
 import IsMobile from "../functions/IsMobile";
 import User from "../functions/reactQuery/User";
-import Bot from "./common/Bot";
+import Bot from "./chatbot/Bot";
 
 interface AppLayoutProps {
   children: React.ReactNode;

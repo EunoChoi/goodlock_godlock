@@ -18,13 +18,47 @@ const theme = {
   userFontColor: "#4a4a4a"
 };
 
-// const avatar = `${process.env.PUBLIC_URL}/img/loading.png`;
-
 const Bot = () => {
   const user = User.getData();
   const isMobile = IsMobile();
   const [open, setOpen] = useState(false);
-  // console.log(user?.profilePic);
+
+  const steps = [
+    {
+      id: "1",
+      message: "안녕하세요. 굿락갓락입니다.",
+      trigger: "2"
+    },
+    {
+      id: "2",
+      options: [
+        { value: 1, label: "사이트 소개", trigger: "3" },
+        { value: 2, label: "이용 안내", trigger: "3" },
+        { value: 3, label: "문의", trigger: "3" },
+        { value: 4, label: "처음으로", trigger: "3" }
+      ]
+    },
+    {
+      id: "3",
+      // message: "Wrong answer, try again.",
+      component: (
+        <div>
+          This is an example component
+          <input />
+          <button>메일 발송</button>
+        </div>
+      ),
+      trigger: "4"
+    },
+    {
+      id: "4",
+      options: [
+        { value: 1, label: "Number 1", trigger: "3" },
+        { value: 2, label: "Number 2", trigger: "3" },
+        { value: 3, label: "Number 3", trigger: "3" }
+      ]
+    }
+  ];
 
   useEffect(() => {
     if (open && isMobile) document.body.style.overflow = "hidden";
@@ -41,7 +75,7 @@ const Bot = () => {
         }
         opened={open}
         toggleFloating={(res) => {
-          console.log(res);
+          // console.log(res);
           setOpen(res.opened);
         }}
         floating={true}
@@ -49,34 +83,7 @@ const Bot = () => {
         botAvatar={"/img/loading.png"}
         userAvatar={user?.profilePic ? user?.profilePic : "/img/loading.png"}
         placeholder={"..."}
-        steps={[
-          {
-            id: "1",
-            message: "What number I am thinking?",
-            trigger: "2"
-          },
-          {
-            id: "2",
-            options: [
-              { value: 1, label: "Number 1", trigger: "3" },
-              { value: 2, label: "Number 2", trigger: "3" },
-              { value: 3, label: "Number 3", trigger: "3" }
-            ]
-          },
-          {
-            id: "3",
-            message: "Wrong answer, try again.",
-            trigger: "4"
-          },
-          {
-            id: "4",
-            options: [
-              { value: 1, label: "Number 1", trigger: "3" },
-              { value: 2, label: "Number 2", trigger: "3" },
-              { value: 3, label: "Number 3", trigger: "3" }
-            ]
-          }
-        ]}
+        steps={steps}
       />
     </ThemeProvider>
   );

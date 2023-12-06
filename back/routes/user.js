@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const userController = require("../controller/userController.js");
 const tokenCheck = require("../middleware/tokenCheck.js");
+const nodemailer = require("nodemailer");
 
 
 const User = db.User;
@@ -92,7 +93,45 @@ router.post("/login/social", async (req, res) => {
       //회원가입 
       console.log("가입되어있지 않음, 회원가입 진행 중...");
       const newUser = await userController.register({ email, password, nickname, profilePic });
-      console.log(newUser);
+      // console.log(newUser);
+
+      //회원가입 메일 발송
+      let transporter = nodemailer.createTransport({
+        service: 'gmail'
+        , port: 587
+        , host: 'smtp.gmail.com'
+        , secure: false
+        , requireTLS: true
+        , auth: {
+          user: process.env.AUTH_EMAIL
+          , pass: process.env.AUTH_PW
+        }
+      });
+      await transporter.sendMail({
+        from: 'goodlockgodlock@gmail.com',
+        to: email,
+        subject: '굿락갓락에 오신 것을 환영합니다.',
+        text: '굿락갓락에 오신 것을 환영합니다.',
+        html: `
+        <div style="width: 100%;height: 12px;background-color: #C7D7FF;margin-bottom: 40px;"></div>
+        <div style="background-color: white; width: 100%; box-sizing: border-box; border-radius: 8px; padding: 24px;">
+        <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
+          <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">굿락갓락에 오신 것을 환영합니다. 🎉🎉🎉</div>
+          <div>
+            <div style="font-size: 16px;line-height: 24px;">안녕하세요.</div>
+            <div style="font-size: 16px;line-height: 24px;">굿락갓락에 오신 것을 환영합니다.</div>
+            <div style="font-size: 16px;line-height: 24px;">아래의 정보로 회원가입이 완료되었습니다.</div>
+            <div style="font-size: 16px;line-height: 16px;color:salmon">*간편가입의 경우 임시로 이메일과 같은 닉네임이 설정되었습니다. 로그인 후 마이페이지에서 변경가능합니다.</div>
+            <div style="font-size: 16px;line-height: 24px;">감사합니다.</div>
+            <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">이메일 : ${email}</div>
+            <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">닉네임 : ${nickname}</div>
+          </div>
+        </div>
+        <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
+        `
+      });
+      console.log("회원가입 메일 발송");
+
       //로그인
       console.log("로그인 진행 중...");
       const user = await userController.login({ email, password });

@@ -5,11 +5,6 @@ import User from "../../functions/reactQuery/User";
 
 const UserProfile = () => {
   const user = User.getData();
-  const isTextTooLong = (text: string) => {
-    if (text.length >= 13) {
-      return text.slice(0, 12) + "...";
-    } else return text;
-  };
 
   return user ? (
     <ProfileWrapper>
