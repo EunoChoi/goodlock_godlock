@@ -51,7 +51,7 @@ const UserInfo = () => {
 
   const navigate = useNavigate();
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["팔로잉", "팔로워", "팁&설정", "소통글", "관심 팁&설정"];
+  const category = ["팔로잉", "팔로워", "팁&설정", "소통글", "북마크 설정"];
 
   const user = User.getData();
   const { data: targetUser, refetch } = useQuery(

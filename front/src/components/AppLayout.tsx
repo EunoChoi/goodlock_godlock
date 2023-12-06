@@ -288,25 +288,3 @@ const RightWrapper = styled.div`
   flex-grow: 1;
   -webkit-box-flex: 1;
 `;
-
-const SideWrapper = styled.div`
-  position: fixed;
-  right: 0px;
-  top: 0px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-
-  width: 70px;
-  height: 100vh;
-  padding: 20px;
-  color: rgba(0, 0, 0, 0.6);
-  background-color: rgba(0, 0, 0, 0.25);
-  background-color: #bfbfbf;
-  /* background-color: #e0daec; */
-
-  box-shadow: -3px 0px 10px rgba(0, 0, 0, 0.2);
-  z-index: 100;
-`;

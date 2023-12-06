@@ -163,7 +163,7 @@ const Post = {
         queryClient.invalidateQueries(["myCommPosts"]);
         queryClient.invalidateQueries(["myInfoPosts"]);
 
-        if (res.data.type === 1) toast.success("관심 등록 완료");
+        if (res.data.type === 1) toast.success("북마크 등록 완료");
         else if (res.data.type !== 1) toast.success("좋아요 완료");
       },
       onError: (err: CustomError2) => {
@@ -195,7 +195,7 @@ const Post = {
         queryClient.invalidateQueries(["myCommPosts"]);
         queryClient.invalidateQueries(["myInfoPosts"]);
 
-        if (res.data.type === 1) toast.success("관심 등록 해제 완료");
+        if (res.data.type === 1) toast.success("북마크 등록 해제 완료");
         else if (res.data.type !== 1) toast.success("좋아요 해제 완료");
       },
       onError: (err: CustomError2) => {

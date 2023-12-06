@@ -225,7 +225,7 @@ const Main = () => {
               This Week
             </span>
             <span>신규 등록 게시글 {thisWeekNewInfo?.len + thisWeekNewComm?.len}개</span>
-            <span>공유 마감 관심 팁&설정 {thisWeekEndLiked?.len}개</span>
+            <span>공유 마감 북마크 설정 {thisWeekEndLiked?.len}개</span>
           </WelcomeWrapper>
           <Pill.Wrapper>
             <Pill.Sub
