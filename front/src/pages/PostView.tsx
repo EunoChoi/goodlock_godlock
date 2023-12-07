@@ -43,14 +43,6 @@ const PostView = () => {
 
   return (
     <AppLayout>
-      {/* <Helmet>
-        <meta charSet="utf-8" />
-        <meta name="description" content={single?.data?.content} />
-        <meta property="og:title" content={`${single?.data?.User?.nickname}님의 글`} />
-        <meta property="og:description" content={single?.data?.content} />
-        <meta property="og:image" content={single?.data?.Images[0]?.src} />
-        <meta property="og:url" content={`${process.env.REACT_APP_BASE_URL}/postview/${single?.data?.User?.id}`} />
-      </Helmet> */}
       <SingePostText>
         <ShareIcon />
         <span> 공유 게시글</span>
@@ -65,7 +57,7 @@ export default PostView;
 const SingePostText = styled.div`
   width: 100%;
   padding-top: 64px;
-  padding-left: calc(35vw - 285px);
+  padding-left: calc((70vw - 500px) / 2);
   padding-bottom: 32px;
 
   color: rgba(0, 0, 0, 0.7);
@@ -76,8 +68,7 @@ const SingePostText = styled.div`
   }
 
   @media (orientation: portrait) or (max-height: 480px) {
-    /* background-color: #fff; */
-    padding-left: 5vw;
+    padding-left: 4vw;
     padding-top: 100px;
   }
   @media (orientation: landscape) and (max-height: 480px) {

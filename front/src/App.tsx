@@ -79,10 +79,17 @@ function App() {
         <Suspense fallback={<Loading></Loading>}>
           <Routes>
             <Route path="postview/:id" element={<PostView />} />
-            <Route path="main/:type/*" element={<AuthRoute accessType="login" component={<Main />} />} />
-            <Route path="profile/:cat/*" element={<AuthRoute accessType="login" component={<Profile />} />} />
-            <Route path="userinfo/:id/cat/:cat/*" element={<AuthRoute accessType="login" component={<UserInfo />} />} />
-            <Route path="/*" element={<Start />} />
+            <Route path="main/:type" element={<AuthRoute accessType="login" component={<Main />} />} />
+            <Route path="main/:type/modal" element={<AuthRoute accessType="login" component={<Main />} />} />
+            <Route path="profile/:cat" element={<AuthRoute accessType="login" component={<Profile />} />} />
+            <Route path="profile/:cat/modal" element={<AuthRoute accessType="login" component={<Profile />} />} />
+            <Route path="userinfo/:id/cat/:cat" element={<AuthRoute accessType="login" component={<UserInfo />} />} />
+            <Route
+              path="userinfo/:id/cat/:cat/modal"
+              element={<AuthRoute accessType="login" component={<UserInfo />} />}
+            />
+            <Route path="/" element={<Start />} />
+            <Route path="/modal" element={<Start />} />
             <Route path="/auth/kakao" element={<Kakao />} />
             <Route path="/auth/google" element={<Google />} />
             <Route path="/auth/naver" element={<Naver />} />

@@ -71,19 +71,20 @@ router.post("/code", async (req, res) => {
       subject: '굿락갓락, 회원가입 인증코드 안내',
       text: code,
       html: `
-      <div style="width: 100%;height: 12px;background-color: #C7D7FF;margin-bottom: 40px;"></div>
-      <div style="background-color: white; width: 100%; box-sizing: border-box; border-radius: 8px; padding: 24px;">
-      <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
-        <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">회원가입 인증코드 안내 </div>
-        <div>
-          <div style="font-size: 16px;line-height: 24px;">안녕하세요.</div>
-          <div style="font-size: 16px;line-height: 24px;">굿락갓락을 방문해주셔서 감사드립니다.</div>
-          <div style="font-size: 16px;line-height: 24px;">아래 인증코드로 인증 후 회원가입을 완료해주시기 바랍니다.</div>
-          <div style="font-size: 16px;line-height: 24px;">감사합니다.</div>
-          <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">인증코드 : ${code}</div>
+      <div style="width: 100%;height: auto;background-color: #C7D7FF; box-sizing: border-box; border-radius: 8px; padding: 12px;">
+        <div style="background-color: white; width: 100%; box-sizing: border-box; border-radius: 8px; padding: 24px;margin-top: 40px;">
+        <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
+          <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">회원가입 인증코드 안내 </div>
+          <div>
+            <div style="font-size: 16px;line-height: 24px;">안녕하세요.</div>
+            <div style="font-size: 16px;line-height: 24px;">굿락갓락을 방문해주셔서 감사드립니다.</div>
+            <div style="font-size: 16px;line-height: 24px;">아래 인증코드로 인증 후 회원가입을 완료해주시기 바랍니다.</div>
+            <div style="font-size: 16px;line-height: 24px;">감사합니다.</div>
+            <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">인증코드 : ${code}</div>
+          </div>
         </div>
-      </div>
-      <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
+        <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
+      </div>  
       `
 
     });
@@ -145,19 +146,20 @@ router.post("/code/find/password", async (req, res) => {
       subject: '굿락갓락, 비밀번호 초기화 인증코드 안내',
       text: code,
       html: `
-        <div div style="width: 100%;height: 12px;background-color: #C7D7FF;margin-bottom: 40px;" ></div>
-        <div style="background-color: white; width: 100%; box-sizing: border-box; border-radius: 8px; padding: 24px;">
-          <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
-          <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">비밀번호 초기화 인증코드 안내 </div>
-          <div>
-            <div style="font-size: 16px;line-height: 24px;">안녕하세요.</div>
-            <div style="font-size: 16px;line-height: 24px;">굿락갓락을 이용해주셔서 감사드립니다.</div>
-            <div style="font-size: 16px;line-height: 24px;">아래 인증코드로 인증 후 비밀번호 초기화를 완료해주시기 바랍니다.</div>
-            <div style="font-size: 16px;line-height: 24px;">감사합니다.</div>
-            <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">인증코드 : ${code}</div>
+        <div style="width: 100%;height: auto;background-color: #C7D7FF; box-sizing: border-box; border-radius: 8px; padding: 12px;">
+          <div style="background-color: white; width: 100%; box-sizing: border-box; border-radius: 8px; padding: 24px;margin-top: 40px;">
+            <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
+            <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">비밀번호 초기화 인증코드 안내 </div>
+            <div>
+              <div style="font-size: 16px;line-height: 24px;">안녕하세요.</div>
+              <div style="font-size: 16px;line-height: 24px;">굿락갓락을 이용해주셔서 감사드립니다.</div>
+              <div style="font-size: 16px;line-height: 24px;">아래 인증코드로 인증 후 비밀번호 초기화를 완료해주시기 바랍니다.</div>
+              <div style="font-size: 16px;line-height: 24px;">감사합니다.</div>
+              <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">인증코드 : ${code}</div>
+            </div>
           </div>
+          <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
         </div>
-        <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
         `
     });
 
@@ -230,20 +232,21 @@ router.post("/password/reset", async (req, res) => {
       subject: '굿락갓락, 비밀번호 초기화 안내',
       text: tempPassword,
       html: `
-        <div div style="width: 100%;height: 12px;background-color: #C7D7FF;margin-bottom: 40px;" ></div>
-        <div style="background-color: white; width: 100%; box-sizing: border-box; border-radius: 8px; padding: 24px;">
-          <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
-          <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">임시 비밀번호 안내 </div>
-          <div>
-            <div style="font-size: 16px;line-height: 24px;">안녕하세요.</div>
-            <div style="font-size: 16px;line-height: 24px;">굿락갓락을 이용해주셔서 감사드립니다.</div>
-            <div style="font-size: 16px;line-height: 24px;">아래 임시 비밀번호로 변경되었습니다.</div>
-            <div style="font-size: 16px;line-height: 24px;">보안을 위해 로그인 후 즉시 비밀번호를 변경해주시기 바랍니다.</div>
-            <div style="font-size: 16px;line-height: 24px;">감사합니다.</div>
-            <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">임시 비밀번호 : ${tempPassword}</div>
+        <div style="width: 100%;height: auto;background-color: #C7D7FF; box-sizing: border-box; border-radius: 8px; padding: 12px;">
+          <div style="background-color: white; width: 100%; box-sizing: border-box; border-radius: 8px; padding: 24px;margin-top: 40px;">
+            <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
+            <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">임시 비밀번호 안내 </div>
+            <div>
+              <div style="font-size: 16px;line-height: 24px;">안녕하세요.</div>
+              <div style="font-size: 16px;line-height: 24px;">굿락갓락을 이용해주셔서 감사드립니다.</div>
+              <div style="font-size: 16px;line-height: 24px;">아래 임시 비밀번호로 변경되었습니다.</div>
+              <div style="font-size: 16px;line-height: 24px;">보안을 위해 로그인 후 즉시 비밀번호를 변경해주시기 바랍니다.</div>
+              <div style="font-size: 16px;line-height: 24px;">감사합니다.</div>
+              <div style="font-size: 24px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">임시 비밀번호 : ${tempPassword}</div>
+            </div>
           </div>
+          <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
         </div>
-        <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
         `
     });
 
