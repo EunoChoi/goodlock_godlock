@@ -706,11 +706,13 @@ const ProfileTitle = styled.div`
 `;
 const Title = styled.div`
   font-weight: 600;
+  font-weight: 700;
   font-size: 44px;
   line-height: 36px;
   color: rgba(0, 0, 0, 0.8);
   color: #cf9dc9;
   color: #bc9dcf;
+  color: #d5a8d0;
   @media (orientation: portrait) or (max-height: 480px) {
     padding-left: 5vw;
   }

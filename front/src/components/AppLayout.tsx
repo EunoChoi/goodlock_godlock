@@ -196,6 +196,7 @@ const MobileSide = styled.div`
 
   width: 80vw;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 
   animation: ${Animation.smoothAppearLeftToRight} 0.4s ease-out;
 `;
@@ -322,6 +323,7 @@ const LeftWrapper = styled.div`
 
   width: 280px;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 
   z-index: 100;
 `;

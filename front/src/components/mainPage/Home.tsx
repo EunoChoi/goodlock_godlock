@@ -393,6 +393,7 @@ const TextWrapper = styled.div`
     width: 100%;
     padding-top: 72px;
     padding-left: 5vw;
+    padding-right: 5vw;
     margin-top: 48px; //header height
     padding-bottom: 24px;
   }
@@ -407,14 +408,26 @@ const TextWrapper_Title = styled.span`
   font-size: 44px;
   line-height: 48px;
   font-weight: 600;
+  font-weight: 700;
+
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: scroll;
 
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 
   color: rgba(0, 0, 0, 0.75);
   color: #6e748e;
   color: #bc9dcf;
+  color: #d5a8d0;
 `;
 
 const TextWrapper_Bold = styled.span`

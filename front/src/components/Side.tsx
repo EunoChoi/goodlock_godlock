@@ -250,6 +250,20 @@ const UserInfoWrapper = styled.div`
     font-size: 32px;
     font-weight: 600;
 
+    max-width: 80%;
+    white-space: nowrap;
+    overflow: scroll;
+
+    display: flex;
+    justify-content: start;
+    align-items: center;
+
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera*/
+    }
+
     color: rgba(0, 0, 0, 0.7);
   }
   #email {
