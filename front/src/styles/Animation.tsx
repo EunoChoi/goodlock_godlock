@@ -35,6 +35,14 @@ const Animation = {
     to {
       transform: translateY( -300px )
     }
+  `,
+  smoothAppearLeftToRight: keyframes`
+    from {
+      transform: translateX( -100vw )
+    }
+    to {
+      transform: translateX( 0px )
+    }
   `
 };
 

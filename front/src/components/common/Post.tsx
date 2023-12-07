@@ -374,7 +374,7 @@ const Post = ({ postProps }: any) => {
 
       {isCommentOpen && (
         <>
-          <CommentInputForm postId={postProps?.id}></CommentInputForm>
+          {user && <CommentInputForm postId={postProps?.id}></CommentInputForm>}
           <CommentWrapper ref={commentScroll}>
             {postProps?.Comments.slice(0, commentLoadLength).map((v: any, i: number) => (
               <Comment
@@ -481,14 +481,18 @@ const PostWrapper = styled.div`
 
   transition: all ease-in-out 0.5s;
 
-  /* padding: 20px 0px; */
   height: auto;
   width: 500px;
 
   border-radius: 6px;
-  background-color: white;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  margin: 3px 10px;
+
+  /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); */
+
+  background-color: rgba(0, 0, 0, 0.02);
+  border: 2px rgba(0, 0, 0, 0.07) solid;
+  background-color: #fafafa;
+
+  /* margin: 3px 10px; */
   margin-bottom: 30px;
   /* border-radius: 7px; */
   @media (orientation: portrait) or (max-height: 480px) {

@@ -66,6 +66,8 @@ const CommentInput = styled.input`
   border: none;
   outline: none;
 
+  background-color: rgba(0, 0, 0, 0);
+
   width: 50%;
 
   flex-grow: 1;

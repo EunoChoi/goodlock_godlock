@@ -142,7 +142,6 @@ const Main = () => {
       }
     }
   );
-
   //load search posts
   const searchInfoPosts = useInfiniteQuery(
     ["searchInfo"],
@@ -180,7 +179,7 @@ const Main = () => {
   );
 
   useEffect(() => {
-    if (type >= 0 && type < 3) {
+    if (type >= 0 && type <= 3) {
       setToggles({ main: type, sub: 0 });
       window.scrollTo({
         top: 0,
@@ -208,25 +207,27 @@ const Main = () => {
     <AppLayout>
       {toggles.main === 0 && (
         <MainEl>
-          <WelcomeWrapper ref={scrollTarget}>
-            <span>반갑습니다.</span>
+          <TextWrapper ref={scrollTarget}>
+            <TextWrapper_Bold>반갑습니다.</TextWrapper_Bold>
 
-            <span>
-              <Link to={`/profile/0`}>{shortNickname(user?.nickname)}님!</Link>
-              <div>
-                <EmojiPeopleIcon fontSize="inherit" />
-              </div>
-            </span>
+            <TextWrapper_Bold>
+              {shortNickname(user?.nickname)}님!
+              {/* <EmojiPeopleIcon fontSize="large" /> */}
+            </TextWrapper_Bold>
 
-            <span>굿락 팁 공유 플랫폼, 굿락갓락 :)</span>
+            <span id="space" />
 
-            <span>
-              <CalendarMonthIcon />
+            <TextWrapper_Normal>나만의 감성 더하기+, 굿락갓락 :)</TextWrapper_Normal>
+
+            <span id="space"></span>
+
+            <TextWrapper_Bold>
+              <CalendarMonthIcon fontSize="large" />
               This Week
-            </span>
-            <span>신규 등록 게시글 {thisWeekNewInfo?.len + thisWeekNewComm?.len}개</span>
-            <span>공유 마감 북마크 설정 {thisWeekEndLiked?.len}개</span>
-          </WelcomeWrapper>
+            </TextWrapper_Bold>
+            <TextWrapper_Normal>신규 등록 게시글 {thisWeekNewInfo?.len + thisWeekNewComm?.len}개</TextWrapper_Normal>
+            <TextWrapper_Normal>공유 마감 북마크 Tips {thisWeekEndLiked?.len}개</TextWrapper_Normal>
+          </TextWrapper>
           <Pill.Wrapper>
             <Pill.Sub
               toggle={toggles.sub}
@@ -239,7 +240,7 @@ const Main = () => {
                 });
               }}
             >
-              공지사항
+              Notice
             </Pill.Sub>
             <Pill.Sub
               toggle={toggles.sub}
@@ -253,7 +254,7 @@ const Main = () => {
               }}
             >
               <BookmarksIcon fontSize="small" />
-              <span>팁&설정</span>
+              <span>Tips</span>
             </Pill.Sub>
           </Pill.Wrapper>
 
@@ -310,20 +311,22 @@ const Main = () => {
       )}
       {toggles.main === 1 && ( // 모집 공고
         <MainEl>
-          <WelcomeWrapper ref={scrollTarget}>
-            <span>팁&설정</span>
-            <span></span>
-            <span>
-              나만의 굿락 팁&설정을 공유해요.<br></br>
-              GTS를 이용하면 공유가 쉬워집니다.
-            </span>
+          <TextWrapper ref={scrollTarget}>
+            <TextWrapper_Bold>Tips</TextWrapper_Bold>
 
-            <span>
-              <CalendarMonthIcon />
+            <span id="space" />
+
+            <TextWrapper_Normal>나만의 굿락 팁과 설정을 공유합니다.</TextWrapper_Normal>
+            <TextWrapper_Normal>GTS를 활용하면 공유가 쉬워져요!</TextWrapper_Normal>
+
+            <span id="space" />
+
+            <TextWrapper_Bold>
+              <CalendarMonthIcon fontSize="large" />
               This Week
-            </span>
-            <span>신규 등록 팁&설정 {thisWeekNewInfo?.len}개</span>
-          </WelcomeWrapper>
+            </TextWrapper_Bold>
+            <TextWrapper_Normal>신규 등록 Tips {thisWeekNewInfo?.len}개</TextWrapper_Normal>
+          </TextWrapper>
           <Pill.Wrapper>
             <Pill.Sub
               toggle={toggles.sub}
@@ -336,7 +339,7 @@ const Main = () => {
                 });
               }}
             >
-              모두
+              All
             </Pill.Sub>
             <Pill.Sub
               toggle={toggles.sub}
@@ -349,7 +352,7 @@ const Main = () => {
                 });
               }}
             >
-              공유 중
+              Sharing
             </Pill.Sub>
             <Pill.Search
               toggle={toggles.sub === 2}
@@ -459,16 +462,22 @@ const Main = () => {
 
       {toggles.main === 2 && ( //소통
         <MainEl>
-          <WelcomeWrapper ref={scrollTarget}>
-            <span>소통</span>
-            <span></span>
-            <span>서로 존중하는 대화를 해요.</span>
-            <span>
-              <CalendarMonthIcon />
+          <TextWrapper ref={scrollTarget}>
+            <TextWrapper_Bold>Free Board</TextWrapper_Bold>
+
+            <span id="space" />
+
+            <TextWrapper_Normal>자유로운 주제로 소통합니다.</TextWrapper_Normal>
+            <TextWrapper_Normal>서로의 공감과 배려가 필요해요.</TextWrapper_Normal>
+
+            <span id="space" />
+
+            <TextWrapper_Bold>
+              <CalendarMonthIcon fontSize="large" />
               This Week
-            </span>
-            <span>신규 등록 소통글 {thisWeekNewComm?.len}개</span>
-          </WelcomeWrapper>
+            </TextWrapper_Bold>
+            <TextWrapper_Normal>신규 등록 소통글 {thisWeekNewComm?.len}개</TextWrapper_Normal>
+          </TextWrapper>
           <Pill.Wrapper>
             <Pill.Sub
               toggle={toggles.sub}
@@ -481,7 +490,7 @@ const Main = () => {
                 });
               }}
             >
-              모두
+              All
             </Pill.Sub>
             <Pill.Sub
               toggle={toggles.sub}
@@ -494,7 +503,7 @@ const Main = () => {
                 });
               }}
             >
-              피드
+              Feed
             </Pill.Sub>
             <Pill.Search
               toggle={toggles.sub === 2}
@@ -631,7 +640,6 @@ const LoadingIconWrapper = styled.div`
 `;
 
 const HomeEl = styled.div`
-  animation: ${Animation.smoothAppear} 0.7s;
   min-height: calc(100vh - 80px);
   @media (orientation: portrait) or (max-height: 480px) {
     min-height: calc(100vh - 116px);
@@ -641,12 +649,14 @@ const HomeEl = styled.div`
   }
 `;
 const MainEl = styled.div`
+  width: 100%;
+
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
 
-  animation: ${Animation.smoothAppear} 0.7s;
+  animation: ${Animation.smoothAppear} 1s ease-in-out;
 `;
 
 const Pill = {
@@ -654,37 +664,32 @@ const Pill = {
     z-index: 80;
     position: sticky;
     top: 0px;
-    /* background-color: whitesmoke; */
-    background: rgb(255, 255, 255);
+
+    /* background: rgb(255, 255, 255);
     background: linear-gradient(
       0deg,
       rgba(255, 255, 255, 0) 0%,
       rgba(245, 245, 245, 1) 11%,
       rgba(245, 245, 245, 1) 100%
-    );
+    ); */
+    background-color: white;
 
     display: flex;
     justify-content: start;
     align-items: center;
 
-    padding-left: calc(35vw - 285px);
-    padding-top: 24px;
-    padding-bottom: 24px;
+    padding-top: 16px;
+    padding-bottom: 16px;
 
     width: 100%;
+    width: 500px;
     overflow-x: scroll;
 
     @media (orientation: portrait) or (max-height: 480px) {
-      top: 36px;
-      /* background-color: #c8daf3; */
-      background: rgb(255, 255, 255);
-      background: linear-gradient(
-        0deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(200, 218, 243, 1) 11%,
-        rgba(200, 218, 243, 1) 100%
-      );
-      padding: 24px 4vw;
+      top: 48px;
+      background-color: #c8daf3;
+      width: 100%;
+      padding: 16px 4vw;
     }
     @media (orientation: landscape) and (max-height: 480px) {
       width: 60vw;
@@ -701,13 +706,13 @@ const Pill = {
     transition: all ease-in-out 0.5s;
     padding: 8px 16px;
     width: ${(props) => (props.toggle ? "200px" : "56px")};
-
+    border: solid 2px rgba(0, 0, 0, 0.05);
     height: 32px;
     border-radius: 100px;
 
     font-size: 18px;
 
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+    /* box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3); */
     color: #464b53;
     background-color: #e3ecf9;
     background-color: ${({ toggle }) => toggle && "#f3e0f1"};
@@ -752,6 +757,7 @@ const Pill = {
     padding: 0px 16px;
     margin-right: 8px;
     border-radius: 100px;
+    border: solid 2px rgba(0, 0, 0, 0.05);
 
     font-size: 18px;
     font-weight: 500;
@@ -760,7 +766,7 @@ const Pill = {
     align-items: center;
     justify-content: center;
 
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+    /* box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3); */
     color: #464b53;
     background-color: #e3ecf9;
     > span {
@@ -773,8 +779,9 @@ const Pill = {
   `
 };
 
-const WelcomeWrapper = styled.div`
-  width: calc(70vw - 70px);
+const TextWrapper = styled.div`
+  width: 100%;
+  width: 500px;
   padding-top: 64px;
   padding-bottom: 24px;
 
@@ -782,73 +789,38 @@ const WelcomeWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: start;
-  > span {
-    font-weight: 500;
-  }
-  > span:first-child,
-  > span:nth-child(2) {
-    font-weight: 600;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
 
-    line-height: 36px;
-    color: rgba(0, 0, 0, 0.7);
-    > div {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 44px;
-    }
+  #space {
+    height: 30px;
   }
-  > span:nth-child(3),
-  > span:nth-child(4),
-  > span:nth-child(5),
-  > span:nth-child(6) {
-    font-size: 20px;
-    color: rgba(0, 0, 0, 0.5);
 
-    margin: 8px 0;
-    margin-bottom: 0;
-  }
-  > span:nth-child(3) {
-    margin-top: 24px;
-    line-height: 28px;
-  }
-  > span:nth-child(4) {
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 36px;
-    margin-top: 32px;
-    color: rgba(0, 0, 0, 0.65);
-    text-transform: uppercase;
-
-    svg {
-      font-size: 32px;
-      margin-right: 4px;
-    }
-  }
-  > span {
-    display: flex;
-    align-items: center;
-
-    padding-left: 10px;
-    padding-left: calc(35vw - 285px);
-  }
   @media (orientation: portrait) or (max-height: 480px) {
-    width: 100vw;
+    width: 100%;
     padding-top: 88px;
+    padding-left: 5vw;
     margin-top: 36px;
     padding-bottom: 24px;
-    > span {
-      padding-left: 5vw;
-      /* padding-right: 5vw; */
-    }
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 60vw;
     margin-top: 0;
     padding-top: 24px;
   }
+`;
+const TextWrapper_Bold = styled.span`
+  font-size: 30px;
+  line-height: 40px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: rgba(0, 0, 0, 0.7);
+`;
+const TextWrapper_Normal = styled.span`
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 500;
+
+  color: rgba(0, 0, 0, 0.55);
 `;

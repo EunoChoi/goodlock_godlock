@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 //components
 import AppLayout from "../components/AppLayout";
 import Post from "../components/common/Post";
-import { Helmet } from "react-helmet";
+import Animation from "../styles/Animation";
 
 //mui
 import ShareIcon from "@mui/icons-material/Share";
@@ -43,21 +43,33 @@ const PostView = () => {
 
   return (
     <AppLayout>
-      <SingePostText>
-        <ShareIcon />
-        <span> 공유 게시글</span>
-      </SingePostText>
-      {single.data && <Post key={"singlePost"} postProps={single.data} />}
+      <SinglePostWrapper>
+        <SingePostText>
+          <ShareIcon />
+          <span> Single Post</span>
+        </SingePostText>
+        {single.data && <Post key={"singlePost"} postProps={single.data} />}
+      </SinglePostWrapper>
     </AppLayout>
   );
 };
 
 export default PostView;
-
-const SingePostText = styled.div`
+const SinglePostWrapper = styled.div`
   width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+
+  animation: ${Animation.smoothAppear} 1s ease-in-out;
+`;
+const SingePostText = styled.div`
+  width: 500px;
   padding-top: 64px;
-  padding-left: calc((70vw - 500px) / 2);
+  /* padding-left: calc((70vw - 500px) / 2); */
   padding-bottom: 32px;
 
   color: rgba(0, 0, 0, 0.7);
@@ -68,6 +80,7 @@ const SingePostText = styled.div`
   }
 
   @media (orientation: portrait) or (max-height: 480px) {
+    width: 100%;
     padding-left: 4vw;
     padding-top: 100px;
   }

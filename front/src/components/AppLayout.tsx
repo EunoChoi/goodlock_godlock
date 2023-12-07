@@ -6,16 +6,14 @@ import { confirmAlert } from "react-confirm-alert";
 
 //mui
 import PostAddIcon from "@mui/icons-material/PostAdd";
-import { Button } from "@mui/material";
-import LogoutIcon from "@mui/icons-material/Logout";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import PersonIcon from "@mui/icons-material/Person";
-import SmartToyIcon from "@mui/icons-material/SmartToy";
+import SettingsIcon from "@mui/icons-material/Settings";
+import MenuIcon from "@mui/icons-material/Menu";
 
 //component
-import UserProfile from "./common/UserProfile";
 import InputPopup from "./common/PostInputPopup";
-
+import Side from "./Side";
 import Animation from "../styles/Animation";
 import IsMobile from "../functions/IsMobile";
 import User from "../functions/reactQuery/User";
@@ -33,6 +31,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const type = params?.type && parseInt(params?.type);
   const isMain = window.location.pathname.split("/")[1] === "main";
   const [goTopButton, setGoTopButton] = useState<boolean>(false);
+
+  const [mobileSideOpen, setMobileSideOpen] = useState<boolean>(false);
 
   //공지사항 작성 가능 레벨
   const level = 10;
@@ -99,11 +99,10 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <>
       {isPostInputOpen && <InputPopup modalClose={modalClose} />}
-      {isMain && (
-        <BotWrapper>
-          <Bot />
-        </BotWrapper>
-      )}
+
+      <BotWrapper>
+        <Bot />
+      </BotWrapper>
 
       <ButtonWrapper isPostInputOpen={isPostInputOpen}>
         {goTopButton && (
@@ -124,24 +123,43 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             <PostAddIcon fontSize="medium" />
           </button>
         )}
-        {!isMobile && isMain && (
-          <button color="inherit">
-            <Link to="/profile/0">
-              <PersonIcon fontSize="large" />
-            </Link>
+        {isMobile && (
+          <button
+            id="menuButton"
+            color="inherit"
+            onClick={() => {
+              setMobileSideOpen((c) => !c);
+            }}
+          >
+            <MenuIcon fontSize="medium" />
           </button>
         )}
       </ButtonWrapper>
+
       {isMobile ? (
         <MobileWrapper>
+          {mobileSideOpen && (
+            <MobileSideBG
+              onClick={() => {
+                setMobileSideOpen(false);
+              }}
+            >
+              <MobileSide
+                onClick={() => {
+                  setMobileSideOpen(false);
+                }}
+              >
+                <Side />
+              </MobileSide>
+            </MobileSideBG>
+          )}
           <Children>{children}</Children>
           <Header />
         </MobileWrapper>
       ) : (
         <PcWrapper>
           <LeftWrapper>
-            <Header />
-            <UserProfile />
+            <Side></Side>
           </LeftWrapper>
           <RightWrapper>
             <Children id="scrollWrapper">{children}</Children>
@@ -154,10 +172,37 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
 export default AppLayout;
 
+const MobileSideBG = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  z-index: 2000;
+
+  width: 100vw;
+  height: 100vh;
+
+  background-color: rgba(0, 0, 0, 0.5);
+`;
+
+const MobileSide = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  z-index: 2002;
+
+  width: 80vw;
+  height: 100vh;
+
+  animation: ${Animation.smoothAppearLeftToRight} 0.4s ease-out;
+`;
+
 const BotWrapper = styled.div`
   .rsc-float-button {
     background-color: #f3e0f1 !important;
-    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+    border: solid 2px rgba(0, 0, 0, 0.05);
   }
   .rsc-container {
     /* height: auto; */
@@ -195,7 +240,11 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
   position: fixed;
   bottom: calc(32px + 56px + 12px);
   right: 32px;
-
+  #menuButton {
+    @media (orientation: landscape) and (max-height: 480px) {
+      display: none;
+    }
+  }
   > button {
     width: 56px;
     height: 56px;
@@ -205,7 +254,9 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
     border-radius: 100px;
 
     color: rgba(0, 0, 0, 0.6);
-    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2); */
+    border: solid 2px rgba(0, 0, 0, 0.05);
+
     /* background-color: #d5dbf0; */
     background-color: #f3e0f1;
     /* background-color: #dfbadc; */
@@ -230,8 +281,6 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
   }
 `;
 const Children = styled.div`
-  animation: ${Animation.smoothAppear} 0.7s;
-
   min-height: 100vh;
 
   height: auto;
@@ -252,6 +301,7 @@ const Children = styled.div`
 
 const MobileWrapper = styled.div`
   background-color: #c8daf3;
+  /* background-color: #fff; */
 
   height: auto;
 
@@ -265,25 +315,17 @@ const PcWrapper = styled.div`
 
 const LeftWrapper = styled.div`
   position: fixed;
-  left: 0px;
-  top: 0px;
+  top: 0;
+  left: 0;
 
-  /* min-width: 350px; */
-  width: 400px;
-  width: 30vw;
+  width: 250px;
   height: 100vh;
 
-  background: rgb(201, 220, 243);
-  background: linear-gradient(180deg, rgba(201, 220, 243, 1) 0%, rgba(234, 216, 233, 1) 100%);
-
-  padding-bottom: 50px;
-
-  box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.2);
   z-index: 100;
 `;
 const RightWrapper = styled.div`
-  margin-left: 30vw;
-  /* margin-right: 70px; */
+  margin-left: 250px;
+  width: calc(100vw - 250px);
 
   flex-grow: 1;
   -webkit-box-flex: 1;

@@ -75,7 +75,7 @@ const Profile = () => {
   const [usertext, setUsertext] = useState<string>("");
 
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["정보", "팔로잉", "팔로워", "팁&설정", "소통글"];
+  const category = ["My Info", "Followings", "Followers", "Tips", "Free Posts"];
 
   //function
   const profilePicChangeModalClose = () => {
@@ -273,12 +273,12 @@ const Profile = () => {
 
   return (
     <AppLayout>
-      <>
+      <ProfileWrapper>
         {imageChangeModal && <ProfileChangePopup modalClose={profilePicChangeModalClose} />}
         {userDeleteModal && <UserDeleteConfirm modalClose={userDeleteModalClose} />}
         {passwordChangeModal && <PasswordChangeConfirm modalClose={passwordChangeModalClose} />}
         <ProfileTitle ref={scrollTarget}>
-          <Title>내 정보</Title>
+          <Title>Profile</Title>
           <span>정보 수정 및 작성 글 확인이 가능합니다.</span>
           <span>마지막 수정 ⋯ {moment(user?.updatedAt).fromNow()}</span>
         </ProfileTitle>
@@ -463,7 +463,7 @@ const Profile = () => {
                 <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
                   <InsertEmoticonRoundedIcon fontSize="inherit" />
                 </Badge>
-                <div>팔로잉</div>
+                <div>Followings</div>
               </ListTitle>
 
               <List>
@@ -506,7 +506,7 @@ const Profile = () => {
                 <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
                   <InsertEmoticonOutlinedIcon fontSize="inherit" />
                 </Badge>
-                <div>팔로워</div>
+                <div>Followers</div>
               </ListTitle>
 
               <List>
@@ -598,13 +598,24 @@ const Profile = () => {
             </Posts>
           </ContentWrapper>
         )}
-      </>
+      </ProfileWrapper>
     </AppLayout>
   );
 };
 
 export default Profile;
 
+const ProfileWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  animation: ${Animation.smoothAppear} 1s ease-in-out;
+`;
 const LoadingIconWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -619,6 +630,7 @@ const Pill = styled.button<{ catNum: number }>`
   margin-right: 12px;
   padding: 6px 20px;
   border-radius: 100px;
+  border: solid 2px rgba(0, 0, 0, 0.05);
 
   font-weight: 500;
   font-size: 18px;
@@ -628,7 +640,6 @@ const Pill = styled.button<{ catNum: number }>`
   display: flex;
   align-items: center;
 
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
   color: #464b53;
   background-color: #e3ecf9;
   &:nth-child(${(props) => props.catNum + 1}) {
@@ -704,15 +715,16 @@ const MenuWrapper = styled.div`
   justify-content: start;
   align-items: center;
   height: auto;
-  width: 508px;
+  width: 500px;
 
   position: sticky;
   top: 0px;
 
-  padding: 36px 4px;
+  padding: 36px 0;
   z-index: 85;
-  background: rgb(255, 255, 255);
-  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(245, 245, 245, 1) 11%, rgba(245, 245, 245, 1) 100%);
+  /* background: rgb(255, 255, 255);
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(245, 245, 245, 1) 11%, rgba(245, 245, 245, 1) 100%); */
+  background-color: #fff;
 
   overflow-x: scroll;
   -ms-overflow-style: none; /* IE and Edge */
@@ -738,8 +750,6 @@ const MenuWrapper = styled.div`
   }
 `;
 const ContentWrapper = styled.div`
-  animation: ${Animation.smoothAppear} 0.7s;
-
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -763,8 +773,11 @@ const ContentBox = styled.div<{ width: number; padding: number }>`
   border-radius: 6px;
   min-height: calc(100vh - 104px - 24px);
   padding: 40px ${(props) => props.padding + "px"};
-  background-color: white;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+
+  /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); */
+  background-color: rgba(0, 0, 0, 0.02);
+  background-color: #fafafa;
+  border: 2px rgba(0, 0, 0, 0.07) solid;
 
   display: flex;
   flex-direction: column;
@@ -899,7 +912,8 @@ const ProfilePic = styled.img<{ width: number }>`
   object-fit: cover;
   background-color: #fff;
 
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); */
+  border: 2px solid rgba(0, 0, 0, 0.15);
   /* margin-right: 12px; */
 `;
 
@@ -993,9 +1007,6 @@ const Posts = styled.div`
   height: auto;
   * {
     flex-shrink: 0;
-  }
-  > div {
-    animation: ${Animation.smoothAppear} 0.7s;
   }
 `;
 const ProfilePicWrapper = styled.div`

@@ -20,6 +20,7 @@ import Post from "../../functions/reactQuery/Post";
 import Chip from "@mui/joy/Chip";
 import ChipDelete from "@mui/joy/ChipDelete";
 import Box from "@mui/joy/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface serverImages {
   src: string;
@@ -317,7 +318,11 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
                 </InputForm.ImageDeleteButton>
               </InputForm.InputImageBox>
             ))}
-            {uploadImages.isLoading && <img src={`${process.env.PUBLIC_URL}/img/loading2.gif`}></img>}
+            {uploadImages.isLoading && (
+              <LoadingBox>
+                <CircularProgress color="inherit" size={64} />
+              </LoadingBox>
+            )}
           </InputForm.InputImageWrapper>
         )}
         <InputForm.ButtonArea>
@@ -343,6 +348,15 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
 };
 
 export default PostEditPopup;
+
+const LoadingBox = styled.div`
+  color: white;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const DateButton = styled.button`
   font-size: 16px;

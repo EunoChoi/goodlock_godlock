@@ -51,7 +51,7 @@ const UserInfo = () => {
 
   const navigate = useNavigate();
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["팔로잉", "팔로워", "팁&설정", "소통글", "북마크 설정"];
+  const category = ["Followings", "Followers", "Tips", "Free Posts", "Bookmark Posts"];
 
   const user = User.getData();
   const { data: targetUser, refetch } = useQuery(
@@ -145,7 +145,7 @@ const UserInfo = () => {
           <span>{targetUser?.email}</span>
           <span>{targetUser?.usertext ? targetUser?.usertext : "-"}</span>
           <span>
-            팔로잉 {targetUser?.Followings?.length} • 팔로워 {targetUser?.Followers?.length} • 소통글{" "}
+            Followings {targetUser?.Followings?.length} • Followers {targetUser?.Followers?.length} • Free Posts{" "}
             {targetUser?.Posts?.filter((v: any) => v.type === 2).length}
           </span>
           {isFollowed ? (
@@ -221,7 +221,7 @@ const UserInfo = () => {
                 <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
                   <InsertEmoticonRoundedIcon fontSize="inherit" />
                 </Badge>
-                <div>팔로잉</div>
+                <div>Followings</div>
               </ListTitle>
               <List>
                 {targetUser?.Followings?.length === 0 ? (
@@ -259,7 +259,7 @@ const UserInfo = () => {
                 <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
                   <InsertEmoticonOutlinedIcon fontSize="inherit" />
                 </Badge>
-                <div>팔로워</div>
+                <div>Followers</div>
               </ListTitle>
               <List>
                 {targetUser?.Followers?.length === 0 ? (
@@ -396,7 +396,8 @@ const Pic = styled.img`
   width: 190px;
   height: 190px;
   border-radius: 12px;
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2); */
+  border: 3px solid rgba(0, 0, 0, 0.2);
   object-fit: cover;
 
   /* @media (orientation: portrait) or (max-height: 480px) {
@@ -439,7 +440,9 @@ const Pill = styled.button<{ catNum: number }>`
   align-items: center;
   cursor: pointer;
 
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+  /* box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3); */
+  border: solid 2px rgba(0, 0, 0, 0.05);
+
   color: #464b53;
   background-color: #e3ecf9;
   &:nth-child(${(props) => props.catNum + 1}) {
@@ -541,17 +544,17 @@ const MenuWrapper = styled.div`
   position: sticky;
   top: 0px;
   z-index: 85;
-  background: rgb(255, 255, 255);
-  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(245, 245, 245, 1) 11%, rgba(245, 245, 245, 1) 100%);
+  /* background: rgb(255, 255, 255);
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(245, 245, 245, 1) 11%, rgba(245, 245, 245, 1) 100%); */
+  background-color: #fff;
 
   display: flex;
   justify-content: start;
   align-items: center;
   height: auto;
-  width: 508px;
+  width: 500px;
 
-  padding: 36px 4px;
-  /* margin-top: 32px; */
+  padding: 36px 0;
 
   overflow-x: scroll;
   -ms-overflow-style: none; /* IE and Edge */
@@ -610,8 +613,11 @@ const ContentBox = styled.div`
 
   padding: 20px;
   /* margin-bottom: 24px; */
-  background-color: white;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+
+  /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); */
+  background-color: rgba(0, 0, 0, 0.02);
+  background-color: #fafafa;
+  border: 2px rgba(0, 0, 0, 0.07) solid;
 
   display: flex;
   flex-direction: column;

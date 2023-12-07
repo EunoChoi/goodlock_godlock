@@ -207,7 +207,7 @@ const Bot = () => {
       <ChatBot
         floatingIcon={
           <IconWrapper>
-            <SmartToyIcon color="inherit" />
+            <SmartToyIcon color="inherit" fontSize="medium" />
           </IconWrapper>
         }
         opened={open}

@@ -25,7 +25,8 @@ const GlobalStyle = createGlobalStyle`
   }
   
   html{
-    background-color: whitesmoke;
+    /* background-color: whitesmoke; */
+    background-color: #fff;
 
     -ms-overflow-style: none !important; /* IE and Edge */
     scrollbar-width: none !important; /* Firefox */
