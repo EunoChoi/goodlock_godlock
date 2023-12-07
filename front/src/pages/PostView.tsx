@@ -19,15 +19,10 @@ import ShareIcon from "@mui/icons-material/Share";
 const PostView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  console.log(typeof Number(id));
 
   //리액트 쿼리 id로 단일 포스트 값 불러오기
-  const single = useQuery(
-    ["single"],
-    () => Axios.get("post/single", { params: { id: Number(id) } }).then((v) => v.data),
-    {
-      staleTime: 60 * 1000
-    }
+  const single = useQuery(["single"], () =>
+    Axios.get("post/single", { params: { id: Number(id) } }).then((v) => v.data)
   );
 
   useEffect(() => {
@@ -36,17 +31,13 @@ const PostView = () => {
       navigate("/");
     }
   }, [single.isError]);
-  console.log(`${process.env.REACT_APP_BASE_URL}/postview/${single?.data?.User?.id}`);
-  console.log(`${single?.data?.User?.nickname}님의 글`);
-  console.log(single?.data?.content);
-  console.log(single?.data?.Images[0]?.src);
 
   return (
     <AppLayout>
       <SinglePostWrapper>
         <SingePostText>
-          <ShareIcon />
-          <span> Single Post</span>
+          {/* <ShareIcon fontSize="large" /> */}
+          <span>Single Post</span>
         </SingePostText>
         {single.data && <Post key={"singlePost"} postProps={single.data} />}
       </SinglePostWrapper>
@@ -73,7 +64,7 @@ const SingePostText = styled.div`
   padding-bottom: 32px;
 
   color: rgba(0, 0, 0, 0.7);
-  font-size: 30px;
+  font-size: 44px;
   span {
     color: rgba(0, 0, 0, 0.7);
     font-weight: 600;

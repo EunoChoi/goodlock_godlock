@@ -13,6 +13,7 @@ import PeopleRoundedIcon from "@mui/icons-material/PeopleRounded";
 import PhotoRoundedIcon from "@mui/icons-material/PhotoRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
+import ExtensionIcon from "@mui/icons-material/Extension";
 
 const Side = () => {
   const user = User.getData();
@@ -59,7 +60,8 @@ const Side = () => {
     <Wrapper>
       <HeaderWrapper>
         <button onClick={() => navigate("/main/0")}>
-          <Logo src="/img/loading.png"></Logo>
+          <ExtensionIcon style={{ color: "#D5A8D0", fontSize: "28px", marginRight: "4px" }}></ExtensionIcon>
+          {/* <Logo src="/img/loading.png"></Logo> */}
           <span>God Lock</span>
         </button>
       </HeaderWrapper>
@@ -98,7 +100,7 @@ const Side = () => {
                 </button>
                 <button onClick={() => navigate("/main/1")}>
                   <LightbulbRoundedIcon />
-                  Tips
+                  Tip Post
                 </button>
                 <button onClick={() => navigate("/main/2")}>
                   <PeopleRoundedIcon />
@@ -245,7 +247,7 @@ const UserInfoWrapper = styled.div`
   }
 
   #nickname {
-    font-size: 24px;
+    font-size: 32px;
     font-weight: 600;
 
     color: rgba(0, 0, 0, 0.7);
@@ -254,12 +256,12 @@ const UserInfoWrapper = styled.div`
     font-size: 14px;
     font-weight: 500;
 
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.35);
   }
   #usertext {
     font-size: 16px;
     font-weight: 500;
-    color: rgba(0, 0, 0, 0.6);
+    color: rgba(0, 0, 0, 0.5);
 
     text-align: center;
   }
@@ -288,13 +290,19 @@ const MenuWrapper = styled.div<{ currentPage: number | undefined }>`
   height: 45%;
   /* border: 1px solid white; */
 
-  padding: 0 50px;
+  padding: 0 40px;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
   #buttons {
+    button {
+      transition: 0.2s ease-in-out all;
+    }
+    button:hover {
+      scale: 1.1;
+    }
     button:nth-child(${(props) => props.currentPage}) {
       color: #d5a8d0;
     }

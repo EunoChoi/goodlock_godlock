@@ -12,6 +12,7 @@ import Comment from "./Comment";
 import CommentInputForm from "./CommentInputForm";
 import PostEditPopup from "./PostEditPopup";
 import PostZoom from "../PostZoom";
+import Animation from "../../styles/Animation";
 
 //mui
 import Carousel from "react-material-ui-carousel";
@@ -476,6 +477,7 @@ const FlexDiv = styled.div`
   align-items: center;
 `;
 const PostWrapper = styled.div`
+  animation: ${Animation.smoothAppear} 1s ease-in-out;
   display: flex;
   flex-direction: column;
 
@@ -504,7 +506,7 @@ const PostWrapper = styled.div`
     /* height: auto; */
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 52vw;
+    width: 500px;
   }
 `;
 const ImageWrapper = styled.div`

@@ -51,7 +51,7 @@ const UserInfo = () => {
 
   const navigate = useNavigate();
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["Followings", "Followers", "Tips", "Free Posts", "Bookmark Posts"];
+  const category = ["Followings", "Followers", "Tip Posts", "Free Posts", "Bookmark Posts"];
 
   const user = User.getData();
   const { data: targetUser, refetch } = useQuery(
@@ -127,7 +127,7 @@ const UserInfo = () => {
 
   return (
     <AppLayout>
-      <>
+      <Wrapper>
         <UserInfoWrapper ref={scrollTarget}>
           {targetUser?.profilePic ? (
             <Pic
@@ -142,7 +142,7 @@ const UserInfo = () => {
           )}
 
           <span>{targetUser?.nickname}</span>
-          <span>{targetUser?.email}</span>
+          <span id="email">{targetUser?.email}</span>
           <span>{targetUser?.usertext ? targetUser?.usertext : "-"}</span>
           <span>
             Followings {targetUser?.Followings?.length} • Followers {targetUser?.Followers?.length} • Free Posts{" "}
@@ -374,12 +374,23 @@ const UserInfo = () => {
             </Posts>
           </ContentWrapper>
         )}
-      </>
+      </Wrapper>
     </AppLayout>
   );
 };
 
 export default UserInfo;
+
+const Wrapper = styled.div`
+  animation: ${Animation.smoothAppear} 1s ease-in-out;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 const LoadingIconWrapper = styled.div`
   display: flex;
@@ -397,7 +408,7 @@ const Pic = styled.img`
   height: 190px;
   border-radius: 12px;
   /* box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2); */
-  border: 3px solid rgba(0, 0, 0, 0.2);
+  border: 3px solid rgba(0, 0, 0, 0.1);
   object-fit: cover;
 
   /* @media (orientation: portrait) or (max-height: 480px) {
@@ -468,6 +479,10 @@ const UserInfoWrapper = styled.div`
   width: 500px;
   height: 500px;
 
+  #email {
+    margin-top: 8px;
+  }
+
   > span {
     color: rgba(0, 0, 0, 0.6);
   }
@@ -509,9 +524,9 @@ const UserInfoWrapper = styled.div`
     }
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 60vw;
+    width: 500px;
     height: auto;
-    padding-left: 32px;
+    padding-left: 0;
     margin-top: 0;
     padding-top: 12px;
     padding-bottom: 12px;
@@ -563,27 +578,19 @@ const MenuWrapper = styled.div`
     display: none; /* Chrome, Safari, Opera*/
   }
   @media (orientation: portrait) or (max-height: 480px) {
-    background: rgb(255, 255, 255);
-    background: linear-gradient(
-      0deg,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(200, 218, 243, 1) 11%,
-      rgba(200, 218, 243, 1) 100%
-    );
-
-    top: 36px;
+    top: 48px;
     width: 100%;
     padding-left: 4vw;
     padding-right: 4vw;
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 53vw;
+    width: 500px;
     padding-left: 4px;
     top: 0;
   }
 `;
 const ContentWrapper = styled.div`
-  animation: ${Animation.smoothAppear} 0.7s;
+  animation: ${Animation.smoothAppear} 1s ease-in-out;
 
   display: flex;
   flex-direction: column;
@@ -598,8 +605,8 @@ const ContentWrapper = styled.div`
   /* padding-top: 24px; */
   padding-bottom: 24px;
   @media (orientation: portrait) or (max-height: 480px) {
-    //haeder height : 36px
-    min-height: calc(100vh - 36px - 104px);
+    //haeder height : 48px
+    min-height: calc(100vh - 48px - 104px);
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 50vw;
@@ -633,20 +640,13 @@ const ContentBox = styled.div`
   @media (orientation: portrait) or (max-height: 480px) {
     width: 92vw;
     min-height: calc(100vh);
-    min-height: calc(var(--vh, 1vh) * 100 - 36px - 104px - 24px);
+    min-height: calc(var(--vh, 1vh) * 100 - 48px - 104px - 24px);
     /* background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(4px); */
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 52vw;
+    width: 500px;
     min-height: 400px;
-  }
-`;
-const LoadingIcon = styled.div`
-  display: flex;
-  justify-content: center;
-  img {
-    width: 25%;
   }
 `;
 

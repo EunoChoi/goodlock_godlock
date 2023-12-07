@@ -28,8 +28,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   const [isPostInputOpen, setPostInputOpen] = useState(false);
   const params = useParams();
-  const type = params?.type && parseInt(params?.type);
-  const isMain = window.location.pathname.split("/")[1] === "main";
+  const postType = params?.type && parseInt(params?.type);
   const [goTopButton, setGoTopButton] = useState<boolean>(false);
 
   const [mobileSideOpen, setMobileSideOpen] = useState<boolean>(false);
@@ -39,6 +38,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   //useQuery
   const user = User.getData();
+  const isUserPostOk: boolean = postType !== undefined && postType !== 0 && postType !== 3;
+  const isAdminPostOk: boolean = postType === 0 && user.level >= level ? true : false;
 
   const modalClose = () => {
     history.back();
@@ -92,9 +93,9 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   }, []);
 
   useEffect(() => {
-    if (isPostInputOpen) document.body.style.overflow = "hidden";
+    if (isPostInputOpen || mobileSideOpen) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "auto";
-  }, [isPostInputOpen]);
+  }, [isPostInputOpen, mobileSideOpen]);
 
   return (
     <>
@@ -112,13 +113,13 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         )}
         {
           //user level이 10이상이여야 공지사항 작성이 가능
-          isMain && type == 0 && user?.level >= level && (
+          isAdminPostOk && (
             <button color="inherit" onClick={() => InputEditOpenCloseToggle()}>
               <PostAddIcon fontSize="medium" />
             </button>
           )
         }
-        {isMain && type != 0 && (
+        {isUserPostOk && (
           <button color="inherit" onClick={() => InputEditOpenCloseToggle()}>
             <PostAddIcon fontSize="medium" />
           </button>
@@ -183,6 +184,7 @@ const MobileSideBG = styled.div`
   height: 100vh;
 
   background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
 `;
 
 const MobileSide = styled.div`
@@ -301,7 +303,7 @@ const Children = styled.div`
 
 const MobileWrapper = styled.div`
   background-color: #c8daf3;
-  /* background-color: #fff; */
+  background-color: white;
 
   height: auto;
 
@@ -318,14 +320,14 @@ const LeftWrapper = styled.div`
   top: 0;
   left: 0;
 
-  width: 250px;
+  width: 280px;
   height: 100vh;
 
   z-index: 100;
 `;
 const RightWrapper = styled.div`
-  margin-left: 250px;
-  width: calc(100vw - 250px);
+  margin-left: 280px;
+  width: calc(100vw - 280px);
 
   flex-grow: 1;
   -webkit-box-flex: 1;

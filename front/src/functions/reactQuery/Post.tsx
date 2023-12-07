@@ -61,11 +61,13 @@ const Post = {
           queryClient.invalidateQueries(["myInfoPosts"]);
 
           toast.success("게시글 등록이 완료되었습니다.");
-          window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: "smooth"
-          });
+          setTimeout(() => {
+            window.scrollTo({
+              top: 0,
+              left: 0,
+              behavior: "smooth"
+            });
+          }, 200);
         },
         onError: () => {
           toast.warning("글 등록 중 에러 발생!!");

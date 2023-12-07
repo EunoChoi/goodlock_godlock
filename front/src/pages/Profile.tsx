@@ -75,7 +75,7 @@ const Profile = () => {
   const [usertext, setUsertext] = useState<string>("");
 
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["My Info", "Followings", "Followers", "Tips", "Free Posts"];
+  const category = ["My Info", "Followings", "Followers", "Tip Posts", "Free Posts"];
 
   //function
   const profilePicChangeModalClose = () => {
@@ -689,7 +689,7 @@ const ProfileTitle = styled.div`
   }
 
   @media (orientation: portrait) or (max-height: 480px) {
-    margin-top: 36px;
+    margin-top: 48px; //header
     width: 100vw;
     > span {
       padding-left: 5vw;
@@ -698,16 +698,24 @@ const ProfileTitle = styled.div`
   @media (orientation: landscape) and (max-height: 480px) {
     padding-top: 32px;
     margin-top: 0;
-    width: 60vw;
+    width: 500px;
+    span {
+      padding-left: 0;
+    }
   }
 `;
 const Title = styled.div`
   font-weight: 600;
-  font-size: 32px;
+  font-size: 44px;
   line-height: 36px;
   color: rgba(0, 0, 0, 0.8);
+  color: #cf9dc9;
+  color: #bc9dcf;
   @media (orientation: portrait) or (max-height: 480px) {
     padding-left: 5vw;
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    padding-left: 0;
   }
 `;
 const MenuWrapper = styled.div`
@@ -733,36 +741,39 @@ const MenuWrapper = styled.div`
     display: none; /* Chrome, Safari, Opera*/
   }
   @media (orientation: portrait) or (max-height: 480px) {
-    top: 36px;
+    top: 48px;
     width: 100%;
-    background: rgb(255, 255, 255);
+    /* background: rgb(255, 255, 255);
     background: linear-gradient(
       0deg,
       rgba(255, 255, 255, 0) 0%,
       rgba(200, 218, 243, 1) 11%,
       rgba(200, 218, 243, 1) 100%
-    );
+    ); */
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 52vw;
+    width: 500px;
     top: 0px;
-    padding: 18px 4px;
+    padding: 18px 0;
   }
 `;
 const ContentWrapper = styled.div`
+  animation: ${Animation.smoothAppear} 1s ease-in-out;
+
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
 
   width: 100%;
+  //header : 48px
+  //pill wrapper : 104px
   min-height: calc(100vh - 104px);
 
-  /* padding-top: 24px; */
-  /* padding-bottom: 24px; */
   @media (orientation: portrait) or (max-height: 480px) {
-    //haeder height : 36px
-    min-height: calc(100vh - 36px - 104px);
+    //haeder height : 48px
+    //pill wrapper : 104px
+    min-height: calc(100vh - 48px - 104px);
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 60vw;
@@ -794,22 +805,14 @@ const ContentBox = styled.div<{ width: number; padding: number }>`
     transition: all ease-in-out 0.3s;
     width: 92vw;
     padding: 20px ${(props) => props.padding + "px"};
-    min-height: calc(100vh - 36px - 104px - 24px);
-    min-height: calc(var(--vh, 1vh) * 100 - 36px - 104px - 24px);
-    /* background-color: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(4px); */
+    //header : 48px
+    //pill wrapper : 104px
+    min-height: calc(var(--vh, 1vh) * 100 - 48px - 104px - 24px);
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 50vw;
+    width: 500px;
     min-height: 400px;
     margin-bottom: 32px;
-  }
-`;
-const LoadingIcon = styled.div`
-  display: flex;
-  justify-content: center;
-  img {
-    width: 25%;
   }
 `;
 
