@@ -62,6 +62,7 @@ const LogInSignUp = {
     @media (orientation: landscape) and (max-height: 480px) {
       width: 45vw;
       padding: 0px 4vw;
+      justify-content: start;
       overflow-y: scroll;
     }
   `,
