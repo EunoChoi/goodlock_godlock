@@ -149,6 +149,7 @@ router.get("/", async (req, res) => {
       order: [
         ['createdAt', 'DESC'],
         [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        [Image, 'createdAt', 'DESC'], //불러온 image 정렬
       ],
       include: [
         {
@@ -662,12 +663,15 @@ router.post("/", tokenCheck, async (req, res) => {
     const postImages = req.body.images;
 
     if (postImages.length >= 1) {
-      const images = await Promise.all(postImages.map((i) => Image.create({ src: i })));
+      const images = [];
+      for (i = 0; i < postImages.length; i++) {
+        const temp = await Image.create({ src: postImages[i] });
+        images.push(temp);
+      }
       post.addImages(images);
-      return res.status(200).json({ postImages, images });
+      return res.status(200).json({ postImages, images, post });
     }
-
-    return res.status(200).json("post upload success");
+    return res.status(200).json(post);
   } catch (e) {
     console.error(e);
   }
@@ -704,11 +708,15 @@ router.patch("/:postId", tokenCheck, async (req, res) => {
     //수정된 이미지들을 image 모델 요소 생성 후 Post 모델과 연결
     const postImages = req.body.images;
     if (postImages.length >= 1) {
-      const images = await Promise.all(postImages.map((i) => Image.create({ src: i })));
+      const images = [];
+      for (i = 0; i < postImages.length; i++) {
+        const temp = await Image.create({ src: postImages[i] });
+        images.push(temp);
+      }
       post.addImages(images);
-      return res.status(200).json({ postImages, images });
+      return res.status(200).json({ postImages, images, post });
     }
-    return res.status(200).json("post edit success");
+    return res.status(200).json(post);
   } catch (e) {
     console.error(e);
   }

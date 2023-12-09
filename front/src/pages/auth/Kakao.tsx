@@ -47,6 +47,9 @@ const Kakao = () => {
               console.log(email, profilePic);
               socialLogIn.mutate({ email, profilePic });
             });
+        })
+        .catch(() => {
+          navigate("/");
         });
     } catch (err) {
       navigate("/");
