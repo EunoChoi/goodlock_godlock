@@ -664,6 +664,7 @@ router.post("/", tokenCheck, async (req, res) => {
     if (postImages.length >= 1) {
       const images = await Promise.all(postImages.map((i) => Image.create({ src: i })));
       post.addImages(images);
+      return res.status(200).json({ postImages, images });
     }
 
     return res.status(200).json("post upload success");
@@ -705,8 +706,9 @@ router.patch("/:postId", tokenCheck, async (req, res) => {
     if (postImages.length >= 1) {
       const images = await Promise.all(postImages.map((i) => Image.create({ src: i })));
       post.addImages(images);
+      return res.status(200).json({ postImages, images });
     }
-    res.status(200).json("post edit success");
+    return res.status(200).json("post edit success");
   } catch (e) {
     console.error(e);
   }
