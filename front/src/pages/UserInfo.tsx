@@ -108,11 +108,6 @@ const UserInfo = () => {
   const unFollow = User.unFollow();
 
   useEffect(() => {
-    if (history.state.page === "modal") {
-      history.back();
-    }
-  }, []);
-  useEffect(() => {
     window.scrollTo({
       top: 0,
       left: 0,
@@ -123,6 +118,7 @@ const UserInfo = () => {
     infoPosts.refetch();
     commPosts.refetch();
   }, [id]);
+
   useEffect(() => {
     if (categoryNum >= 0 && categoryNum < 5) {
       console.log("올바른 링크 접근");
@@ -614,7 +610,7 @@ const ContentBox = styled.div`
   width: 500px;
   min-height: calc(100vh - 104px - 24px);
 
-  padding: 40px;
+  padding: 40px 20px;
   /* margin-bottom: 24px; */
 
   /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); */

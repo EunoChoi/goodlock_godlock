@@ -34,10 +34,10 @@ interface postProps {
 
 const Tips = () => {
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const params = useParams();
-  const type = params.type ? parseInt(params.type) : 0;
+
   const [toggle, setToggle] = useState<number>(0);
   const [searchInfo, setSearchInfo] = useState<string>("");
+  const pillWrapperRef = useRef<HTMLInputElement>(null);
 
   //this week
   const thisWeekNewInfo = useQuery(
@@ -69,7 +69,17 @@ const Tips = () => {
       }
     }
   );
-
+  //load feed posts
+  const feedPosts = useInfiniteQuery(
+    ["tipfeed"],
+    ({ pageParam = 1 }) =>
+      Axios.get("post/feed", { params: { type: 1, pageParam, tempDataNum: 5 } }).then((res) => res.data),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.length === 0 ? undefined : allPages.length + 1;
+      }
+    }
+  );
   //load search posts
   const searchInfoPosts = useInfiniteQuery(
     ["searchInfo"],
@@ -88,22 +98,6 @@ const Tips = () => {
       enabled: true
     }
   );
-
-  //메인페이지에서 home, tips, free 전환시 스크롤탑
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth"
-    });
-  }, [type]);
-
-  //모달 열린 상태에서 새로고침시 history.back 처리, url 더러워짐 방지
-  useEffect(() => {
-    if (history.state.page === "modal") {
-      history.back();
-    }
-  }, []);
 
   return (
     <MainPageStyle.MainEl>
@@ -124,7 +118,7 @@ const Tips = () => {
         <MainPageStyle.Space height={16}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_Normal>신규 등록 팁 {thisWeekNewInfo?.len}개</MainPageStyle.TextWrapper_Normal>
       </MainPageStyle.TextWrapper>
-      <MainPageStyle.Pill.Wrapper>
+      <MainPageStyle.Pill.Wrapper ref={pillWrapperRef}>
         <MainPageStyle.Pill.Sub
           toggle={toggle}
           onClick={() => {
@@ -149,12 +143,37 @@ const Tips = () => {
             });
           }}
         >
-          Activated
+          Ongoing
         </MainPageStyle.Pill.Sub>
-        <MainPageStyle.Pill.Search
-          toggle={toggle === 2}
+        <MainPageStyle.Pill.Sub
+          toggle={toggle}
           onClick={() => {
             setToggle(2);
+            window.scrollTo({
+              top: scrollTarget.current?.scrollHeight,
+              left: 0,
+              behavior: "smooth"
+            });
+          }}
+        >
+          Feed
+        </MainPageStyle.Pill.Sub>
+        <MainPageStyle.Pill.Search
+          toggle={toggle === 3}
+          onClick={() => {
+            setToggle(3);
+            window.scrollTo({
+              top: scrollTarget.current?.scrollHeight,
+              left: 0,
+              behavior: "smooth"
+            });
+            setTimeout(() => {
+              pillWrapperRef.current?.scrollTo({
+                top: 0,
+                left: window.visualViewport?.width,
+                behavior: "smooth"
+              });
+            }, 500);
           }}
         >
           <form
@@ -227,7 +246,32 @@ const Tips = () => {
           </InfiniteScroll>
         </MainPageStyle.HomeEl>
       )}
-      {toggle === 2 && ( //모집 공고 검색
+      {toggle === 2 && (
+        <MainPageStyle.HomeEl>
+          {feedPosts.data?.pages[0].length === 0 && (
+            <MainPageStyle.EmptyNoti>
+              <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+              <span>게시글이 존재하지 않습니다.</span>
+            </MainPageStyle.EmptyNoti>
+          )}
+          <InfiniteScroll
+            // scrollableTarget="scrollWrapper"
+            hasMore={feedPosts.hasNextPage || false}
+            loader={
+              <MainPageStyle.LoadingIconWrapper>
+                <CircularProgress size={96} color="inherit" />
+              </MainPageStyle.LoadingIconWrapper>
+            }
+            next={() => feedPosts.fetchNextPage()}
+            dataLength={feedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+          >
+            {feedPosts?.data?.pages.map((p) =>
+              p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+            )}
+          </InfiniteScroll>
+        </MainPageStyle.HomeEl>
+      )}
+      {toggle === 3 && ( //모집 공고 검색
         <MainPageStyle.HomeEl>
           {/* 검색 결과가 존재하지 않는 경우 */}
           {searchInfoPosts.data?.pages[0].length === 0 && (

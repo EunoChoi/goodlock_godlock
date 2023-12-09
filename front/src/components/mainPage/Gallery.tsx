@@ -19,8 +19,7 @@ import ImageListItem from "@mui/material/ImageListItem";
 
 const Gallery = () => {
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const params = useParams();
-  const type = params.type ? parseInt(params.type) : 0;
+
   const [toggle, setToggle] = useState<number>(0);
   const [cols, setCols] = useState<number>(3);
 
@@ -50,14 +49,6 @@ const Gallery = () => {
   );
 
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth"
-    });
-  }, [type]);
-
-  useEffect(() => {
     if (isMobile) {
       setCols(2);
     } else {
@@ -71,7 +62,7 @@ const Gallery = () => {
         <MainPageStyle.TextWrapper_Title>Gallery</MainPageStyle.TextWrapper_Title>
         <MainPageStyle.Space height={32}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_Normal>이미지만 모아 볼 수 있습니다.</MainPageStyle.TextWrapper_Normal>
-        <MainPageStyle.TextWrapper_Normal>이미지를 누르면 게시글로 이동합니다.</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>이미지를 누르면 게시글로 이동해요.</MainPageStyle.TextWrapper_Normal>
       </TextWrapper>
       <Pill.Wrapper>
         <Pill.Sub

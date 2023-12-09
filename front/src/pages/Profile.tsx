@@ -211,15 +211,9 @@ const Profile = () => {
     });
   };
 
-  //모달 열린 상태에서 새로고침시 history.back 처리
-  useEffect(() => {
-    if (history.state.page === "modal") {
-      history.back();
-    }
-    scrollTop();
-  }, []);
   useEffect(() => {
     if (categoryNum >= 0 && categoryNum < 5) {
+      scrollTop();
       console.log("올바른 링크 접근");
     } else {
       navigate("/404");

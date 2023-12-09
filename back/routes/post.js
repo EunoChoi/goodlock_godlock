@@ -331,7 +331,7 @@ router.get("/thisweek/liked", tokenCheck, async (req, res) => {
 
 //load posts - feed post(팔로잉 유저 포스트 모아보기)
 router.get("/feed", tokenCheck, async (req, res) => {
-  const { pageParam, tempDataNum } = req.query;
+  const { pageParam, tempDataNum, type } = req.query;
   try {
     const UserId = req.currentUserId;
 
@@ -348,7 +348,7 @@ router.get("/feed", tokenCheck, async (req, res) => {
 
     const Posts = await Post.findAll({
       where: [{
-        type: 2,
+        type,
         UserId: { [Op.in]: followings.map(v => v.id) }
       }],
       order: [

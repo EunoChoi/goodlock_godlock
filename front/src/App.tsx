@@ -54,6 +54,13 @@ function App() {
     }
   };
 
+  //모달 열린 상태에서 새로고침시 history.back 처리, url 더러워짐 방지
+  useEffect(() => {
+    if (history.state.page === "modal") {
+      history.back();
+    }
+  }, []);
+
   useEffect(() => {
     visualViewport?.addEventListener("resize", () => updateMobileViewport());
     updateMobileViewport();

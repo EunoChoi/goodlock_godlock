@@ -35,8 +35,7 @@ interface postProps {
 
 const Home = () => {
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const params = useParams();
-  const type = params.type ? parseInt(params.type) : 0;
+
   const [toggle, setToggle] = useState<number>(0);
 
   const user = User.getData();
@@ -93,21 +92,6 @@ const Home = () => {
       }
     }
   );
-
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth"
-    });
-  }, [type]);
-
-  //모달 열린 상태에서 새로고침시 history.back 처리, url 더러워짐 방지
-  useEffect(() => {
-    if (history.state.page === "modal") {
-      history.back();
-    }
-  }, []);
 
   const shortNickname = (nick: string) => {
     if (nick.length >= 11) return nick.slice(0, 10) + "...";

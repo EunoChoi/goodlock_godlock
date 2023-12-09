@@ -36,13 +36,6 @@ const Start = () => {
   };
 
   useEffect(() => {
-    console.log(history.state.page);
-    if (history.state.page === "modal") {
-      history.back();
-    }
-  }, []);
-
-  useEffect(() => {
     setToggle(0);
   }, [popupOpen]);
 

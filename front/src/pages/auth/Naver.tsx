@@ -26,21 +26,23 @@ const Naver = () => {
 
   if (code) {
     console.log(code);
-
-    Axios.post("auth/naverlogin", {
-      client_id: NAVER_CLIENT_ID,
-      client_secret: NAVER_CLIENT_SECRET,
-      redirect_uri: REDIRECT_URI,
-      code,
-      state: NAVER_STATE_CODE
-    })
-      .then((res) => {
+    try {
+      Axios.post("auth/naverlogin", {
+        client_id: NAVER_CLIENT_ID,
+        client_secret: NAVER_CLIENT_SECRET,
+        redirect_uri: REDIRECT_URI,
+        code,
+        state: NAVER_STATE_CODE
+      }).then((res) => {
         const email = res.data.email;
         const profilePic = res.data.profilePic;
         console.log(email, profilePic);
         socialLogIn.mutate({ email, profilePic });
-      })
-      .catch(() => navigate("/"));
+      });
+      // .catch(() => navigate("/"));
+    } catch (e) {
+      navigate("/");
+    }
   }
 
   return (

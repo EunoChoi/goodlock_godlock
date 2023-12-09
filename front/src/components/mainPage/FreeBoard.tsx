@@ -38,8 +38,6 @@ interface postProps {
 
 const FreeBoard = () => {
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const params = useParams();
-  const type = params.type ? parseInt(params.type) : 0;
   const [toggle, setToggle] = useState<number>(0);
   const [searchComm, setSearchComm] = useState<string>("");
 
@@ -64,9 +62,9 @@ const FreeBoard = () => {
     }
   );
   const feedPosts = useInfiniteQuery(
-    ["feed"],
+    ["freefeed"],
     ({ pageParam = 1 }) =>
-      Axios.get("post/feed", { params: { type: 0, pageParam, tempDataNum: 5 } }).then((res) => res.data),
+      Axios.get("post/feed", { params: { type: 2, pageParam, tempDataNum: 5 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -91,21 +89,6 @@ const FreeBoard = () => {
       enabled: true
     }
   );
-
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth"
-    });
-  }, [type]);
-
-  //모달 열린 상태에서 새로고침시 history.back 처리, url 더러워짐 방지
-  useEffect(() => {
-    if (history.state.page === "modal") {
-      history.back();
-    }
-  }, []);
 
   return (
     <MainPageStyle.MainEl>
