@@ -153,7 +153,7 @@ const Side = ({ close }: Props) => {
                   }}
                 >
                   <LightbulbRoundedIcon />
-                  Tip Post
+                  Tip Board
                 </button>
                 <button
                   onClick={() => {
@@ -185,6 +185,7 @@ const Side = ({ close }: Props) => {
               </div>
               <div>
                 <button
+                  id="logout"
                   onClick={() => {
                     logoutConfirm();
                     close();
@@ -253,6 +254,8 @@ const ProfilePic = styled.img`
 
   border-radius: 100%;
   border: 2px solid rgba(0, 0, 0, 0.05);
+
+  cursor: pointer;
 `;
 
 const Wrapper = styled.div`
@@ -310,6 +313,7 @@ const UserInfoWrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
     span {
       margin: 4px 0;
     }
@@ -389,6 +393,12 @@ const MenuWrapper = styled.div<{ currentPage: number | undefined }>`
     button:nth-child(${(props) => props.currentPage}) {
       color: #d5a8d0;
     }
+  }
+  #logout {
+    transition: 0.2s ease-in-out all;
+  }
+  #logout:hover {
+    scale: 1.1;
   }
 
   div {

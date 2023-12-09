@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Axios from "../../apis/Axios";
 
@@ -18,6 +18,11 @@ const Naver = () => {
 
   //naver 로그인의 경우 front에서 바로 네이버 api를 보내면 cors 에러가 발생한다.
   //구글이나 카카오와 다르게 요청을 백엔드에서 보내야 한다.
+
+  const user = User.getData();
+  useEffect(() => {
+    if (user) navigate("/main/0");
+  }, [user]);
 
   if (code) {
     console.log(code);

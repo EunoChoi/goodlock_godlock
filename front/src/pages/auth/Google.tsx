@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -14,6 +14,12 @@ const Kakao = () => {
   const GOOGLE_CLIENT_SECRET = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
 
   const code = new URL(window.location.href).searchParams.get("code");
+
+  const user = User.getData();
+  useEffect(() => {
+    if (user) navigate("/main/0");
+  }, [user]);
+
   if (code) {
     // console.log(code);
     try {
@@ -42,10 +48,10 @@ const Kakao = () => {
               // console.log(email, profilePic);
               socialLogIn.mutate({ email, profilePic });
             });
-        })
-        .catch(() => {
-          navigate("/");
         });
+      // .catch(() => {
+      //   navigate("/");
+      // });
     } catch (err) {
       console.error(err);
       navigate("/");

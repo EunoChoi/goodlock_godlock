@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -13,6 +13,11 @@ const Kakao = () => {
   const REST_KEY = process.env.REACT_APP_KAKAO_REST_KEY;
   const REDIRECT_URI = process.env.REACT_APP_BASE_URL + "/auth/kakao";
   const code = new URL(window.location.href).searchParams.get("code");
+
+  const user = User.getData();
+  useEffect(() => {
+    if (user) navigate("/main/0");
+  }, [user]);
 
   if (code) {
     try {
@@ -47,10 +52,10 @@ const Kakao = () => {
               console.log(email, profilePic);
               socialLogIn.mutate({ email, profilePic });
             });
-        })
-        .catch(() => {
-          navigate("/");
         });
+      // .catch(() => {
+      //   navigate("/");
+      // });
     } catch (err) {
       navigate("/");
     }
