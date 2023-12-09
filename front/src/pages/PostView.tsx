@@ -37,7 +37,7 @@ const PostView = () => {
       <SinglePostWrapper>
         <SingePostText>
           {/* <ShareIcon fontSize="large" /> */}
-          <span>Single Post</span>
+          <span>Post</span>
         </SingePostText>
         {single.data && <Post key={"singlePost"} postProps={single.data} />}
       </SinglePostWrapper>
@@ -63,7 +63,7 @@ const SingePostText = styled.div`
   /* padding-left: calc((70vw - 500px) / 2); */
   padding-bottom: 32px;
 
-  color: rgba(0, 0, 0, 0.7);
+  color: rgba(0, 0, 0, 0.75);
   font-size: 44px;
   span {
     color: rgba(0, 0, 0, 0.7);
@@ -76,7 +76,7 @@ const SingePostText = styled.div`
     padding-top: 100px;
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 60vw;
+    width: 300px;
     padding-top: 60px;
   }
 `;

@@ -568,7 +568,7 @@ const PostZoomBG = styled.div`
   }
   @media (orientation: portrait) or (max-height: 480px) {
     justify-content: start;
-    height: calc(var(--vh, 1vh) * 100);
+    /* height: calc(var(--vh, 1vh) * 100); */
     padding-top: 0;
   }
 `;
@@ -745,6 +745,7 @@ const MobileWrapper = styled.div`
   left: 0;
 
   width: 100vw;
+  height: calc(var(--vh, 1vh) * 100);
 
   display: flex;
   justify-content: center;
@@ -814,7 +815,6 @@ const MobilePostInfo = styled.div`
 `;
 const MobilePostSubInfo = styled.div`
   //component height = 92px
-
   z-index: 100;
   width: 100vw;
 `;

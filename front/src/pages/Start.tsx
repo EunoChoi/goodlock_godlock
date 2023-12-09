@@ -213,7 +213,6 @@ const StartWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: start;
-  padding-bottom: 80px;
 
   padding-left: 10vw;
   @media (orientation: portrait) or (max-height: 480px) {

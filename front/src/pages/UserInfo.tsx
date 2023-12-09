@@ -524,7 +524,7 @@ const UserInfoWrapper = styled.div`
     }
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 500px;
+    width: 300px;
     height: auto;
     padding-left: 0;
     margin-top: 0;
@@ -579,12 +579,13 @@ const MenuWrapper = styled.div`
   }
   @media (orientation: portrait) or (max-height: 480px) {
     top: 48px;
+    top: 46px;
     width: 100%;
     padding-left: 4vw;
     padding-right: 4vw;
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 500px;
+    width: 300px;
     padding-left: 4px;
     top: 0;
   }
@@ -645,7 +646,7 @@ const ContentBox = styled.div`
     backdrop-filter: blur(4px); */
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 500px;
+    width: 300px;
     min-height: 400px;
   }
 `;

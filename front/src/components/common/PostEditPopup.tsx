@@ -76,6 +76,7 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
     });
   };
   const postEditSubmit = () => {
+    //start, end 둘다 빈 경우
     if (start === null || end === null) {
       editPost.mutate(
         {
@@ -133,7 +134,6 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
 
   //useMutation
   const editPost = Post.edit();
-
   const uploadImages = Upload.images();
 
   //로컬에서 이미지 에러 처리
@@ -167,6 +167,7 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
       });
     }
   };
+  useEffect(() => console.log(images), [images]);
 
   return (
     <InputForm.EditBG onClick={() => cancleConfirm()}>
@@ -336,10 +337,14 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
               <InsertPhotoIcon />
               <span>이미지 삽입</span>
             </FlexButton>
-            <FlexButton onClick={() => postEditSubmit()}>
-              <PostAddIcon />
-              <span>수정</span>
-            </FlexButton>
+            {editPost.isLoading ? (
+              <CircularProgress style={{ margin: "0 8px" }} color="inherit" size={24} />
+            ) : (
+              <FlexButton onClick={() => postEditSubmit()}>
+                <PostAddIcon />
+                <span>등록</span>
+              </FlexButton>
+            )}
           </ButtonWrapper>
         </InputForm.ButtonArea>
       </InputForm.InputWrapper>

@@ -15,7 +15,7 @@ const Kakao = () => {
 
   const code = new URL(window.location.href).searchParams.get("code");
   if (code) {
-    console.log(code);
+    // console.log(code);
     try {
       axios
         .post(`https://oauth2.googleapis.com/token`, {
@@ -39,7 +39,7 @@ const Kakao = () => {
               // console.log(res);
               const email = res.data.email;
               const profilePic = res.data.picture;
-              console.log(email, profilePic);
+              // console.log(email, profilePic);
               socialLogIn.mutate({ email, profilePic });
             });
         });

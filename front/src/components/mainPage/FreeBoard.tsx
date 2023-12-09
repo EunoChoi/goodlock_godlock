@@ -288,7 +288,7 @@ const HomeEl = styled.div`
     min-height: calc(100vh - 116px);
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 500px;
+    width: 300px;
   }
 `;
 const MainEl = styled.div`
@@ -323,13 +323,14 @@ const Pill = {
 
     @media (orientation: portrait) or (max-height: 480px) {
       top: 48px;
+      top: 46px;
       background-color: #c8daf3;
       background-color: #fff;
       width: 100%;
       padding: 24px 4vw;
     }
     @media (orientation: landscape) and (max-height: 480px) {
-      width: 500px;
+      width: 300px;
       padding-left: 0;
       top: 0px;
     }
@@ -439,7 +440,7 @@ const TextWrapper = styled.div`
     padding-bottom: 24px;
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 500px;
+    width: 300px;
     padding-left: 0;
     margin-top: 0;
     padding-top: 24px;
@@ -465,10 +466,10 @@ const TextWrapper_Title = styled.span`
     display: none; /* Chrome, Safari, Opera*/
   }
 
-  color: rgba(0, 0, 0, 0.75);
   color: #6e748e;
   color: #bc9dcf;
   color: #d5a8d0;
+  color: rgba(0, 0, 0, 0.75);
 `;
 const TextWrapper_Bold = styled.span`
   font-size: 30px;

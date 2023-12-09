@@ -114,7 +114,6 @@ const InputPopup = ({ modalClose }: props) => {
 
   //useMutation
   const addPost = Post.add();
-
   const uploadImages = Upload.images();
 
   //로컬에서 이미지 에러 처리
@@ -322,10 +321,14 @@ const InputPopup = ({ modalClose }: props) => {
               <span>이미지 삽입</span>
             </FlexButton>
 
-            <FlexButton onClick={() => postCreateSubmit()}>
-              <PostAddIcon />
-              <span>등록</span>
-            </FlexButton>
+            {addPost.isLoading ? (
+              <CircularProgress style={{ margin: "0 8px" }} color="inherit" size={24} />
+            ) : (
+              <FlexButton onClick={() => postCreateSubmit()}>
+                <PostAddIcon />
+                <span>등록</span>
+              </FlexButton>
+            )}
           </ButtonWrapper>
         </InputForm.ButtonArea>
       </InputForm.InputWrapper>

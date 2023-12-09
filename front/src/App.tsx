@@ -44,9 +44,11 @@ function App() {
 
     // console.log(vw, window.screen.width, window.innerWidth);
 
-    if (vh) {
-      if (vw == window.innerWidth) {
-        console.log("Resized");
+    if (vh && vw) {
+      if (vh > vw && vw == window.innerWidth) {
+        document.documentElement.style.setProperty("--vh", `${vh * 0.01}px`);
+      }
+      if (vw > vh && vh == window.innerHeight) {
         document.documentElement.style.setProperty("--vh", `${vh * 0.01}px`);
       }
     }

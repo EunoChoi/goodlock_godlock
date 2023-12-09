@@ -15,7 +15,11 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import ExtensionIcon from "@mui/icons-material/Extension";
 
-const Side = () => {
+interface Props {
+  close: (b: void) => void;
+}
+
+const Side = ({ close }: Props) => {
   const user = User.getData();
   const navigate = useNavigate();
   const logout = User.logout();
@@ -34,7 +38,7 @@ const Side = () => {
     return n;
   };
   const makeShortNickname = (nick: string) => {
-    if (nick.length >= 11) return nick.slice(0, 10) + "...";
+    if (nick?.length >= 11) return nick.slice(0, 10) + "...";
     else return nick;
   };
 
@@ -59,7 +63,12 @@ const Side = () => {
     // 로그아웃 상태에서 접근시도 구현해야함. 싱글 포스트 뷰 때문에
     <Wrapper>
       <HeaderWrapper>
-        <button onClick={() => navigate("/main/0")}>
+        <button
+          onClick={() => {
+            navigate("/main/0");
+            close();
+          }}
+        >
           <ExtensionIcon style={{ color: "#D5A8D0", fontSize: "28px", marginRight: "4px" }}></ExtensionIcon>
           {/* <Logo src="/img/loading.png"></Logo> */}
           <span>God Lock</span>
@@ -68,25 +77,59 @@ const Side = () => {
       {user && (
         <>
           <UserInfoWrapper>
-            <ProfilePic src={user.profilePic} onClick={() => navigate("/profile/0")} />
+            <ProfilePic
+              src={user.profilePic}
+              onError={(e) => {
+                e.currentTarget.src = `/img/defaultProfilePic.png`;
+              }}
+              onClick={() => {
+                navigate("/profile/0");
+                close();
+              }}
+              alt=""
+            />
 
-            <div id="info_text_box">
+            <div
+              id="info_text_box"
+              onClick={() => {
+                navigate("/profile/0");
+                close();
+              }}
+            >
               <span id="nickname">{makeShortNickname(user?.nickname)}</span>
               <span id="email">{user?.email}</span>
               <span id="usertext">{user?.usertext}</span>
             </div>
 
             <Stack direction="row" divider={<Divider orientation="vertical" />} spacing={1} justifyContent="center">
-              <button className="info_box" onClick={() => navigate("/profile/3")}>
-                <span>{makeK(user?.Posts.length)}</span>
+              <button
+                className="info_box"
+                onClick={() => {
+                  navigate("/profile/3");
+                  close();
+                }}
+              >
+                <span>{makeK(user?.Posts?.length)}</span>
                 <span>Posts</span>
               </button>
-              <button className="info_box" onClick={() => navigate("/profile/1")}>
-                <span>{makeK(user?.Followings.length)}</span>
+              <button
+                className="info_box"
+                onClick={() => {
+                  navigate("/profile/1");
+                  close();
+                }}
+              >
+                <span>{makeK(user?.Followings?.length)}</span>
                 <span>Followings</span>
               </button>
-              <button className="info_box" onClick={() => navigate("/profile/2")}>
-                <span>{makeK(user?.Followers.length)}</span>
+              <button
+                className="info_box"
+                onClick={() => {
+                  navigate("/profile/2");
+                  close();
+                }}
+              >
+                <span>{makeK(user?.Followers?.length)}</span>
                 <span>Followers</span>
               </button>
             </Stack>
@@ -94,29 +137,59 @@ const Side = () => {
           <MenuWrapper currentPage={currentPage + 1}>
             <Stack divider={<Divider orientation="horizontal" />} spacing={2} justifyContent="center">
               <div id="buttons">
-                <button onClick={() => navigate("/main/0")}>
+                <button
+                  onClick={() => {
+                    navigate("/main/0");
+                    close();
+                  }}
+                >
                   <HomeRoundedIcon />
                   Home
                 </button>
-                <button onClick={() => navigate("/main/1")}>
+                <button
+                  onClick={() => {
+                    navigate("/main/1");
+                    close();
+                  }}
+                >
                   <LightbulbRoundedIcon />
                   Tip Post
                 </button>
-                <button onClick={() => navigate("/main/2")}>
+                <button
+                  onClick={() => {
+                    navigate("/main/2");
+                    close();
+                  }}
+                >
                   <PeopleRoundedIcon />
                   Free Board
                 </button>
-                <button onClick={() => navigate("/main/3")}>
+                <button
+                  onClick={() => {
+                    navigate("/main/3");
+                    close();
+                  }}
+                >
                   <PhotoRoundedIcon />
                   Gallery
                 </button>
-                <button onClick={() => navigate("/profile/0")}>
+                <button
+                  onClick={() => {
+                    navigate("/profile/0");
+                    close();
+                  }}
+                >
                   <PersonRoundedIcon />
                   Profile
                 </button>
               </div>
               <div>
-                <button onClick={() => logoutConfirm()}>
+                <button
+                  onClick={() => {
+                    logoutConfirm();
+                    close();
+                  }}
+                >
                   <ExitToAppRoundedIcon />
                   Logout
                 </button>
@@ -128,7 +201,14 @@ const Side = () => {
       {!user && (
         <LogInWrapper>
           <span>로그인이 필요합니다.</span>
-          <button onClick={() => navigate("/")}>로그인</button>
+          <button
+            onClick={() => {
+              navigate("/");
+              close();
+            }}
+          >
+            로그인
+          </button>
         </LogInWrapper>
       )}
     </Wrapper>
@@ -166,17 +246,6 @@ const LogInWrapper = styled.div`
   }
 `;
 
-const Logo = styled.img`
-  width: 32px;
-  height: 32px;
-  object-fit: cover;
-
-  margin-right: 8px;
-
-  border-radius: 100%;
-  border: 2px solid rgba(0, 0, 0, 0.05);
-`;
-
 const ProfilePic = styled.img`
   width: 108px;
   height: 108px;
@@ -204,7 +273,7 @@ const HeaderWrapper = styled.div`
   height: 10%;
   /* border: 1px solid white; */
 
-  padding: 0 20px;
+  padding: 0 40px;
 
   display: flex;
   justify-content: start;
@@ -250,9 +319,9 @@ const UserInfoWrapper = styled.div`
     font-size: 32px;
     font-weight: 600;
 
-    max-width: 80%;
+    max-width: 100%;
     white-space: nowrap;
-    overflow: scroll;
+    overflow-x: scroll;
 
     display: flex;
     justify-content: start;
@@ -273,7 +342,7 @@ const UserInfoWrapper = styled.div`
     color: rgba(0, 0, 0, 0.35);
   }
   #usertext {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.5);
 

@@ -662,13 +662,15 @@ router.post("/", tokenCheck, async (req, res) => {
     const postImages = req.body.images;
 
     if (postImages.length >= 1) {
-      const images = await Promise.all(req.body.images.map((i) => Image.create({ src: i })));
+      const images = await Promise.all(postImages.map((i) => Image.create({ src: i })));
       post.addImages(images);
     }
+
+    return res.status(200).json("post upload success");
   } catch (e) {
     console.error(e);
   }
-  return res.status(200).json("post upload success");
+
 })
 router.patch("/:postId", tokenCheck, async (req, res) => {
   try {
@@ -701,13 +703,13 @@ router.patch("/:postId", tokenCheck, async (req, res) => {
     //수정된 이미지들을 image 모델 요소 생성 후 Post 모델과 연결
     const postImages = req.body.images;
     if (postImages.length >= 1) {
-      const images = await Promise.all(req.body.images.map((i) => Image.create({ src: i })));
+      const images = await Promise.all(postImages.map((i) => Image.create({ src: i })));
       post.addImages(images);
     }
+    res.status(200).json("post edit success");
   } catch (e) {
     console.error(e);
   }
-  res.status(200).json("post edit success");
 })
 router.delete("/:postId", tokenCheck, async (req, res) => {
   try {

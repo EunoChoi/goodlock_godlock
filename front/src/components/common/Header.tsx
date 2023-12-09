@@ -60,6 +60,14 @@ const Header = () => {
         <Link to="/main/0">God Lock</Link>
       </HeaderLogoMobile>
 
+      <HeaderLocation>
+        {currentPage === 0 && <HomeRoundedIcon style={{ color: "#D5A8D0", fontSize: "24px" }} />}
+        {currentPage === 1 && <LightbulbRoundedIcon style={{ color: "#D5A8D0", fontSize: "24px" }} />}
+        {currentPage === 2 && <PeopleRoundedIcon style={{ color: "#D5A8D0", fontSize: "24px" }} />}
+        {currentPage === 3 && <PhotoRoundedIcon style={{ color: "#D5A8D0", fontSize: "24px" }} />}
+        {currentPage === 4 && <PersonRoundedIcon style={{ color: "#D5A8D0", fontSize: "24px" }} />}
+      </HeaderLocation>
+
       <HeaderMobileLand currentPage={currentPage + 1}>
         <span>
           <LinkCenter to="/main/0">
@@ -118,21 +126,25 @@ const MobileHeaderWrapper = styled.div`
   z-index: 999;
   top: 0px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
+  justify-content: space-between;
+  align-items: center;
 
   height: 48px;
   width: 100vw;
+  padding: 0 4vw;
 
   background-color: #fff;
-  background-color: #c8daf3;
 
   @media (orientation: portrait) and (max-width: 480px) {
     background-color: white;
   }
 
   @media (orientation: landscape) and (max-height: 480px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    padding: 0;
+
     position: fixed;
     z-index: 999;
     top: 0px;
@@ -178,14 +190,26 @@ const HeaderMobileLand = styled.div<{ currentPage: number | undefined }>`
   }
 `;
 
+const HeaderLocation = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: #d5a8d0;
+
+  font-size: 24px;
+  font-weight: 600;
+
+  @media (orientation: landscape) and (max-height: 480px) {
+    display: none;
+  }
+`;
 const HeaderLogoMobile = styled.span`
   font-family: OAGothic-ExtraBold;
 
   display: flex;
   justify-content: center;
   align-items: center;
-
-  margin-left: 4vw;
 
   color: rgba(0, 0, 0, 0.7);
 

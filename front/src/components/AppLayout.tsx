@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Header from "./common/Header";
 import styled from "styled-components/macro";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 
 //mui
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import PersonIcon from "@mui/icons-material/Person";
-import SettingsIcon from "@mui/icons-material/Settings";
 import MenuIcon from "@mui/icons-material/Menu";
 
 //component
@@ -44,6 +42,9 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const modalClose = () => {
     history.back();
     setPostInputOpen(false);
+  };
+  const sideclose = () => {
+    setMobileSideOpen(false);
   };
   const handleScroll = async () => {
     if (window.scrollY > 2000) {
@@ -145,12 +146,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                 setMobileSideOpen(false);
               }}
             >
-              <MobileSide
-                onClick={() => {
-                  setMobileSideOpen(false);
-                }}
-              >
-                <Side />
+              <MobileSide onClick={(e) => e.stopPropagation()}>
+                <Side close={sideclose} />
               </MobileSide>
             </MobileSideBG>
           )}
@@ -160,7 +157,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       ) : (
         <PcWrapper>
           <LeftWrapper>
-            <Side></Side>
+            <Side close={sideclose} />
           </LeftWrapper>
           <RightWrapper>
             <Children id="scrollWrapper">{children}</Children>

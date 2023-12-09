@@ -48,19 +48,10 @@ const InputWrapper = styled.div`
     position: fixed;
     left: 0;
     top: 0;
-    /* transform: translate(-50%, -50%); */
-
-    /* height: auto;
-    height: 100vh; */
-    /* margin-left: 5%;
-    margin-top: calc(var(--vh, 1vh) * 5);
-    height: calc(var(--vh, 1vh) * 90); */
-    /* width: 90%; */
 
     height: calc(var(--vh, 1vh) * 100);
     width: 100%;
 
-    /* margin-bottom: 20px; */
     background-color: #fff;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
     border-radius: 5px;

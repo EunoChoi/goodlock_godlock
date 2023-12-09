@@ -15,7 +15,6 @@ import IsMobile from "../../functions/IsMobile";
 import CircularProgress from "@mui/material/CircularProgress";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import ImageListItemBar from "@mui/material/ImageListItemBar";
 
 const Gallery = () => {
   const scrollTarget = useRef<HTMLDivElement>(null);
@@ -70,7 +69,7 @@ const Gallery = () => {
       <TextWrapper ref={scrollTarget}>
         <TextWrapper_Title>Gallery</TextWrapper_Title>
         <Space height={32}></Space>
-        <TextWrapper_Normal>게시글의 이미지만 모아서 보는 게시판입니다.</TextWrapper_Normal>
+        <TextWrapper_Normal>이미지만 따로 모아서 보여주는 게시판입니다.</TextWrapper_Normal>
         <TextWrapper_Normal>이미지를 누르면 게시글로 이동합니다.</TextWrapper_Normal>
       </TextWrapper>
       <Pill.Wrapper>
@@ -125,8 +124,10 @@ const Gallery = () => {
                       src={`${image.src}?w=248&fit=crop&auto=format`}
                       alt={image.src}
                       loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                      }}
                     />
-                    {/* <ImageListItemBar position="below" title={image.PostId} /> */}
                   </ImageListItem>
                 ))}
               </ImageList>
@@ -158,6 +159,9 @@ const Gallery = () => {
                       src={`${image.src}?w=248&fit=crop&auto=format`}
                       alt={image.src}
                       loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                      }}
                     />
                   </ImageListItem>
                 ))}
@@ -231,6 +235,7 @@ const Pill = {
 
     @media (orientation: portrait) or (max-height: 480px) {
       top: 48px;
+      top: 46px;
       /* background-color: #c8daf3; */
       /* background-color: #fff; */
       width: 100%;
@@ -374,10 +379,10 @@ const TextWrapper_Title = styled.span`
     display: none; /* Chrome, Safari, Opera*/
   }
 
-  color: rgba(0, 0, 0, 0.75);
   color: #6e748e;
   color: #bc9dcf;
   color: #d5a8d0;
+  color: rgba(0, 0, 0, 0.75);
 `;
 const TextWrapper_Bold = styled.span`
   font-size: 30px;
