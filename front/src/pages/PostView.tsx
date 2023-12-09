@@ -76,7 +76,7 @@ const SingePostText = styled.div`
     padding-top: 100px;
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 300px;
+    width: 400px;
     padding-top: 60px;
   }
 `;

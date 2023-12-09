@@ -149,7 +149,7 @@ router.get("/", async (req, res) => {
       order: [
         ['createdAt', 'DESC'],
         [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
-        [Image, 'createdAt', 'DESC'], //불러온 image 정렬
+        [Image, 'id', 'ASC'],
       ],
       include: [
         {
@@ -201,6 +201,7 @@ router.get("/activinfo", async (req, res) => {
       order: [
         ['createdAt', 'DESC'],
         [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        [Image, 'id', 'ASC'],
       ],
       include: [
         {
@@ -353,6 +354,7 @@ router.get("/feed", tokenCheck, async (req, res) => {
       order: [
         ['createdAt', 'DESC'],
         [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        [Image, 'id', 'ASC'],
       ],
       include: [
         {
@@ -400,6 +402,7 @@ router.get("/my", tokenCheck, async (req, res) => {
       order: [
         ['createdAt', 'DESC'],
         [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        [Image, 'id', 'ASC'],
       ],
       include: [
         {
@@ -453,6 +456,7 @@ router.get("/liked", tokenCheck, async (req, res) => {
       order: [
         ['createdAt', 'DESC'],
         [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        [Image, 'id', 'ASC'],
       ],
       include: [
         {
@@ -501,6 +505,7 @@ router.get("/search", async (req, res) => {
       order: [
         ['createdAt', 'DESC'],
         [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        [Image, 'id', 'ASC'],
       ],
       include: [
         {
@@ -549,6 +554,7 @@ router.get("/user", tokenCheck, async (req, res) => {
       order: [
         ['createdAt', 'DESC'],
         [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        [Image, 'id', 'ASC'],
       ],
       include: [
         {
@@ -580,7 +586,7 @@ router.get("/user", tokenCheck, async (req, res) => {
     console.error(e);
   }
 })
-//load posts - target user liked
+//load posts - target user bookmarked tip
 router.get("/user/liked", tokenCheck, async (req, res) => {
   const { id } = req.query;
   const { pageParam, tempDataNum } = req.query;
@@ -603,6 +609,7 @@ router.get("/user/liked", tokenCheck, async (req, res) => {
       order: [
         ['createdAt', 'DESC'],
         [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        [Image, 'id', 'ASC'],
       ],
       include: [
         {

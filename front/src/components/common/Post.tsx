@@ -506,7 +506,7 @@ const PostWrapper = styled.div`
     /* height: auto; */
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 300px;
+    width: 400px;
   }
 `;
 const ImageWrapper = styled.div`

@@ -67,6 +67,12 @@ const UserInfo = () => {
 
   const isFollowed = targetUser?.Followers?.find((v: any) => v.id === user.id);
 
+  const makeShortNickname = (nick: string) => {
+    if (nick?.length >= 11) return nick.slice(0, 10) + "...";
+    else return nick;
+  };
+
+  //bookmarked tips
   const likedPosts = useInfiniteQuery(
     ["userLikedPosts"],
     ({ pageParam = 1 }) =>
@@ -141,12 +147,12 @@ const UserInfo = () => {
             <Pic width={150} alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}
 
-          <span>{targetUser?.nickname}</span>
+          <span id="nickname">{makeShortNickname(targetUser?.nickname)}</span>
           <span id="email">{targetUser?.email}</span>
-          <span>{targetUser?.usertext ? targetUser?.usertext : "-"}</span>
-          <span>
-            Followings {targetUser?.Followings?.length} • Followers {targetUser?.Followers?.length} • Free Posts{" "}
-            {targetUser?.Posts?.filter((v: any) => v.type === 2).length}
+          <span id="usertext">{targetUser?.usertext ? targetUser?.usertext : "-"}</span>
+          <span id="userstate">
+            Posts {targetUser?.Posts?.length} • Followings {targetUser?.Followings?.length} • Followers{" "}
+            {targetUser?.Followers?.length}
           </span>
           {isFollowed ? (
             <FollowButton
@@ -427,7 +433,7 @@ const ListTitle = styled.div`
   > div {
     margin-top: 5px;
     font-size: 20px;
-    /* font-weight: 600; */
+    font-weight: 600;
     color: rgba(0, 0, 0, 0.7);
   }
   @media (orientation: portrait) or (max-height: 480px) {
@@ -475,56 +481,47 @@ const UserInfoWrapper = styled.div`
   flex-direction: column;
   justify-content: end;
   align-items: start;
-  /* padding-top: 40px; */
+
   width: 500px;
   height: 500px;
 
-  #email {
-    margin-top: 8px;
-  }
-
-  > span {
-    color: rgba(0, 0, 0, 0.6);
-  }
-  > span:nth-child(2) {
+  #nickname {
+    font-size: 44px;
     font-weight: 600;
-    margin-top: 32px;
-    font-size: 48px;
-    color: rgba(0, 0, 0, 0.8);
-  }
-  > span:nth-child(3) {
-    font-size: 28px;
     color: rgba(0, 0, 0, 0.7);
+    margin: 12px 0;
   }
-  > span:nth-child(4) {
-    font-size: 22px;
-    margin-top: 24px;
-    /* padding: 0 12px; */
-  }
-  > span:nth-child(5) {
+  #email {
     font-size: 20px;
-    margin-top: 24px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.4);
+    margin: 4px 0;
+  }
+  #usertext {
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.6);
+    margin-top: 4px;
     margin-bottom: 24px;
   }
-
+  #userstate {
+    font-size: 20px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.65);
+    margin-bottom: 48px;
+  }
   @media (orientation: portrait) or (max-height: 480px) {
     width: 92vw;
     margin-top: 36px;
-    > span:nth-child(2) {
-      font-size: 36px;
-    }
-    > span:nth-child(3) {
-      font-size: 24px;
-    }
-    > span:nth-child(4) {
-      font-size: 22px;
-    }
-    > span:nth-child(5) {
+    #userstate {
       font-size: 18px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.65);
+      margin-bottom: 40px;
     }
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 300px;
+    width: 400px;
     height: auto;
     padding-left: 0;
     margin-top: 0;
@@ -585,7 +582,7 @@ const MenuWrapper = styled.div`
     padding-right: 4vw;
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 300px;
+    width: 400px;
     padding-left: 4px;
     top: 0;
   }
@@ -601,16 +598,14 @@ const ContentWrapper = styled.div`
   width: 100%;
   height: auto;
   min-height: calc(100vh - 104px);
-  /* min-height: calc(100vh - 124px); */
 
-  /* padding-top: 24px; */
   padding-bottom: 24px;
   @media (orientation: portrait) or (max-height: 480px) {
     //haeder height : 48px
     min-height: calc(100vh - 48px - 104px);
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 50vw;
+    width: 400px;
   }
 `;
 const ContentBox = styled.div`
@@ -619,7 +614,7 @@ const ContentBox = styled.div`
   width: 500px;
   min-height: calc(100vh - 104px - 24px);
 
-  padding: 20px;
+  padding: 40px;
   /* margin-bottom: 24px; */
 
   /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); */
@@ -646,7 +641,7 @@ const ContentBox = styled.div`
     backdrop-filter: blur(4px); */
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 300px;
+    width: 400px;
     min-height: 400px;
   }
 `;
@@ -661,6 +656,7 @@ const EmptyNoti = styled.div`
 
   font-size: 72px;
   color: rgba(0, 0, 0, 0.5);
+
   /* font-weight: 600; */
   span {
     margin-top: 20px;
@@ -674,13 +670,12 @@ const EmptyUserNoti = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   white-space: nowrap;
 
-  font-size: 48px;
   color: rgba(0, 0, 0, 0.5);
-  /* font-weight: 600; */
+
   span {
+    font-weight: 500;
     margin-top: 20px;
     font-size: 18px;
   }
@@ -711,7 +706,11 @@ const ListItem = styled.div`
     align-items: center;
     > span {
       margin-left: 10px;
+      font-weight: 500;
     }
+  }
+  > span {
+    font-weight: 500;
   }
   > button {
     min-width: 0;

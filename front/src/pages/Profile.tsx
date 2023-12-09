@@ -698,7 +698,7 @@ const ProfileTitle = styled.div`
   @media (orientation: landscape) and (max-height: 480px) {
     padding-top: 32px;
     margin-top: 0;
-    width: 300px;
+    width: 400px;
     span {
       padding-left: 0;
     }
@@ -713,7 +713,7 @@ const Title = styled.div`
   color: #cf9dc9;
   color: #bc9dcf;
   color: #d5a8d0;
-  color: rgba(0, 0, 0, 0.75);
+  color: rgba(0, 0, 0, 0.7);
 
   @media (orientation: portrait) or (max-height: 480px) {
     padding-left: 5vw;
@@ -757,7 +757,7 @@ const MenuWrapper = styled.div`
     ); */
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 300px;
+    width: 400px;
     top: 0px;
     padding: 18px 0;
   }
@@ -815,7 +815,7 @@ const ContentBox = styled.div<{ width: number; padding: number }>`
     min-height: calc(var(--vh, 1vh) * 100 - 48px - 104px - 24px);
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 300px;
+    width: 400px;
     min-height: 400px;
     margin-bottom: 32px;
   }

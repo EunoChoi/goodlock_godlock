@@ -5,6 +5,7 @@ import Animation from "../../styles/Animation";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
+import MainPageStyle from "../../styles/MainPage";
 
 import Axios from "../../apis/Axios";
 
@@ -30,7 +31,7 @@ const Gallery = () => {
   const tipImages = useInfiniteQuery(
     ["tipImages"],
     ({ pageParam = 1 }) =>
-      Axios.get("image", { params: { type: 1, pageParam, tempDataNum: 50 } }).then((res) => res.data),
+      Axios.get("image", { params: { type: 1, pageParam, tempDataNum: 20 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -40,7 +41,7 @@ const Gallery = () => {
   const freeImages = useInfiniteQuery(
     ["freeImages"],
     ({ pageParam = 1 }) =>
-      Axios.get("image", { params: { type: 2, pageParam, tempDataNum: 50 } }).then((res) => res.data),
+      Axios.get("image", { params: { type: 2, pageParam, tempDataNum: 20 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -67,10 +68,10 @@ const Gallery = () => {
   return (
     <Wrapper>
       <TextWrapper ref={scrollTarget}>
-        <TextWrapper_Title>Gallery</TextWrapper_Title>
-        <Space height={32}></Space>
-        <TextWrapper_Normal>이미지만 따로 모아서 보여주는 게시판입니다.</TextWrapper_Normal>
-        <TextWrapper_Normal>이미지를 누르면 게시글로 이동합니다.</TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Title>Gallery</MainPageStyle.TextWrapper_Title>
+        <MainPageStyle.Space height={32}></MainPageStyle.Space>
+        <MainPageStyle.TextWrapper_Normal>이미지만 따로 모아서 보여주는 게시판입니다.</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>이미지를 누르면 게시글로 이동합니다.</MainPageStyle.TextWrapper_Normal>
       </TextWrapper>
       <Pill.Wrapper>
         <Pill.Sub
@@ -105,9 +106,9 @@ const Gallery = () => {
           <InfiniteScroll
             hasMore={tipImages.hasNextPage || false}
             loader={
-              <LoadingIconWrapper>
+              <MainPageStyle.LoadingIconWrapper>
                 <CircularProgress size={96} color="inherit" />
-              </LoadingIconWrapper>
+              </MainPageStyle.LoadingIconWrapper>
             }
             next={() => tipImages.fetchNextPage()}
             dataLength={tipImages.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
@@ -140,9 +141,9 @@ const Gallery = () => {
           <InfiniteScroll
             hasMore={freeImages.hasNextPage || false}
             loader={
-              <LoadingIconWrapper>
+              <MainPageStyle.LoadingIconWrapper>
                 <CircularProgress size={96} color="inherit" />
-              </LoadingIconWrapper>
+              </MainPageStyle.LoadingIconWrapper>
             }
             next={() => freeImages.fetchNextPage()}
             dataLength={freeImages.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
@@ -175,14 +176,6 @@ const Gallery = () => {
 };
 
 export default Gallery;
-
-const LoadingIconWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #f3e0f1;
-  margin: 32px 0;
-`;
 
 const Images = styled.div`
   animation: ${Animation.smoothAppear} 1s ease-in-out;
@@ -331,10 +324,6 @@ const Pill = {
   `
 };
 
-const Space = styled.div<{ height: number }>`
-  height: ${(props) => props.height + "px"};
-`;
-
 const TextWrapper = styled.div`
   width: 90%;
   padding-top: 64px;
@@ -358,46 +347,4 @@ const TextWrapper = styled.div`
     margin-top: 0;
     padding-top: 24px;
   }
-`;
-const TextWrapper_Title = styled.span`
-  font-size: 44px;
-  line-height: 48px;
-  font-weight: 600;
-  font-weight: 700;
-
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: scroll;
-
-  display: flex;
-  justify-content: start;
-  align-items: center;
-
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
-  }
-
-  color: #6e748e;
-  color: #bc9dcf;
-  color: #d5a8d0;
-  color: rgba(0, 0, 0, 0.75);
-`;
-const TextWrapper_Bold = styled.span`
-  font-size: 30px;
-  line-height: 40px;
-  font-weight: 600;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  color: rgba(0, 0, 0, 0.7);
-`;
-const TextWrapper_Normal = styled.span`
-  font-size: 20px;
-  line-height: 28px;
-  font-weight: 500;
-
-  color: rgba(0, 0, 0, 0.55);
 `;
