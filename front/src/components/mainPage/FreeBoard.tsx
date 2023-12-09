@@ -120,7 +120,7 @@ const FreeBoard = () => {
           This Week
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={16}></MainPageStyle.Space>
-        <MainPageStyle.TextWrapper_Normal>신규 등록 소통글 {thisWeekNewComm?.len}개</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>신규 등록 포스트 {thisWeekNewComm?.len}개</MainPageStyle.TextWrapper_Normal>
       </MainPageStyle.TextWrapper>
       <MainPageStyle.Pill.Wrapper>
         <MainPageStyle.Pill.Sub

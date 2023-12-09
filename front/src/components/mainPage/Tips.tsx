@@ -108,7 +108,7 @@ const Tips = () => {
   return (
     <MainPageStyle.MainEl>
       <MainPageStyle.TextWrapper ref={scrollTarget}>
-        <MainPageStyle.TextWrapper_Title>Tip Post</MainPageStyle.TextWrapper_Title>
+        <MainPageStyle.TextWrapper_Title>Tip Board</MainPageStyle.TextWrapper_Title>
 
         <MainPageStyle.Space height={32}></MainPageStyle.Space>
 
@@ -122,7 +122,7 @@ const Tips = () => {
           This Week
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={16}></MainPageStyle.Space>
-        <MainPageStyle.TextWrapper_Normal>신규 등록 Tip Post {thisWeekNewInfo?.len}개</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>신규 등록 팁 {thisWeekNewInfo?.len}개</MainPageStyle.TextWrapper_Normal>
       </MainPageStyle.TextWrapper>
       <MainPageStyle.Pill.Wrapper>
         <MainPageStyle.Pill.Sub

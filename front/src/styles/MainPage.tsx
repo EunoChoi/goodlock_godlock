@@ -225,7 +225,7 @@ const TextWrapper_Bold = styled.span`
   justify-content: center;
   align-items: center;
 
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.65);
 `;
 const TextWrapper_Bold_Color = styled.span`
   font-size: 30px;

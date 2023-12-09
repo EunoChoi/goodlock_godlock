@@ -51,7 +51,7 @@ const UserInfo = () => {
 
   const navigate = useNavigate();
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["Followings", "Followers", "Tip Posts", "Free Posts", "Bookmark Posts"];
+  const category = ["Followings", "Followers", "Tip Posts", "Free Posts", "Bookmark Tip Posts"];
 
   const user = User.getData();
   const { data: targetUser, refetch } = useQuery(

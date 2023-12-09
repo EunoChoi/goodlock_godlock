@@ -131,10 +131,10 @@ const Home = () => {
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={16}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_Normal>
-          신규 등록 Posts {thisWeekNewInfo?.len + thisWeekNewComm?.len}개
+          신규 등록 팁&포스트 {thisWeekNewInfo?.len + thisWeekNewComm?.len}개
         </MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.TextWrapper_Normal>
-          공유 마감 Bookmark Tip {thisWeekEndLiked?.len}개
+          공유 마감 북마크 팁 {thisWeekEndLiked?.len}개
         </MainPageStyle.TextWrapper_Normal>
       </MainPageStyle.TextWrapper>
       <MainPageStyle.Pill.Wrapper>
