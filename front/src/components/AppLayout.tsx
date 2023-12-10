@@ -43,6 +43,11 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     history.back();
     setPostInputOpen(false);
   };
+  const sideOpen = () => {
+    const url = document.URL + "/modal";
+    history.pushState({ page: "modal" }, "", url);
+    setMobileSideOpen(true);
+  };
   const sideclose = () => {
     setMobileSideOpen(false);
   };
@@ -84,6 +89,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   window.addEventListener("popstate", () => {
     setPostInputOpen(false);
+    setMobileSideOpen(false);
   });
 
   useEffect(() => {
@@ -128,7 +134,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             id="menuButton"
             color="inherit"
             onClick={() => {
-              setMobileSideOpen((c) => !c);
+              sideOpen();
             }}
           >
             <MenuIcon fontSize="medium" />
@@ -141,7 +147,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           {mobileSideOpen && (
             <MobileSideBG
               onClick={() => {
-                setMobileSideOpen(false);
+                sideclose();
+                history.back();
               }}
             >
               <MobileSide onClick={(e) => e.stopPropagation()}>
