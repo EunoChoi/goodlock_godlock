@@ -298,6 +298,7 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
                   src={`${v}`}
                   alt={v}
                   onError={(e) => {
+                    e.currentTarget.onerror = null;
                     e.currentTarget.src = `${v?.replace(/\/thumb\//, "/original/")}`;
                   }}
                 ></InputForm.InputImage>

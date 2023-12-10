@@ -80,7 +80,8 @@ const Side = ({ close }: Props) => {
             <ProfilePic
               src={user.profilePic}
               onError={(e) => {
-                e.currentTarget.src = `/img/defaultProfilePic.png`;
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = `${user.profilePic.replace(/\/thumb\//, "/original/")}`;
               }}
               onClick={() => {
                 navigate("/profile/0");

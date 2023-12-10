@@ -66,7 +66,9 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                     src={`${postProps?.User?.profilePic}`}
                     alt="profilePic"
                     onError={(e) => {
+                      e.currentTarget.onerror = null;
                       e.currentTarget.src = `/img/defaultProfilePic.png`;
+                      e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
                     }}
                   ></ProfileCircle>
                 ) : (
@@ -159,7 +161,8 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                         src={`${postProps?.User?.profilePic}`}
                         alt="profilePic"
                         onError={(e) => {
-                          e.currentTarget.src = `/img/defaultProfilePic.png`;
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
                         }}
                       ></ProfileCircle>
                     ) : (
@@ -243,7 +246,8 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                         src={`${postProps?.User?.profilePic}`}
                         alt="profilePic"
                         onError={(e) => {
-                          e.currentTarget.src = `/img/defaultProfilePic.png`;
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
                         }}
                       ></ProfileCircle>
                     ) : (

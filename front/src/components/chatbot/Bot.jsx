@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import ChatBot from "react-simple-chatbot";
 import styled, { ThemeProvider } from "styled-components";
-import IsMobile from "../../functions/IsMobile";
+
+import Animation from "../../styles/Animation";
 
 import User from "../../functions/reactQuery/User";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
@@ -244,6 +245,8 @@ const Bot = (e) => {
 export default Bot;
 
 const BotBG = styled.div`
+  animation: ${Animation.smoothAppear} 0.5s ease-in-out;
+
   position: fixed;
   top: 0;
   left: 0;

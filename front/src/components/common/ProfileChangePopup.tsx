@@ -68,6 +68,7 @@ const ProfileChangePopup = ({ modalClose }: setStateProps) => {
             <ProfileImage
               src={`${image}`}
               onError={(e) => {
+                e.currentTarget.onerror = null;
                 e.currentTarget.src = `${image.replace(/\/thumb\//, "/original/")}`;
               }}
               alt="프로필 이미지"

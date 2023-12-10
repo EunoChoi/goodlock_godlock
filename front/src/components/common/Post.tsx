@@ -190,7 +190,8 @@ const Post = ({ postProps }: any) => {
               alt="userProfilePic"
               src={`${postProps?.User?.profilePic}`}
               onError={(e) => {
-                e.currentTarget.src = `/img/defaultProfilePic.png`;
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
               }}
             />
           ) : (
@@ -214,6 +215,7 @@ const Post = ({ postProps }: any) => {
             <Image
               src={`${v?.src}`}
               onError={(e) => {
+                e.currentTarget.onerror = null;
                 e.currentTarget.src = `${v?.src.replace(/\/thumb\//, "/original/")}`;
               }}
             />
