@@ -198,7 +198,7 @@ const HeaderLocation = styled.div`
   align-items: center;
 
   color: #d5a8d0;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.4);
   font-size: 22px;
   font-weight: 600;
 

@@ -12,7 +12,6 @@ import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CancelIcon from "@mui/icons-material/Cancel";
-import styled from "styled-components";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -30,7 +29,7 @@ interface props {
 const InputPopup = ({ modalClose }: props) => {
   const params = useParams();
   const inputType = params.type ? parseInt(params.type) : 0;
-  const placeholders = ["공지사항 입력", "팁&설정 입력", "소통글 입력"];
+  const placeholders = ["Notice Post", "Tip Post", "Free Post"];
   const [content, setContent] = useState<string>("");
   const [images, setImages] = useState<string[]>([]);
 
@@ -155,7 +154,7 @@ const InputPopup = ({ modalClose }: props) => {
   return (
     <InputForm.InputBG onClick={() => cancleConfirm()}>
       <InputForm.InputWrapper onClick={(e) => e.stopPropagation()}>
-        <PostOptionWrapper>
+        <InputForm.PostOptionWrapper>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
             {isInfoPost && (
               <Chip
@@ -217,7 +216,7 @@ const InputPopup = ({ modalClose }: props) => {
           {
             //start, end date
             postOptionToggle === 0 && (
-              <PostOptionValue>
+              <InputForm.PostOptionValue>
                 <DatePicker
                   calendarStartDay={1}
                   locale={ko}
@@ -228,11 +227,11 @@ const InputPopup = ({ modalClose }: props) => {
                   endDate={end}
                   customInput={
                     start ? (
-                      <DateButton>
+                      <InputForm.DateButton>
                         {start?.getFullYear()}년 {start?.getMonth() + 1}월 {start?.getDate()}일
-                      </DateButton>
+                      </InputForm.DateButton>
                     ) : (
-                      <DateButton>공유 시작일</DateButton>
+                      <InputForm.DateButton>공유 시작일</InputForm.DateButton>
                     )
                   }
                   onChange={(date: Date) => setStart(date)}
@@ -248,27 +247,27 @@ const InputPopup = ({ modalClose }: props) => {
                   endDate={end}
                   customInput={
                     end ? (
-                      <DateButton>
+                      <InputForm.DateButton>
                         {end?.getFullYear()}년 {end?.getMonth() + 1}월 {end?.getDate()}일
-                      </DateButton>
+                      </InputForm.DateButton>
                     ) : (
-                      <DateButton>공유 종료일</DateButton>
+                      <InputForm.DateButton>공유 종료일</InputForm.DateButton>
                     )
                   }
                   onChange={(date: Date) => setEnd(date)}
                 />
-              </PostOptionValue>
+              </InputForm.PostOptionValue>
             )
           }
           {
             //link
             postOptionToggle === 1 && (
-              <PostOptionValue>
+              <InputForm.PostOptionValue>
                 <input placeholder="https://www.url.com" value={link} onChange={(e) => setLink(e.target.value)}></input>
-              </PostOptionValue>
+              </InputForm.PostOptionValue>
             )
           }
-        </PostOptionWrapper>
+        </InputForm.PostOptionWrapper>
 
         <InputForm.TextArea
           ref={inputRef}
@@ -298,40 +297,40 @@ const InputPopup = ({ modalClose }: props) => {
                     setImages(tempImages);
                   }}
                 >
-                  <ColorIcon>
+                  <InputForm.ColorIcon>
                     <DeleteForeverIcon />
-                  </ColorIcon>
+                  </InputForm.ColorIcon>
                 </InputForm.ImageDeleteButton>
               </InputForm.InputImageBox>
             ))}
             {uploadImages.isLoading && (
-              <LoadingBox>
+              <InputForm.LoadingBox>
                 <CircularProgress color="inherit" size={64} />
-              </LoadingBox>
+              </InputForm.LoadingBox>
             )}
           </InputForm.InputImageWrapper>
         )}
         <InputForm.ButtonArea>
           <input ref={imageInput} type="file" accept="image/*" name="image" multiple hidden onChange={onChangeImages} />
-          <FlexButton onClick={() => cancleConfirm()}>
+          <InputForm.FlexButton onClick={() => cancleConfirm()}>
             <CancelIcon />
             <span>취소</span>
-          </FlexButton>
-          <ButtonWrapper>
-            <FlexButton onClick={() => imageInput.current?.click()}>
+          </InputForm.FlexButton>
+          <InputForm.ButtonWrapper>
+            <InputForm.FlexButton onClick={() => imageInput.current?.click()}>
               <InsertPhotoIcon />
               <span>이미지 삽입</span>
-            </FlexButton>
+            </InputForm.FlexButton>
 
             {addPost.isLoading ? (
               <CircularProgress style={{ margin: "0 8px" }} color="inherit" size={24} />
             ) : (
-              <FlexButton onClick={() => postCreateSubmit()}>
+              <InputForm.FlexButton onClick={() => postCreateSubmit()}>
                 <PostAddIcon />
                 <span>등록</span>
-              </FlexButton>
+              </InputForm.FlexButton>
             )}
-          </ButtonWrapper>
+          </InputForm.ButtonWrapper>
         </InputForm.ButtonArea>
       </InputForm.InputWrapper>
     </InputForm.InputBG>
@@ -339,120 +338,3 @@ const InputPopup = ({ modalClose }: props) => {
 };
 
 export default InputPopup;
-
-const LoadingBox = styled.div`
-  color: white;
-  width: 100px;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const DateButton = styled.button`
-  font-size: 16px;
-  font-weight: 500;
-  width: 150px;
-  height: 32px;
-  border: 2px solid #cbdbf3;
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.7);
-  border-radius: 8px;
-  outline: none;
-
-  text-align: center;
-  @media (orientation: portrait) or (max-height: 480px) {
-    width: calc((100vw - 40px - 24px) / 2);
-  }
-`;
-const PostOptionWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-
-  width: 100%;
-  height: 130px;
-  height: auto;
-
-  padding: 30px 40px;
-  padding-bottom: 5px;
-
-  color: rgba(0, 0, 0, 0.8);
-
-  @media (orientation: portrait) or (max-height: 480px) {
-    padding: 20px;
-    padding-bottom: 5px;
-    height: 110px;
-    height: auto;
-  }
-
-  > div:first-child {
-    width: 100%;
-    display: flex;
-    justify-content: start;
-    align-items: center;
-
-    span {
-      font-weight: 500;
-      font-size: 18px;
-      color: rgba(0, 0, 0, 0.7);
-    }
-  }
-`;
-
-const PostOptionValue = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-
-  margin-top: 12px;
-  color: rgba(0, 0, 0, 0.6);
-
-  input {
-    color: rgba(0, 0, 0, 0.8);
-    font-size: 16px;
-    width: 100%;
-
-    height: 32px;
-    border: 2px solid #cbdbf3;
-    border: 2px solid rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    outline: none;
-    padding: 0 8px;
-
-    &::placeholder {
-      text-align: center;
-    }
-  }
-
-  @media (orientation: portrait) or (max-height: 480px) {
-    justify-content: center;
-  }
-`;
-
-const FlexButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  padding: 0px 8px;
-  color: rgba(0, 0, 0, 0.7);
-  /* font-weight: 600; */
-  font-size: 1.1em;
-  span {
-    font-weight: 500;
-    padding-left: 5px;
-  }
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ColorIcon = styled.span`
-  color: white;
-`;

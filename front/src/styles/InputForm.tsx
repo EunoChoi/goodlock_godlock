@@ -140,7 +140,131 @@ const ImageDeleteButton = styled.button`
   }
 `;
 
+const LoadingBox = styled.div`
+  color: white;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const DateButton = styled.button`
+  font-size: 16px;
+  font-weight: 500;
+  width: 150px;
+  height: 32px;
+  border: 2px solid #cbdbf3;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  outline: none;
+
+  text-align: center;
+  @media (orientation: portrait) or (max-height: 480px) {
+    width: calc((100vw - 40px - 24px) / 2);
+  }
+`;
+const PostOptionWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+  height: 130px;
+  height: auto;
+
+  padding: 30px 40px;
+  padding-bottom: 5px;
+
+  color: rgba(0, 0, 0, 0.8);
+
+  @media (orientation: portrait) or (max-height: 480px) {
+    padding: 20px;
+    padding-bottom: 5px;
+    height: 110px;
+    height: auto;
+  }
+
+  > div:first-child {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+
+    span {
+      font-weight: 500;
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.7);
+    }
+  }
+`;
+
+const PostOptionValue = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+
+  margin-top: 12px;
+  color: rgba(0, 0, 0, 0.6);
+
+  input {
+    color: rgba(0, 0, 0, 0.8);
+    font-size: 16px;
+    width: 100%;
+
+    height: 32px;
+    border: 2px solid #cbdbf3;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    outline: none;
+    padding: 0 8px;
+
+    &::placeholder {
+      text-align: center;
+    }
+  }
+
+  @media (orientation: portrait) or (max-height: 480px) {
+    justify-content: center;
+  }
+`;
+
+const FlexButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 0px 8px;
+  color: rgba(0, 0, 0, 0.7);
+  /* font-weight: 600; */
+  font-size: 1.1em;
+  span {
+    font-weight: 500;
+    padding-left: 5px;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ColorIcon = styled.span`
+  color: white;
+`;
+
 const InputForm = {
+  LoadingBox,
+  DateButton,
+  PostOptionWrapper,
+  PostOptionValue,
+  FlexButton,
+  ButtonWrapper,
+  ColorIcon,
   InputImageWrapper,
   InputImageBox,
   InputImage,

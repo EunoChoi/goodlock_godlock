@@ -48,9 +48,9 @@ const Start = () => {
       <BG />
       <BG2 />
       <Footer>
-        <span>문의 : goodlockgodlock@gmail.com</span>
+        <span>Contact : goodlockgodlock@gmail.com</span>
         <span>
-          <a href="http://www.freepik.com">그림 : Designed by rawpixel.com / Freepik</a>
+          <a href="http://www.freepik.com">Art designed by rawpixel.com / Freepik</a>
         </span>
       </Footer>
       <StartWrapper>

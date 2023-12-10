@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components/macro";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import CustomCarousel from "./common/CustomCarousel";
 
 //style
 import Animation from "../styles/Animation";
 
 //mui
 import CancelIcon from "@mui/icons-material/Cancel";
-import Carousel from "react-material-ui-carousel";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
@@ -142,18 +142,13 @@ const PostZoom = ({ postProps, modalClose }: props) => {
         !isMobile && !isOnlyText && (
           <PCImagePost onClick={(e) => e.stopPropagation()}>
             <PCImagePost_LeftWrapper>
-              {postProps.Images?.length === 1 && (
-                <Image src={`${postProps.Images[0].src.replace(/\/thumb\//, "/original/")}`} />
-              )}
-              {postProps.Images?.length >= 2 && (
-                <Carousel indicators={true} autoPlay={false} animation="fade">
-                  {postProps.Images?.map((v: Image, i: number) => (
-                    <ImageBox key={i}>
-                      <Image src={`${v?.src.replace(/\/thumb\//, "/original/")}`} />
-                    </ImageBox>
-                  ))}
-                </Carousel>
-              )}
+              <CustomCarousel indicator={postProps.Images.length === 1 ? false : true}>
+                {postProps.Images?.map((v: Image, i: number) => (
+                  <ImageBox key={i + v.src}>
+                    <Image src={`${v?.src.replace(/\/thumb\//, "/original/")}`} />
+                  </ImageBox>
+                ))}
+              </CustomCarousel>
             </PCImagePost_LeftWrapper>
             <PCImagePost_RightWrapper>
               <PCImagePost_Info>
@@ -239,35 +234,40 @@ const PostZoom = ({ postProps, modalClose }: props) => {
               e.stopPropagation();
             }}
           >
-            {postProps.Images?.length === 0 && (
-              <MobileTextPost>
-                <MobilePostInfo>
-                  <div>
-                    <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                      {postProps?.User?.profilePic ? (
-                        <ProfileCircle
-                          diameter={40}
-                          src={`${postProps?.User?.profilePic}`}
-                          alt="profilePic"
-                          onError={(e) => {
-                            e.currentTarget.src = `/img/defaultProfilePic.png`;
-                          }}
-                        ></ProfileCircle>
-                      ) : (
-                        <ProfileCircle
-                          diameter={40}
-                          src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                          alt="profilePic"
-                        ></ProfileCircle>
-                      )}
-                    </Link>
-                    <Nickname>{postProps.User.nickname}</Nickname>
-                  </div>
+            <MobilePost>
+              <MobilePostInfo>
+                <div>
+                  <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
+                    {postProps?.User?.profilePic ? (
+                      <ProfileCircle
+                        diameter={40}
+                        src={`${postProps?.User?.profilePic}`}
+                        alt="profilePic"
+                        onError={(e) => {
+                          e.currentTarget.src = `/img/defaultProfilePic.png`;
+                        }}
+                      ></ProfileCircle>
+                    ) : (
+                      <ProfileCircle
+                        diameter={40}
+                        src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                        alt="profilePic"
+                      ></ProfileCircle>
+                    )}
+                  </Link>
+                  <Nickname>{postProps.User.nickname}</Nickname>
+                </div>
+                <span>{moment(postProps?.createdAt).fromNow()}</span>
+              </MobilePostInfo>
 
-                  <span>{moment(postProps?.createdAt).fromNow()}</span>
-                </MobilePostInfo>
-                <MobileText key="텍스트페이지">
-                  <div>{postProps.content}</div>
+              <CustomCarousel indicator={postProps.Images.length === 0 ? false : true}>
+                {postProps.Images?.map((v: Image, i: number) => (
+                  <ImageBox key={i + v.src}>
+                    <Image src={`${v?.src.replace(/\/thumb\//, "/original/")}`} />
+                  </ImageBox>
+                ))}
+                <MobileText key="text">
+                  <div id="content">{postProps.content}</div>
                   {(postHaveDate || postHaveLink) && (
                     <SubContent>
                       {postHaveDate && (
@@ -293,141 +293,30 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                     </SubContent>
                   )}
                 </MobileText>
-                <MobilePostSubInfo>
-                  <Like>
-                    <button
-                      onClick={() => {
-                        if (!isLiked) {
-                          like.mutate(postProps.id);
-                        } else {
-                          disLike.mutate(postProps.id);
-                        }
-                      }}
-                    >
-                      {postProps.type === 1 &&
-                        (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
-                      {postProps.type === 1 ||
-                        (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
-                      <span>{postProps?.Likers?.length}</span>
-                    </button>
-                  </Like>
-                  <MobileCancelBtn onClick={() => modalClose()}>
-                    <CloseIcon />
-                  </MobileCancelBtn>
-                </MobilePostSubInfo>
-              </MobileTextPost>
-            )}
-            {postProps.Images?.length !== 0 && (
-              <MobileImagePost>
-                <MobilePostInfo>
-                  <div>
-                    <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
-                      {postProps?.User?.profilePic ? (
-                        <ProfileCircle
-                          diameter={40}
-                          src={`${postProps?.User?.profilePic}`}
-                          alt="profilePic"
-                          onError={(e) => {
-                            e.currentTarget.src = `/img/defaultProfilePic.png`;
-                          }}
-                        ></ProfileCircle>
-                      ) : (
-                        <ProfileCircle
-                          diameter={40}
-                          src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                          alt="profilePic"
-                        ></ProfileCircle>
-                      )}
-                    </Link>
-                    <Nickname>{postProps.User.nickname}</Nickname>
-                  </div>
-                  <span>{moment(postProps?.createdAt).fromNow()}</span>
-                </MobilePostInfo>
-                <CustomCarousel
-                  swipe={false}
-                  navButtonsAlwaysVisible={true}
-                  fullHeightHover={true}
-                  indicators={true}
-                  autoPlay={false}
-                  indicatorContainerProps={{
-                    style: {
-                      top: "0",
-                      marginTop: "50px", // 5
-                      textAlign: "center" // 4
-                    }
-                  }}
-                  navButtonsProps={{
-                    style: {
-                      backgroundColor: "rgba(0,0,0,0.2)"
-                    }
-                  }}
-                  animation="fade"
-                >
-                  {arr.map((v, i) => {
-                    if (i === postProps.Images?.length) {
-                      return (
-                        <MobileText key="텍스트페이지">
-                          <div>{postProps.content}</div>
-                          {(postHaveDate || postHaveLink) && (
-                            <SubContent>
-                              {postHaveDate && (
-                                <PostStartEnd>
-                                  <span>
-                                    <CalendarMonthIcon />
-                                  </span>
-                                  <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
-                                  <span>~</span>
-                                  <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
-                                </PostStartEnd>
-                              )}
-
-                              {postHaveLink && (
-                                <PostLink>
-                                  <InsertLinkIcon />
-                                  <span>
-                                    <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
-                                      {makeCorectUrl(postProps?.link)}
-                                    </a>
-                                  </span>
-                                </PostLink>
-                              )}
-                            </SubContent>
-                          )}
-                        </MobileText>
-                      );
+              </CustomCarousel>
+              <MobilePostMenu>
+                <button id="close" onClick={() => modalClose()}>
+                  <CloseIcon />
+                  <span>Close</span>
+                </button>
+                <button
+                  id="likeBtn"
+                  onClick={() => {
+                    if (!isLiked) {
+                      like.mutate(postProps.id);
                     } else {
-                      return (
-                        <ImageBox key={i}>
-                          {<Image src={`${postProps.Images[i].src.replace(/\/thumb\//, "/original/")}`} />}
-                        </ImageBox>
-                      );
+                      disLike.mutate(postProps.id);
                     }
-                  })}
-                </CustomCarousel>
-                <MobilePostSubInfo>
-                  <Like>
-                    <button
-                      onClick={() => {
-                        if (!isLiked) {
-                          like.mutate(postProps.id);
-                        } else {
-                          disLike.mutate(postProps.id);
-                        }
-                      }}
-                    >
-                      {postProps.type === 1 &&
-                        (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
-                      {postProps.type === 1 ||
-                        (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
-                      <span>{postProps?.Likers?.length}</span>
-                    </button>
-                  </Like>
-                  <MobileCancelBtn onClick={() => modalClose()}>
-                    <CloseIcon />
-                  </MobileCancelBtn>
-                </MobilePostSubInfo>
-              </MobileImagePost>
-            )}
+                  }}
+                >
+                  {postProps.type === 1 &&
+                    (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
+                  {postProps.type === 1 ||
+                    (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
+                  <span>{postProps?.Likers?.length}</span>
+                </button>
+              </MobilePostMenu>
+            </MobilePost>
           </MobileWrapper>
         )
       }
@@ -437,14 +326,38 @@ const PostZoom = ({ postProps, modalClose }: props) => {
 
 export default PostZoom;
 
-const CustomCarousel = styled(Carousel)`
-  height: calc(100vh - 64px - 92px);
-  height: calc(var(--vh, 1vh) * 100 - 64px - 92px);
-
+const MobilePostMenu = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
+  align-items: center;
+
+  height: 32px;
+  padding: 0 12px;
+
+  background-color: #c8daf3;
+  #close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.7);
+    span {
+      font-size: 20px;
+      font-weight: 500;
+    }
+  }
+  #likeBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.7);
+    span {
+      margin-left: 8px;
+      font-size: 20px;
+      font-weight: 500;
+    }
+  }
 `;
+
 const Nickname = styled.span`
   font-weight: 500;
   font-weight: 600;
@@ -523,14 +436,19 @@ const Like = styled.div`
 //image
 const ImageBox = styled.div`
   width: 100%;
-  height: calc(90vh - 50px);
+  height: 90vh;
 
   display: flex;
   justify-content: center;
   align-items: center;
   @media (orientation: portrait) or (max-height: 480px) {
-    height: calc(var(--vh, 1vh) * 95 - 64px - 32px);
-    /* height: calc(95vh - 64px - 32px); */
+    //top height 64px
+    //bottom height 60px + 32px
+    //indicator height 30px
+    height: calc(100vh - 64px - 60px - 32px - 30px);
+    height: calc(var(--vh, 1vh) * 100 - 64px - 32px - 30px);
+    margin-bottom: 30px;
+    flex-grow: 1;
   }
 `;
 const Image = styled.img`
@@ -705,16 +623,15 @@ const PCImagePost_Info = styled.div`
   }
 `;
 const PCText = styled.div`
-  display: flex;
-  justify-content: start;
-  align-items: start;
-
   width: 100%;
   height: 50%;
   flex-grow: 1;
 
+  padding: 16px 0;
+
   font-size: 1.2em;
   overflow-y: scroll;
+  overflow-wrap: break-word;
   white-space: pre-wrap;
   line-height: 1.3em;
 
@@ -757,15 +674,7 @@ const MobileWrapper = styled.div`
 
   animation: ${Animation.smoothAppear} 0.7s;
 `;
-const MobileTextPost = styled.div`
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-const MobileImagePost = styled.div`
+const MobilePost = styled.div`
   width: 100%;
   height: 100%;
 
@@ -775,31 +684,35 @@ const MobileImagePost = styled.div`
 `;
 const MobileText = styled.div`
   width: 100%;
-  height: calc(var(--vh, 1vh) * 100 - 64px - 92px);
+  //top height 64px
+  //bottom height 32px
+  //indicator 30px
+  height: calc(100vh - 64px - 32px - 30px);
+  height: calc(var(--vh, 1vh) * 100 - 64px - 32px - 30px);
+  margin-bottom: 30px;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 12px 0;
-  padding: 0px 0;
-
-  > div:nth-child(1) {
-    flex-grow: 1;
-    width: 100%;
-    height: 70%;
-    white-space: pre-wrap;
-    line-height: 1.3em;
+  justify-content: center;
+  align-items: start;
+  #content {
+    text-align: start;
     overflow-y: scroll;
-    padding: 0 24px;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
 
+    height: 0px;
+    width: 100%;
+    flex-grow: 1;
+    padding: 20px 24px;
+
+    /* font-weight: 500; */
     font-size: 1.2em;
+    line-height: 1.3em;
   }
 `;
 const MobilePostInfo = styled.div`
   //component height = 64px
-
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -820,7 +733,6 @@ const MobilePostSubInfo = styled.div`
 `;
 const MobileCancelBtn = styled.button`
   height: 32px;
-  width: 100%;
   background-color: #a9aed4;
   background-color: #c8daf3;
   color: white;

@@ -13,11 +13,10 @@ import CommentInputForm from "./CommentInputForm";
 import PostEditPopup from "./PostEditPopup";
 import PostZoom from "../PostZoom";
 import Animation from "../../styles/Animation";
+import CoustomCarousel from "./CustomCarousel";
 
 //mui
 // import Carousel from "react-material-ui-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from "react-responsive-carousel";
 
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -32,6 +31,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import LinkIcon from "@mui/icons-material/Link";
+
 import PostFunction from "../../functions/reactQuery/Post";
 import User from "../../functions/reactQuery/User";
 
@@ -106,14 +106,6 @@ const Post = ({ postProps }: any) => {
     setPostEdit(false);
     setZoom(false);
   });
-
-  const indicatorStyles: any = {
-    background: "#fff",
-    width: 8,
-    height: 8,
-    display: "inline-block",
-    margin: "0 8px"
-  };
 
   return (
     <PostWrapper onClick={() => setMorePop(null)}>
@@ -208,85 +200,17 @@ const Post = ({ postProps }: any) => {
         </div>
         <span>{moment(postProps?.createdAt).fromNow()}</span>
       </PostInfoWrapper>
-      {/* {postProps?.Images?.length > 0 && (
-        <ImageWrapper
-          onClick={() => {
-            const url = document.URL + "/modal";
-            history.pushState({ page: "modal" }, "", url);
-            setZoom(true);
-          }}
-        >
-          {postProps.Images?.length === 1 && (
-            <ImageBox>
-              <Image
-                src={`${postProps.Images[0].src}`}
-                onError={(e) => {
-                  e.currentTarget.src = `${postProps.Images[0].src.replace(/\/thumb\//, "/original/")}`;
-                }}
-              />
-            </ImageBox>
-          )}
-          {postProps.Images?.length >= 2 && (
-            <Carousel indicators={true} autoPlay={false} animation="fade">
-              {postProps.Images?.map((v: Image, i: number) => (
-                <ImageBox key={i}>
-                  <Image
-                    src={`${v?.src}`}
-                    onError={(e) => {
-                      e.currentTarget.src = `${v?.src.replace(/\/thumb\//, "/original/")}`;
-                    }}
-                  />
-                </ImageBox>
-              ))}
-            </Carousel>
-          )}
-        </ImageWrapper>
-      )} */}
-      <Carousel
-        renderArrowPrev={(onClickHandler, hasPrev, label) =>
-          hasPrev && (
-            <CarouselBtn type="button" onClick={onClickHandler} title={label} left={15} right={null}>
-              -
-            </CarouselBtn>
-          )
-        }
-        renderArrowNext={(onClickHandler, hasNext, label) =>
-          hasNext && (
-            <CarouselBtn type="button" onClick={onClickHandler} title={label} left={null} right={15}>
-              -
-            </CarouselBtn>
-          )
-        }
-        renderIndicator={(onClickHandler, isSelected, index, label) => {
-          if (isSelected) {
-            return (
-              <li
-                style={{ ...indicatorStyles, background: "#000" }}
-                aria-label={`Selected: ${label} ${index + 1}`}
-                title={`Selected: ${label} ${index + 1}`}
-              />
-            );
-          }
-          return (
-            <li
-              style={indicatorStyles}
-              onClick={onClickHandler}
-              onKeyDown={onClickHandler}
-              value={index}
-              key={index}
-              role="button"
-              tabIndex={0}
-              title={`${label} ${index + 1}`}
-              aria-label={`${label} ${index + 1}`}
-            />
-          );
-        }}
-        showArrows={true}
-        preventMovementUntilSwipeScrollTolerance={true}
-        swipeScrollTolerance={100}
-      >
+
+      <CoustomCarousel indicator={postProps.Images.length === 1 ? false : true}>
         {postProps.Images?.map((v: Image, i: number) => (
-          <div key={i}>
+          <div
+            key={i}
+            onClick={() => {
+              const url = document.URL + "/modal";
+              history.pushState({ page: "modal" }, "", url);
+              setZoom(true);
+            }}
+          >
             <Image
               src={`${v?.src}`}
               onError={(e) => {
@@ -295,7 +219,7 @@ const Post = ({ postProps }: any) => {
             />
           </div>
         ))}
-      </Carousel>
+      </CoustomCarousel>
 
       <TextWrapper
         onClick={() => {
@@ -476,19 +400,11 @@ const Post = ({ postProps }: any) => {
 
 export default Post;
 
-const CarouselBtn = styled.button<{ left: number | null; right: number | null }>`
-  color: white;
-  color: black;
-  background-color: red;
-  left: ${(props) => (props.left ? props.left + "px" : null)};
-  right: ${(props) => (props.right ? props.right + "px" : null)};
-  position: absolute;
-  z-index: 2;
-  top: calc(50% - 15px);
-  width: 30px;
-  height: 30px;
-  border-radius: 100%;
-  cursor: pointer;
+const Image = styled.img`
+  width: 100%;
+  height: 330px;
+  object-fit: cover;
+  transition: all ease-in-out 1s;
 `;
 
 const SubContentWrapper = styled.div`
@@ -589,23 +505,6 @@ const PostWrapper = styled.div`
     width: 400px;
   }
 `;
-const ImageWrapper = styled.div`
-  transition: all ease-in-out 1s;
-  margin: 10px 0;
-`;
-const ImageBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all ease-in-out 1s;
-`;
-const Image = styled.img`
-  width: 100%;
-  height: 300px;
-  /* object-fit: contain; */
-  object-fit: cover;
-  transition: all ease-in-out 1s;
-`;
 
 const PostInfoWrapper = styled.div`
   margin: 20px;
@@ -640,16 +539,15 @@ const PostInfoWrapper = styled.div`
 const TextWrapper = styled.div`
   //줄바꿈 표시
   white-space: pre-wrap;
-  line-height: 1.3em;
+  overflow-wrap: break-word;
+  /* max-height: 100px; */
+  overflow-y: scroll;
+  text-overflow: ellipsis;
 
+  line-height: 1.3em;
   font-size: 18px;
 
   margin: 16px 20px;
-
-  /* max-height: 100px; */
-  overflow-y: scroll;
-  overflow: hidden;
-  text-overflow: ellipsis;
 
   display: -webkit-box;
   -webkit-line-clamp: 4; /* 원하는 줄 수 표시 */

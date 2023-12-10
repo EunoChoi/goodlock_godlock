@@ -101,11 +101,9 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <>
       {isPostInputOpen && <InputPopup modalClose={modalClose} />}
-
       <BotWrapper>
         <Bot />
       </BotWrapper>
-
       <ButtonWrapper isPostInputOpen={isPostInputOpen}>
         {goTopButton && (
           <button color="inherit" onClick={() => scrollTop()}>
@@ -200,6 +198,8 @@ const MobileSide = styled.div`
 
 const BotWrapper = styled.div`
   .rsc-float-button {
+    width: 48px;
+    height: 48px;
     background-color: #f3e0f1 !important;
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
     border: solid 2px rgba(0, 0, 0, 0.05);
@@ -238,7 +238,7 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
 
   z-index: 999;
   position: fixed;
-  bottom: calc(32px + 56px + 12px);
+  bottom: calc(32px + 48px + 12px);
   right: 32px;
   #menuButton {
     @media (orientation: landscape) and (max-height: 480px) {
@@ -246,8 +246,11 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
     }
   }
   > button {
-    width: 56px;
-    height: 56px;
+    &:hover {
+      background-color: #c7d7ff;
+    }
+    width: 48px;
+    height: 48px;
 
     padding: 0px;
     margin-top: 12px;
