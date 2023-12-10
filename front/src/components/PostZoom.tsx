@@ -3,6 +3,7 @@ import styled from "styled-components/macro";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import CustomCarousel from "./common/CustomCarousel";
+import ProgressiveImage from "react-progressive-graceful-image";
 
 //style
 import Animation from "../styles/Animation";
@@ -146,7 +147,17 @@ const PostZoom = ({ postProps, modalClose }: props) => {
               <CustomCarousel indicator={postProps.Images.length === 1 ? false : true}>
                 {postProps.Images?.map((v: Image, i: number) => (
                   <ImageBox key={i + v.src}>
-                    <Image src={`${v?.src.replace(/\/thumb\//, "/original/")}`} />
+                    <ProgressiveImage src={v?.src.replace(/\/thumb\//, "/original/")} placeholder={v?.src}>
+                      {(src, loading) => (
+                        <Image
+                          className={`image${loading ? " loading" : " loaded"}`}
+                          src={src}
+                          alt="sea beach"
+                          width="700"
+                          height="465"
+                        />
+                      )}
+                    </ProgressiveImage>
                   </ImageBox>
                 ))}
               </CustomCarousel>
@@ -266,7 +277,17 @@ const PostZoom = ({ postProps, modalClose }: props) => {
               <CustomCarousel indicator={postProps.Images.length === 0 ? false : true}>
                 {postProps.Images?.map((v: Image, i: number) => (
                   <ImageBox key={i + v.src}>
-                    <Image src={`${v?.src.replace(/\/thumb\//, "/original/")}`} />
+                    <ProgressiveImage src={v?.src.replace(/\/thumb\//, "/original/")} placeholder={v?.src}>
+                      {(src, loading) => (
+                        <Image
+                          className={`image${loading ? " loading" : " loaded"}`}
+                          src={src}
+                          alt="sea beach"
+                          width="700"
+                          height="465"
+                        />
+                      )}
+                    </ProgressiveImage>
                   </ImageBox>
                 ))}
                 <MobileText key="text">
