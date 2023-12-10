@@ -6,9 +6,8 @@ import IsMobile from "../../functions/IsMobile";
 import User from "../../functions/reactQuery/User";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 
-const Bot = () => {
+const Bot = (e) => {
   const user = User.getData();
-  const isMobile = IsMobile();
   const [open, setOpen] = useState(false);
 
   const theme = {
@@ -191,19 +190,31 @@ const Bot = () => {
   useEffect(() => {
     if (open === true) {
       //modal url 추가
+      const url = document.URL + "/modal";
+      history.pushState({ page: "modal" }, "", url);
 
-      //모바일 백그라운드 body 스크롤 방지
-      if (isMobile) document.body.style.overflow = "hidden";
+      //백그라운드 body 스크롤 방지
+      document.body.style.overflow = "hidden";
     } else {
-      //뒤로가기
-
       //챗봇 모달 꺼졌을때 스크롤 동작
       document.body.style.overflow = "auto";
     }
   }, [open]);
 
+  window.addEventListener("popstate", () => {
+    setOpen(false);
+  });
+
   return (
     <ThemeProvider theme={theme}>
+      {open && (
+        <BotBG
+          onClick={() => {
+            setOpen(false);
+            history.back();
+          }}
+        ></BotBG>
+      )}
       <ChatBot
         floatingIcon={
           <IconWrapper>
@@ -213,7 +224,9 @@ const Bot = () => {
         opened={open}
         toggleFloating={(res) => {
           //open시 modal url 추가;
-
+          if (res.opened === false) {
+            history.back();
+          }
           //open 상태 업데이트
           setOpen(res.opened);
         }}
@@ -230,6 +243,17 @@ const Bot = () => {
 
 export default Bot;
 
+const BotBG = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+`;
 const IconWrapper = styled.div`
   color: rgba(0, 0, 0, 0.6);
   display: flex;
