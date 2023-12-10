@@ -5,7 +5,8 @@ const ProfileCircle = styled.img<{ src: string; diameter: number }>`
   height: ${(props) => props.diameter + "px"};
   border-radius: ${(props) => props.diameter + "px"};
   background-color: white;
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+
+  border: 2px solid rgba(0, 0, 0, 0.1);
   object-fit: cover;
 `;
 

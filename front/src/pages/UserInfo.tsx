@@ -721,7 +721,7 @@ const ProfilePic = styled.img<{ width: number }>`
   object-fit: cover;
   background-color: #fff;
 
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(0, 0, 0, 0.1);
 `;
 
 const Posts = styled.div`

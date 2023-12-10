@@ -595,7 +595,8 @@ const ProfilePic = styled.img`
   border-radius: 50px;
   background-color: white;
 
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2); */
+  border: 2px solid rgba(0, 0, 0, 0.1);
 
   object-fit: cover;
 `;

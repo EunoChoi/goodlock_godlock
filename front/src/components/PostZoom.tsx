@@ -79,10 +79,10 @@ const PostZoom = ({ postProps, modalClose }: props) => {
               </Link>
 
               <div>
-                <span>{postProps.User.nickname}</span>
-                <span>{postProps.User.email}</span>
+                <span id="nickname">{postProps.User.nickname}</span>
+                <span id="email">{postProps.User.email}</span>
               </div>
-              <span>{moment(postProps?.createdAt).fromNow()}</span>
+              <span id="time">{moment(postProps?.createdAt).fromNow()}</span>
             </PCTextPost_Left>
             <PCTextPost_Right>
               <PCText>{postProps.content}</PCText>
@@ -517,6 +517,38 @@ const PCTextPost_Left = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+
+  #nickname,
+  #email,
+  #time {
+    text-align: center !important;
+    max-width: 100%;
+    overflow-x: scroll;
+    white-space: nowrap;
+    /* text-overflow: ellipsis; */
+
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera*/
+    }
+  }
+  #nickname {
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 32px;
+  }
+  #email {
+    padding: 5px;
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.4);
+  }
+  #time {
+    width: 100%;
+    text-align: center;
+    font-size: 1.1em;
+  }
+
   align-items: center;
   > div:nth-child(2) {
     width: 100%;
@@ -524,32 +556,6 @@ const PCTextPost_Left = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    > span {
-      text-align: center !important;
-
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-
-      padding: 5px;
-      font-size: 24px;
-      color: rgba(0, 0, 0, 0.5);
-    }
-    > span:first-child {
-      max-width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.7);
-      font-size: 32px;
-    }
-  }
-  > span:nth-child(3) {
-    width: 100%;
-    text-align: center;
-    font-size: 1.1em;
   }
 `;
 const PCTextPost_Right = styled.div`
