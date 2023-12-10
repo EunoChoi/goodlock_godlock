@@ -15,7 +15,10 @@ import PostZoom from "../PostZoom";
 import Animation from "../../styles/Animation";
 
 //mui
-import Carousel from "react-material-ui-carousel";
+// import Carousel from "react-material-ui-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
+
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -197,7 +200,7 @@ const Post = ({ postProps }: any) => {
         </div>
         <span>{moment(postProps?.createdAt).fromNow()}</span>
       </PostInfoWrapper>
-      {postProps?.Images?.length > 0 && (
+      {/* {postProps?.Images?.length > 0 && (
         <ImageWrapper
           onClick={() => {
             const url = document.URL + "/modal";
@@ -230,7 +233,78 @@ const Post = ({ postProps }: any) => {
             </Carousel>
           )}
         </ImageWrapper>
-      )}
+      )} */}
+      <Carousel
+        renderArrowPrev={(onClickHandler, hasPrev, label) =>
+          hasPrev && (
+            <button
+              type="button"
+              onClick={onClickHandler}
+              title={label}
+              style={{
+                color: "red",
+                left: 15,
+                position: "absolute",
+                zIndex: 2,
+                top: "calc(50% - 15px)",
+                width: 30,
+                height: 30,
+                cursor: "pointer"
+              }}
+            >
+              -
+            </button>
+          )
+        }
+        renderArrowNext={(onClickHandler, hasNext, label) =>
+          hasNext && (
+            <button
+              type="button"
+              onClick={onClickHandler}
+              title={label}
+              style={{
+                color: "red",
+                right: 15,
+                position: "absolute",
+                zIndex: 2,
+                top: "calc(50% - 15px)",
+                width: 30,
+                height: 30,
+                cursor: "pointer"
+              }}
+            >
+              +
+            </button>
+          )
+        }
+        showArrows={true}
+        preventMovementUntilSwipeScrollTolerance={true}
+        swipeScrollTolerance={100}
+      >
+        {postProps.Images?.map((v: Image, i: number) => (
+          <div key={i}>
+            <Image
+              src={`${v?.src}`}
+              onError={(e) => {
+                e.currentTarget.src = `${v?.src.replace(/\/thumb\//, "/original/")}`;
+              }}
+            />
+          </div>
+        ))}
+        <div style={{ height: "100px", overflow: "scroll" }}>
+          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
+          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
+          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
+          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
+          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
+          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
+          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
+          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
+          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
+          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
+          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
+        </div>
+      </Carousel>
 
       <TextWrapper
         onClick={() => {

@@ -58,6 +58,10 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
     inputRef.current?.focus();
   }, []);
 
+  //useMutation
+  const editPost = Post.edit();
+  const uploadImages = Upload.images();
+
   //function
   const cancleConfirm = () => {
     confirmAlert({
@@ -76,66 +80,58 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
     });
   };
   const postEditSubmit = () => {
-    //start, end 둘다 빈 경우
-    if (start === null || end === null) {
-      editPost.mutate(
-        {
-          id: postProps.id,
-          data: {
-            content,
-            images,
-            type: postProps.type,
-            id: postProps.id,
-            start: null,
-            end: null,
-            link
-          }
-        },
-        {
-          onSuccess: () => {
-            modalClose();
-          }
-        }
-      );
-    } else if (start > end) {
-      toast.warning("기간 설정이 잘못되었습니다.");
-    } else if (content.length < 8 || content.length > 2200) {
-      toast.warning("게시글은 최소 8자 최대 2200자 작성이 가능합니다.");
-    } else {
-      const startY = start.getFullYear();
-      const startM = start.getMonth();
-      const startD = start.getDate();
-
-      const endY = end.getFullYear();
-      const endM = end.getMonth();
-      const endD = end.getDate();
-
-      editPost.mutate(
-        {
-          id: postProps.id,
-          data: {
-            content,
-            images,
-            type: postProps.type,
-            id: postProps.id,
-            start: new Date(startY, startM, startD, 0, 0, 0),
-            end: new Date(endY, endM, endD, 0, 0, 0),
-            link
-          }
-        },
-        {
-          onSuccess: () => {
-            modalClose();
-          }
-        }
-      );
+    //컨텐츠 조건
+    if (content.length < 8 || content.length > 2200) {
+      return toast.warning("게시글은 최소 8자 최대 2200자 작성이 가능합니다.");
     }
+
+    let startDate = null;
+    let endDate = null;
+
+    //날짜 조건
+    if (postProps.type === 1) {
+      if ((start !== null && end === null) || (start === null && end !== null)) {
+        //start, end 둘 중 하나만 null인 경우 //01 10
+        return toast.warning("공유기간 설정이 올바르지 않습니다.");
+      }
+      if (start !== null && end !== null && start > end) {
+        //start, end 둘 다 입력되었지만 start가 더 큰경우
+        return toast.warning("공유기간 설정이 올바르지 않습니다.");
+      }
+      if (start !== null && end !== null) {
+        //start, end 둘 다 입력 된 경우
+        const startY = start.getFullYear();
+        const startM = start.getMonth();
+        const startD = start.getDate();
+        startDate = new Date(startY, startM, startD, 0, 0, 0);
+
+        const endY = end.getFullYear();
+        const endM = end.getMonth();
+        const endD = end.getDate();
+        endDate = new Date(endY, endM, endD, 0, 0, 0);
+      }
+    }
+    //기간 x 포스트, 기간 입력이 안된 기간 o 포스트
+    return editPost.mutate(
+      {
+        id: postProps.id,
+        data: {
+          content,
+          images,
+          type: postProps.type,
+          id: postProps.id,
+          start: startDate,
+          end: endDate,
+          link
+        }
+      },
+      {
+        onSuccess: () => {
+          modalClose();
+        }
+      }
+    );
   };
-
-  //useMutation
-  const editPost = Post.edit();
-  const uploadImages = Upload.images();
-
   //로컬에서 이미지 에러 처리
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
