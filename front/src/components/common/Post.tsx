@@ -107,6 +107,14 @@ const Post = ({ postProps }: any) => {
     setZoom(false);
   });
 
+  const indicatorStyles: any = {
+    background: "#fff",
+    width: 8,
+    height: 8,
+    display: "inline-block",
+    margin: "0 8px"
+  };
+
   return (
     <PostWrapper onClick={() => setMorePop(null)}>
       {/* 포스트 줌 팝업 */}
@@ -237,46 +245,42 @@ const Post = ({ postProps }: any) => {
       <Carousel
         renderArrowPrev={(onClickHandler, hasPrev, label) =>
           hasPrev && (
-            <button
-              type="button"
-              onClick={onClickHandler}
-              title={label}
-              style={{
-                color: "red",
-                left: 15,
-                position: "absolute",
-                zIndex: 2,
-                top: "calc(50% - 15px)",
-                width: 30,
-                height: 30,
-                cursor: "pointer"
-              }}
-            >
+            <CarouselBtn type="button" onClick={onClickHandler} title={label} left={15} right={null}>
               -
-            </button>
+            </CarouselBtn>
           )
         }
         renderArrowNext={(onClickHandler, hasNext, label) =>
           hasNext && (
-            <button
-              type="button"
-              onClick={onClickHandler}
-              title={label}
-              style={{
-                color: "red",
-                right: 15,
-                position: "absolute",
-                zIndex: 2,
-                top: "calc(50% - 15px)",
-                width: 30,
-                height: 30,
-                cursor: "pointer"
-              }}
-            >
-              +
-            </button>
+            <CarouselBtn type="button" onClick={onClickHandler} title={label} left={null} right={15}>
+              -
+            </CarouselBtn>
           )
         }
+        renderIndicator={(onClickHandler, isSelected, index, label) => {
+          if (isSelected) {
+            return (
+              <li
+                style={{ ...indicatorStyles, background: "#000" }}
+                aria-label={`Selected: ${label} ${index + 1}`}
+                title={`Selected: ${label} ${index + 1}`}
+              />
+            );
+          }
+          return (
+            <li
+              style={indicatorStyles}
+              onClick={onClickHandler}
+              onKeyDown={onClickHandler}
+              value={index}
+              key={index}
+              role="button"
+              tabIndex={0}
+              title={`${label} ${index + 1}`}
+              aria-label={`${label} ${index + 1}`}
+            />
+          );
+        }}
         showArrows={true}
         preventMovementUntilSwipeScrollTolerance={true}
         swipeScrollTolerance={100}
@@ -291,19 +295,6 @@ const Post = ({ postProps }: any) => {
             />
           </div>
         ))}
-        <div style={{ height: "100px", overflow: "scroll" }}>
-          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
-          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
-          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
-          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
-          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
-          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
-          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
-          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
-          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
-          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
-          아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아 아아아아아아아아아아아앙아
-        </div>
       </Carousel>
 
       <TextWrapper
@@ -484,6 +475,21 @@ const Post = ({ postProps }: any) => {
 };
 
 export default Post;
+
+const CarouselBtn = styled.button<{ left: number | null; right: number | null }>`
+  color: white;
+  color: black;
+  background-color: red;
+  left: ${(props) => (props.left ? props.left + "px" : null)};
+  right: ${(props) => (props.right ? props.right + "px" : null)};
+  position: absolute;
+  z-index: 2;
+  top: calc(50% - 15px);
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  cursor: pointer;
+`;
 
 const SubContentWrapper = styled.div`
   display: flex;

@@ -69,7 +69,7 @@ const Side = ({ close }: Props) => {
             close();
           }}
         >
-          <ExtensionIcon style={{ color: "#D5A8D0", fontSize: "28px", marginRight: "4px" }}></ExtensionIcon>
+          <ExtensionIcon fontSize="inherit" />
           {/* <Logo src="/img/loading.png"></Logo> */}
           <span>God Lock</span>
         </button>
@@ -285,15 +285,17 @@ const HeaderWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-  }
 
-  span {
-    font-family: OAGothic-ExtraBold;
+    color: #d5a8d0;
+    font-size: 26px;
+    span {
+      margin-left: 4px;
+      font-family: OAGothic-ExtraBold;
+      color: rgba(0, 0, 0, 0.7);
 
-    font-size: 24px;
-    font-weight: 400;
-
-    color: rgba(0, 0, 0, 0.8);
+      font-size: 24px;
+      font-weight: 600;
+    }
   }
 `;
 const UserInfoWrapper = styled.div`

@@ -56,16 +56,18 @@ const Header = () => {
           });
         }}
       >
-        <ExtensionIcon style={{ color: "#D5A8D0", fontSize: "28px", marginRight: "4px" }}></ExtensionIcon>
-        <Link to="/main/0">God Lock</Link>
+        <ExtensionIcon fontSize="inherit" />
+        <Link to="/main/0">
+          <span>God Lock</span>
+        </Link>
       </HeaderLogoMobile>
 
       <HeaderLocation>
-        {currentPage === 0 && <HomeRoundedIcon style={{ color: "#D5A8D0", fontSize: "24px" }} />}
-        {currentPage === 1 && <LightbulbRoundedIcon style={{ color: "#D5A8D0", fontSize: "24px" }} />}
-        {currentPage === 2 && <PeopleRoundedIcon style={{ color: "#D5A8D0", fontSize: "24px" }} />}
-        {currentPage === 3 && <PhotoRoundedIcon style={{ color: "#D5A8D0", fontSize: "24px" }} />}
-        {currentPage === 4 && <PersonRoundedIcon style={{ color: "#D5A8D0", fontSize: "24px" }} />}
+        {currentPage === 0 && <HomeRoundedIcon fontSize="inherit" />}
+        {currentPage === 1 && <LightbulbRoundedIcon fontSize="inherit" />}
+        {currentPage === 2 && <PeopleRoundedIcon fontSize="inherit" />}
+        {currentPage === 3 && <PhotoRoundedIcon fontSize="inherit" />}
+        {currentPage === 4 && <PersonRoundedIcon fontSize="inherit" />}
       </HeaderLocation>
 
       <HeaderMobileLand currentPage={currentPage + 1}>
@@ -196,8 +198,8 @@ const HeaderLocation = styled.div`
   align-items: center;
 
   color: #d5a8d0;
-
-  font-size: 24px;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 22px;
   font-weight: 600;
 
   @media (orientation: landscape) and (max-height: 480px) {
@@ -205,16 +207,19 @@ const HeaderLocation = styled.div`
   }
 `;
 const HeaderLogoMobile = styled.span`
-  font-family: OAGothic-ExtraBold;
-
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #d5a8d0;
+  font-size: 26px;
+  span {
+    margin-left: 4px;
+    font-family: OAGothic-ExtraBold;
+    color: rgba(0, 0, 0, 0.7);
 
-  color: rgba(0, 0, 0, 0.7);
-
-  font-size: 24px;
-  font-weight: 600;
+    font-size: 24px;
+    font-weight: 600;
+  }
 
   @media (orientation: landscape) and (max-height: 480px) {
     margin-left: 0;
