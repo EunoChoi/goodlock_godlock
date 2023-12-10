@@ -201,6 +201,13 @@ const BotWrapper = styled.div`
     width: 48px;
     height: 48px;
     background-color: #f3e0f1 !important;
+
+    transition: 0.3s ease-in-out all;
+
+    &:hover {
+      background-color: #c7d7ff !important;
+    }
+
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
     border: solid 2px rgba(0, 0, 0, 0.05);
   }
@@ -246,6 +253,7 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
     }
   }
   > button {
+    transition: 0.3s ease-in-out all;
     &:hover {
       background-color: #c7d7ff;
     }

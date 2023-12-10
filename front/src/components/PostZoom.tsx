@@ -47,7 +47,6 @@ const PostZoom = ({ postProps, modalClose }: props) => {
 
   const isOnlyText = postProps.Images.length === 0;
   const isLiked = postProps?.Likers?.find((v: any) => v.id === user?.id);
-  const arr = new Array(postProps.Images.length + 1).fill(0);
 
   return (
     <PostZoomBG
@@ -725,16 +724,4 @@ const MobilePostInfo = styled.div`
     justify-content: center;
     align-items: center;
   }
-`;
-const MobilePostSubInfo = styled.div`
-  //component height = 92px
-  z-index: 100;
-  width: 100vw;
-`;
-const MobileCancelBtn = styled.button`
-  height: 32px;
-  background-color: #a9aed4;
-  background-color: #c8daf3;
-  color: white;
-  color: rgba(0, 0, 0, 0.7);
 `;
