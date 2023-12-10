@@ -12,7 +12,6 @@ interface AuthRouteProps {
 }
 
 const AuthRoute = ({ accessType, component }: AuthRouteProps) => {
-  console.log("===== AuthRoute 리렌더 =====");
   const navigate = useNavigate();
 
   if (accessType === "admin") {

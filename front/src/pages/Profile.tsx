@@ -214,7 +214,7 @@ const Profile = () => {
   useEffect(() => {
     if (categoryNum >= 0 && categoryNum < 5) {
       scrollTop();
-      console.log("올바른 링크 접근");
+      // console.log("올바른 링크 접근");
     } else {
       navigate("/404");
     }

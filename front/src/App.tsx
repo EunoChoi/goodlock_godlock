@@ -28,7 +28,7 @@ import Google from "./pages/auth/Google";
 import Naver from "./pages/auth/Naver";
 
 function App() {
-  console.log("===== App 리렌더 =====");
+  // console.log("===== App 리렌더 =====");
 
   const queryClient = new QueryClient({
     defaultOptions: {
