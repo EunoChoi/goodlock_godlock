@@ -17,6 +17,7 @@ import PhotoRoundedIcon from "@mui/icons-material/PhotoRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import ExtensionIcon from "@mui/icons-material/Extension";
+import ForumIcon from "@mui/icons-material/Forum";
 
 interface Props {
   close: (b: void) => void;
@@ -164,7 +165,7 @@ const Side = ({ close }: Props) => {
                     close();
                   }}
                 >
-                  <PeopleRoundedIcon />
+                  <ForumIcon />
                   Free Board
                 </button>
                 <button

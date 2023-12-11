@@ -10,6 +10,7 @@ import PeopleRoundedIcon from "@mui/icons-material/PeopleRounded";
 import PhotoRoundedIcon from "@mui/icons-material/PhotoRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import ExtensionIcon from "@mui/icons-material/Extension";
+import ForumIcon from "@mui/icons-material/Forum";
 
 const Header = () => {
   const { type } = useParams();
@@ -65,7 +66,7 @@ const Header = () => {
       <HeaderLocation>
         {currentPage === 0 && <HomeRoundedIcon fontSize="inherit" />}
         {currentPage === 1 && <LightbulbRoundedIcon fontSize="inherit" />}
-        {currentPage === 2 && <PeopleRoundedIcon fontSize="inherit" />}
+        {currentPage === 2 && <ForumIcon fontSize="inherit" />}
         {currentPage === 3 && <PhotoRoundedIcon fontSize="inherit" />}
         {currentPage === 4 && <PersonRoundedIcon fontSize="inherit" />}
       </HeaderLocation>
@@ -110,17 +111,6 @@ const LinkCenter = styled(Link)`
   * {
     margin-right: 8px;
   }
-`;
-
-const Logo = styled.img`
-  width: 28px;
-  height: 28px;
-  object-fit: cover;
-
-  margin-right: 8px;
-
-  border-radius: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.05);
 `;
 
 const MobileHeaderWrapper = styled.div`

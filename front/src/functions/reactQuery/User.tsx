@@ -143,7 +143,8 @@ const User = {
         queryClient.invalidateQueries(["communityPosts"]);
         queryClient.invalidateQueries(["searchComm"]);
         queryClient.invalidateQueries(["activinfo"]);
-        queryClient.invalidateQueries(["feed"]);
+        queryClient.invalidateQueries(["tipfeed"]);
+        queryClient.invalidateQueries(["freefeed"]);
 
         queryClient.invalidateQueries(["userLikedPosts"]);
         queryClient.invalidateQueries(["userInfoPosts"]);

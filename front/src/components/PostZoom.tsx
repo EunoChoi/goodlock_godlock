@@ -217,10 +217,8 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                     }
                   }}
                 >
-                  {postProps.type === 1 &&
-                    (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
-                  {postProps.type === 1 ||
-                    (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
+                  {postProps.type === 1 && (isLiked ? <BookmarkIcon id="bookmark" /> : <BookmarkBorderIcon />)}
+                  {postProps.type === 1 || (isLiked ? <FavoriteIcon id="like" /> : <FavoriteBorderIcon />)}
                   <span>{postProps?.Likers?.length}</span>
                 </button>
               </Like>
@@ -466,7 +464,12 @@ const Like = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
+  #bookmark {
+    color: #a9aed4;
+  }
+  #like {
+    color: #df1919;
+  }
   span {
     font-size: 1.5em;
     margin-left: 4px;
