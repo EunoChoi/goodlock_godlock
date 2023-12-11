@@ -105,7 +105,8 @@ const ButtonArea = styled.div`
   border-bottom-right-radius: 5px; */
 
   padding: 0px 10px;
-  box-shadow: 0px -3px 20px rgba(0, 0, 0, 0.15);
+  /* box-shadow: 0px -3px 20px rgba(0, 0, 0, 0.15); */
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
   @media (orientation: portrait) or (max-height: 480px) {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -180,6 +181,11 @@ const PostOptionWrapper = styled.div`
   padding-bottom: 5px;
 
   color: rgba(0, 0, 0, 0.8);
+
+  .MuiChip-root {
+    border: solid 2px rgba(0, 0, 0, 0.1);
+    background-color: #e3ecf9;
+  }
 
   @media (orientation: portrait) or (max-height: 480px) {
     padding: 20px;
