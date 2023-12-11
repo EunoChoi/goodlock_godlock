@@ -581,6 +581,12 @@ const ToggleButton = styled.button`
 `;
 
 const CommentWrapper = styled.div`
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+
   margin: 5px 20px;
   margin-bottom: 20px;
 

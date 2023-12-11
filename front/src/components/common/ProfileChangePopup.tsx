@@ -109,19 +109,17 @@ const ProfileChangePopup = ({ modalClose }: setStateProps) => {
               disabled={uploadLoading}
               onClick={() => {
                 setUploadLoading(true);
-                setTimeout(() => {
-                  //이미지 압축을 위한 대기시간
-                  editProfilePic.mutate(
-                    { profilePic: image },
-                    {
-                      onSuccess: () => {
-                        modalClose();
-                        setUploadLoading(false);
-                      }
+
+                editProfilePic.mutate(
+                  { profilePic: image },
+                  {
+                    onSuccess: () => {
+                      modalClose();
+                      setUploadLoading(false);
                     }
-                  );
-                  console.log(image);
-                }, 2000);
+                  }
+                );
+                console.log(image);
               }}
             >
               {uploadLoading ? (

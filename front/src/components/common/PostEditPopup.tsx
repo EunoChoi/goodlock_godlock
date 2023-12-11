@@ -340,7 +340,7 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
             ) : (
               <InputForm.FlexButton onClick={() => postEditSubmit()}>
                 <PostAddIcon />
-                <span>등록</span>
+                <span>수정</span>
               </InputForm.FlexButton>
             )}
           </InputForm.ButtonWrapper>

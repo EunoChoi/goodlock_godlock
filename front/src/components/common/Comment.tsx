@@ -17,6 +17,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import User from "../../functions/reactQuery/User";
+import CircularProgress from "@mui/material/CircularProgress";
 
 moment.locale("ko");
 
@@ -154,14 +155,15 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
                   }
                 }
               );
-              setCommentEdit(false);
             }
           }}
         >
           <input ref={commentRef} value={commentEditContent} onChange={(e) => setCommentEditContent(e.target.value)} />
-          <CommentEditButton>
-            <CheckCircleIcon />
+
+          <CommentEditButton disabled={editComment.isLoading ? true : false}>
+            {editComment.isLoading ? <CircularProgress size={24} color="inherit" /> : <CheckCircleIcon />}
           </CommentEditButton>
+
           <CommentEditButton
             onClick={() => {
               setCommentEdit(false);

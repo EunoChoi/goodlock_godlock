@@ -196,7 +196,10 @@ router.get("/activinfo", async (req, res) => {
     const Posts = await Post.findAll({
       where: [{
         type: 1,
-        end: { [Op.gte]: today }
+        [Op.or]: [
+          { end: { [Op.gte]: today } },
+          { end: null }
+        ]
       }],
       order: [
         ['createdAt', 'DESC'],
@@ -676,9 +679,13 @@ router.post("/", tokenCheck, async (req, res) => {
         images.push(temp);
       }
       post.addImages(images);
-      return res.status(200).json({ postImages, images, post });
+      setTimeout(() => {
+        return res.status(200).json({ postImages, images, post });
+      }, 1000);
     }
-    return res.status(200).json(post);
+    setTimeout(() => {
+      return res.status(200).json(post);
+    }, 1000);
   } catch (e) {
     console.error(e);
   }
@@ -721,9 +728,14 @@ router.patch("/:postId", tokenCheck, async (req, res) => {
         images.push(temp);
       }
       post.addImages(images);
-      return res.status(200).json({ postImages, images, post });
+
+      setTimeout(() => {
+        return res.status(200).json({ postImages, images, post });
+      }, 1000);
     }
-    return res.status(200).json(post);
+    setTimeout(() => {
+      return res.status(200).json(post);
+    }, 1000);
   } catch (e) {
     console.error(e);
   }
@@ -763,8 +775,9 @@ router.post("/:postId/comment", tokenCheck, async (req, res) => {
       PostId: postId,
       UserId: req.currentUserId,
     });
-
-    return res.status(201).json(comment);
+    setTimeout(() => {
+      return res.status(201).json(comment);
+    }, 1000);
   }
   catch (e) {
     console.error(e);
@@ -806,7 +819,10 @@ router.patch("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
       where: { id: commentId, PostId: postId, UserId: req.currentUserId }
     }
     );
-    res.status(200).json("post edit success");
+
+    setTimeout(() => {
+      res.status(200).json("post edit success");
+    }, 1000);
   } catch (e) {
     console.error(e);
   }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { toast } from "react-toastify";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import Comment from "../../functions/reactQuery/Comment";
 
@@ -36,8 +37,9 @@ const CommentInputForm = ({ postId }: { postId: number }) => {
             setContent(e.currentTarget.value);
           }}
         ></CommentInput>
-        <CommentSendButton>
-          <SendIcon />
+
+        <CommentSendButton disabled={addComment.isLoading ? true : false}>
+          {addComment.isLoading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
         </CommentSendButton>
       </CommentInputArea>
     </form>

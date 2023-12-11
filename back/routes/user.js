@@ -323,7 +323,9 @@ router.patch("/edit/profilepic", tokenCheck, async (req, res) => {
       where: { id: userId }
     }
     );
-    res.status(200).json("profilePic change success");
+    setTimeout(() => {
+      return res.status(200).json("profilePic change success");
+    }, 1000);
   } catch (e) {
     console.error(e)
   };
