@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import CustomCarousel from "./common/CustomCarousel";
 import Img from "./common/Img";
+import { toast } from "react-toastify";
+import Clipboard from "react-clipboard.js";
 
 //style
 import Animation from "../styles/Animation";
@@ -20,6 +22,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import IsMobile from "../functions/IsMobile";
 import Post from "../functions/reactQuery/Post";
 import User from "../functions/reactQuery/User";
+import LinkIcon from "@mui/icons-material/Link";
 
 interface Image {
   src: string;
@@ -30,6 +33,8 @@ interface props {
 }
 
 const PostZoom = ({ postProps, modalClose }: props) => {
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
+
   const user = User.getData();
   const postHaveDate = postProps?.start && postProps?.end;
   const postHaveLink = postProps?.link && true;
@@ -318,6 +323,16 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                     (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
                   <span>{postProps?.Likers?.length}</span>
                 </button>
+                <Clipboard
+                  onSuccess={() => toast.success("공유 URL이 클립보드에 복사되었습니다.")}
+                  component="a"
+                  data-clipboard-text={`${BASE_URL}/postview/${postProps.id}`}
+                >
+                  <button id="coryUrlBtn" data-clipboard-text={`${BASE_URL}/postview/${postProps.id}`}>
+                    <LinkIcon />
+                    <span>URL</span>
+                  </button>
+                </Clipboard>
               </MobilePostMenu>
             </MobilePost>
           </MobileWrapper>
@@ -356,13 +371,14 @@ const MobilePostMenu = styled.div`
   padding: 0 12px;
 
   background-color: #c8daf3;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
   #close {
     display: flex;
     justify-content: center;
     align-items: center;
     color: rgba(0, 0, 0, 0.7);
     span {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 500;
     }
   }
@@ -373,7 +389,18 @@ const MobilePostMenu = styled.div`
     color: rgba(0, 0, 0, 0.7);
     span {
       margin-left: 8px;
-      font-size: 20px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+  #coryUrlBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.7);
+    span {
+      margin-left: 8px;
+      font-size: 18px;
       font-weight: 500;
     }
   }

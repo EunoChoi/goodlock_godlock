@@ -5,7 +5,7 @@ import "moment/locale/ko";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
-import ClipboardJS from "clipboard";
+import Clipboard from "react-clipboard.js";
 
 //components
 import Comment from "./Comment";
@@ -17,8 +17,6 @@ import CoustomCarousel from "./CustomCarousel";
 import Img from "./Img";
 
 //mui
-// import Carousel from "react-material-ui-carousel";
-
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -41,8 +39,6 @@ interface Image {
 }
 
 const Post = ({ postProps }: any) => {
-  new ClipboardJS(".btn");
-
   moment.locale("ko");
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -328,17 +324,17 @@ const Post = ({ postProps }: any) => {
         )}
 
         <FlexDiv>
-          <ToggleButton
-            onClick={() => {
-              // console.log(`${BASE_URL}/postview/${postProps.id}`);
-              toast.success("공유 URL이 클립보드에 복사되었습니다.");
-            }}
-            className="btn"
+          <Clipboard
+            onSuccess={() => toast.success("공유 URL이 클립보드에 복사되었습니다.")}
+            component="a"
             data-clipboard-text={`${BASE_URL}/postview/${postProps.id}`}
           >
-            <LinkIcon fontSize="medium" />
-            <span>URL</span>
-          </ToggleButton>
+            <ToggleButton>
+              <LinkIcon fontSize="medium" />
+              <span>URL</span>
+            </ToggleButton>
+          </Clipboard>
+
           {isMyPost && (
             <ToggleButton
               onClick={(event: React.MouseEvent<HTMLElement>) => {
