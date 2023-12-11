@@ -3,7 +3,7 @@ import styled from "styled-components/macro";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import CustomCarousel from "./common/CustomCarousel";
-import ProgressiveImage from "react-progressive-graceful-image";
+import Img from "./common/Img";
 
 //style
 import Animation from "../styles/Animation";
@@ -20,7 +20,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import IsMobile from "../functions/IsMobile";
 import Post from "../functions/reactQuery/Post";
 import User from "../functions/reactQuery/User";
-import ProfileCircle from "../styles/ProfileCircle";
 
 interface Image {
   src: string;
@@ -62,25 +61,21 @@ const PostZoom = ({ postProps, modalClose }: props) => {
             <PCTextPost_Left>
               <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
                 {postProps?.User?.profilePic ? (
-                  <ProfileCircle
-                    diameter={150}
+                  <ProfileCircle150
+                    className=""
+                    alt="profilePic"
                     src={`${postProps?.User?.profilePic}`}
-                    alt="profilePic"
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = `/img/defaultProfilePic.png`;
-                      e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
-                    }}
-                  ></ProfileCircle>
+                    altImg={`${postProps?.User?.profilePic.replace(/\/thumb\//, "/originals/")}`}
+                  />
                 ) : (
-                  <ProfileCircle
-                    diameter={150}
-                    src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                  <ProfileCircle150
+                    className=""
                     alt="profilePic"
-                  ></ProfileCircle>
+                    src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                    altImg=""
+                  />
                 )}
               </Link>
-
               <div>
                 <span id="nickname">{postProps.User.nickname}</span>
                 <span id="email">{postProps.User.email}</span>
@@ -147,17 +142,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
               <CustomCarousel indicator={postProps.Images.length === 1 ? false : true}>
                 {postProps.Images?.map((v: Image, i: number) => (
                   <ImageBox key={i + v.src}>
-                    <ProgressiveImage src={v?.src.replace(/\/thumb\//, "/original/")} placeholder={v?.src}>
-                      {(src, loading) => (
-                        <Image
-                          className={`image${loading ? " loading" : " loaded"}`}
-                          src={src}
-                          alt="sea beach"
-                          width="700"
-                          height="465"
-                        />
-                      )}
-                    </ProgressiveImage>
+                    <Img className="" src={v?.src.replace(/\/thumb\//, "/original/")} alt="zoom image" altImg="" />
                   </ImageBox>
                 ))}
               </CustomCarousel>
@@ -167,21 +152,19 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                 <div>
                   <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
                     {postProps?.User?.profilePic ? (
-                      <ProfileCircle
-                        diameter={40}
+                      <ProfileCircle40
+                        className=""
                         src={`${postProps?.User?.profilePic}`}
                         alt="profilePic"
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
-                        }}
-                      ></ProfileCircle>
+                        altImg={`${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
+                      />
                     ) : (
-                      <ProfileCircle
-                        diameter={40}
+                      <ProfileCircle40
+                        className=""
                         src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
                         alt="profilePic"
-                      ></ProfileCircle>
+                        altImg=""
+                      />
                     )}
                   </Link>
                   <span>{postProps.User.nickname}</span>
@@ -252,21 +235,19 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                 <div>
                   <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
                     {postProps?.User?.profilePic ? (
-                      <ProfileCircle
-                        diameter={40}
+                      <ProfileCircle40
+                        className=""
                         src={`${postProps?.User?.profilePic}`}
+                        altImg={`${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
                         alt="profilePic"
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
-                        }}
-                      ></ProfileCircle>
+                      />
                     ) : (
-                      <ProfileCircle
-                        diameter={40}
-                        src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                      <ProfileCircle40
+                        className=""
                         alt="profilePic"
-                      ></ProfileCircle>
+                        altImg=""
+                        src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                      />
                     )}
                   </Link>
                   <Nickname>{postProps.User.nickname}</Nickname>
@@ -277,17 +258,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
               <CustomCarousel indicator={postProps.Images.length === 0 ? false : true}>
                 {postProps.Images?.map((v: Image, i: number) => (
                   <ImageBox key={i + v.src}>
-                    <ProgressiveImage src={v?.src.replace(/\/thumb\//, "/original/")} placeholder={v?.src}>
-                      {(src, loading) => (
-                        <Image
-                          className={`image${loading ? " loading" : " loaded"}`}
-                          src={src}
-                          alt="sea beach"
-                          width="700"
-                          height="465"
-                        />
-                      )}
-                    </ProgressiveImage>
+                    <Img className="" src={v?.src.replace(/\/thumb\//, "/original/")} alt="zoom image" altImg="" />
                   </ImageBox>
                 ))}
                 <MobileText key="text">
@@ -350,6 +321,24 @@ const PostZoom = ({ postProps, modalClose }: props) => {
 
 export default PostZoom;
 
+const ProfileCircle150 = styled(Img)`
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
+  background-color: white;
+
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+`;
+const ProfileCircle40 = styled(Img)`
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-color: white;
+
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+`;
 const MobilePostMenu = styled.div`
   display: flex;
   justify-content: space-around;

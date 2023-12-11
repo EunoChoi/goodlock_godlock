@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 import CommentFunction from "../../functions/reactQuery/Comment";
 
+import Img from "./Img";
+
 //mui
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Popper from "@mui/material/Popper";
@@ -90,20 +92,17 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
         <FlexDiv
           onClick={() => {
             if (user?.id === commentProps?.User?.id) navigate(`/profile/0`);
-            else navigate(`/userinfo/${commentProps?.User?.id}/cat/0`);
           }}
         >
           {commentProps?.User?.profilePic ? (
             <ProfilePic
+              className=""
               alt="profilePic"
               src={`${commentProps?.User?.profilePic}`}
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = `${commentProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
-              }}
+              altImg={`${commentProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
             />
           ) : (
-            <ProfilePic alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
+            <ProfilePic className="" alt="profilePic" src="/img/defaultProfilePic.png" altImg="" />
           )}
 
           <UserNickname>{commentProps?.User?.nickname}</UserNickname>
@@ -180,14 +179,14 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
 };
 
 export default Comment;
-const ProfilePic = styled.img`
+const ProfilePic = styled(Img)`
   width: 36px;
   height: 36px;
   margin-right: 10px;
   border-radius: 50px;
   background-color: white;
 
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(0, 0, 0, 0.1);
 
   object-fit: cover;
 `;
@@ -227,6 +226,7 @@ const FlexDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   span {
     margin-right: 8px;
   }

@@ -14,6 +14,7 @@ import PostEditPopup from "./PostEditPopup";
 import PostZoom from "../PostZoom";
 import Animation from "../../styles/Animation";
 import CoustomCarousel from "./CustomCarousel";
+import Img from "./Img";
 
 //mui
 // import Carousel from "react-material-ui-carousel";
@@ -187,15 +188,18 @@ const Post = ({ postProps }: any) => {
         >
           {postProps?.User?.profilePic ? (
             <ProfilePic
+              className=""
               alt="userProfilePic"
               src={`${postProps?.User?.profilePic}`}
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = `${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`;
-              }}
+              altImg={`${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
             />
           ) : (
-            <ProfilePic alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
+            <ProfilePic
+              className=""
+              alt="userProfilePic"
+              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+              altImg=""
+            />
           )}
           <span>{postProps?.User?.nickname}</span>
         </div>
@@ -212,13 +216,7 @@ const Post = ({ postProps }: any) => {
               setZoom(true);
             }}
           >
-            <Image
-              src={`${v?.src}`}
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = `${v?.src.replace(/\/thumb\//, "/original/")}`;
-              }}
-            />
+            <Image className="" src={`${v?.src}`} alt="img" altImg={`${v?.src.replace(/\/thumb\//, "/original/")}`} />
           </div>
         ))}
       </CoustomCarousel>
@@ -402,10 +400,10 @@ const Post = ({ postProps }: any) => {
 
 export default Post;
 
-const Image = styled.img`
-  width: 100%;
-  height: 330px;
-  object-fit: cover;
+const Image = styled(Img)`
+  width: 100% !important;
+  height: 330px !important;
+  object-fit: cover !important;
   transition: all ease-in-out 1s;
 `;
 
@@ -549,7 +547,7 @@ const TextWrapper = styled.div`
   line-height: 1.3em;
   font-size: 18px;
 
-  margin: 16px 20px;
+  margin: 28px 20px;
 
   display: -webkit-box;
   -webkit-line-clamp: 4; /* 원하는 줄 수 표시 */
@@ -590,14 +588,13 @@ const CommentWrapper = styled.div`
   overflow-y: scroll;
 `;
 
-const ProfilePic = styled.img`
+const ProfilePic = styled(Img)`
   width: 40px;
   height: 40px;
   margin-right: 10px;
   border-radius: 50px;
   background-color: white;
 
-  /* box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2); */
   border: 2px solid rgba(0, 0, 0, 0.1);
 
   object-fit: cover;

@@ -117,7 +117,6 @@ const Gallery = () => {
                       alt={image.src}
                       loading="lazy"
                       onError={(e) => {
-                        e.currentTarget.onerror = null;
                         e.currentTarget.style.display = "none";
                       }}
                     />
@@ -153,7 +152,6 @@ const Gallery = () => {
                       alt={image.src}
                       loading="lazy"
                       onError={(e) => {
-                        e.currentTarget.onerror = null;
                         e.currentTarget.style.display = "none";
                       }}
                     />

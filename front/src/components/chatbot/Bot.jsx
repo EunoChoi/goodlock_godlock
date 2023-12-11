@@ -232,9 +232,9 @@ const Bot = (e) => {
           setOpen(res.opened);
         }}
         floating={true}
-        headerTitle={"굿락갓락 도우미"}
-        botAvatar={"/img/loading.png"}
-        userAvatar={user?.profilePic ? user?.profilePic : "/img/loading.png"}
+        headerTitle={"굿락갓락 Bot"}
+        botAvatar={"/img/defaultProfilePic.png"}
+        userAvatar={user?.profilePic ? user?.profilePic : "/img/defaultProfilePic.png"}
         placeholder={"..."}
         steps={steps}
       />

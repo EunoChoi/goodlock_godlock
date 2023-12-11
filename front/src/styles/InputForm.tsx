@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Animation from "./Animation";
+import Img from "../components/common/Img";
 
 const InputBG = styled.div`
   z-index: 1010;
@@ -126,7 +127,7 @@ const InputImageBox = styled.div`
   flex-direction: column;
   margin: 0px 10px;
 `;
-const InputImage = styled.img`
+const InputImage = styled(Img)`
   width: 100px;
   height: 100px;
   object-fit: cover;

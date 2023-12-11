@@ -3,6 +3,9 @@ import User from "../functions/reactQuery/User";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
+import { Link } from "react-router-dom";
+
+import Img from "./common/Img";
 
 //mui
 import Stack from "@mui/joy/Stack";
@@ -70,25 +73,24 @@ const Side = ({ close }: Props) => {
           }}
         >
           <ExtensionIcon fontSize="inherit" />
-          {/* <Logo src="/img/loading.png"></Logo> */}
           <span>God Lock</span>
         </button>
       </HeaderWrapper>
       {user && (
         <>
           <UserInfoWrapper>
-            <ProfilePic
-              src={user.profilePic}
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = `${user.profilePic.replace(/\/thumb\//, "/original/")}`;
-              }}
-              onClick={() => {
-                navigate("/profile/0");
-                close();
-              }}
-              alt=""
-            />
+            <Link to="/profile/0">
+              {user.profilePic ? (
+                <ProfilePic
+                  className=""
+                  src={user.profilePic}
+                  altImg={`${user.profilePic.replace(/\/thumb\//, "/original/")}`}
+                  alt="profilePic"
+                />
+              ) : (
+                <ProfilePic className="" src="/img/defaultProfilePic.png" altImg="" alt="profilePic" />
+              )}
+            </Link>
 
             <div
               id="info_text_box"
@@ -248,13 +250,13 @@ const LogInWrapper = styled.div`
   }
 `;
 
-const ProfilePic = styled.img`
+const ProfilePic = styled(Img)`
   width: 108px;
   height: 108px;
   object-fit: cover;
 
   border-radius: 100%;
-  border: 2px solid rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(0, 0, 0, 0.1);
 
   cursor: pointer;
 `;

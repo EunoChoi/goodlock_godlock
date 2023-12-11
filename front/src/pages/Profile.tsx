@@ -10,6 +10,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { confirmAlert } from "react-confirm-alert";
 import moment from "moment";
 import "moment/locale/ko";
+import Img from "../components/common/Img";
 
 //components
 import AppLayout from "../components/AppLayout";
@@ -70,9 +71,12 @@ const Profile = () => {
   const params = useParams();
   const categoryNum = params.cat ? parseInt(params.cat) : -1;
 
+  //useQuery
+  const user = User.getData();
+
   //input state
-  const [nickname, setNickname] = useState<string>("");
-  const [usertext, setUsertext] = useState<string>("");
+  const [nickname, setNickname] = useState<string>(user?.nickname);
+  const [usertext, setUsertext] = useState<string>(user?.usertext);
 
   const scrollTarget = useRef<HTMLDivElement>(null);
   const category = ["My Info", "Followings", "Followers", "Tip Posts", "Free Posts"];
@@ -225,8 +229,6 @@ const Profile = () => {
     else document.body.style.overflow = "auto";
   }, [imageChangeModal]);
 
-  //useQuery
-  const user = User.getData();
   //useInfiniteQuery
   const myInfoPosts = useInfiniteQuery(
     ["myInfoPosts"],
@@ -298,20 +300,18 @@ const Profile = () => {
             <ContentBox width={500} padding={30}>
               <ProfilePicWrapper>
                 {user?.profilePic ? (
-                  <ProfilePic
-                    width={100}
+                  <ProfilePic100
+                    className=""
                     alt="userProfilePic"
                     src={`${user?.profilePic}`}
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = `${user?.profilePic.replace(/\/thumb\//, "/original/")}`;
-                    }}
+                    altImg={user?.profilePic.replace(/\/thumb\//, "/original/")}
                   />
                 ) : (
-                  <ProfilePic
-                    width={100}
+                  <ProfilePic100
+                    className=""
                     alt="userProfilePic"
                     src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                    altImg=""
                   />
                 )}
 
@@ -469,18 +469,23 @@ const Profile = () => {
                 ) : (
                   user?.Followings?.map((v: user, i: number) => (
                     <ListItem key={v.nickname + i}>
-                      <div>
-                        <Link to={`/userinfo/${v?.id}/cat/0`}>
-                          {v.profilePic ? (
-                            <ProfilePic width={32} alt="ProfilePic" src={`${v.profilePic}`} />
-                          ) : (
-                            <ProfilePic
-                              width={32}
-                              alt="defaultProfilePic"
-                              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                            />
-                          )}
-                        </Link>
+                      <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
+                        {v.profilePic ? (
+                          <ProfilePic32
+                            className=""
+                            alt="ProfilePic"
+                            src={v.profilePic}
+                            altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
+                          />
+                        ) : (
+                          <ProfilePic32
+                            className=""
+                            alt="defaultProfilePic"
+                            src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                            altImg=""
+                          />
+                        )}
+
                         <span>{v.nickname}</span>
                       </div>
 
@@ -512,18 +517,22 @@ const Profile = () => {
                 ) : (
                   user?.Followers?.map((v: user, i: number) => (
                     <ListItem key={v.nickname + i}>
-                      <div>
-                        <Link to={`/userinfo/${v?.id}/cat/0`}>
-                          {v.profilePic ? (
-                            <ProfilePic width={32} alt="ProfilePic" src={`${v.profilePic}`} />
-                          ) : (
-                            <ProfilePic
-                              width={32}
-                              alt="ProfilePic"
-                              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                            />
-                          )}
-                        </Link>
+                      <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
+                        {v.profilePic ? (
+                          <ProfilePic32
+                            className=""
+                            alt="ProfilePic"
+                            src={v.profilePic}
+                            altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
+                          />
+                        ) : (
+                          <ProfilePic32
+                            className=""
+                            alt="ProfilePic"
+                            src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                            altImg=""
+                          />
+                        )}
                         <span>{v.nickname}</span>
                       </div>
 
@@ -907,17 +916,25 @@ const ListItem = styled.div`
   }
 `;
 
-const ProfilePic = styled.img<{ width: number }>`
-  width: ${(props) => props.width + "px"};
-  height: ${(props) => props.width + "px"};
-  border-radius: ${(props) => props.width + "px"};
+const ProfilePic32 = styled(Img)`
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
 
   object-fit: cover;
   background-color: #fff;
 
-  /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); */
   border: 2px solid rgba(0, 0, 0, 0.15);
-  /* margin-right: 12px; */
+`;
+const ProfilePic100 = styled(Img)`
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+
+  object-fit: cover;
+  background-color: #fff;
+
+  border: 2px solid rgba(0, 0, 0, 0.15);
 `;
 
 const InfoAttribute = styled.div`

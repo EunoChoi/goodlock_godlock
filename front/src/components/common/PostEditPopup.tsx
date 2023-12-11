@@ -6,6 +6,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 
+import styled from "styled-components/macro";
+import Img from "./Img";
+
 //mui
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import PostAddIcon from "@mui/icons-material/PostAdd";
@@ -295,13 +298,12 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
             {images.map((v, i) => (
               <InputForm.InputImageBox key={i + v}>
                 <InputForm.InputImage
+                  className=""
                   src={`${v}`}
                   alt={v}
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = `${v?.replace(/\/thumb\//, "/original/")}`;
-                  }}
-                ></InputForm.InputImage>
+                  altImg={v?.replace(/\/thumb\//, "/original/")}
+                />
+
                 <InputForm.ImageDeleteButton
                   onClick={() => {
                     const tempImages = [...images];
@@ -349,3 +351,15 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
 };
 
 export default PostEditPopup;
+
+const ImageSC = styled(Img)`
+  margin-left: 24px;
+  padding-left: 24px;
+  background-color: red;
+`;
+
+const ImageSC2 = styled.img`
+  margin-left: 24px;
+  padding-left: 24px;
+  background-color: red;
+`;

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useState, useRef } from "react";
 import { toast } from "react-toastify";
+import Img from "./Img";
 
 //style
 import Animation from "../../styles/Animation";
@@ -66,22 +67,22 @@ const ProfileChangePopup = ({ modalClose }: setStateProps) => {
         <ProfileImageBox>
           {image && !uploadImage.isLoading && (
             <ProfileImage
+              className=""
               src={`${image}`}
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = `${image.replace(/\/thumb\//, "/original/")}`;
-              }}
+              altImg={image.replace(/\/thumb\//, "/original/")}
               alt="프로필 이미지"
             />
           )}
-          {image && uploadImage.isLoading && (
-            <ProfileImage src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="로딩" />
-          )}
-          {!image && uploadImage.isLoading && (
-            <ProfileImage src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="로딩" />
+          {uploadImage.isLoading && (
+            <ProfileImage className="" src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="로딩" altImg="" />
           )}
           {!image && !uploadImage.isLoading && (
-            <ProfileImage src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} alt="프로필 이미지" />
+            <ProfileImage
+              className=""
+              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+              alt="프로필 이미지"
+              altImg=""
+            />
           )}
           <Button
             color="error"
@@ -177,7 +178,7 @@ const ButtonArea = styled.div`
     }
   }
 `;
-const ProfileImage = styled.img`
+const ProfileImage = styled(Img)`
   width: 200px;
   height: 200px;
   border-radius: 200px;

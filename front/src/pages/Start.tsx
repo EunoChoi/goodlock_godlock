@@ -109,7 +109,7 @@ const TextBox = styled.div`
   margin: 64px 0;
 
   span {
-    text-shadow: 10px 10px 10px #c7d7ff;
+    text-shadow: 0px 0px 10px #c7d7ff;
 
     white-space: pre-line;
     font-weight: 600;
@@ -128,7 +128,9 @@ const Title = styled.span`
   z-index: 99;
   > div {
     margin-left: -10px;
-
+    span {
+      text-shadow: 0px 0px 10px #c7d7ff;
+    }
     span:nth-child(1) {
       font-family: OAGothic-ExtraBold;
       font-size: 96px;
@@ -204,9 +206,10 @@ const StartWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: start;
 
+  padding-top: calc(var(--vh, 1vh) * 25);
   padding-left: 10vw;
   @media (orientation: portrait) or (max-height: 480px) {
     width: 100vw;

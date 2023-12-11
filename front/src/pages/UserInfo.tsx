@@ -12,6 +12,7 @@ import { confirmAlert } from "react-confirm-alert";
 import AppLayout from "../components/AppLayout";
 import Post from "../components/common/Post";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Img from "../components/common/Img";
 
 //style
 import Animation from "../styles/Animation";
@@ -58,6 +59,12 @@ const UserInfo = () => {
     ["targetUser"],
     () => Axios.get("user/info", { params: { id } }).then((res) => res.data),
     {
+      onSuccess: (res) => {
+        if (res.id === user.id) {
+          console.log("내 페이지");
+          navigate("/profile/0");
+        }
+      },
       onError: () => {
         // location.reload();
         navigate("/404");
@@ -133,15 +140,18 @@ const UserInfo = () => {
         <UserInfoWrapper ref={scrollTarget}>
           {targetUser?.profilePic ? (
             <Pic
+              className=""
               alt="userProfilePic"
               src={`${targetUser?.profilePic}`}
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = `${targetUser?.profilePic.replace(/\/thumb\//, "/original/")}`;
-              }}
+              altImg={targetUser?.profilePic.replace(/\/thumb\//, "/original/")}
             />
           ) : (
-            <Pic width={150} alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
+            <Pic
+              className=""
+              alt="userProfilePic"
+              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+              altImg=""
+            />
           )}
 
           <span id="nickname">{makeShortNickname(targetUser?.nickname)}</span>
@@ -234,18 +244,22 @@ const UserInfo = () => {
                 ) : (
                   targetUser?.Followings?.map((v: user, i: number) => (
                     <ListItem key={v.nickname + i}>
-                      <div>
-                        <Link to={`/userinfo/${v?.id}/cat/0`}>
-                          {v.profilePic ? (
-                            <ProfilePic width={32} alt="ProfilePic" src={`${v.profilePic}`} />
-                          ) : (
-                            <ProfilePic
-                              width={32}
-                              alt="defaultProfilePic"
-                              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                            />
-                          )}
-                        </Link>
+                      <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
+                        {v.profilePic ? (
+                          <ProfilePic32
+                            className=""
+                            alt="ProfilePic"
+                            src={v.profilePic}
+                            altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
+                          />
+                        ) : (
+                          <ProfilePic32
+                            className=""
+                            alt="defaultProfilePic"
+                            src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                            altImg=""
+                          />
+                        )}
                       </div>
                       <span>{v.nickname}</span>
                     </ListItem>
@@ -272,18 +286,22 @@ const UserInfo = () => {
                 ) : (
                   targetUser?.Followers?.map((v: user, i: number) => (
                     <ListItem key={v.nickname + i}>
-                      <div>
-                        <Link to={`/userinfo/${v?.id}/cat/0`}>
-                          {v.profilePic ? (
-                            <ProfilePic width={32} alt="ProfilePic" src={`${v.profilePic}`} />
-                          ) : (
-                            <ProfilePic
-                              width={32}
-                              alt="ProfilePic"
-                              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                            />
-                          )}
-                        </Link>
+                      <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
+                        {v.profilePic ? (
+                          <ProfilePic32
+                            className=""
+                            alt="ProfilePic"
+                            src={`${v.profilePic}`}
+                            altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
+                          />
+                        ) : (
+                          <ProfilePic32
+                            className=""
+                            alt="ProfilePic"
+                            src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                            altImg=""
+                          />
+                        )}
                       </div>
                       <span>{v.nickname}</span>
                     </ListItem>
@@ -403,7 +421,7 @@ const LoadingIconWrapper = styled.div`
   margin: 32px 0;
 `;
 
-const Pic = styled.img`
+const Pic = styled(Img)`
   /* position: absolute;
   right: 0px; */
   background-color: white;
@@ -714,10 +732,10 @@ const ListItem = styled.div`
   }
 `;
 
-const ProfilePic = styled.img<{ width: number }>`
-  width: ${(props) => props.width + "px"};
-  height: ${(props) => props.width + "px"};
-  border-radius: ${(props) => props.width + "px"};
+const ProfilePic32 = styled(Img)`
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
 
   object-fit: cover;
   background-color: #fff;

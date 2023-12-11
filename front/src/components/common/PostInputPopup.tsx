@@ -284,13 +284,11 @@ const InputPopup = ({ modalClose }: props) => {
             {images.map((v, i) => (
               <InputForm.InputImageBox key={i}>
                 <InputForm.InputImage
+                  className=""
                   src={`${v}`}
                   alt={v}
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = `${v?.replace(/\/thumb\//, "/original/")}`;
-                  }}
-                ></InputForm.InputImage>
+                  altImg={v?.replace(/\/thumb\//, "/original/")}
+                />
                 <InputForm.ImageDeleteButton
                   onClick={() => {
                     const tempImages = [...images];
