@@ -20,6 +20,7 @@ const Img = ({ className, src, alt, altImg }: { className: string; src: string; 
   }, [errorCount]);
   return (
     <img
+      loading="lazy"
       className={className}
       src={src}
       alt={alt}

@@ -141,9 +141,13 @@ const PostZoom = ({ postProps, modalClose }: props) => {
             <PCImagePost_LeftWrapper>
               <CustomCarousel indicator={postProps.Images.length === 1 ? false : true}>
                 {postProps.Images?.map((v: Image, i: number) => (
-                  <ImageBox key={i + v.src}>
-                    <Img className="" src={v?.src.replace(/\/thumb\//, "/original/")} alt="zoom image" altImg="" />
-                  </ImageBox>
+                  <PostImage
+                    key={i + v.src}
+                    className=""
+                    src={v?.src.replace(/\/thumb\//, "/original/")}
+                    alt="zoom image"
+                    altImg=""
+                  />
                 ))}
               </CustomCarousel>
             </PCImagePost_LeftWrapper>
@@ -257,9 +261,13 @@ const PostZoom = ({ postProps, modalClose }: props) => {
 
               <CustomCarousel indicator={postProps.Images.length === 0 ? false : true}>
                 {postProps.Images?.map((v: Image, i: number) => (
-                  <ImageBox key={i + v.src}>
-                    <Img className="" src={v?.src.replace(/\/thumb\//, "/original/")} alt="zoom image" altImg="" />
-                  </ImageBox>
+                  <PostImage
+                    key={i + v.src}
+                    className=""
+                    src={v?.src.replace(/\/thumb\//, "/original/")}
+                    alt="zoom image"
+                    altImg=""
+                  />
                 ))}
                 <MobileText key="text">
                   <div id="content">{postProps.content}</div>
@@ -447,13 +455,16 @@ const Like = styled.div`
 `;
 
 //image
-const ImageBox = styled.div`
+const PostImage = styled(Img)`
   width: 100%;
   height: 90vh;
 
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
+
+  object-fit: contain;
+
   @media (orientation: portrait) or (max-height: 480px) {
     //top height 64px
     //bottom height 60px + 32px
