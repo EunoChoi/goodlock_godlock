@@ -222,8 +222,10 @@ const BotWrapper = styled.div`
 
     transition: 0.3s ease-in-out all;
 
-    &:hover {
-      background-color: #c7d7ff !important;
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-color: #c7d7ff !important;
+      }
     }
 
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
