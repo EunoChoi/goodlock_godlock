@@ -255,7 +255,8 @@ const StartButton = styled.button`
   border-radius: 6px;
 
   background-color: #f4f6b1;
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.15);
+  /* box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.15); */
+  border: 3px solid rgba(0, 0, 0, 0.1);
 
   cursor: pointer;
 `;

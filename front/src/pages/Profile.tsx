@@ -222,7 +222,10 @@ const Profile = () => {
     if (categoryNum >= 0 && categoryNum < 5) {
       // console.log("올바른 링크 접근");
       const menuWrapper = document.getElementById("menuWrapper");
-      menuWrapper?.scrollTo({ top: 0, left: 120 * categoryNum, behavior: "smooth" });
+      const width = menuWrapper?.scrollWidth;
+      if (width) {
+        menuWrapper?.scrollTo({ top: 0, left: (width / 5) * categoryNum - 70, behavior: "smooth" });
+      }
     } else {
       navigate("/404");
     }

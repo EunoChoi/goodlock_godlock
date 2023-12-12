@@ -99,7 +99,7 @@ const SNSLoginButton = styled.button<{ color: string }>`
   height: 48px;
   border-radius: 48px;
 
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(0, 0, 0, 0.1);
 
   display: flex;
   justify-content: center;
@@ -108,7 +108,7 @@ const SNSLoginButton = styled.button<{ color: string }>`
   background-color: ${(props) => props.color};
   color: black;
   margin: 0 8px;
-  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1); */
 `;
 const Logo = styled.img`
   width: 70%;
