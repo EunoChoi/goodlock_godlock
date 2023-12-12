@@ -192,8 +192,8 @@ const MobileSideBG = styled.div<{ animation: boolean }>`
   width: 100vw;
   height: 100vh;
 
-  background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(5px);
+  /* background-color: rgba(0, 0, 0, 0.05); */
+  backdrop-filter: blur(8px);
 
   animation: ${(props) => (props.animation ? Animation.smoothDisappear : "")} 0.3s ease-out;
 `;
@@ -208,7 +208,7 @@ const MobileSide = styled.div<{ animation: boolean }>`
   width: 80vw;
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
-  border-right: 2px solid rgba(0, 0, 0, 0.05);
+  border-right: 2px solid rgba(0, 0, 0, 0.1);
 
   animation: ${(props) => (props.animation ? Animation.smoothAppearRightToLeft : Animation.smoothAppearLeftToRight)}
     0.3s ease-out;
