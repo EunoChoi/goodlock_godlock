@@ -31,6 +31,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   const [mobileSideOpen, setMobileSideOpen] = useState<boolean>(false);
 
+  const [sideBarAnimation, setSideBarAnimation] = useState<boolean>(false);
+
   //공지사항 작성 가능 레벨
   const level = 10;
 
@@ -89,7 +91,10 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   window.addEventListener("popstate", () => {
     setPostInputOpen(false);
-    setMobileSideOpen(false);
+    setSideBarAnimation(true);
+    setTimeout(() => {
+      sideclose();
+    }, 250);
   });
 
   useEffect(() => {
@@ -134,6 +139,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             id="menuButton"
             color="inherit"
             onClick={() => {
+              setSideBarAnimation(false);
               sideOpen();
             }}
           >
@@ -146,12 +152,13 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         <MobileWrapper>
           {mobileSideOpen && (
             <MobileSideBG
+              animation={sideBarAnimation}
               onClick={() => {
-                sideclose();
+                setSideBarAnimation(true);
                 history.back();
               }}
             >
-              <MobileSide onClick={(e) => e.stopPropagation()}>
+              <MobileSide animation={sideBarAnimation} onClick={(e) => e.stopPropagation()}>
                 <Side close={sideclose} />
               </MobileSide>
             </MobileSideBG>
@@ -175,7 +182,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
 export default AppLayout;
 
-const MobileSideBG = styled.div`
+const MobileSideBG = styled.div<{ animation: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -185,11 +192,13 @@ const MobileSideBG = styled.div`
   width: 100vw;
   height: 100vh;
 
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(5px);
+
+  animation: ${(props) => (props.animation ? Animation.smoothDisappear : "")} 0.3s ease-out;
 `;
 
-const MobileSide = styled.div`
+const MobileSide = styled.div<{ animation: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -199,8 +208,10 @@ const MobileSide = styled.div`
   width: 80vw;
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
+  border-right: 2px solid rgba(0, 0, 0, 0.05);
 
-  animation: ${Animation.smoothAppearLeftToRight} 0.4s ease-out;
+  animation: ${(props) => (props.animation ? Animation.smoothAppearRightToLeft : Animation.smoothAppearLeftToRight)}
+    0.3s ease-out;
 `;
 
 const BotWrapper = styled.div`

@@ -237,7 +237,7 @@ const UserInfo = () => {
             <ContentBox>
               <ListTitle>
                 <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
-                  <InsertEmoticonRoundedIcon fontSize="inherit" />
+                  <InsertEmoticonRoundedIcon fontSize="large" />
                 </Badge>
                 <div>Followings</div>
               </ListTitle>
@@ -279,7 +279,7 @@ const UserInfo = () => {
             <ContentBox>
               <ListTitle>
                 <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
-                  <InsertEmoticonOutlinedIcon fontSize="inherit" />
+                  <InsertEmoticonOutlinedIcon fontSize="large" />
                 </Badge>
                 <div>Followers</div>
               </ListTitle>

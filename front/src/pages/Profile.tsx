@@ -464,7 +464,7 @@ const Profile = () => {
             <ContentBox width={500} padding={0}>
               <ListTitle>
                 <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
-                  <InsertEmoticonRoundedIcon fontSize="inherit" />
+                  <InsertEmoticonRoundedIcon fontSize="large" />
                 </Badge>
                 <span>Followings</span>
               </ListTitle>
@@ -512,7 +512,7 @@ const Profile = () => {
             <ContentBox width={500} padding={0}>
               <ListTitle>
                 <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
-                  <InsertEmoticonOutlinedIcon fontSize="inherit" />
+                  <InsertEmoticonOutlinedIcon fontSize="large" />
                 </Badge>
                 <span>Followers</span>
               </ListTitle>

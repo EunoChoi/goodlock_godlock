@@ -43,7 +43,15 @@ const Animation = {
     to {
       transform: translateX( 0px )
     }
-  `
+  `,
+  smoothAppearRightToLeft: keyframes`
+  from {
+    transform: translateX( 0px )
+  }
+  to {
+    transform: translateX( -100vw )
+  }
+`
 };
 
 export default Animation;
