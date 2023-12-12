@@ -8,9 +8,6 @@ import Axios from "../../apis/Axios";
 import { toast } from "react-toastify";
 import MainPageStyle from "../../styles/MainPage";
 
-//custom
-import Animation from "../../styles/Animation";
-
 //components
 import Post from "../common/Post";
 
@@ -39,6 +36,7 @@ interface postProps {
 const FreeBoard = () => {
   const scrollTarget = useRef<HTMLDivElement>(null);
   const [toggle, setToggle] = useState<number>(0);
+  const pillSub = ["All", "Feed"];
   const [searchComm, setSearchComm] = useState<string>("");
 
   //this week
@@ -106,32 +104,23 @@ const FreeBoard = () => {
         <MainPageStyle.TextWrapper_Normal>신규 등록 포스트 {thisWeekNewComm?.len}개</MainPageStyle.TextWrapper_Normal>
       </MainPageStyle.TextWrapper>
       <MainPageStyle.Pill.Wrapper>
-        <MainPageStyle.Pill.Sub
-          toggle={toggle}
-          onClick={() => {
-            setToggle(0);
-            window.scrollTo({
-              top: scrollTarget.current?.scrollHeight,
-              left: 0,
-              behavior: "smooth"
-            });
-          }}
-        >
-          All
-        </MainPageStyle.Pill.Sub>
-        <MainPageStyle.Pill.Sub
-          toggle={toggle}
-          onClick={() => {
-            setToggle(1);
-            window.scrollTo({
-              top: scrollTarget.current?.scrollHeight,
-              left: 0,
-              behavior: "smooth"
-            });
-          }}
-        >
-          Feed
-        </MainPageStyle.Pill.Sub>
+        {pillSub.map((v, i) => (
+          <MainPageStyle.Pill.Sub
+            key={v}
+            toggle={toggle}
+            onClick={() => {
+              setToggle(i);
+              window.scrollTo({
+                top: scrollTarget.current?.scrollHeight,
+                left: 0,
+                behavior: "smooth"
+              });
+            }}
+          >
+            {v}
+          </MainPageStyle.Pill.Sub>
+        ))}
+
         <MainPageStyle.Pill.Search
           toggle={toggle === 2}
           onClick={() => {

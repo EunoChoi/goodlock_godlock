@@ -37,6 +37,7 @@ const Tips = () => {
 
   const [toggle, setToggle] = useState<number>(0);
   const [searchInfo, setSearchInfo] = useState<string>("");
+  const pillSub = ["All", "Ongoing", "Feed"];
   const pillWrapperRef = useRef<HTMLInputElement>(null);
 
   //this week
@@ -119,45 +120,23 @@ const Tips = () => {
         <MainPageStyle.TextWrapper_Normal>신규 등록 팁 {thisWeekNewInfo?.len}개</MainPageStyle.TextWrapper_Normal>
       </MainPageStyle.TextWrapper>
       <MainPageStyle.Pill.Wrapper ref={pillWrapperRef}>
-        <MainPageStyle.Pill.Sub
-          toggle={toggle}
-          onClick={() => {
-            setToggle(0);
-            window.scrollTo({
-              top: scrollTarget.current?.scrollHeight,
-              left: 0,
-              behavior: "smooth"
-            });
-          }}
-        >
-          All
-        </MainPageStyle.Pill.Sub>
-        <MainPageStyle.Pill.Sub
-          toggle={toggle}
-          onClick={() => {
-            setToggle(1);
-            window.scrollTo({
-              top: scrollTarget.current?.scrollHeight,
-              left: 0,
-              behavior: "smooth"
-            });
-          }}
-        >
-          Ongoing
-        </MainPageStyle.Pill.Sub>
-        <MainPageStyle.Pill.Sub
-          toggle={toggle}
-          onClick={() => {
-            setToggle(2);
-            window.scrollTo({
-              top: scrollTarget.current?.scrollHeight,
-              left: 0,
-              behavior: "smooth"
-            });
-          }}
-        >
-          Feed
-        </MainPageStyle.Pill.Sub>
+        {pillSub.map((v, i) => (
+          <MainPageStyle.Pill.Sub
+            key={v}
+            toggle={toggle}
+            onClick={() => {
+              setToggle(i);
+              window.scrollTo({
+                top: scrollTarget.current?.scrollHeight,
+                left: 0,
+                behavior: "smooth"
+              });
+            }}
+          >
+            {v}
+          </MainPageStyle.Pill.Sub>
+        ))}
+
         <MainPageStyle.Pill.Search
           toggle={toggle === 3}
           onClick={() => {

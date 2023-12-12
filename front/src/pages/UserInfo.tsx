@@ -128,7 +128,9 @@ const UserInfo = () => {
 
   useEffect(() => {
     if (categoryNum >= 0 && categoryNum < 5) {
-      console.log("올바른 링크 접근");
+      // console.log("올바른 링크 접근");
+      const menuWrapper = document.getElementById("menuWrapper");
+      menuWrapper?.scrollTo({ top: 0, left: 120 * categoryNum, behavior: "smooth" });
     } else {
       navigate("/404");
     }
@@ -206,7 +208,7 @@ const UserInfo = () => {
           )}
         </UserInfoWrapper>
 
-        <MenuWrapper>
+        <MenuWrapper id="menuWrapper">
           {category.map((v, i) => (
             <Pill
               catNum={categoryNum}

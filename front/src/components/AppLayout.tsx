@@ -261,9 +261,12 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
   }
   > button {
     transition: 0.3s ease-in-out all;
-    &:hover {
-      background-color: #c7d7ff;
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-color: #c7d7ff;
+      }
     }
+
     width: 48px;
     height: 48px;
 

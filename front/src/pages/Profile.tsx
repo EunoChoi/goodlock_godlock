@@ -216,9 +216,13 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    scrollTop();
+  }, []);
+  useEffect(() => {
     if (categoryNum >= 0 && categoryNum < 5) {
-      scrollTop();
       // console.log("올바른 링크 접근");
+      const menuWrapper = document.getElementById("menuWrapper");
+      menuWrapper?.scrollTo({ top: 0, left: 120 * categoryNum, behavior: "smooth" });
     } else {
       navigate("/404");
     }
@@ -278,16 +282,17 @@ const Profile = () => {
           <span>정보 수정 및 작성 글 확인이 가능합니다.</span>
           <span>마지막 수정 ⋯ {moment(user?.updatedAt).fromNow()}</span>
         </ProfileTitle>
-        <MenuWrapper>
+        <MenuWrapper id="menuWrapper">
           {category.map((v, i) => (
             <Pill
               catNum={categoryNum}
               key={"catNum" + i}
               onClick={() => {
                 scrollToPill();
+
                 setTimeout(() => {
                   navigate(`/profile/${i}`);
-                }, 0);
+                }, 10);
               }}
             >
               {v}
@@ -813,7 +818,7 @@ const ContentBox = styled.div<{ width: number; padding: number }>`
   @media (orientation: portrait) or (max-height: 480px) {
     transition: all ease-in-out 0.3s;
     width: 92vw;
-    padding: 20px ${(props) => props.padding + "px"};
+    padding: 40px ${(props) => props.padding + "px"};
     //header : 48px
     //pill wrapper : 104px
     min-height: calc(var(--vh, 1vh) * 100 - 48px - 104px - 24px);

@@ -35,7 +35,7 @@ interface postProps {
 
 const Home = () => {
   const scrollTarget = useRef<HTMLDivElement>(null);
-
+  const pillSub = ["All", "Bookmark Tip"];
   const [toggle, setToggle] = useState<number>(0);
 
   const user = User.getData();
@@ -92,7 +92,6 @@ const Home = () => {
       }
     }
   );
-
   const shortNickname = (nick: string) => {
     if (nick.length >= 11) return nick.slice(0, 10) + "...";
     else return nick;
@@ -122,26 +121,18 @@ const Home = () => {
         </MainPageStyle.TextWrapper_Normal>
       </MainPageStyle.TextWrapper>
       <MainPageStyle.Pill.Wrapper>
-        <MainPageStyle.Pill.Sub
-          toggle={toggle}
-          onClick={() => {
-            setToggle(0);
-            scrollTargerheight();
-          }}
-        >
-          Notice
-        </MainPageStyle.Pill.Sub>
-        <MainPageStyle.Pill.Sub
-          toggle={toggle}
-          onClick={() => {
-            setToggle(1);
-            scrollTargerheight();
-          }}
-        >
-          Bookmark Tip
-          {/* <BookmarksIcon fontSize="small" /> */}
-          {/* <span>Tip Post</span> */}
-        </MainPageStyle.Pill.Sub>
+        {pillSub.map((v, i) => (
+          <MainPageStyle.Pill.Sub
+            key={i}
+            toggle={toggle}
+            onClick={() => {
+              setToggle(i);
+              scrollTargerheight();
+            }}
+          >
+            {v}
+          </MainPageStyle.Pill.Sub>
+        ))}
       </MainPageStyle.Pill.Wrapper>
 
       {toggle === 0 && ( //공지사항

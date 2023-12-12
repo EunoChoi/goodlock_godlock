@@ -12,7 +12,6 @@ import Stack from "@mui/joy/Stack";
 import Divider from "@mui/joy/Divider";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import LightbulbRoundedIcon from "@mui/icons-material/LightbulbRounded";
-import PeopleRoundedIcon from "@mui/icons-material/PeopleRounded";
 import PhotoRoundedIcon from "@mui/icons-material/PhotoRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
@@ -80,7 +79,12 @@ const Side = ({ close }: Props) => {
       {user && (
         <>
           <UserInfoWrapper>
-            <Link to="/profile/0">
+            <div
+              onClick={() => {
+                navigate("/profile/0");
+                close();
+              }}
+            >
               {user.profilePic ? (
                 <ProfilePic
                   className=""
@@ -91,7 +95,7 @@ const Side = ({ close }: Props) => {
               ) : (
                 <ProfilePic className="" src="/img/defaultProfilePic.png" altImg="" alt="profilePic" />
               )}
-            </Link>
+            </div>
 
             <div
               id="info_text_box"
