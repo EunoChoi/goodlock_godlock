@@ -281,14 +281,15 @@ const PostZoom = ({ postProps, modalClose }: props) => {
 
               <CustomCarousel indicator={postProps.Images.length === 0 ? false : true}>
                 {postProps.Images?.map((v: Image, i: number) => (
-                  <PostImage
-                    crop={crop}
-                    key={i + v.src}
-                    className=""
-                    src={v?.src.replace(/\/thumb\//, "/original/")}
-                    alt="zoom image"
-                    altImg=""
-                  />
+                  <div key={i + v.src} onClick={() => setCrop((c) => !c)}>
+                    <PostImage
+                      crop={crop}
+                      className=""
+                      src={v?.src.replace(/\/thumb\//, "/original/")}
+                      alt="zoom image"
+                      altImg=""
+                    />
+                  </div>
                 ))}
                 <MobileText key="text">
                   <div id="content">{postProps.content}</div>
