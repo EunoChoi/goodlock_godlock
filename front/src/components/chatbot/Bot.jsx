@@ -7,6 +7,8 @@ import Animation from "../../styles/Animation";
 import User from "../../functions/reactQuery/User";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 
+import SendEmail from "./SendEmail";
+
 const Bot = (e) => {
   const user = User.getData();
   const [open, setOpen] = useState(false);
@@ -62,8 +64,8 @@ const Bot = (e) => {
       id: "3-2",
       options: [
         { value: 1, label: "홈", trigger: "3-2-1" },
-        { value: 2, label: "팁&설정", trigger: "3-2-2" },
-        { value: 3, label: "소통", trigger: "3-2-3" },
+        { value: 2, label: "팁", trigger: "3-2-2" },
+        { value: 3, label: "자유", trigger: "3-2-3" },
         { value: 4, label: "처음으로", trigger: "1" }
       ]
     },
@@ -74,28 +76,29 @@ const Bot = (e) => {
     },
     {
       id: "3-2-1+",
-      message: "로그인 후 바로 보이는 페이지로 공지사항과 북마크한 팁&설정 포스트를 확인 할 수 있습니다.",
+      message: "로그인 후 바로 보이는 페이지로 공지사항과 북마크한 팁 포스트를 확인 할 수 있습니다.",
       trigger: "3-2"
     },
     {
       id: "3-2-2",
-      message: "메인페이지 - 팁&설정",
+      message: "메인페이지 - 팁",
       trigger: "3-2-2+"
     },
     {
       id: "3-2-2+",
-      message: "굿락 팁 및 설정을 공유하는 페이지로 공유 버튼을 이용해서 현재 공유중인 포스트만 모아 볼 수 있습니다.",
+      message:
+        "굿락 팁 및 설정을 공유하는 페이지로 'Ongoing' 버튼을 이용해서 현재 공유중인 포스트, 'Feed' 버튼을 이용해 팔로잉 유저의 포스트를 모아 볼 수 있습니다.",
       trigger: "3-2"
     },
     {
       id: "3-2-3",
-      message: "메인페이지 - 소통",
+      message: "메인페이지 - 자유",
       trigger: "3-2-3+"
     },
     {
       id: "3-2-3+",
       message:
-        "자유로운 주제의 게시글 작성이 가능한 페이지로 피드 버튼을 누르면 팔로잉한 유저의 게시글만 모아 볼 수 있습니다.",
+        "자유로운 주제의 게시글 작성이 가능한 페이지로 'Feed' 버튼을 이용해 팔로잉한 유저의 게시글만 모아 볼 수 있습니다.",
       trigger: "3-2"
     },
     {
@@ -154,7 +157,7 @@ const Bot = (e) => {
     },
     {
       id: "4-2+",
-      message: "GTS를 활용하면 굿락에서 커스텀한 각종 설정을 타유저에게 공유하거나 백업으로 활용이 가느합니다.",
+      message: "GTS를 활용하면 굿락에서 커스텀한 각종 설정을 다른 유저에게 공유하거나 백업으로 활용이 가느합니다.",
       trigger: "4-2++"
     },
     {
@@ -179,7 +182,7 @@ const Bot = (e) => {
     },
     {
       id: "5",
-      message: "문의 메일 작성 컴포넌트",
+      component: <SendEmail />,
       trigger: "5+"
     },
     {

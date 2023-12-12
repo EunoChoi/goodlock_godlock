@@ -45,7 +45,7 @@ const Tips = () => {
     ["thisweek/new/1"],
     () => Axios.get("post/thisweek/new", { params: { type: 1 } }).then((v) => v.data),
     {
-      staleTime: 60 * 1000
+      // staleTime: 60 * 1000
     }
   ).data;
 

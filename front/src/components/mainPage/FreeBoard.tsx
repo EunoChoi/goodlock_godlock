@@ -44,7 +44,7 @@ const FreeBoard = () => {
     ["thisweek/new/2"],
     () => Axios.get("post/thisweek/new", { params: { type: 2 } }).then((v) => v.data),
     {
-      staleTime: 60 * 1000
+      // staleTime: 60 * 1000
     }
   ).data;
 

@@ -466,7 +466,7 @@ const Profile = () => {
                 <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
                   <InsertEmoticonRoundedIcon fontSize="inherit" />
                 </Badge>
-                <div>Followings</div>
+                <span>Followings</span>
               </ListTitle>
 
               <List>
@@ -514,7 +514,7 @@ const Profile = () => {
                 <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
                   <InsertEmoticonOutlinedIcon fontSize="inherit" />
                 </Badge>
-                <div>Followers</div>
+                <span>Followers</span>
               </ListTitle>
 
               <List>
@@ -873,7 +873,7 @@ const ListTitle = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  > div {
+  > span {
     margin-top: 5px;
     font-size: 20px;
     font-weight: 500;

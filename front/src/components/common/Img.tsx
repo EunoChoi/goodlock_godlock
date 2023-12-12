@@ -13,7 +13,7 @@ const Img = ({ className, src, alt, altImg }: { className: string; src: string; 
       console.log(src);
       console.log(errorCount);
       //5가 되기 전까지 alt src 시도, 5일때 실패 이미지로 변경
-      if (errorCount === 5) {
+      if (errorCount >= 10) {
         setAltImage(failImg);
       }
     }
@@ -27,7 +27,7 @@ const Img = ({ className, src, alt, altImg }: { className: string; src: string; 
       onError={(e) => {
         console.log("error occur");
         e.currentTarget.src = altImage;
-        if (errorCount <= 5) {
+        if (errorCount < 10) {
           setErrorCount((c) => (c += 1));
         }
       }}

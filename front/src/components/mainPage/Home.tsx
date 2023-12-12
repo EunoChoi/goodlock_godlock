@@ -35,7 +35,7 @@ interface postProps {
 
 const Home = () => {
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const pillSub = ["All", "Bookmark Tip"];
+  const pillSub = ["Notice", "Bookmark Tip"];
   const [toggle, setToggle] = useState<number>(0);
 
   const user = User.getData();
@@ -53,21 +53,21 @@ const Home = () => {
     ["thisweek/new/1"],
     () => Axios.get("post/thisweek/new", { params: { type: 1 } }).then((v) => v.data),
     {
-      staleTime: 60 * 1000
+      // staleTime: 60 * 1000
     }
   ).data;
   const thisWeekNewComm = useQuery(
     ["thisweek/new/2"],
     () => Axios.get("post/thisweek/new", { params: { type: 2 } }).then((v) => v.data),
     {
-      staleTime: 60 * 1000
+      // staleTime: 60 * 1000
     }
   ).data;
   const thisWeekEndLiked = useQuery(
     ["thisweek/end/liked"],
     () => Axios.get("post/thisweek/liked").then((v) => v.data),
     {
-      staleTime: 60 * 1000
+      // staleTime: 60 * 1000
     }
   ).data;
 

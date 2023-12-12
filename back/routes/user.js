@@ -51,9 +51,18 @@ router.delete("/:id", async (req, res) => {
     console.error(err);
   }
 });
-//로그인
+//일반 로그인
 router.post("/login", async (req, res) => {
   try {
+    const { email } = req.body;
+    //user level확인 후 간편 로그인 아이디인지 구분
+    const { level } = await User.findOne({
+      where: { email },
+    });
+    if (level === 2) {
+      res.status(401).json({ message: "간편 로그인으로 가입된 계정입니다." });
+    }
+
     const user = await userController.login(req.body);
     if (user.status === 200) {
       res.cookie("accessToken", user.accessToken, {
@@ -74,7 +83,7 @@ router.post("/login", async (req, res) => {
     console.error(error);
   }
 })
-//구글 로그인
+//소셜 로그인
 router.post("/login/social", async (req, res) => {
   try {
     const email = req.body.email;

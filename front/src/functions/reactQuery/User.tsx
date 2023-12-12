@@ -31,7 +31,7 @@ interface CustomError2 extends Error {
 const User = {
   getData: () => {
     return useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
-      staleTime: 60 * 1000,
+      // staleTime: 60 * 1000,
       // refetchOnWindowFocus: true,
       onSuccess: () => {
         console.log("유저 정보 불러오기 성공");

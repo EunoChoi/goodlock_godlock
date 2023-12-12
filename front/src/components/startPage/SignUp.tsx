@@ -257,7 +257,6 @@ const SignUp = ({ setToggle }: Props) => {
           </AuthCodeWrapper>
         )}
       </LogInSignUp.Form>
-
       <LogInSignUp.TextWrapper>
         <LogInSignUp.Text color="" pointer={false}>
           이미 계정이 있으신가요?
