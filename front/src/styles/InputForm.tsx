@@ -79,9 +79,10 @@ const TextArea = styled.textarea`
   &::placeholder {
     position: absolute;
     left: 50%;
-    bottom: 50%;
+    bottom: 300px;
     transform: translate(-50%, -50%);
     font-size: 1.5em;
+    font-weight: 500;
     color: rgba(0, 0, 0, 0.3);
   }
   @media (orientation: portrait) or (max-height: 480px) {

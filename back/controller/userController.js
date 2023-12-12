@@ -79,6 +79,10 @@ const userController = {
       message = "가입된 이메일이 아닙니다.";
       return { status: 400, message }
     }
+    if (user.level === 2) {
+      message = "간편 로그인으로 가입된 계정입니다.";
+      return { status: 400, message }
+    }
 
     //비밀번호 일치확인
     const isPasswordCorrect = await bcrypt.compare(
