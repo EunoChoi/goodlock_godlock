@@ -184,6 +184,7 @@ const Post = ({ postProps }: any) => {
         >
           {postProps?.User?.profilePic ? (
             <ProfilePic
+              crop={true}
               className=""
               alt="userProfilePic"
               src={`${postProps?.User?.profilePic}`}
@@ -191,6 +192,7 @@ const Post = ({ postProps }: any) => {
             />
           ) : (
             <ProfilePic
+              crop={true}
               className=""
               alt="userProfilePic"
               src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
@@ -212,7 +214,13 @@ const Post = ({ postProps }: any) => {
               setZoom(true);
             }}
           >
-            <Image className="" src={`${v?.src}`} alt="img" altImg={`${v?.src.replace(/\/thumb\//, "/original/")}`} />
+            <Image
+              crop={true}
+              className=""
+              src={`${v?.src}`}
+              alt="img"
+              altImg={`${v?.src.replace(/\/thumb\//, "/original/")}`}
+            />
           </div>
         ))}
       </CoustomCarousel>
@@ -399,7 +407,7 @@ export default Post;
 const Image = styled(Img)`
   width: 100% !important;
   height: 330px !important;
-  object-fit: cover !important;
+
   transition: all ease-in-out 1s;
 `;
 
@@ -598,6 +606,4 @@ const ProfilePic = styled(Img)`
   background-color: white;
 
   border: 2px solid rgba(0, 0, 0, 0.1);
-
-  object-fit: cover;
 `;

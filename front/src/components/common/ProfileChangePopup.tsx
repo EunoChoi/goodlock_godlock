@@ -67,6 +67,7 @@ const ProfileChangePopup = ({ modalClose }: setStateProps) => {
         <ProfileImageBox>
           {image && !uploadImage.isLoading && (
             <ProfileImage
+              crop={true}
               className=""
               src={`${image}`}
               altImg={image.replace(/\/thumb\//, "/original/")}
@@ -74,10 +75,17 @@ const ProfileChangePopup = ({ modalClose }: setStateProps) => {
             />
           )}
           {uploadImage.isLoading && (
-            <ProfileImage className="" src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="로딩" altImg="" />
+            <ProfileImage
+              crop={true}
+              className=""
+              src={`${process.env.PUBLIC_URL}/img/loading.gif`}
+              alt="로딩"
+              altImg=""
+            />
           )}
           {!image && !uploadImage.isLoading && (
             <ProfileImage
+              crop={true}
               className=""
               src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
               alt="프로필 이미지"
@@ -180,8 +188,6 @@ const ProfileImage = styled(Img)`
   width: 200px;
   height: 200px;
   border-radius: 200px;
-
-  object-fit: cover;
 
   background-color: white;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);

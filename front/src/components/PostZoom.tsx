@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components/macro";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -38,6 +38,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
   const user = User.getData();
   const postHaveDate = postProps?.start && postProps?.end;
   const postHaveLink = postProps?.link && true;
+  const [crop, setCrop] = useState<boolean>(false);
 
   //useMutation
   const like = Post.like();
@@ -53,6 +54,14 @@ const PostZoom = ({ postProps, modalClose }: props) => {
   const isOnlyText = postProps.Images.length === 0;
   const isLiked = postProps?.Likers?.find((v: any) => v.id === user?.id);
 
+  const Controls = ({ zoomIn, zoomOut, resetTransform }: any) => (
+    <>
+      <button onClick={() => zoomIn()}>+</button>
+      <button onClick={() => zoomOut()}>-</button>
+      <button onClick={() => resetTransform()}>x</button>
+    </>
+  );
+
   return (
     <PostZoomBG
       onClick={() => {
@@ -67,6 +76,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
               <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
                 {postProps?.User?.profilePic ? (
                   <ProfileCircle150
+                    crop={true}
                     className=""
                     alt="profilePic"
                     src={`${postProps?.User?.profilePic}`}
@@ -74,6 +84,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                   />
                 ) : (
                   <ProfileCircle150
+                    crop={true}
                     className=""
                     alt="profilePic"
                     src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
@@ -146,13 +157,15 @@ const PostZoom = ({ postProps, modalClose }: props) => {
             <PCImagePost_LeftWrapper>
               <CustomCarousel indicator={postProps.Images.length === 1 ? false : true}>
                 {postProps.Images?.map((v: Image, i: number) => (
-                  <PostImage
-                    key={i + v.src}
-                    className=""
-                    src={v?.src.replace(/\/thumb\//, "/original/")}
-                    alt="zoom image"
-                    altImg=""
-                  />
+                  <div key={i + v.src} onClick={() => setCrop((c) => !c)}>
+                    <PostImage
+                      crop={crop}
+                      className=""
+                      src={v?.src.replace(/\/thumb\//, "/original/")}
+                      alt="zoom image"
+                      altImg=""
+                    />
+                  </div>
                 ))}
               </CustomCarousel>
             </PCImagePost_LeftWrapper>
@@ -162,6 +175,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                   <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
                     {postProps?.User?.profilePic ? (
                       <ProfileCircle40
+                        crop={true}
                         className=""
                         src={`${postProps?.User?.profilePic}`}
                         alt="profilePic"
@@ -169,6 +183,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                       />
                     ) : (
                       <ProfileCircle40
+                        crop={true}
                         className=""
                         src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
                         alt="profilePic"
@@ -243,6 +258,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                   <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
                     {postProps?.User?.profilePic ? (
                       <ProfileCircle40
+                        crop={true}
                         className=""
                         src={`${postProps?.User?.profilePic}`}
                         altImg={`${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
@@ -250,6 +266,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                       />
                     ) : (
                       <ProfileCircle40
+                        crop={true}
                         className=""
                         alt="profilePic"
                         altImg=""
@@ -265,6 +282,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
               <CustomCarousel indicator={postProps.Images.length === 0 ? false : true}>
                 {postProps.Images?.map((v: Image, i: number) => (
                   <PostImage
+                    crop={crop}
                     key={i + v.src}
                     className=""
                     src={v?.src.replace(/\/thumb\//, "/original/")}
@@ -493,8 +511,6 @@ const PostImage = styled(Img)`
   justify-content: center;
   align-items: center; */
 
-  object-fit: contain;
-
   @media (orientation: portrait) or (max-height: 480px) {
     //top height 64px
     //bottom height 60px + 32px
@@ -505,13 +521,13 @@ const PostImage = styled(Img)`
     flex-grow: 1;
   }
 `;
-const Image = styled.img`
-  width: 100%;
-  height: 100%;
+// const Image = styled.img`
+//   width: 100%;
+//   height: 100%;
 
-  object-fit: contain;
-  transition: all ease-in-out 1s;
-`;
+//   object-fit: contain;
+//   transition: all ease-in-out 1s;
+// `;
 
 //pc post zoom
 const PostZoomBG = styled.div`

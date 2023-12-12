@@ -284,6 +284,7 @@ const InputPopup = ({ modalClose }: props) => {
             {images.map((v, i) => (
               <InputForm.InputImageBox key={i}>
                 <InputForm.InputImage
+                  crop={true}
                   className=""
                   src={`${v}`}
                   alt={v}

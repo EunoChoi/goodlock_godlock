@@ -126,7 +126,7 @@ const LogInSignUp = {
     font-size: 16px;
     font-weight: 500;
     flex-shrink: 0;
-    border: 2px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.1);
     /* box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1); */
     &:disabled{
       background-color: lightgrey;

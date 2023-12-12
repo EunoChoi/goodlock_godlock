@@ -97,13 +97,14 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
         >
           {commentProps?.User?.profilePic ? (
             <ProfilePic
+              crop={true}
               className=""
               alt="profilePic"
               src={`${commentProps?.User?.profilePic}`}
               altImg={`${commentProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
             />
           ) : (
-            <ProfilePic className="" alt="profilePic" src="/img/defaultProfilePic.png" altImg="" />
+            <ProfilePic crop={true} className="" alt="profilePic" src="/img/defaultProfilePic.png" altImg="" />
           )}
 
           <UserNickname>{commentProps?.User?.nickname}</UserNickname>
@@ -189,8 +190,6 @@ const ProfilePic = styled(Img)`
   background-color: white;
 
   border: 2px solid rgba(0, 0, 0, 0.1);
-
-  object-fit: cover;
 `;
 const CommentEditButton = styled.button`
   padding: 4px 8px;

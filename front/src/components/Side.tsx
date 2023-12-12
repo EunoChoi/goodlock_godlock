@@ -87,13 +87,14 @@ const Side = ({ close }: Props) => {
             >
               {user.profilePic ? (
                 <ProfilePic
+                  crop={true}
                   className=""
                   src={user.profilePic}
                   altImg={`${user.profilePic.replace(/\/thumb\//, "/original/")}`}
                   alt="profilePic"
                 />
               ) : (
-                <ProfilePic className="" src="/img/defaultProfilePic.png" altImg="" alt="profilePic" />
+                <ProfilePic crop={true} className="" src="/img/defaultProfilePic.png" altImg="" alt="profilePic" />
               )}
             </div>
 
@@ -236,16 +237,16 @@ const LogInWrapper = styled.div`
   align-items: center;
 
   span {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.7);
   }
   button {
-    font-size: 24px;
+    font-size: 16px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.7);
 
-    padding: 6px 24px;
+    padding: 4px 16px;
 
     border: 2px solid rgba(0, 0, 0, 0.05);
     border-radius: 50px;
@@ -258,7 +259,6 @@ const LogInWrapper = styled.div`
 const ProfilePic = styled(Img)`
   width: 108px;
   height: 108px;
-  object-fit: cover;
 
   border-radius: 100%;
   border: 2px solid rgba(0, 0, 0, 0.1);

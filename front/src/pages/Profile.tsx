@@ -309,6 +309,7 @@ const Profile = () => {
               <ProfilePicWrapper>
                 {user?.profilePic ? (
                   <ProfilePic100
+                    crop={true}
                     className=""
                     alt="userProfilePic"
                     src={`${user?.profilePic}`}
@@ -316,6 +317,7 @@ const Profile = () => {
                   />
                 ) : (
                   <ProfilePic100
+                    crop={true}
                     className=""
                     alt="userProfilePic"
                     src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
@@ -480,6 +482,7 @@ const Profile = () => {
                       <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
                         {v.profilePic ? (
                           <ProfilePic32
+                            crop={true}
                             className=""
                             alt="ProfilePic"
                             src={v.profilePic}
@@ -487,6 +490,7 @@ const Profile = () => {
                           />
                         ) : (
                           <ProfilePic32
+                            crop={true}
                             className=""
                             alt="defaultProfilePic"
                             src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
@@ -528,6 +532,7 @@ const Profile = () => {
                       <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
                         {v.profilePic ? (
                           <ProfilePic32
+                            crop={true}
                             className=""
                             alt="ProfilePic"
                             src={v.profilePic}
@@ -535,6 +540,7 @@ const Profile = () => {
                           />
                         ) : (
                           <ProfilePic32
+                            crop={true}
                             className=""
                             alt="ProfilePic"
                             src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
@@ -929,7 +935,6 @@ const ProfilePic32 = styled(Img)`
   height: 32px;
   border-radius: 100%;
 
-  object-fit: cover;
   background-color: #fff;
 
   border: 2px solid rgba(0, 0, 0, 0.15);
@@ -939,7 +944,6 @@ const ProfilePic100 = styled(Img)`
   height: 100px;
   border-radius: 100%;
 
-  object-fit: cover;
   background-color: #fff;
 
   border: 2px solid rgba(0, 0, 0, 0.15);

@@ -145,6 +145,7 @@ const UserInfo = () => {
         <UserInfoWrapper ref={scrollTarget}>
           {targetUser?.profilePic ? (
             <Pic
+              crop={true}
               className=""
               alt="userProfilePic"
               src={`${targetUser?.profilePic}`}
@@ -152,6 +153,7 @@ const UserInfo = () => {
             />
           ) : (
             <Pic
+              crop={true}
               className=""
               alt="userProfilePic"
               src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
@@ -252,6 +254,7 @@ const UserInfo = () => {
                       <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
                         {v.profilePic ? (
                           <ProfilePic32
+                            crop={true}
                             className=""
                             alt="ProfilePic"
                             src={v.profilePic}
@@ -259,6 +262,7 @@ const UserInfo = () => {
                           />
                         ) : (
                           <ProfilePic32
+                            crop={true}
                             className=""
                             alt="defaultProfilePic"
                             src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
@@ -294,6 +298,7 @@ const UserInfo = () => {
                       <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
                         {v.profilePic ? (
                           <ProfilePic32
+                            crop={true}
                             className=""
                             alt="ProfilePic"
                             src={`${v.profilePic}`}
@@ -301,6 +306,7 @@ const UserInfo = () => {
                           />
                         ) : (
                           <ProfilePic32
+                            crop={true}
                             className=""
                             alt="ProfilePic"
                             src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
@@ -435,7 +441,6 @@ const Pic = styled(Img)`
   border-radius: 12px;
   /* box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2); */
   border: 3px solid rgba(0, 0, 0, 0.1);
-  object-fit: cover;
 
   /* @media (orientation: portrait) or (max-height: 480px) {
     width: 200px;
@@ -742,7 +747,6 @@ const ProfilePic32 = styled(Img)`
   height: 32px;
   border-radius: 100%;
 
-  object-fit: cover;
   background-color: #fff;
 
   border: 2px solid rgba(0, 0, 0, 0.1);

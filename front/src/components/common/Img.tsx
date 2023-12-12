@@ -1,7 +1,19 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const Img = ({ className, src, alt, altImg }: { className: string; src: string; alt: string; altImg: string }) => {
+const Img = ({
+  className,
+  src,
+  alt,
+  altImg,
+  crop
+}: {
+  className: string;
+  src: string;
+  alt: string;
+  altImg: string;
+  crop: boolean;
+}) => {
   const [errorCount, setErrorCount] = useState<number>(0);
   const [altImage, setAltImage] = useState<string>(altImg);
   const failImg = "/img/loadingFailed.png";
@@ -19,7 +31,8 @@ const Img = ({ className, src, alt, altImg }: { className: string; src: string; 
     }
   }, [errorCount]);
   return (
-    <img
+    <ImgSC
+      crop={crop}
       loading="lazy"
       className={className}
       src={src}
@@ -36,3 +49,13 @@ const Img = ({ className, src, alt, altImg }: { className: string; src: string; 
 };
 
 export default Img;
+
+const ImgSC = styled.img<{ crop: boolean }>`
+  object-fit: ${(props) => (props.crop ? "cover" : "contain")};
+
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+`;

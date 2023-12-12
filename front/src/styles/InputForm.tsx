@@ -132,7 +132,6 @@ const InputImageBox = styled.div`
 const InputImage = styled(Img)`
   width: 100px;
   height: 100px;
-  object-fit: cover;
 `;
 const ImageDeleteButton = styled.button`
   border: none;

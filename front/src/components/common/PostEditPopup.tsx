@@ -298,6 +298,7 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
             {images.map((v, i) => (
               <InputForm.InputImageBox key={i + v}>
                 <InputForm.InputImage
+                  crop={true}
                   className=""
                   src={`${v}`}
                   alt={v}
