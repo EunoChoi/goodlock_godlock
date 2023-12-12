@@ -79,7 +79,8 @@ const TextArea = styled.textarea`
   &::placeholder {
     position: absolute;
     left: 50%;
-    bottom: 300px;
+    bottom: calc(var(--vh, 1vh) * 40);
+
     transform: translate(-50%, -50%);
     font-size: 1.5em;
     font-weight: 500;
