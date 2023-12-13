@@ -355,6 +355,8 @@ export default PostZoom;
 const ImageBox = styled.div`
   img {
     object-position: 50% 50%;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
   }
 `;
 
@@ -381,7 +383,7 @@ const MobilePostMenu = styled.div`
   justify-content: space-around;
   align-items: center;
 
-  height: 48px;
+  height: 40px;
   padding: 0 12px;
 
   background-color: #c8daf3;
@@ -506,19 +508,16 @@ const PostImage = styled(Img)`
   width: 100%;
   height: 90vh;
 
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-
   /* display: flex;
   justify-content: center;
   align-items: center; */
 
   @media (orientation: portrait) or (max-height: 480px) {
     //top height 64px
-    //bottom height 60px + 48px
+    //bottom height 60px + 40px
     //indicator height 30px
-    height: calc(100vh - 64px - 60px - 48px - 30px);
-    height: calc(var(--vh, 1vh) * 100 - 64px - 48px - 30px);
+    height: calc(100vh - 64px - 60px - 40px - 30px);
+    height: calc(var(--vh, 1vh) * 100 - 64px - 40px - 30px);
     margin-bottom: 30px;
     flex-grow: 1;
   }
@@ -770,10 +769,10 @@ const MobilePost = styled.div`
 const MobileText = styled.div`
   width: 100%;
   //top height 64px
-  //bottom height 32px
+  //bottom height 40px
   //indicator 30px
-  height: calc(100vh - 64px - 48px - 30px);
-  height: calc(var(--vh, 1vh) * 100 - 64px - 48px - 30px);
+  height: calc(100vh - 64px - 40px - 30px);
+  height: calc(var(--vh, 1vh) * 100 - 64px - 40px - 30px);
   margin-bottom: 30px;
 
   display: flex;
