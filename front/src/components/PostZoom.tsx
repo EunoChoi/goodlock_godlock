@@ -148,7 +148,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
             <PCImagePost_LeftWrapper>
               <CustomCarousel indicator={postProps.Images.length === 1 ? false : true}>
                 {postProps.Images?.map((v: Image, i: number) => (
-                  <div key={i + v.src} onClick={() => setCrop((c) => !c)}>
+                  <ImageBox key={i + v.src} onClick={() => setCrop((c) => !c)}>
                     <PostImage
                       crop={crop}
                       className=""
@@ -156,7 +156,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                       alt="zoom image"
                       altImg=""
                     />
-                  </div>
+                  </ImageBox>
                 ))}
               </CustomCarousel>
             </PCImagePost_LeftWrapper>
@@ -351,6 +351,12 @@ const PostZoom = ({ postProps, modalClose }: props) => {
 };
 
 export default PostZoom;
+
+const ImageBox = styled.div`
+  img {
+    object-position: 50% 50%;
+  }
+`;
 
 const ProfileCircle200 = styled(Img)`
   width: 200px;
@@ -605,6 +611,7 @@ const PCTextPost_Left = styled.div`
     font-size: 36px;
   }
   #email {
+    margin-top: 8px;
     padding: 5px;
     font-size: 18px;
     color: rgba(0, 0, 0, 0.4);
