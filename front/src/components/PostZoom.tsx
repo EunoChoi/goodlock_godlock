@@ -11,7 +11,6 @@ import Clipboard from "react-clipboard.js";
 import Animation from "../styles/Animation";
 
 //mui
-import CancelIcon from "@mui/icons-material/Cancel";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
@@ -54,14 +53,6 @@ const PostZoom = ({ postProps, modalClose }: props) => {
   const isOnlyText = postProps.Images.length === 0;
   const isLiked = postProps?.Likers?.find((v: any) => v.id === user?.id);
 
-  const Controls = ({ zoomIn, zoomOut, resetTransform }: any) => (
-    <>
-      <button onClick={() => zoomIn()}>+</button>
-      <button onClick={() => zoomOut()}>-</button>
-      <button onClick={() => resetTransform()}>x</button>
-    </>
-  );
-
   return (
     <PostZoomBG
       onClick={() => {
@@ -75,7 +66,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
             <PCTextPost_Left>
               <Link to={`/userinfo/${postProps?.User?.id}/cat/0`}>
                 {postProps?.User?.profilePic ? (
-                  <ProfileCircle150
+                  <ProfileCircle200
                     crop={true}
                     className=""
                     alt="profilePic"
@@ -83,7 +74,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                     altImg={`${postProps?.User?.profilePic.replace(/\/thumb\//, "/originals/")}`}
                   />
                 ) : (
-                  <ProfileCircle150
+                  <ProfileCircle200
                     crop={true}
                     className=""
                     alt="profilePic"
@@ -145,7 +136,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
               </Like>
             </PCTextPost_Right>
             <PCCancelBtn onClick={() => modalClose()}>
-              <CancelIcon fontSize="large" />
+              <CloseIcon fontSize="medium" />
             </PCCancelBtn>
           </PCTextPost>
         )
@@ -239,7 +230,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
               </Like>
             </PCImagePost_RightWrapper>
             <PCCancelBtn onClick={() => modalClose()}>
-              <CancelIcon fontSize="large" />
+              <CloseIcon fontSize="medium" />
             </PCCancelBtn>
           </PCImagePost>
         )
@@ -361,9 +352,9 @@ const PostZoom = ({ postProps, modalClose }: props) => {
 
 export default PostZoom;
 
-const ProfileCircle150 = styled(Img)`
-  width: 150px;
-  height: 150px;
+const ProfileCircle200 = styled(Img)`
+  width: 200px;
+  height: 200px;
   border-radius: 100%;
   background-color: white;
 
@@ -509,6 +500,9 @@ const PostImage = styled(Img)`
   width: 100%;
   height: 90vh;
 
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+
   /* display: flex;
   justify-content: center;
   align-items: center; */
@@ -582,8 +576,7 @@ const PCTextPost = styled.div`
 const PCTextPost_Left = styled.div`
   width: 40%;
   height: 100%;
-  padding: 36px 20px;
-  padding-top: 15%;
+  padding: 72px 20px;
 
   background-color: rgba(0, 0, 0, 0.04);
 
@@ -609,7 +602,7 @@ const PCTextPost_Left = styled.div`
   #nickname {
     font-weight: 500;
     color: rgba(0, 0, 0, 0.7);
-    font-size: 32px;
+    font-size: 36px;
   }
   #email {
     padding: 5px;
@@ -719,10 +712,17 @@ const PCCancelBtn = styled.button`
   position: absolute;
   left: 10px;
   top: 10px;
+  padding: 4px;
 
   z-index: 1005;
 
-  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+  background-color: black;
+  border-radius: 100%;
 
   @media (orientation: portrait) or (max-height: 480px) {
     top: calc(100% - 50px);

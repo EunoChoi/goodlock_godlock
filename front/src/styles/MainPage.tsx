@@ -14,7 +14,8 @@ const EmptyNoti = styled.div`
   /* font-weight: 600; */
   span {
     margin-top: 20px;
-    font-size: 24px;
+    font-size: 20px;
+    font-weight: 500;
   }
 `;
 const LoadingIconWrapper = styled.div`

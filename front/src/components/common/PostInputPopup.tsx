@@ -47,7 +47,7 @@ const InputPopup = ({ modalClose }: props) => {
   }, []);
 
   //function
-  const cancleConfirm = () => {
+  const cancelConfirm = () => {
     confirmAlert({
       // title: "",
       message: "게시글 수정을 중단하시겠습니까?",
@@ -152,7 +152,7 @@ const InputPopup = ({ modalClose }: props) => {
   };
 
   return (
-    <InputForm.InputBG onClick={() => cancleConfirm()}>
+    <InputForm.InputBG onClick={() => cancelConfirm()}>
       <InputForm.InputWrapper onClick={(e) => e.stopPropagation()}>
         <InputForm.PostOptionWrapper>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
@@ -312,7 +312,7 @@ const InputPopup = ({ modalClose }: props) => {
         )}
         <InputForm.ButtonArea>
           <input ref={imageInput} type="file" accept="image/*" name="image" multiple hidden onChange={onChangeImages} />
-          <InputForm.FlexButton onClick={() => cancleConfirm()}>
+          <InputForm.FlexButton onClick={() => cancelConfirm()}>
             <CancelIcon />
             <span>취소</span>
           </InputForm.FlexButton>

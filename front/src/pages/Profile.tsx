@@ -566,7 +566,7 @@ const Profile = () => {
               {myInfoPosts?.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-                  <span>게시글이 존재하지 않습니다.</span>
+                  <span>포스트가 존재하지 않습니다.</span>
                 </EmptyNoti>
               )}
               {myInfoPosts?.data?.pages[0].length !== 0 && (
@@ -594,7 +594,7 @@ const Profile = () => {
               {myCommPosts?.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-                  <span>게시글이 존재하지 않습니다.</span>
+                  <span>포스트가 존재하지 않습니다.</span>
                 </EmptyNoti>
               )}
               {myCommPosts?.data?.pages[0].length !== 0 && (

@@ -140,7 +140,7 @@ const Home = () => {
           {noticePosts.data?.pages[0].length === 0 && (
             <MainPageStyle.EmptyNoti>
               <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-              <span>게시글이 존재하지 않습니다.</span>
+              <span>포스트가 존재하지 않습니다.</span>
             </MainPageStyle.EmptyNoti>
           )}
 
@@ -165,7 +165,7 @@ const Home = () => {
           {likedPosts.data?.pages[0].length === 0 && (
             <MainPageStyle.EmptyNoti>
               <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-              <span>게시글이 존재하지 않습니다.</span>
+              <span>포스트가 존재하지 않습니다.</span>
             </MainPageStyle.EmptyNoti>
           )}
           <InfiniteScroll

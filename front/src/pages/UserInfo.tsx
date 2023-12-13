@@ -328,7 +328,7 @@ const UserInfo = () => {
               {infoPosts?.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-                  <span>게시글이 존재하지 않습니다.</span>
+                  <span>포스트가 존재하지 않습니다.</span>
                 </EmptyNoti>
               )}
               {infoPosts?.data?.pages[0].length !== 0 && (
@@ -356,7 +356,7 @@ const UserInfo = () => {
               {commPosts?.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-                  <span>게시글이 존재하지 않습니다.</span>
+                  <span>포스트가 존재하지 않습니다.</span>
                 </EmptyNoti>
               )}
               {commPosts?.data?.pages[0].length !== 0 && (
@@ -384,7 +384,7 @@ const UserInfo = () => {
               {likedPosts?.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-                  <span>게시글이 존재하지 않습니다.</span>
+                  <span>포스트가 존재하지 않습니다.</span>
                 </EmptyNoti>
               )}
               {likedPosts?.data?.pages[0].length !== 0 && (
