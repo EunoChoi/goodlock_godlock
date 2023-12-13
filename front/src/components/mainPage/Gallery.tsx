@@ -95,6 +95,7 @@ const Gallery = () => {
       {toggle == 0 && (
         <Images>
           <InfiniteScroll
+            // scrollThreshold={0.5}
             hasMore={tipImages.hasNextPage || false}
             loader={
               <MainPageStyle.LoadingIconWrapper>
@@ -105,7 +106,7 @@ const Gallery = () => {
             dataLength={tipImages.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
           >
             {tipImages?.data?.pages.map((p, i) => (
-              <ImageList key={i} variant="masonry" cols={cols} gap={12}>
+              <ImageListSC key={i} variant="masonry" cols={cols} gap={12}>
                 {p.map((image: { src: string; PostId: number }) => (
                   <ImageListItem key={image.src}>
                     <img
@@ -122,7 +123,7 @@ const Gallery = () => {
                     />
                   </ImageListItem>
                 ))}
-              </ImageList>
+              </ImageListSC>
             ))}
           </InfiniteScroll>
         </Images>
@@ -130,6 +131,7 @@ const Gallery = () => {
       {toggle == 1 && (
         <Images>
           <InfiniteScroll
+            // scrollThreshold={0.5}
             hasMore={freeImages.hasNextPage || false}
             loader={
               <MainPageStyle.LoadingIconWrapper>
@@ -140,7 +142,7 @@ const Gallery = () => {
             dataLength={freeImages.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
           >
             {freeImages?.data?.pages.map((p, i) => (
-              <ImageList key={i} variant="masonry" cols={cols} gap={8}>
+              <ImageListSC key={i} variant="masonry" cols={cols} gap={8}>
                 {p.map((image: { src: string; PostId: number }) => (
                   <ImageListItem key={image.src}>
                     <img
@@ -157,7 +159,7 @@ const Gallery = () => {
                     />
                   </ImageListItem>
                 ))}
-              </ImageList>
+              </ImageListSC>
             ))}
           </InfiniteScroll>
         </Images>
@@ -168,6 +170,9 @@ const Gallery = () => {
 
 export default Gallery;
 
+const ImageListSC = styled(ImageList)`
+  margin-bottom: 12px;
+`;
 const Images = styled.div`
   animation: ${Animation.smoothAppear} 1s ease-in-out;
 

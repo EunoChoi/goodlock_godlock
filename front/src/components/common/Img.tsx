@@ -33,7 +33,7 @@ const Img = ({
   return (
     <ImgSC
       crop={crop}
-      loading="lazy"
+      // loading="lazy"
       className={className}
       src={src}
       alt={alt}
