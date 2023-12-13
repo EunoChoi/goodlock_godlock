@@ -468,7 +468,7 @@ const Profile = () => {
                 <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
                   <InsertEmoticonRoundedIcon fontSize="large" />
                 </Badge>
-                <span>Followings</span>
+                <div>Followings</div>
               </ListTitle>
 
               <List>
@@ -518,7 +518,7 @@ const Profile = () => {
                 <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
                   <InsertEmoticonOutlinedIcon fontSize="large" />
                 </Badge>
-                <span>Followers</span>
+                <div>Followers</div>
               </ListTitle>
 
               <List>
@@ -874,15 +874,15 @@ const EmptyUserNoti = styled.div`
 
 const ListTitle = styled.div`
   font-size: 60px;
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.7);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  > span {
+  > div {
     margin-top: 5px;
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 600;
     color: rgba(0, 0, 0, 0.7);
   }
   @media (orientation: portrait) or (max-height: 480px) {

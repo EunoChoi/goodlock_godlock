@@ -239,7 +239,7 @@ const UserInfo = () => {
             <ContentBox>
               <ListTitle>
                 <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
-                  <InsertEmoticonRoundedIcon fontSize="large" />
+                  <InsertEmoticonRoundedIcon fontSize="large" color="inherit" />
                 </Badge>
                 <div>Followings</div>
               </ListTitle>
@@ -450,7 +450,7 @@ const Pic = styled(Img)`
 
 const ListTitle = styled.div`
   font-size: 60px;
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.7);
   display: flex;
   flex-direction: column;
   justify-content: center;

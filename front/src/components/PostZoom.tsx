@@ -384,10 +384,11 @@ const MobilePostMenu = styled.div`
   justify-content: space-around;
   align-items: center;
 
-  height: 32px;
+  height: 48px;
   padding: 0 12px;
 
   background-color: #c8daf3;
+
   border-top: 2px solid rgba(0, 0, 0, 0.1);
   #close {
     display: flex;
@@ -514,10 +515,10 @@ const PostImage = styled(Img)`
 
   @media (orientation: portrait) or (max-height: 480px) {
     //top height 64px
-    //bottom height 60px + 32px
+    //bottom height 60px + 48px
     //indicator height 30px
-    height: calc(100vh - 64px - 60px - 32px - 30px);
-    height: calc(var(--vh, 1vh) * 100 - 64px - 32px - 30px);
+    height: calc(100vh - 64px - 60px - 48px - 30px);
+    height: calc(var(--vh, 1vh) * 100 - 64px - 48px - 30px);
     margin-bottom: 30px;
     flex-grow: 1;
   }
@@ -764,8 +765,8 @@ const MobileText = styled.div`
   //top height 64px
   //bottom height 32px
   //indicator 30px
-  height: calc(100vh - 64px - 32px - 30px);
-  height: calc(var(--vh, 1vh) * 100 - 64px - 32px - 30px);
+  height: calc(100vh - 64px - 48px - 30px);
+  height: calc(var(--vh, 1vh) * 100 - 64px - 48px - 30px);
   margin-bottom: 30px;
 
   display: flex;
