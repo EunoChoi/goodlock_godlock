@@ -18,20 +18,21 @@ import Upload from "../../functions/reactQuery/Upload";
 import CircularProgress from "@mui/material/CircularProgress";
 
 interface setStateProps {
-  modalClose: () => void;
+  setImageChangeModal: (b: boolean) => void;
 }
 
-const ProfileChangePopup = ({ modalClose }: setStateProps) => {
-  const [image, setImage] = useState<string>("");
-  const imageInput = useRef<HTMLInputElement>(null);
-  const [uploadLoading, setUploadLoading] = useState<boolean>(false);
-
+const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
   //useQuery
   const user = User.getData();
 
+  const [animation, setAnimation] = useState<"open" | "close" | "">("");
+
+  const [image, setImage] = useState<string>(user?.profilePic);
+  const imageInput = useRef<HTMLInputElement>(null);
+  const [uploadLoading, setUploadLoading] = useState<boolean>(false);
+
   //useMutatton
   const editProfilePic = User.editPic();
-
   const uploadImage = Upload.images();
 
   //로컬에서 이미지 에러 처리
@@ -51,12 +52,30 @@ const ProfileChangePopup = ({ modalClose }: setStateProps) => {
       });
     }
   };
+
   useEffect(() => {
-    setImage(user.profilePic);
+    setAnimation("open");
+
+    const closeAnimation = () => {
+      setAnimation("close");
+    };
+
+    window.addEventListener("popstate", closeAnimation);
+    return () => {
+      window.removeEventListener("popstate", closeAnimation);
+    };
   }, []);
 
   return (
-    <PopupBackBlur onClick={() => modalClose()}>
+    <PopupBG
+      animation={animation}
+      onTransitionEnd={() => {
+        if (animation === "close") {
+          setImageChangeModal(false);
+        }
+      }}
+      onClick={() => history.back()}
+    >
       <PopupBox
         onClick={(e) => {
           e.stopPropagation();
@@ -104,7 +123,7 @@ const ProfileChangePopup = ({ modalClose }: setStateProps) => {
         </ProfileImageBox>
 
         <ButtonArea>
-          <Button onClick={() => modalClose()}>
+          <Button onClick={() => history.back()}>
             <CancelIcon />
             <span>취소</span>
           </Button>
@@ -122,7 +141,7 @@ const ProfileChangePopup = ({ modalClose }: setStateProps) => {
                   { profilePic: image },
                   {
                     onSuccess: () => {
-                      modalClose();
+                      setAnimation("close");
                       setUploadLoading(false);
                     }
                   }
@@ -142,7 +161,7 @@ const ProfileChangePopup = ({ modalClose }: setStateProps) => {
           </FlexBox>
         </ButtonArea>
       </PopupBox>
-    </PopupBackBlur>
+    </PopupBG>
   );
 };
 
@@ -211,8 +230,6 @@ const PopupBox = styled.div`
   background-color: white;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 
-  animation: ${Animation.smoothAppear} 1s;
-
   > span {
     font-size: 24px;
     color: rgba(0, 0, 0, 0.8);
@@ -227,7 +244,11 @@ const PopupBox = styled.div`
     height: 100vh;
   }
 `;
-const PopupBackBlur = styled.div`
+const PopupBG = styled.div<{ animation: string }>`
+  opacity: 0;
+  opacity: ${(props) => (props.animation === "open" ? 1 : 0)};
+  transition: linear 0.3s all;
+
   z-index: 1000;
   position: fixed;
   top: 0;
@@ -236,6 +257,6 @@ const PopupBackBlur = styled.div`
   width: 100vw;
   height: 100vh;
 
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
 `;

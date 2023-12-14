@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LogInSignUp from "../../styles/LogInSignUp";
-import { ANIMATION_APPEAR, ANIMATION_DISAPPEAR } from "../../styles/Animation";
 import styled from "styled-components";
 
 //mui
@@ -8,13 +7,12 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import IsMobile from "../../functions/IsMobile";
 
 interface AppLayoutProps {
-  popupOpen: boolean;
-  modalClose: () => void;
+  setPopupOpen: (b: boolean) => void;
   children: React.ReactNode;
 }
 
-const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, modalClose, children }: AppLayoutProps) => {
-  const [animation, setAnimation] = useState(ANIMATION_APPEAR);
+const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayoutProps) => {
+  const [animation, setAnimation] = useState<string>("");
   const isMobile = IsMobile();
 
   const KAKAO_REST_KEY = process.env.REACT_APP_KAKAO_REST_KEY;
@@ -40,44 +38,58 @@ const PopupBox: React.FC<AppLayoutProps> = ({ popupOpen, modalClose, children }:
   //naver login
   const naverLogin = () => {
     window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${REDIRECT_URI_NAVER}&state=${NAVER_STATE_CODE}`;
-
     // 권한 재동의 필요시
     // window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${REDIRECT_URI_NAVER}&state=${NAVER_STATE_CODE}&auth_type=reprompt`;
   };
 
+  useEffect(() => {
+    const closeAnimation = () => {
+      setAnimation("close");
+    };
+
+    setAnimation("open");
+
+    window.addEventListener("popstate", closeAnimation);
+    return () => {
+      window.removeEventListener("popstate", closeAnimation);
+    };
+  }, []);
   return (
     <>
-      {popupOpen && (
-        <LogInSignUp.Background
-          animation={animation}
-          onClick={() => {
-            modalClose();
-          }}
-        >
-          <LogInSignUp.Box onClick={(e) => e.stopPropagation()}>
-            {children}
-            <LogInSignUp.Bar />
-            <SNSLoginWrapper>
-              <SNSLoginButton color="white" onClick={() => googleLogin()}>
-                <Logo src={`${process.env.PUBLIC_URL}/img/google.png`} alt="google" />
-              </SNSLoginButton>
+      <LogInSignUp.Background
+        animation={animation}
+        onClick={() => {
+          history.back();
+        }}
+        onTransitionEnd={() => {
+          if (animation === "close") {
+            setPopupOpen(false);
+          }
+        }}
+      >
+        <LogInSignUp.Box animation={animation} onClick={(e) => e.stopPropagation()}>
+          {children}
+          <LogInSignUp.Bar />
+          <SNSLoginWrapper>
+            <SNSLoginButton color="white" onClick={() => googleLogin()}>
+              <Logo src={`${process.env.PUBLIC_URL}/img/google.png`} alt="google" />
+            </SNSLoginButton>
 
-              <SNSLoginButton color="#FAE100" onClick={() => kakaoLogin()}>
-                <Logo src={`${process.env.PUBLIC_URL}/img/kakao.png`} alt="kakao" />
-              </SNSLoginButton>
+            <SNSLoginButton color="#FAE100" onClick={() => kakaoLogin()}>
+              <Logo src={`${process.env.PUBLIC_URL}/img/kakao.png`} alt="kakao" />
+            </SNSLoginButton>
 
-              <SNSLoginButton color="#02C73C" onClick={() => naverLogin()}>
-                <Logo src={`${process.env.PUBLIC_URL}/img/naver.png`} alt="naver" />
-              </SNSLoginButton>
-            </SNSLoginWrapper>
-          </LogInSignUp.Box>
-          {isMobile && (
-            <CancelBtn>
-              <CancelIcon fontSize="large" />
-            </CancelBtn>
-          )}
-        </LogInSignUp.Background>
-      )}
+            <SNSLoginButton color="#02C73C" onClick={() => naverLogin()}>
+              <Logo src={`${process.env.PUBLIC_URL}/img/naver.png`} alt="naver" />
+            </SNSLoginButton>
+          </SNSLoginWrapper>
+        </LogInSignUp.Box>
+        {isMobile && (
+          <CancelBtn>
+            <CancelIcon fontSize="large" />
+          </CancelBtn>
+        )}
+      </LogInSignUp.Background>
     </>
   );
 };
@@ -118,7 +130,7 @@ const Logo = styled.img`
 const CancelBtn = styled.button`
   position: fixed;
   top: 10px;
-  right: 10px;
+  left: 10px;
   color: rgba(0, 0, 0, 0.8);
   @media (orientation: landscape) and (max-height: 480px) {
     display: none;

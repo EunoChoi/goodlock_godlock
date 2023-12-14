@@ -1,25 +1,25 @@
 import styled from "styled-components";
-import Animation, { ANIMATION_APPEAR } from "./Animation";
+import Animation from "./Animation";
 
 /* eslint-disable */
 const LogInSignUp = {
   Background: styled.div<{ animation: string }>`
+    opacity: 0;
+    opacity: ${(props) => props.animation === "open" ? 1 : 0};
+
     z-index: 20;
-    /* transition: all ease-in-out 0.2s; */
+    transition: all linear 0.4s;
     width: 100vw;
     height: 100vh;
 
     position: absolute;
     top: 0;
     left: 0;
-    /* background: rgba(0, 0, 0, 0.05); */
-    backdrop-filter: blur(12px);
 
-    animation: ${(props) =>
-      props.animation === ANIMATION_APPEAR
-        ? Animation.smoothAppear
-        : Animation.smoothDisappear}
-      0.5s;
+    backdrop-filter: blur(12px);
+    background-color: rgba(0,0,0,0.3);
+
+    
     @media (orientation: portrait) or (max-height: 480px) {
         height: calc(var(--vh, 1vh) * 100);
         
@@ -29,10 +29,13 @@ const LogInSignUp = {
         flex-direction: column;
       }
   `,
-  Box: styled.div`
+  Box: styled.div<{ animation: string }>`
     width: 500px;
     height: 100vh; //모바일에서 380px, 데스크탑에선 500px
     height: calc(var(--vh, 1vh) * 100);
+
+    transform: ${(props) => props.animation === "open" ? " translateX(0px)" : "translateX(500px)"};
+    transition: all ease-out 0.3s;
 
     padding: 0 100px;
     display: flex;
@@ -50,6 +53,8 @@ const LogInSignUp = {
     top: 0;
     right: 0;
     @media (orientation: portrait) or (max-height: 480px) {
+      transform: translateX(0px);
+
       width: 100vw;
       height: 100vh;
       height: calc(var(--vh, 1vh) * 100);

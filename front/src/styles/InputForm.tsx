@@ -1,44 +1,46 @@
 import styled from "styled-components";
-import Animation from "./Animation";
 import Img from "../components/common/Img";
 
-const InputBG = styled.div`
+const InputBG = styled.div<{ animation: string }>`
+  opacity: 0;
+  opacity: ${(props) => (props.animation === "open" ? 1 : 0)};
+  transition: ease-in-out 0.3s all;
+
   z-index: 1010;
   position: fixed;
   top: 0;
   right: 0;
   width: 100vw;
   height: 100vh;
-  /* background: rgba(255, 255, 255, 0.5); */
+
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(5px);
-  animation: ${Animation.smoothAppear} 0.3s;
 `;
-const EditBG = styled.div`
+const EditBG = styled.div<{ animation: string }>`
+  opacity: 0;
+  opacity: ${(props) => (props.animation === "open" ? 1 : 0)};
+  transition: ease-in-out 0.3s all;
+
   z-index: 1010;
   position: fixed;
   top: 0;
   right: 0;
   width: 100vw;
   height: 100vh;
-  /* background: rgba(255, 255, 255, 0.5); */
+
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(5px);
-  animation: ${Animation.smoothAppear} 0.3s;
 `;
-const InputWrapper = styled.div`
-  transition: all ease-in-out 0.5s;
+const InputWrapper = styled.div<{ animation: string }>`
+  transform: ${(props) => (props.animation === "open" ? "translateX(0px)" : "translateX(500px)")};
+  transition: all linear 0.3s;
   position: fixed;
   right: 0;
   top: 0;
-  /* transform: translate(-50%, -50%); */
   height: 100vh;
   width: 500px;
-  /* margin-bottom: 20px; */
   background-color: #fff;
-  /* box-shadow: -10px 2px 10px rgba(0, 0, 0, 0.3); */
   box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.2);
-  /* border-radius: 5px; */
 
   display: -webkit-box;
   display: flex;
@@ -46,6 +48,7 @@ const InputWrapper = styled.div`
   align-items: center;
   flex-direction: column;
   @media (orientation: portrait) or (max-height: 480px) {
+    transform: translateX(0px);
     position: fixed;
     left: 0;
     top: 0;

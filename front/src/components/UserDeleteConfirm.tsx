@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import User from "../functions/reactQuery/User";
 
 interface setStateProps {
-  modalClose: () => void;
+  setUserDeleteModal: (b: boolean) => void;
 }
 
-const UserDeleteConfirm = ({ modalClose }: setStateProps) => {
+const UserDeleteConfirm = ({ setUserDeleteModal }: setStateProps) => {
+  const [animation, setAnimation] = useState<"open" | "close" | "">("");
+
   const [text, setText] = useState<string>("");
   const userDelete = User.delete();
   const user = User.getData();
@@ -22,15 +24,36 @@ const UserDeleteConfirm = ({ modalClose }: setStateProps) => {
     }
   };
 
+  useEffect(() => {
+    setAnimation("open");
+
+    const closeAnimation = () => {
+      setAnimation("close");
+    };
+
+    window.addEventListener("popstate", closeAnimation);
+    return () => {
+      window.removeEventListener("popstate", closeAnimation);
+    };
+  }, []);
+
   return (
-    <BG onClick={() => modalClose()}>
+    <BG
+      animation={animation}
+      onTransitionEnd={() => {
+        if (animation === "close") {
+          setUserDeleteModal(false);
+        }
+      }}
+      onClick={() => history.back()}
+    >
       <Popup onClick={(event) => event.stopPropagation()}>
         <span>탈퇴를 진행하려면 &quot;{confirmWord}&quot;를 입력해주세요.</span>
         <span>🚨 탈퇴가 완료되면 작성한 모든 게시글이 삭제됩니다.</span>
         <input value={text} onChange={(e) => setText(e.target.value)} />
         <ButtonWrapper>
-          <button onClick={() => modalClose()}>취소</button>
-          <button onClick={() => userDeleteConfirm()}>확인</button>
+          <button onClick={() => history.back()}>취소</button>
+          <button onClick={userDeleteConfirm}> 확인</button>
         </ButtonWrapper>
       </Popup>
     </BG>
@@ -39,7 +62,11 @@ const UserDeleteConfirm = ({ modalClose }: setStateProps) => {
 
 export default UserDeleteConfirm;
 
-const BG = styled.div`
+const BG = styled.div<{ animation: string }>`
+  opacity: 0;
+  opacity: ${(props) => (props.animation === "open" ? 1 : 0)};
+  transition: linear 0.3s all;
+
   position: fixed;
   top: 0;
   left: 0;
@@ -54,12 +81,6 @@ const BG = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  opacity: 0;
-  -webkit-animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
-  -moz-animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
-  -o-animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
-  animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
 `;
 
 const Popup = styled.div`

@@ -61,12 +61,6 @@ const Post = ({ postProps }: any) => {
   const open = Boolean(morePop);
   const [timer, setTimer] = useState<NodeJS.Timeout>();
 
-  const modalClose = () => {
-    history.back();
-    setZoom(false);
-    setPostEdit(false);
-  };
-
   const makeCorectUrl = (url: string) => {
     url = url.toLowerCase();
     return "https://" + url.replace("https:/", "").replace("http:/", "");
@@ -99,15 +93,10 @@ const Post = ({ postProps }: any) => {
     setZoom(false);
   }, [postProps.id]);
 
-  window.addEventListener("popstate", () => {
-    setPostEdit(false);
-    setZoom(false);
-  });
-
   return (
     <PostWrapper onClick={() => setMorePop(null)}>
       {/* 포스트 줌 팝업 */}
-      {isZoom && <PostZoom modalClose={modalClose} postProps={postProps} />}
+      {isZoom && <PostZoom setZoom={setZoom} postProps={postProps} />}
       <Popper open={open} anchorEl={morePop} placement="top-end">
         <EditPopup>
           <Button
@@ -154,7 +143,7 @@ const Post = ({ postProps }: any) => {
       {/* 포스트 수정 팝업 */}
       {isPostEdit ? (
         <PostEditPopup
-          modalClose={modalClose}
+          setPostEdit={setPostEdit}
           postProps={{
             type: postProps.type,
             id: postProps.id,

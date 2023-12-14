@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components/macro";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -6,9 +6,6 @@ import CustomCarousel from "./common/CustomCarousel";
 import Img from "./common/Img";
 import { toast } from "react-toastify";
 import Clipboard from "react-clipboard.js";
-
-//style
-import Animation from "../styles/Animation";
 
 //mui
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -28,10 +25,12 @@ interface Image {
 }
 interface props {
   postProps: any;
-  modalClose: () => void;
+  setZoom: (b: boolean) => void;
 }
 
-const PostZoom = ({ postProps, modalClose }: props) => {
+const PostZoom = ({ postProps, setZoom }: props) => {
+  const [animation, setAnimation] = useState<"open" | "close" | "">("");
+
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   const user = User.getData();
@@ -53,10 +52,32 @@ const PostZoom = ({ postProps, modalClose }: props) => {
   const isOnlyText = postProps.Images.length === 0;
   const isLiked = postProps?.Likers?.find((v: any) => v.id === user?.id);
 
+  const onClose = () => {
+    history.back();
+  };
+
+  useEffect(() => {
+    const closeAnimation = () => {
+      setAnimation("close");
+    };
+
+    setAnimation("open");
+    window.addEventListener("popstate", closeAnimation);
+    return () => {
+      window.removeEventListener("popstate", closeAnimation);
+    };
+  }, []);
+
   return (
     <PostZoomBG
+      animation={animation}
+      onTransitionEnd={() => {
+        if (animation === "close") {
+          setZoom(false);
+        }
+      }}
       onClick={() => {
-        modalClose();
+        onClose();
       }}
     >
       {
@@ -135,7 +156,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                 </button>
               </Like>
             </PCTextPost_Right>
-            <PCCancelBtn onClick={() => modalClose()}>
+            <PCCancelBtn onClick={() => onClose()}>
               <CloseIcon fontSize="medium" />
             </PCCancelBtn>
           </PCTextPost>
@@ -229,7 +250,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                 </button>
               </Like>
             </PCImagePost_RightWrapper>
-            <PCCancelBtn onClick={() => modalClose()}>
+            <PCCancelBtn onClick={() => onClose()}>
               <CloseIcon fontSize="medium" />
             </PCCancelBtn>
           </PCImagePost>
@@ -311,7 +332,7 @@ const PostZoom = ({ postProps, modalClose }: props) => {
                 </MobileText>
               </CustomCarousel>
               <MobilePostMenu>
-                <button id="close" onClick={() => modalClose()}>
+                <button id="close" onClick={() => onClose()}>
                   <CloseIcon />
                   <span>Close</span>
                 </button>
@@ -522,16 +543,13 @@ const PostImage = styled(Img)`
     flex-grow: 1;
   }
 `;
-// const Image = styled.img`
-//   width: 100%;
-//   height: 100%;
-
-//   object-fit: contain;
-//   transition: all ease-in-out 1s;
-// `;
 
 //pc post zoom
-const PostZoomBG = styled.div`
+const PostZoomBG = styled.div<{ animation: string }>`
+  opacity: 0;
+  opacity: ${(props) => (props.animation === "open" ? 1 : 0)};
+  transition: linear 0.4s all;
+
   overflow: hidden;
 
   z-index: 1002;
@@ -575,8 +593,6 @@ const PCTextPost = styled.div`
   background-color: #fff;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.2);
-
-  animation: ${Animation.smoothAppear} 0.7s;
 `;
 const PCTextPost_Left = styled.div`
   width: 40%;
@@ -652,8 +668,6 @@ const PCImagePost = styled.div`
   background-color: #fff;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.2);
-
-  animation: ${Animation.smoothAppear} 0.7s;
 `;
 const PCImagePost_LeftWrapper = styled.div`
   width: 65%;
@@ -755,8 +769,6 @@ const MobileWrapper = styled.div`
   background-color: #fff;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.2);
-
-  animation: ${Animation.smoothAppear} 0.7s;
 `;
 const MobilePost = styled.div`
   width: 100%;

@@ -23,10 +23,12 @@ import Box from "@mui/joy/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 
 interface props {
-  modalClose: () => void;
+  setPostInputOpen: (b: boolean) => void;
 }
 
-const InputPopup = ({ modalClose }: props) => {
+const InputPopup = ({ setPostInputOpen }: props) => {
+  const [animation, setAnimation] = useState<"open" | "close" | "">("");
+
   const params = useParams();
   const inputType = params.type ? parseInt(params.type) : 0;
   const placeholders = ["Notice Post", "Tip Post", "Free Post"];
@@ -38,31 +40,13 @@ const InputPopup = ({ modalClose }: props) => {
   const [end, setEnd] = useState<Date | null>(null);
   const [link, setLink] = useState<string>("");
   const isInfoPost = inputType === 1;
-
   const imageInput = useRef<HTMLInputElement>(null);
-
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
 
-  //function
-  const cancelConfirm = () => {
-    confirmAlert({
-      // title: "",
-      message: "게시글 수정을 중단하시겠습니까?",
-      buttons: [
-        {
-          label: "취소",
-          onClick: () => console.log("취소")
-        },
-        {
-          label: "확인",
-          onClick: () => modalClose()
-        }
-      ]
-    });
-  };
+  //useMutation
+  const addPost = Post.add();
+  const uploadImages = Upload.images();
+
   const postCreateSubmit = () => {
     //컨텐츠 조건
     if (content.length < 8 || content.length > 2200) {
@@ -107,15 +91,15 @@ const InputPopup = ({ modalClose }: props) => {
       },
       {
         onSuccess: () => {
-          modalClose();
+          onClose();
         }
       }
     );
   };
-
-  //useMutation
-  const addPost = Post.add();
-  const uploadImages = Upload.images();
+  const onClose = () => {
+    setPostInputOpen(false);
+    history.back();
+  };
 
   //로컬에서 이미지 등록 에러 처리
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -151,9 +135,49 @@ const InputPopup = ({ modalClose }: props) => {
     }
   };
 
+  useEffect(() => {
+    const cancelConfirm = () => {
+      confirmAlert({
+        // title: "",
+        message: "게시글 수정을 중단하시겠습니까?",
+        buttons: [
+          {
+            label: "취소",
+            onClick: () => {
+              const url = document.URL + "/modal";
+              history.pushState({ page: "modal" }, "", url);
+            }
+          },
+          {
+            label: "확인",
+            onClick: () => {
+              setAnimation("close");
+            }
+          }
+        ]
+      });
+    };
+
+    setAnimation("open");
+    inputRef.current?.focus();
+
+    window.addEventListener("popstate", cancelConfirm);
+    return () => {
+      window.removeEventListener("popstate", cancelConfirm);
+    };
+  }, []);
+
   return (
-    <InputForm.InputBG onClick={() => cancelConfirm()}>
-      <InputForm.InputWrapper onClick={(e) => e.stopPropagation()}>
+    <InputForm.InputBG
+      onTransitionEnd={() => {
+        if (animation === "close") {
+          setPostInputOpen(false);
+        }
+      }}
+      animation={animation}
+      onClick={() => history.back()}
+    >
+      <InputForm.InputWrapper animation={animation} onClick={(e) => e.stopPropagation()}>
         <InputForm.PostOptionWrapper>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
             {isInfoPost && (
@@ -312,7 +336,7 @@ const InputPopup = ({ modalClose }: props) => {
         )}
         <InputForm.ButtonArea>
           <input ref={imageInput} type="file" accept="image/*" name="image" multiple hidden onChange={onChangeImages} />
-          <InputForm.FlexButton onClick={() => cancelConfirm()}>
+          <InputForm.FlexButton onClick={() => history.back()}>
             <CancelIcon />
             <span>취소</span>
           </InputForm.FlexButton>

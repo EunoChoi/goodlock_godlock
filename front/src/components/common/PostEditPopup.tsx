@@ -38,11 +38,13 @@ interface serverPostData {
 }
 
 interface props {
-  modalClose: () => void;
+  setPostEdit: (b: boolean) => void;
   postProps: serverPostData;
 }
 
-const PostEditPopup = ({ modalClose, postProps }: props) => {
+const PostEditPopup = ({ setPostEdit, postProps }: props) => {
+  const [animation, setAnimation] = useState<"open" | "close" | "">("");
+
   const placeholders = ["Notice Post", "Tip Post", "Free Post"];
   const [content, setContent] = useState<string>(postProps.content);
   const [images, setImages] = useState<string[]>(postProps.images.map((v) => v.src));
@@ -56,31 +58,13 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
   const isInfoPost = postProps.type === 1;
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
 
   //useMutation
   const editPost = Post.edit();
   const uploadImages = Upload.images();
 
   //function
-  const cancelConfirm = () => {
-    confirmAlert({
-      // title: "",
-      message: "게시글 수정을 중단하시겠습니까?",
-      buttons: [
-        {
-          label: "취소",
-          onClick: () => console.log("취소")
-        },
-        {
-          label: "확인",
-          onClick: () => modalClose()
-        }
-      ]
-    });
-  };
+
   const postEditSubmit = () => {
     //컨텐츠 조건
     if (content.length < 8 || content.length > 2200) {
@@ -129,13 +113,13 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
       },
       {
         onSuccess: () => {
-          modalClose();
+          history.back();
         }
       }
     );
   };
-  //로컬에서 이미지 에러 처리
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //로컬에서 이미지 에러 처리
     if (e.target.files) {
       const imageFormData = new FormData();
 
@@ -165,11 +149,51 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
       });
     }
   };
-  useEffect(() => console.log(images), [images]);
+
+  useEffect(() => {
+    const cancelConfirm = () => {
+      return confirmAlert({
+        // title: "",
+        message: "게시글 수정을 중단하시겠습니까?",
+        buttons: [
+          {
+            label: "취소",
+            onClick: () => {
+              const url = document.URL + "/modal";
+              history.pushState({ page: "modal" }, "", url);
+            }
+          },
+          {
+            label: "확인",
+            onClick: () => {
+              setAnimation("close");
+              return true;
+            }
+          }
+        ]
+      });
+    };
+
+    setAnimation("open");
+    inputRef.current?.focus();
+
+    window.addEventListener("popstate", cancelConfirm);
+    return () => {
+      window.removeEventListener("popstate", cancelConfirm);
+    };
+  }, []);
 
   return (
-    <InputForm.EditBG onClick={() => cancelConfirm()}>
-      <InputForm.InputWrapper onClick={(e) => e.stopPropagation()}>
+    <InputForm.EditBG
+      onTransitionEnd={() => {
+        if (animation === "close") {
+          setPostEdit(false);
+        }
+      }}
+      animation={animation}
+      onClick={() => history.back()}
+    >
+      <InputForm.InputWrapper animation={animation} onClick={(e) => e.stopPropagation()}>
         <InputForm.PostOptionWrapper>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
             {isInfoPost && (
@@ -327,7 +351,7 @@ const PostEditPopup = ({ modalClose, postProps }: props) => {
         )}
         <InputForm.ButtonArea>
           <input ref={imageInput} type="file" accept="image/*" name="image" multiple hidden onChange={onChangeImages} />
-          <InputForm.FlexButton onClick={() => cancelConfirm()}>
+          <InputForm.FlexButton onClick={() => history.back()}>
             <CancelIcon />
             <span>취소</span>
           </InputForm.FlexButton>
@@ -355,11 +379,6 @@ export default PostEditPopup;
 
 const ImageSC = styled(Img)`
   margin-left: 24px;
-  padding-left: 24px;
-  background-color: red;
-`;
-
-const ImageSC2 = styled.img`
   margin-left: 24px;
   padding-left: 24px;
   background-color: red;

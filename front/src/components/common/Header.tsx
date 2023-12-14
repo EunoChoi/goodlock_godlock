@@ -17,35 +17,6 @@ const Header = () => {
   let currentPage = type ? parseInt(type) : -1;
   if (window.location.pathname.split("/")[1] === "profile") currentPage = 4;
 
-  // const handleScroll = async () => {
-  //   const preY = window.scrollY;
-  //   setTimeout(() => {
-  //     // console.log("currentY : ", window.scrollY);
-  //     // console.log("preY : ", preY);
-  //     if (preY === window.scrollY) {
-  //       // console.log("스크롤 멈춤");
-  //     } else if (preY < window.scrollY) {
-  //       // console.log("스크롤 내려가는 중");
-  //       setMountToggle(false);
-  //     } else {
-  //       // console.log("스크롤 올라가는 중");
-  //       setMountToggle(false);
-  //     }
-  //   }, 100);
-  // };
-  // useEffect(() => {
-  //   window.addEventListener("scroll", () => handleScroll());
-  //   return () => {
-  //     window.removeEventListener("scroll", () => handleScroll());
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   if (!isMobile) {
-  //     setMountToggle(false);
-  //   }
-  // }, [isMobile]);
-
   return (
     <MobileHeaderWrapper>
       <HeaderLogoMobile

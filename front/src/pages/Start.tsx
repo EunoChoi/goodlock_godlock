@@ -21,11 +21,6 @@ const Start = () => {
   const { data: isLoggedIn } = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data));
   const navigate = useNavigate();
 
-  const modalClose = () => {
-    history.back();
-    setPopupOpen(false);
-  };
-
   const start = () => {
     if (isLoggedIn) navigate("/main/0");
     else {
@@ -39,20 +34,20 @@ const Start = () => {
     setToggle(0);
   }, [popupOpen]);
 
-  window.addEventListener("popstate", () => {
-    setPopupOpen(false);
-  });
-
   return (
     <>
+      {popupOpen && (
+        <>
+          <PopupBox setPopupOpen={setPopupOpen}>
+            {toggle === 0 && <LogIn setToggle={setToggle} setPopupOpen={setPopupOpen}></LogIn>}
+            {toggle === 1 && <SignUp setToggle={setToggle}></SignUp>}
+            {toggle === 2 && <FindPassword setToggle={setToggle}></FindPassword>}
+          </PopupBox>
+        </>
+      )}
       <BG />
       <BG2 />
-      <Footer>
-        <span>Contact : goodlockgodlock@gmail.com</span>
-        <span>
-          <a href="http://www.freepik.com">Art designed by rawpixel.com / Freepik</a>
-        </span>
-      </Footer>
+
       <StartWrapper>
         <Title>
           <div>
@@ -80,15 +75,13 @@ const Start = () => {
 
         <StartImg alt="start_image" src={`${process.env.PUBLIC_URL}/img/start_image.png`}></StartImg>
       </StartWrapper>
-      {popupOpen && (
-        <>
-          <PopupBox popupOpen={popupOpen} modalClose={modalClose}>
-            {toggle === 0 && <LogIn setToggle={setToggle} setPopupOpen={setPopupOpen}></LogIn>}
-            {toggle === 1 && <SignUp setToggle={setToggle}></SignUp>}
-            {toggle === 2 && <FindPassword setToggle={setToggle}></FindPassword>}
-          </PopupBox>
-        </>
-      )}
+
+      <Footer>
+        <span>Contact : godlock.info@gmail.com</span>
+        <span>
+          <a href="http://www.freepik.com">Art designed by rawpixel.com / Freepik</a>
+        </span>
+      </Footer>
     </>
   );
 };
@@ -187,13 +180,24 @@ const Footer = styled.div`
   color: rgba(0, 0, 0, 0.5);
 
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: end;
+  justify-content: end;
+  align-items: center;
+  /* align-items: end; */
   padding: 6px 12px;
 
   span:first-child {
-    margin-bottom: 4px;
+    margin-right: 12px;
+  }
+
+  @media (orientation: portrait) or (max-height: 480px) {
+    font-size: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+    span:first-child {
+      margin-right: 0px;
+      margin-bottom: 4px;
+    }
   }
 `;
 

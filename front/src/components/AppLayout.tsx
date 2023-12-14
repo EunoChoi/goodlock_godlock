@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "./common/Header";
 import styled from "styled-components/macro";
 import { useParams } from "react-router-dom";
-import { confirmAlert } from "react-confirm-alert";
+import Animation from "../styles/Animation";
 
 //mui
 import PostAddIcon from "@mui/icons-material/PostAdd";
@@ -12,10 +12,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 //component
 import InputPopup from "./common/PostInputPopup";
 import Side from "./Side";
-import Animation from "../styles/Animation";
 import IsMobile from "../functions/IsMobile";
 import User from "../functions/reactQuery/User";
 import Bot from "./chatbot/Bot";
+import MobileSide from "./MobileSide";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -31,8 +31,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   const [mobileSideOpen, setMobileSideOpen] = useState<boolean>(false);
 
-  const [sideBarAnimation, setSideBarAnimation] = useState<boolean>(false);
-
   //공지사항 작성 가능 레벨
   const level = 10;
 
@@ -41,45 +39,15 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const isUserPostOk: boolean = postType !== undefined && postType !== 0 && postType !== 3;
   const isAdminPostOk: boolean = postType === 0 && user.level >= level ? true : false;
 
-  const modalClose = () => {
-    history.back();
-    setPostInputOpen(false);
-  };
   const sideOpen = () => {
     const url = document.URL + "/modal";
     history.pushState({ page: "modal" }, "", url);
     setMobileSideOpen(true);
   };
-  const sideclose = () => {
-    setMobileSideOpen(false);
-  };
-  const handleScroll = async () => {
-    if (window.scrollY > 2000) {
-      setGoTopButton(true);
-    } else {
-      setGoTopButton(false);
-    }
-  };
-  const InputEditOpenCloseToggle = () => {
-    if (isPostInputOpen === false) {
-      const url = document.URL + "/modal";
-      history.pushState({ page: "modal" }, "", url);
-      setPostInputOpen(true);
-    } else {
-      confirmAlert({
-        message: "게시글 작성을 중단하시겠습니까?",
-        buttons: [
-          {
-            label: "취소",
-            onClick: () => console.log("취소")
-          },
-          {
-            label: "확인",
-            onClick: () => setPostInputOpen((c) => !c)
-          }
-        ]
-      });
-    }
+  const InputEditOpen = () => {
+    const url = document.URL + "/modal";
+    history.pushState({ page: "modal" }, "", url);
+    setPostInputOpen(true);
   };
   const scrollTop = () => {
     window.scrollTo({
@@ -89,18 +57,18 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     });
   };
 
-  window.addEventListener("popstate", () => {
-    setPostInputOpen(false);
-    setSideBarAnimation(true);
-    setTimeout(() => {
-      sideclose();
-    }, 250);
-  });
-
   useEffect(() => {
-    window.addEventListener("scroll", () => handleScroll());
+    const handleScroll = async () => {
+      if (window.scrollY > 2000) {
+        setGoTopButton(true);
+      } else {
+        setGoTopButton(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", () => handleScroll());
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -111,7 +79,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   return (
     <>
-      {isPostInputOpen && <InputPopup modalClose={modalClose} />}
+      {isPostInputOpen && <InputPopup setPostInputOpen={setPostInputOpen} />}
       <BotWrapper>
         <Bot />
       </BotWrapper>
@@ -124,13 +92,13 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         {
           //user level이 10이상이여야 공지사항 작성이 가능
           isAdminPostOk && (
-            <button color="inherit" onClick={() => InputEditOpenCloseToggle()}>
+            <button color="inherit" onClick={() => InputEditOpen()}>
               <PostAddIcon fontSize="medium" />
             </button>
           )
         }
         {isUserPostOk && (
-          <button color="inherit" onClick={() => InputEditOpenCloseToggle()}>
+          <button color="inherit" onClick={() => InputEditOpen()}>
             <PostAddIcon fontSize="medium" />
           </button>
         )}
@@ -139,7 +107,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             id="menuButton"
             color="inherit"
             onClick={() => {
-              setSideBarAnimation(false);
               sideOpen();
             }}
           >
@@ -150,26 +117,14 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
       {isMobile ? (
         <MobileWrapper>
-          {mobileSideOpen && (
-            <MobileSideBG
-              animation={sideBarAnimation}
-              onClick={() => {
-                setSideBarAnimation(true);
-                history.back();
-              }}
-            >
-              <MobileSide animation={sideBarAnimation} onClick={(e) => e.stopPropagation()}>
-                <Side close={sideclose} />
-              </MobileSide>
-            </MobileSideBG>
-          )}
+          {mobileSideOpen && <MobileSide setMobileSideOpen={setMobileSideOpen} />}
           <Children>{children}</Children>
           <Header />
         </MobileWrapper>
       ) : (
         <PcWrapper>
           <LeftWrapper>
-            <Side close={sideclose} />
+            <Side />
           </LeftWrapper>
           <RightWrapper>
             <Children id="scrollWrapper">{children}</Children>
@@ -181,38 +136,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 };
 
 export default AppLayout;
-
-const MobileSideBG = styled.div<{ animation: boolean }>`
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  z-index: 2000;
-
-  width: 100vw;
-  height: 100vh;
-
-  /* background-color: rgba(0, 0, 0, 0.05); */
-  backdrop-filter: blur(8px);
-
-  animation: ${(props) => (props.animation ? Animation.smoothDisappear : "")} 0.3s ease-out;
-`;
-
-const MobileSide = styled.div<{ animation: boolean }>`
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  z-index: 2002;
-
-  width: 80vw;
-  height: 100vh;
-  height: calc(var(--vh, 1vh) * 100);
-  border-right: 2px solid rgba(0, 0, 0, 0.1);
-
-  animation: ${(props) => (props.animation ? Animation.smoothAppearRightToLeft : Animation.smoothAppearLeftToRight)}
-    0.3s ease-out;
-`;
 
 const BotWrapper = styled.div`
   .rsc-float-button {
@@ -272,6 +195,7 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
     }
   }
   > button {
+    animation: ${Animation.smoothAppear} 0.3s ease-in-out;
     transition: 0.3s ease-in-out all;
     @media (hover: hover) and (pointer: fine) {
       &:hover {

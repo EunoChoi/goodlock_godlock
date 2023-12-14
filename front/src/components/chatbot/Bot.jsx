@@ -9,7 +9,7 @@ import SmartToyIcon from "@mui/icons-material/SmartToy";
 
 import SendEmail from "./SendEmail";
 
-const Bot = (e) => {
+const Bot = () => {
   const user = User.getData();
   const [open, setOpen] = useState(false);
 
@@ -205,9 +205,16 @@ const Bot = (e) => {
     }
   }, [open]);
 
-  window.addEventListener("popstate", () => {
-    setOpen(false);
-  });
+  useEffect(() => {
+    const close = () => {
+      setOpen(false);
+    };
+
+    window.addEventListener("popstate", close);
+    return () => {
+      window.removeEventListener("popstate", close);
+    };
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

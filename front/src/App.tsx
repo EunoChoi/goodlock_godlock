@@ -38,40 +38,37 @@ function App() {
     }
   });
 
-  const updateMobileViewport = () => {
-    const vh = window.visualViewport?.height;
-    const vw = window.visualViewport?.width;
-
-    // console.log(vw, window.screen.width, window.innerWidth);
-
-    if (vh && vw) {
-      if (vh > vw && vw == window.innerWidth) {
-        document.documentElement.style.setProperty("--vh", `${vh * 0.01}px`);
-      }
-      if (vw > vh && vh == window.innerHeight) {
-        document.documentElement.style.setProperty("--vh", `${vh * 0.01}px`);
-      }
-    }
-  };
-
-  window.addEventListener("popstate", () => {
-    if (history.state.page === "modal") {
-      history.back();
-    }
-  });
-
-  //모달 열린 상태에서 새로고침시 history.back 처리, url 더러워짐 방지
   useEffect(() => {
-    if (history.state.page === "modal") {
-      history.back();
-    }
-  }, []);
+    const removeModalUrl = () => {
+      if (history.state.page === "modal") {
+        history.back();
+      }
+    };
+    const updateMobileViewport = () => {
+      const vh = window.visualViewport?.height;
+      const vw = window.visualViewport?.width;
 
-  useEffect(() => {
-    visualViewport?.addEventListener("resize", () => updateMobileViewport());
+      if (vh && vw) {
+        if (vh > vw && vw == window.innerWidth) {
+          document.documentElement.style.setProperty("--vh", `${vh * 0.01}px`);
+        }
+        if (vw > vh && vh == window.innerHeight) {
+          document.documentElement.style.setProperty("--vh", `${vh * 0.01}px`);
+        }
+      }
+    };
+
     updateMobileViewport();
+
+    if (history.state.page === "modal") {
+      history.back();
+    }
+
+    visualViewport?.addEventListener("resize", () => updateMobileViewport());
+    window.addEventListener("popstate", removeModalUrl);
     return () => {
       visualViewport?.removeEventListener("resize", () => updateMobileViewport());
+      window.removeEventListener("popstate", removeModalUrl);
     };
   }, []);
 

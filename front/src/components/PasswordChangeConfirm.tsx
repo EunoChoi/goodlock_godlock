@@ -1,28 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import User from "../functions/reactQuery/User";
 import Axios from "../apis/Axios";
 
 interface setStateProps {
-  modalClose: () => void;
+  setPasswordChangeModal: (b: boolean) => void;
 }
 
-const PasswordChangeConfirm = ({ modalClose }: setStateProps) => {
+const PasswordChangeConfirm = ({ setPasswordChangeModal }: setStateProps) => {
+  const [animation, setAnimation] = useState<"open" | "close" | "">("");
+
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [afterPassword, setAfterPassword] = useState<string>("");
   const user = User.getData();
   const [passwordConfirm, setPasswordConfirm] = useState<boolean>(false);
 
+  useEffect(() => {
+    setAnimation("open");
+
+    const closeAnimation = () => {
+      setAnimation("close");
+    };
+
+    window.addEventListener("popstate", closeAnimation);
+    return () => {
+      window.removeEventListener("popstate", closeAnimation);
+    };
+  }, []);
+
   return (
-    <BG onClick={() => modalClose()}>
+    <BG
+      animation={animation}
+      onTransitionEnd={() => {
+        if (animation === "close") {
+          setPasswordChangeModal(false);
+        }
+      }}
+      onClick={() => history.back()}
+    >
       <Popup onClick={(event) => event.stopPropagation()}>
         {passwordConfirm || (
           <>
             <span>현재 사용중인 비밀번호를 입력해주세요.</span>
             <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
             <ButtonWrapper>
-              <button onClick={() => modalClose()}>취소</button>
+              <button onClick={() => history.back()}>취소</button>
               <button
                 onClick={() => {
                   //현재 비밀번호 확인 api 요청
@@ -48,14 +71,14 @@ const PasswordChangeConfirm = ({ modalClose }: setStateProps) => {
             <span>변경할 비밀번호를 입력해주세요.</span>
             <input type="password" value={afterPassword} onChange={(e) => setAfterPassword(e.target.value)} />
             <ButtonWrapper>
-              <button onClick={() => modalClose()}>취소</button>
+              <button onClick={() => history.back()}>취소</button>
               <button
                 onClick={() => {
                   //비밀번호 수정 api 요청
                   Axios.patch("user/password", { userId: user.id, afterPassword })
                     .then((res) => {
                       toast.success("비밀번호 변경이 완료되었습니다.");
-                      modalClose();
+                      history.back();
                       console.log(res);
                     })
                     .catch((res) => {
@@ -76,7 +99,11 @@ const PasswordChangeConfirm = ({ modalClose }: setStateProps) => {
 
 export default PasswordChangeConfirm;
 
-const BG = styled.div`
+const BG = styled.div<{ animation: string }>`
+  opacity: 0;
+  opacity: ${(props) => (props.animation === "open" ? 1 : 0)};
+  transition: linear 0.3s all;
+
   position: fixed;
   top: 0;
   left: 0;
@@ -91,12 +118,6 @@ const BG = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  opacity: 0;
-  -webkit-animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
-  -moz-animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
-  -o-animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
-  animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
 `;
 
 const Popup = styled.div`

@@ -82,18 +82,7 @@ const Profile = () => {
   const category = ["My Info", "Followings", "Followers", "Tip Posts", "Free Posts"];
 
   //function
-  const profilePicChangeModalClose = () => {
-    setImageChangeModal(false);
-    history.back();
-  };
-  const userDeleteModalClose = () => {
-    setUserDeleteModal(false);
-    history.back();
-  };
-  const passwordChangeModalClose = () => {
-    setPasswordChangeModal(false);
-    history.back();
-  };
+
   const scrollToPill = () => {
     window.scrollTo({
       top: scrollTarget.current?.scrollHeight,
@@ -215,27 +204,6 @@ const Profile = () => {
     });
   };
 
-  useEffect(() => {
-    scrollTop();
-  }, []);
-  useEffect(() => {
-    if (categoryNum >= 0 && categoryNum < 5) {
-      // console.log("올바른 링크 접근");
-      const menuWrapper = document.getElementById("menuWrapper");
-      const width = menuWrapper?.scrollWidth;
-      if (width) {
-        menuWrapper?.scrollTo({ top: 0, left: (width / 5) * categoryNum - 70, behavior: "smooth" });
-      }
-    } else {
-      navigate("/404");
-    }
-  }, [categoryNum]);
-  //프로필 이미지 변경 팝업 뜬 경우 배경 스크롤 방지
-  useEffect(() => {
-    if (imageChangeModal) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "auto";
-  }, [imageChangeModal]);
-
   //useInfiniteQuery
   const myInfoPosts = useInfiniteQuery(
     ["myInfoPosts"],
@@ -265,21 +233,43 @@ const Profile = () => {
   const unFollow = User.unFollow();
   const deleteFollower = User.deleteFollower();
 
-  //뒤로가기시 이벤트 발생
-  window.addEventListener("popstate", () => {
-    setUserDeleteModal(false);
-    setImageChangeModal(false);
-    setUsertextInputToggle(false);
-    setNicknameInputToggle(false);
-    setPasswordChangeModal(false);
-  });
+  useEffect(() => {
+    if (categoryNum >= 0 && categoryNum < 5) {
+      // console.log("올바른 링크 접근");
+      const menuWrapper = document.getElementById("menuWrapper");
+      const width = menuWrapper?.scrollWidth;
+      if (width) {
+        menuWrapper?.scrollTo({ top: 0, left: (width / 5) * categoryNum - 70, behavior: "smooth" });
+      }
+    } else {
+      navigate("/404");
+    }
+  }, [categoryNum]);
+  //프로필 이미지 변경 팝업 뜬 경우 배경 스크롤 방지
+  useEffect(() => {
+    if (imageChangeModal) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
+  }, [imageChangeModal]);
+  useEffect(() => {
+    const inputclose = () => {
+      setUsertextInputToggle(false);
+      setNicknameInputToggle(false);
+    };
+
+    scrollTop();
+
+    window.addEventListener("popstate", inputclose);
+    return () => {
+      window.removeEventListener("popstate", inputclose);
+    };
+  }, []);
 
   return (
     <AppLayout>
       <ProfileWrapper>
-        {imageChangeModal && <ProfileChangePopup modalClose={profilePicChangeModalClose} />}
-        {userDeleteModal && <UserDeleteConfirm modalClose={userDeleteModalClose} />}
-        {passwordChangeModal && <PasswordChangeConfirm modalClose={passwordChangeModalClose} />}
+        {imageChangeModal && <ProfileChangePopup setImageChangeModal={setImageChangeModal} />}
+        {userDeleteModal && <UserDeleteConfirm setUserDeleteModal={setUserDeleteModal} />}
+        {passwordChangeModal && <PasswordChangeConfirm setPasswordChangeModal={setPasswordChangeModal} />}
         <ProfileTitle ref={scrollTarget}>
           <Title>Profile</Title>
           <span>정보 수정 및 작성 글 확인이 가능합니다.</span>

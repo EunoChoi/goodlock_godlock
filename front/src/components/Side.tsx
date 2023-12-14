@@ -18,11 +18,7 @@ import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import ExtensionIcon from "@mui/icons-material/Extension";
 import ForumIcon from "@mui/icons-material/Forum";
 
-interface Props {
-  close: (b: void) => void;
-}
-
-const Side = ({ close }: Props) => {
+const Side = () => {
   const user = User.getData();
   const navigate = useNavigate();
   const logout = User.logout();
