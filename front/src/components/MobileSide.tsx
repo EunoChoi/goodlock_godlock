@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import User from "../functions/reactQuery/User";
-import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 
-import Img from "./common/Img";
+import SideBar from "../styles/SidaBar";
 
 //mui
 import Stack from "@mui/joy/Stack";
@@ -78,7 +77,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
   return (
     // 로그아웃 상태에서 접근시도 구현해야함. 싱글 포스트 뷰 때문에
     <>
-      <BG
+      <SideBar.BG
         animation={sideBarAnimation}
         onClick={() => {
           history.back();
@@ -88,9 +87,9 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
             setMobileSideOpen(false);
           }
         }}
-      ></BG>
-      <Wrapper animation={sideBarAnimation}>
-        <HeaderWrapper>
+      ></SideBar.BG>
+      <SideBar.MobileWrapper animation={sideBarAnimation}>
+        <SideBar.HeaderWrapper>
           <button
             onClick={() => {
               navigate("/main/0");
@@ -100,10 +99,10 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
             <ExtensionIcon fontSize="inherit" />
             <span>God Lock</span>
           </button>
-        </HeaderWrapper>
+        </SideBar.HeaderWrapper>
         {user && (
           <>
-            <UserInfoWrapper>
+            <SideBar.UserInfoWrapper>
               <div
                 onClick={() => {
                   navigate("/profile/0");
@@ -111,7 +110,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                 }}
               >
                 {user.profilePic ? (
-                  <ProfilePic
+                  <SideBar.ProfilePic
                     crop={true}
                     className=""
                     src={user.profilePic}
@@ -119,7 +118,13 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                     alt="profilePic"
                   />
                 ) : (
-                  <ProfilePic crop={true} className="" src="/img/defaultProfilePic.png" altImg="" alt="profilePic" />
+                  <SideBar.ProfilePic
+                    crop={true}
+                    className=""
+                    src="/img/defaultProfilePic.png"
+                    altImg=""
+                    alt="profilePic"
+                  />
                 )}
               </div>
 
@@ -167,8 +172,8 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                   <span>Followers</span>
                 </button>
               </Stack>
-            </UserInfoWrapper>
-            <MenuWrapper currentPage={currentPage + 1}>
+            </SideBar.UserInfoWrapper>
+            <SideBar.MenuWrapper currentPage={currentPage + 1}>
               <Stack divider={<Divider orientation="horizontal" />} spacing={2} justifyContent="center">
                 <div id="buttons">
                   <button
@@ -230,11 +235,11 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                   </button>
                 </div>
               </Stack>
-            </MenuWrapper>
+            </SideBar.MenuWrapper>
           </>
         )}
         {!user && (
-          <LogInWrapper>
+          <SideBar.LogInWrapper>
             <span>로그인이 필요합니다.</span>
             <button
               onClick={() => {
@@ -244,242 +249,11 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
             >
               로그인
             </button>
-          </LogInWrapper>
+          </SideBar.LogInWrapper>
         )}
-      </Wrapper>
+      </SideBar.MobileWrapper>
     </>
   );
 };
 
 export default MobileSide;
-
-const BG = styled.div<{ animation: string }>`
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  z-index: 2000;
-
-  width: 100vw;
-  height: 100vh;
-
-  background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(8px);
-
-  opacity: ${(props) => (props.animation === "open" ? "1" : "0")};
-  transition: all linear 0.3s;
-`;
-
-const Wrapper = styled.div<{ animation: string }>`
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  z-index: 2002;
-
-  width: 80vw;
-  height: 100vh;
-  height: calc(var(--vh, 1vh) * 100);
-
-  background-color: #f2f2f2;
-  border-right: 2px solid rgba(0, 0, 0, 0.1);
-
-  transform: ${(props) => (props.animation === "open" ? "translateX(0px)" : "translateX(-80vw)")};
-  transition: all ease-out 0.3s;
-`;
-
-const LogInWrapper = styled.div`
-  width: 100%;
-  height: 90%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  span {
-    font-size: 20px;
-    font-weight: 500;
-    color: rgba(0, 0, 0, 0.7);
-  }
-  button {
-    font-size: 16px;
-    font-weight: 500;
-    color: rgba(0, 0, 0, 0.7);
-
-    padding: 4px 16px;
-
-    border: 2px solid rgba(0, 0, 0, 0.05);
-    border-radius: 50px;
-    background-color: #c7d7ff;
-
-    margin-top: 24px;
-  }
-`;
-
-const ProfilePic = styled(Img)`
-  width: 108px;
-  height: 108px;
-
-  border-radius: 100%;
-  border: 2px solid rgba(0, 0, 0, 0.1);
-
-  cursor: pointer;
-`;
-
-const HeaderWrapper = styled.div`
-  width: 100%;
-  height: 10%;
-  /* border: 1px solid white; */
-
-  padding: 0 40px;
-
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    color: #d5a8d0;
-    font-size: 26px;
-    span {
-      margin-left: 4px;
-      font-family: OAGothic-ExtraBold;
-      color: rgba(0, 0, 0, 0.7);
-
-      font-size: 24px;
-      font-weight: 600;
-    }
-  }
-`;
-const UserInfoWrapper = styled.div`
-  width: 100%;
-  height: 45%;
-  /* border: 1px solid white; */
-
-  padding: 0 20px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-
-  #info_text_box {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    span {
-      margin: 4px 0;
-    }
-  }
-
-  #nickname {
-    font-size: 32px;
-    font-weight: 600;
-
-    max-width: 100%;
-    white-space: nowrap;
-    overflow-x: scroll;
-
-    display: flex;
-    justify-content: start;
-    align-items: center;
-
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-    &::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera*/
-    }
-
-    color: rgba(0, 0, 0, 0.7);
-  }
-  #email {
-    font-size: 14px;
-    font-weight: 500;
-
-    color: rgba(0, 0, 0, 0.35);
-  }
-  #usertext {
-    font-size: 17px;
-    font-weight: 500;
-    color: rgba(0, 0, 0, 0.5);
-
-    text-align: center;
-  }
-  .info_box {
-    width: 33%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    span:first-child {
-      font-weight: 600;
-      font-size: 18px;
-
-      color: rgba(0, 0, 0, 0.7);
-    }
-    span:nth-child(2) {
-      font-weight: 500;
-      font-size: 13px;
-
-      color: rgba(0, 0, 0, 0.5);
-    }
-  }
-`;
-const MenuWrapper = styled.div<{ currentPage: number | undefined }>`
-  width: 100%;
-  height: 45%;
-  /* border: 1px solid white; */
-
-  padding: 0 40px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  #buttons {
-    button {
-      transition: 0.2s ease-in-out all;
-    }
-    button:hover {
-      scale: 1.1;
-    }
-    button:nth-child(${(props) => props.currentPage}) {
-      color: #d5a8d0;
-    }
-  }
-  #logout {
-    transition: 0.2s ease-in-out all;
-  }
-  #logout:hover {
-    scale: 1.1;
-  }
-
-  div {
-    width: 100%;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: start;
-    button {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      font-weight: 600;
-      font-size: 18px;
-
-      margin: 8px 0;
-      * {
-        margin-right: 8px;
-      }
-
-      color: rgba(0, 0, 0, 0.7);
-    }
-  }
-`;

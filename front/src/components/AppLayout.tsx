@@ -11,7 +11,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 //component
 import InputPopup from "./common/PostInputPopup";
-import Side from "./Side";
+import PCSide from "./PCSide";
 import IsMobile from "../functions/IsMobile";
 import User from "../functions/reactQuery/User";
 import Bot from "./chatbot/Bot";
@@ -124,7 +124,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       ) : (
         <PcWrapper>
           <LeftWrapper>
-            <Side />
+            <PCSide />
           </LeftWrapper>
           <RightWrapper>
             <Children id="scrollWrapper">{children}</Children>
