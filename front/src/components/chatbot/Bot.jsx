@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import ChatBot from "react-simple-chatbot";
 import styled, { ThemeProvider } from "styled-components";
 
-import Animation from "../../styles/Animation";
-
 import User from "../../functions/reactQuery/User";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 
@@ -12,6 +10,7 @@ import SendEmail from "./SendEmail";
 const Bot = () => {
   const user = User.getData();
   const [open, setOpen] = useState(false);
+  const [bgOpen, setBGOpen] = useState(false);
 
   const theme = {
     background: "#f5f8fb",
@@ -218,14 +217,20 @@ const Bot = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      {open && (
+      {bgOpen && (
         <BotBG
+          open={open}
           onClick={() => {
-            setOpen(false);
             history.back();
+          }}
+          onTransitionEnd={(e) => {
+            if (open === false) {
+              setBGOpen(false);
+            }
           }}
         ></BotBG>
       )}
+
       <ChatBot
         floatingIcon={
           <IconWrapper>
@@ -234,12 +239,14 @@ const Bot = () => {
         }
         opened={open}
         toggleFloating={(res) => {
-          //open시 modal url 추가;
-          if (res.opened === false) {
+          if (res.opened === true) {
+            setBGOpen(true);
+            setTimeout(() => {
+              setOpen(res.opened);
+            }, 10);
+          } else {
             history.back();
           }
-          //open 상태 업데이트
-          setOpen(res.opened);
         }}
         floating={true}
         headerTitle={"굿락갓락 Bot"}
@@ -255,7 +262,9 @@ const Bot = () => {
 export default Bot;
 
 const BotBG = styled.div`
-  animation: ${Animation.smoothAppear} 0.5s ease-in-out;
+  opacity: 0;
+  opacity: ${(props) => (props.open ? 1 : 0)};
+  transition: linear 0.4s all;
 
   position: fixed;
   top: 0;
