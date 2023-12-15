@@ -209,7 +209,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                   </button>
                   <button
                     onClick={() => {
-                      navigate("/profile/0");
+                      navigate("/main/4/cat/0");
                       onClose();
                     }}
                   >

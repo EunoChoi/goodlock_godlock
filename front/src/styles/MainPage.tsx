@@ -45,7 +45,7 @@ const MainEl = styled.div`
   justify-content: start;
   align-items: center;
 
-  animation: ${Animation.smoothAppear} 1s ease-in-out;
+  animation: ${Animation.smoothAppear} 0.5s ease-in-out;
 `;
 
 const Pill = {

@@ -191,7 +191,7 @@ const Images = styled.div`
 `;
 
 const Wrapper = styled.div`
-  animation: ${Animation.smoothAppear} 1s ease-in-out;
+  animation: ${Animation.smoothAppear} 0.5s ease-in-out;
 
   width: 100%;
   height: 100%;

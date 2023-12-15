@@ -117,7 +117,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
       {isMobile ? (
         <MobileWrapper>
-          <div>ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ</div>
           {mobileSideOpen && <MobileSide setMobileSideOpen={setMobileSideOpen} />}
           <Children>{children}</Children>
           <Header />

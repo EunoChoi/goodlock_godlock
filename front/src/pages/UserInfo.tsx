@@ -66,7 +66,7 @@ const UserInfo = () => {
       },
       onError: () => {
         // location.reload();
-        // navigate("/404");
+        navigate("/404");
       }
     }
   );
@@ -134,7 +134,7 @@ const UserInfo = () => {
         menuWrapper?.scrollTo({ top: 0, left: (width / 5) * categoryNum - 70, behavior: "smooth" });
       }
     } else {
-      // navigate("/404");
+      navigate("/404");
     }
   }, [categoryNum]);
 
@@ -400,7 +400,7 @@ const UserInfo = () => {
 export default UserInfo;
 
 const Wrapper = styled.div`
-  animation: ${Animation.smoothAppear} 1s ease-in-out;
+  animation: ${Animation.smoothAppear} 0.5s ease-in-out;
   width: 100%;
   height: 100%;
 

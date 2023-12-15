@@ -236,23 +236,24 @@ const Profile = () => {
   const deleteFollower = User.deleteFollower();
 
   useEffect(() => {
-    if (categoryNum >= 0 && categoryNum < 5) {
-      // console.log("올바른 링크 접근");
-      const menuWrapper = document.getElementById("menuWrapper");
-      const width = menuWrapper?.scrollWidth;
-      if (width) {
-        menuWrapper?.scrollTo({ top: 0, left: (width / 5) * categoryNum - 70, behavior: "smooth" });
-      }
-    } else {
-      navigate("/404");
+    const menuWrapper = document.getElementById("menuWrapper");
+    const width = menuWrapper?.scrollWidth;
+    if (width) {
+      menuWrapper?.scrollTo({ top: 0, left: (width / 5) * categoryNum - 70, behavior: "smooth" });
     }
   }, [categoryNum]);
+
   //프로필 이미지 변경 팝업 뜬 경우 배경 스크롤 방지
   useEffect(() => {
     if (imageChangeModal) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "auto";
   }, [imageChangeModal]);
+
   useEffect(() => {
+    if (categoryNum < 0 || categoryNum > 4) {
+      navigate("/404");
+    }
+
     const inputclose = () => {
       setUsertextInputToggle(false);
       setNicknameInputToggle(false);
@@ -267,339 +268,337 @@ const Profile = () => {
   }, []);
 
   return (
-    <AppLayout>
-      <ProfileWrapper>
-        {imageChangeModal && <ProfileChangePopup setImageChangeModal={setImageChangeModal} />}
-        {userDeleteModal && <UserDeleteConfirm setUserDeleteModal={setUserDeleteModal} />}
-        {passwordChangeModal && <PasswordChangeConfirm setPasswordChangeModal={setPasswordChangeModal} />}
-        <ProfileTitle ref={scrollTarget}>
-          <Title>Profile</Title>
-          <span>정보 수정 및 작성 글 확인이 가능합니다.</span>
-          <span>마지막 수정 ⋯ {moment(user?.updatedAt).fromNow()}</span>
-        </ProfileTitle>
-        <MenuWrapper id="menuWrapper">
-          {category.map((v, i) => (
-            <Pill
-              catNum={categoryNum}
-              key={"catNum" + i}
-              onClick={() => {
-                scrollToPill();
+    <ProfileWrapper>
+      {imageChangeModal && <ProfileChangePopup setImageChangeModal={setImageChangeModal} />}
+      {userDeleteModal && <UserDeleteConfirm setUserDeleteModal={setUserDeleteModal} />}
+      {passwordChangeModal && <PasswordChangeConfirm setPasswordChangeModal={setPasswordChangeModal} />}
+      <ProfileTitle ref={scrollTarget}>
+        <Title>Profile</Title>
+        <span>정보 수정 및 작성 글 확인이 가능합니다.</span>
+        <span>마지막 수정 ⋯ {moment(user?.updatedAt).fromNow()}</span>
+      </ProfileTitle>
+      <MenuWrapper id="menuWrapper">
+        {category.map((v, i) => (
+          <Pill
+            catNum={categoryNum}
+            key={"catNum" + i}
+            onClick={() => {
+              scrollToPill();
 
-                setTimeout(() => {
-                  navigate(`/profile/${i}`);
-                }, 10);
-              }}
-            >
-              {v}
-            </Pill>
-          ))}
-        </MenuWrapper>
+              setTimeout(() => {
+                navigate(`/main/4/cat/${i}`);
+              }, 10);
+            }}
+          >
+            {v}
+          </Pill>
+        ))}
+      </MenuWrapper>
 
-        {categoryNum === 0 && (
-          <ContentWrapper>
-            <ContentBox width={500} padding={30}>
-              <ProfilePicWrapper>
-                {user?.profilePic ? (
-                  <ProfilePic100
-                    crop={true}
-                    alt="userProfilePic"
-                    src={`${user?.profilePic}`}
-                    altImg={user?.profilePic.replace(/\/thumb\//, "/original/")}
-                  />
-                ) : (
-                  <ProfilePic100
-                    crop={true}
-                    alt="userProfilePic"
-                    src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                  />
-                )}
+      {categoryNum === 0 && (
+        <ContentWrapper>
+          <ContentBox width={500} padding={30}>
+            <ProfilePicWrapper>
+              {user?.profilePic ? (
+                <ProfilePic100
+                  crop={true}
+                  alt="userProfilePic"
+                  src={`${user?.profilePic}`}
+                  altImg={user?.profilePic.replace(/\/thumb\//, "/original/")}
+                />
+              ) : (
+                <ProfilePic100
+                  crop={true}
+                  alt="userProfilePic"
+                  src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                />
+              )}
 
+              <Button
+                color="inherit"
+                onClick={() => {
+                  const url = document.URL + "/modal";
+                  history.pushState({ page: "modal" }, "", url);
+                  setImageChangeModal((c) => !c);
+                }}
+              >
+                <EditIcon />
+              </Button>
+            </ProfilePicWrapper>
+            <InfoAttribute>
+              <InfoTitle>
+                <span>닉네임</span>
                 <Button
                   color="inherit"
                   onClick={() => {
-                    const url = document.URL + "/modal";
-                    history.pushState({ page: "modal" }, "", url);
-                    setImageChangeModal((c) => !c);
+                    setNicknameInputToggle((c) => !c);
                   }}
                 >
                   <EditIcon />
                 </Button>
-              </ProfilePicWrapper>
-              <InfoAttribute>
-                <InfoTitle>
-                  <span>닉네임</span>
-                  <Button
-                    color="inherit"
-                    onClick={() => {
-                      setNicknameInputToggle((c) => !c);
-                    }}
-                  >
-                    <EditIcon />
-                  </Button>
-                </InfoTitle>
+              </InfoTitle>
 
-                {nicknameInputToggle || (
-                  <InfoValue>
-                    <span>{user?.nickname}</span>
-                  </InfoValue>
-                )}
-                {nicknameInputToggle && (
-                  <InfoValue>
-                    <div>
-                      <input
-                        placeholder="닉네임 입력..."
-                        value={nickname}
-                        onChange={(e) => {
-                          setNickname(e.target.value);
-                        }}
-                      />
-                      <Button onClick={() => nickUpdateConfirm(nickname)}>
-                        <CheckCircleIcon />
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          setNicknameInputToggle((c) => !c);
-                        }}
-                      >
-                        <CancelIcon color="error" />
-                      </Button>
-                    </div>
-                  </InfoValue>
-                )}
-              </InfoAttribute>
-
-              <InfoAttribute>
-                <InfoTitle>
-                  <span>이메일</span>
-                </InfoTitle>
+              {nicknameInputToggle || (
                 <InfoValue>
-                  <span>{user?.email}</span>
+                  <span>{user?.nickname}</span>
                 </InfoValue>
-              </InfoAttribute>
+              )}
+              {nicknameInputToggle && (
+                <InfoValue>
+                  <div>
+                    <input
+                      placeholder="닉네임 입력..."
+                      value={nickname}
+                      onChange={(e) => {
+                        setNickname(e.target.value);
+                      }}
+                    />
+                    <Button onClick={() => nickUpdateConfirm(nickname)}>
+                      <CheckCircleIcon />
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setNicknameInputToggle((c) => !c);
+                      }}
+                    >
+                      <CancelIcon color="error" />
+                    </Button>
+                  </div>
+                </InfoValue>
+              )}
+            </InfoAttribute>
 
-              <InfoAttribute>
-                <InfoTitle>
-                  <span>상태 메세지</span>
-                  <Button
-                    color="inherit"
-                    onClick={() => {
-                      setUsertextInputToggle((c) => !c);
-                    }}
-                  >
-                    <EditIcon />
-                  </Button>
-                </InfoTitle>
+            <InfoAttribute>
+              <InfoTitle>
+                <span>이메일</span>
+              </InfoTitle>
+              <InfoValue>
+                <span>{user?.email}</span>
+              </InfoValue>
+            </InfoAttribute>
 
-                {usertextInputToggle || (
-                  <InfoValue>
-                    <span>{user?.usertext ? user?.usertext : "-"}</span>
-                  </InfoValue>
-                )}
-                {usertextInputToggle && (
-                  <InfoValue>
-                    <div>
-                      <input
-                        placeholder="상태 메세지 입력..."
-                        value={usertext}
-                        onChange={(e) => {
-                          setUsertext(e.target.value);
-                        }}
-                      />
-                      <Button onClick={() => usertestUpdateConfirm()}>
-                        <CheckCircleIcon />
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          setUsertextInputToggle((c) => !c);
-                        }}
-                      >
-                        <CancelIcon color="error" />
-                      </Button>
-                    </div>
-                  </InfoValue>
-                )}
-              </InfoAttribute>
+            <InfoAttribute>
+              <InfoTitle>
+                <span>상태 메세지</span>
+                <Button
+                  color="inherit"
+                  onClick={() => {
+                    setUsertextInputToggle((c) => !c);
+                  }}
+                >
+                  <EditIcon />
+                </Button>
+              </InfoTitle>
 
-              <ButtonWrapper>
-                {user?.level === 1 && (
-                  <Button
-                    onClick={() => {
-                      const url = document.URL + "/modal";
-                      history.pushState({ page: "modal" }, "", url);
-                      setPasswordChangeModal(true);
-                    }}
-                  >
-                    <span>비밀번호 변경</span>
-                  </Button>
-                )}
+              {usertextInputToggle || (
+                <InfoValue>
+                  <span>{user?.usertext ? user?.usertext : "-"}</span>
+                </InfoValue>
+              )}
+              {usertextInputToggle && (
+                <InfoValue>
+                  <div>
+                    <input
+                      placeholder="상태 메세지 입력..."
+                      value={usertext}
+                      onChange={(e) => {
+                        setUsertext(e.target.value);
+                      }}
+                    />
+                    <Button onClick={() => usertestUpdateConfirm()}>
+                      <CheckCircleIcon />
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setUsertextInputToggle((c) => !c);
+                      }}
+                    >
+                      <CancelIcon color="error" />
+                    </Button>
+                  </div>
+                </InfoValue>
+              )}
+            </InfoAttribute>
+
+            <ButtonWrapper>
+              {user?.level === 1 && (
                 <Button
                   onClick={() => {
                     const url = document.URL + "/modal";
                     history.pushState({ page: "modal" }, "", url);
-                    setUserDeleteModal(true);
+                    setPasswordChangeModal(true);
                   }}
                 >
-                  <span>회원 탈퇴</span>
+                  <span>비밀번호 변경</span>
                 </Button>
+              )}
+              <Button
+                onClick={() => {
+                  const url = document.URL + "/modal";
+                  history.pushState({ page: "modal" }, "", url);
+                  setUserDeleteModal(true);
+                }}
+              >
+                <span>회원 탈퇴</span>
+              </Button>
 
-                <Button onClick={() => logoutConfirm()}>
-                  <span>로그아웃</span>
-                </Button>
-              </ButtonWrapper>
-            </ContentBox>
-          </ContentWrapper>
-        )}
-        {categoryNum === 1 && (
-          <ContentWrapper>
-            <ContentBox width={500} padding={0}>
-              <ListTitle>
-                <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
-                  <InsertEmoticonRoundedIcon fontSize="large" />
-                </Badge>
-                <div>Followings</div>
-              </ListTitle>
+              <Button onClick={() => logoutConfirm()}>
+                <span>로그아웃</span>
+              </Button>
+            </ButtonWrapper>
+          </ContentBox>
+        </ContentWrapper>
+      )}
+      {categoryNum === 1 && (
+        <ContentWrapper>
+          <ContentBox width={500} padding={0}>
+            <ListTitle>
+              <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
+                <InsertEmoticonRoundedIcon fontSize="large" />
+              </Badge>
+              <div>Followings</div>
+            </ListTitle>
 
-              <List>
-                {user?.Followings?.length === 0 ? (
-                  <EmptyUserNoti>
-                    <span>팔로잉 목록이 존재하지 않습니다.</span>
-                  </EmptyUserNoti>
-                ) : (
-                  user?.Followings?.map((v: user, i: number) => (
-                    <ListItem key={v.nickname + i}>
-                      <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
-                        {v.profilePic ? (
-                          <ProfilePic32
-                            crop={true}
-                            alt="ProfilePic"
-                            src={v.profilePic}
-                            altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
-                          />
-                        ) : (
-                          <ProfilePic32
-                            crop={true}
-                            alt="defaultProfilePic"
-                            src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                          />
-                        )}
+            <List>
+              {user?.Followings?.length === 0 ? (
+                <EmptyUserNoti>
+                  <span>팔로잉 목록이 존재하지 않습니다.</span>
+                </EmptyUserNoti>
+              ) : (
+                user?.Followings?.map((v: user, i: number) => (
+                  <ListItem key={v.nickname + i}>
+                    <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
+                      {v.profilePic ? (
+                        <ProfilePic32
+                          crop={true}
+                          alt="ProfilePic"
+                          src={v.profilePic}
+                          altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
+                        />
+                      ) : (
+                        <ProfilePic32
+                          crop={true}
+                          alt="defaultProfilePic"
+                          src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                        />
+                      )}
 
-                        <span>{v.nickname}</span>
-                      </div>
+                      <span>{v.nickname}</span>
+                    </div>
 
-                      <Button onClick={() => unFollowConfirm(v.id)}>
-                        <PersonRemoveIcon color="error" />
-                      </Button>
-                    </ListItem>
-                  ))
+                    <Button onClick={() => unFollowConfirm(v.id)}>
+                      <PersonRemoveIcon color="error" />
+                    </Button>
+                  </ListItem>
+                ))
+              )}
+            </List>
+          </ContentBox>
+        </ContentWrapper>
+      )}
+      {categoryNum === 2 && (
+        <ContentWrapper>
+          <ContentBox width={500} padding={0}>
+            <ListTitle>
+              <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
+                <InsertEmoticonOutlinedIcon fontSize="large" />
+              </Badge>
+              <div>Followers</div>
+            </ListTitle>
+
+            <List>
+              {user?.Followers?.length === 0 ? (
+                <EmptyUserNoti>
+                  <span>팔로워 목록이 존재하지 않습니다.</span>
+                </EmptyUserNoti>
+              ) : (
+                user?.Followers?.map((v: user, i: number) => (
+                  <ListItem key={v.nickname + i}>
+                    <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
+                      {v.profilePic ? (
+                        <ProfilePic32
+                          crop={true}
+                          alt="ProfilePic"
+                          src={v.profilePic}
+                          altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
+                        />
+                      ) : (
+                        <ProfilePic32
+                          crop={true}
+                          alt="ProfilePic"
+                          src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                        />
+                      )}
+                      <span>{v.nickname}</span>
+                    </div>
+
+                    <Button onClick={() => followerDeleteConfirm(v.id)}>
+                      <RemoveCircleOutlinedIcon color="error" />
+                    </Button>
+                  </ListItem>
+                ))
+              )}
+            </List>
+          </ContentBox>
+        </ContentWrapper>
+      )}
+      {categoryNum === 3 && (
+        <ContentWrapper>
+          <Posts>
+            {myInfoPosts?.data?.pages[0].length === 0 && (
+              <EmptyNoti>
+                <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                <span>포스트가 존재하지 않습니다.</span>
+              </EmptyNoti>
+            )}
+            {myInfoPosts?.data?.pages[0].length !== 0 && (
+              <InfiniteScroll
+                hasMore={myInfoPosts.hasNextPage || false}
+                loader={
+                  <LoadingIconWrapper>
+                    <CircularProgress size={96} color="inherit" />
+                  </LoadingIconWrapper>
+                }
+                next={() => myInfoPosts.fetchNextPage()}
+                dataLength={myInfoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {myInfoPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
-              </List>
-            </ContentBox>
-          </ContentWrapper>
-        )}
-        {categoryNum === 2 && (
-          <ContentWrapper>
-            <ContentBox width={500} padding={0}>
-              <ListTitle>
-                <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
-                  <InsertEmoticonOutlinedIcon fontSize="large" />
-                </Badge>
-                <div>Followers</div>
-              </ListTitle>
-
-              <List>
-                {user?.Followers?.length === 0 ? (
-                  <EmptyUserNoti>
-                    <span>팔로워 목록이 존재하지 않습니다.</span>
-                  </EmptyUserNoti>
-                ) : (
-                  user?.Followers?.map((v: user, i: number) => (
-                    <ListItem key={v.nickname + i}>
-                      <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
-                        {v.profilePic ? (
-                          <ProfilePic32
-                            crop={true}
-                            alt="ProfilePic"
-                            src={v.profilePic}
-                            altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
-                          />
-                        ) : (
-                          <ProfilePic32
-                            crop={true}
-                            alt="ProfilePic"
-                            src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                          />
-                        )}
-                        <span>{v.nickname}</span>
-                      </div>
-
-                      <Button onClick={() => followerDeleteConfirm(v.id)}>
-                        <RemoveCircleOutlinedIcon color="error" />
-                      </Button>
-                    </ListItem>
-                  ))
+              </InfiniteScroll>
+            )}
+          </Posts>
+        </ContentWrapper>
+      )}
+      {categoryNum === 4 && (
+        <ContentWrapper>
+          <Posts>
+            {myCommPosts?.data?.pages[0].length === 0 && (
+              <EmptyNoti>
+                <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                <span>포스트가 존재하지 않습니다.</span>
+              </EmptyNoti>
+            )}
+            {myCommPosts?.data?.pages[0].length !== 0 && (
+              <InfiniteScroll
+                hasMore={myCommPosts.hasNextPage || false}
+                loader={
+                  <LoadingIconWrapper>
+                    <CircularProgress size={96} color="inherit" />
+                  </LoadingIconWrapper>
+                }
+                next={() => myCommPosts.fetchNextPage()}
+                dataLength={myCommPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {myCommPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
-              </List>
-            </ContentBox>
-          </ContentWrapper>
-        )}
-        {categoryNum === 3 && (
-          <ContentWrapper>
-            <Posts>
-              {myInfoPosts?.data?.pages[0].length === 0 && (
-                <EmptyNoti>
-                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-                  <span>포스트가 존재하지 않습니다.</span>
-                </EmptyNoti>
-              )}
-              {myInfoPosts?.data?.pages[0].length !== 0 && (
-                <InfiniteScroll
-                  hasMore={myInfoPosts.hasNextPage || false}
-                  loader={
-                    <LoadingIconWrapper>
-                      <CircularProgress size={96} color="inherit" />
-                    </LoadingIconWrapper>
-                  }
-                  next={() => myInfoPosts.fetchNextPage()}
-                  dataLength={myInfoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-                >
-                  {myInfoPosts?.data?.pages.map((p) =>
-                    p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
-                  )}
-                </InfiniteScroll>
-              )}
-            </Posts>
-          </ContentWrapper>
-        )}
-        {categoryNum === 4 && (
-          <ContentWrapper>
-            <Posts>
-              {myCommPosts?.data?.pages[0].length === 0 && (
-                <EmptyNoti>
-                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-                  <span>포스트가 존재하지 않습니다.</span>
-                </EmptyNoti>
-              )}
-              {myCommPosts?.data?.pages[0].length !== 0 && (
-                <InfiniteScroll
-                  hasMore={myCommPosts.hasNextPage || false}
-                  loader={
-                    <LoadingIconWrapper>
-                      <CircularProgress size={96} color="inherit" />
-                    </LoadingIconWrapper>
-                  }
-                  next={() => myCommPosts.fetchNextPage()}
-                  dataLength={myCommPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-                >
-                  {myCommPosts?.data?.pages.map((p) =>
-                    p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
-                  )}
-                </InfiniteScroll>
-              )}
-            </Posts>
-          </ContentWrapper>
-        )}
-      </ProfileWrapper>
-    </AppLayout>
+              </InfiniteScroll>
+            )}
+          </Posts>
+        </ContentWrapper>
+      )}
+    </ProfileWrapper>
   );
 };
 
@@ -614,7 +613,7 @@ const ProfileWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  animation: ${Animation.smoothAppear} 1s ease-in-out;
+  animation: ${Animation.smoothAppear} 0.5s ease-in-out;
 `;
 const LoadingIconWrapper = styled.div`
   display: flex;
@@ -747,7 +746,7 @@ const MenuWrapper = styled.div`
   @media (orientation: portrait) or (max-height: 480px) {
     top: 48px;
     top: 46px;
-    width: 100%;
+    width: 100vw;
     /* background: rgb(255, 255, 255);
     background: linear-gradient(
       0deg,

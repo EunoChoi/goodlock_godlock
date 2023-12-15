@@ -9,6 +9,7 @@ import Home from "../components/mainPage/Home";
 import Tips from "../components/mainPage/Tips";
 import FreeBoard from "../components/mainPage/FreeBoard";
 import Gallery from "../components/mainPage/Gallery";
+import Profile from "./Profile";
 
 const Main = () => {
   const params = useParams();
@@ -17,7 +18,7 @@ const Main = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (type >= 0 && type <= 3) {
+    if (type >= 0 && type <= 4) {
       setToggle(type);
       window.scrollTo({
         top: 0,
@@ -35,6 +36,7 @@ const Main = () => {
       {toggle === 1 && <Tips />}
       {toggle === 2 && <FreeBoard />}
       {toggle === 3 && <Gallery />}
+      {toggle === 4 && <Profile />}
     </AppLayout>
   );
 };
