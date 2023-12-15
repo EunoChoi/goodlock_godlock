@@ -12,6 +12,8 @@ import moment from "moment";
 import "moment/locale/ko";
 import Img from "../components/common/Img";
 
+import alertModal from "../components/common/Alert";
+
 //components
 import AppLayout from "../components/AppLayout";
 import Post from "../components/common/Post";
@@ -300,7 +302,6 @@ const Profile = () => {
                 {user?.profilePic ? (
                   <ProfilePic100
                     crop={true}
-                    className=""
                     alt="userProfilePic"
                     src={`${user?.profilePic}`}
                     altImg={user?.profilePic.replace(/\/thumb\//, "/original/")}
@@ -308,10 +309,8 @@ const Profile = () => {
                 ) : (
                   <ProfilePic100
                     crop={true}
-                    className=""
                     alt="userProfilePic"
                     src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                    altImg=""
                   />
                 )}
 
@@ -326,7 +325,6 @@ const Profile = () => {
                   <EditIcon />
                 </Button>
               </ProfilePicWrapper>
-
               <InfoAttribute>
                 <InfoTitle>
                   <span>닉네임</span>
@@ -473,7 +471,6 @@ const Profile = () => {
                         {v.profilePic ? (
                           <ProfilePic32
                             crop={true}
-                            className=""
                             alt="ProfilePic"
                             src={v.profilePic}
                             altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
@@ -481,10 +478,8 @@ const Profile = () => {
                         ) : (
                           <ProfilePic32
                             crop={true}
-                            className=""
                             alt="defaultProfilePic"
                             src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                            altImg=""
                           />
                         )}
 
@@ -523,7 +518,6 @@ const Profile = () => {
                         {v.profilePic ? (
                           <ProfilePic32
                             crop={true}
-                            className=""
                             alt="ProfilePic"
                             src={v.profilePic}
                             altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
@@ -531,10 +525,8 @@ const Profile = () => {
                         ) : (
                           <ProfilePic32
                             crop={true}
-                            className=""
                             alt="ProfilePic"
                             src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                            altImg=""
                           />
                         )}
                         <span>{v.nickname}</span>

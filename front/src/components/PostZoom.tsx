@@ -89,7 +89,6 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 {postProps?.User?.profilePic ? (
                   <ProfileCircle200
                     crop={true}
-                    className=""
                     alt="profilePic"
                     src={`${postProps?.User?.profilePic}`}
                     altImg={`${postProps?.User?.profilePic.replace(/\/thumb\//, "/originals/")}`}
@@ -97,10 +96,8 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 ) : (
                   <ProfileCircle200
                     crop={true}
-                    className=""
                     alt="profilePic"
                     src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                    altImg=""
                   />
                 )}
               </Link>
@@ -170,13 +167,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
               <CustomCarousel indicator={postProps.Images.length === 1 ? false : true}>
                 {postProps.Images?.map((v: Image, i: number) => (
                   <ImageBox key={i + v.src} onClick={() => setCrop((c) => !c)}>
-                    <PostImage
-                      crop={crop}
-                      className=""
-                      src={v?.src.replace(/\/thumb\//, "/original/")}
-                      alt="zoom image"
-                      altImg=""
-                    />
+                    <PostImage crop={crop} src={v?.src.replace(/\/thumb\//, "/original/")} alt="zoom image" />
                   </ImageBox>
                 ))}
               </CustomCarousel>
@@ -188,7 +179,6 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                     {postProps?.User?.profilePic ? (
                       <ProfileCircle40
                         crop={true}
-                        className=""
                         src={`${postProps?.User?.profilePic}`}
                         alt="profilePic"
                         altImg={`${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
@@ -196,10 +186,8 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                     ) : (
                       <ProfileCircle40
                         crop={true}
-                        className=""
                         src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
                         alt="profilePic"
-                        altImg=""
                       />
                     )}
                   </Link>
@@ -271,7 +259,6 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                     {postProps?.User?.profilePic ? (
                       <ProfileCircle40
                         crop={true}
-                        className=""
                         src={`${postProps?.User?.profilePic}`}
                         altImg={`${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
                         alt="profilePic"
@@ -279,9 +266,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                     ) : (
                       <ProfileCircle40
                         crop={true}
-                        className=""
                         alt="profilePic"
-                        altImg=""
                         src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
                       />
                     )}
@@ -294,13 +279,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
               <CustomCarousel indicator={postProps.Images.length === 0 ? false : true}>
                 {postProps.Images?.map((v: Image, i: number) => (
                   <div key={i + v.src} onClick={() => setCrop((c) => !c)}>
-                    <PostImage
-                      crop={crop}
-                      className=""
-                      src={v?.src.replace(/\/thumb\//, "/original/")}
-                      alt="zoom image"
-                      altImg=""
-                    />
+                    <PostImage crop={crop} src={v?.src.replace(/\/thumb\//, "/original/")} alt="zoom image" />
                   </div>
                 ))}
                 <MobileText key="text">
@@ -548,7 +527,7 @@ const PostImage = styled(Img)`
 const PostZoomBG = styled.div<{ animation: string }>`
   opacity: 0;
   opacity: ${(props) => (props.animation === "open" ? 1 : 0)};
-  transition: linear 0.4s all;
+  transition: linear 0.3s all;
 
   overflow: hidden;
 

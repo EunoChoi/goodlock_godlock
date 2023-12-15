@@ -87,29 +87,16 @@ const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
           {image && !uploadImage.isLoading && (
             <ProfileImage
               crop={true}
-              className=""
               src={`${image}`}
               altImg={image.replace(/\/thumb\//, "/original/")}
               alt="프로필 이미지"
             />
           )}
           {uploadImage.isLoading && (
-            <ProfileImage
-              crop={true}
-              className=""
-              src={`${process.env.PUBLIC_URL}/img/loading.gif`}
-              alt="로딩"
-              altImg=""
-            />
+            <ProfileImage crop={true} src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt="로딩" />
           )}
           {!image && !uploadImage.isLoading && (
-            <ProfileImage
-              crop={true}
-              className=""
-              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-              alt="프로필 이미지"
-              altImg=""
-            />
+            <ProfileImage crop={true} src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} alt="프로필 이미지" />
           )}
           <Button
             color="error"

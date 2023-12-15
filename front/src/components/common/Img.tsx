@@ -8,22 +8,22 @@ const Img = ({
   altImg,
   crop
 }: {
-  className: string;
+  className?: string;
   src: string;
   alt: string;
-  altImg: string;
+  altImg?: string;
   crop: boolean;
 }) => {
   const [errorCount, setErrorCount] = useState<number>(0);
-  const [altImage, setAltImage] = useState<string>(altImg);
+  const [altImage, setAltImage] = useState<string>(altImg ? altImg : "");
   const failImg = "/img/loadingFailed.png";
 
   //에러 발생 시 altImg로 한번 시도하고 또 에러가 발생하면 기본 이미지가 나오도록한다. 무한 루프가 방지된다.
 
   useEffect(() => {
     if (errorCount != 0) {
-      console.log(src);
-      console.log(errorCount);
+      // console.log(src);
+      // console.log(errorCount);
       //5가 되기 전까지 alt src 시도, 5일때 실패 이미지로 변경
       if (errorCount >= 10) {
         setAltImage(failImg);
@@ -38,7 +38,7 @@ const Img = ({
       src={src}
       alt={alt}
       onError={(e) => {
-        console.log("error occur");
+        console.log("error occur in image loading");
         e.currentTarget.src = altImage;
         if (errorCount < 10) {
           setErrorCount((c) => (c += 1));

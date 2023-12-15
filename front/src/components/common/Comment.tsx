@@ -98,13 +98,12 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
           {commentProps?.User?.profilePic ? (
             <ProfilePic
               crop={true}
-              className=""
               alt="profilePic"
               src={`${commentProps?.User?.profilePic}`}
               altImg={`${commentProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
             />
           ) : (
-            <ProfilePic crop={true} className="" alt="profilePic" src="/img/defaultProfilePic.png" altImg="" />
+            <ProfilePic crop={true} alt="profilePic" src="/img/defaultProfilePic.png" />
           )}
 
           <UserNickname>{commentProps?.User?.nickname}</UserNickname>

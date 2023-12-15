@@ -43,7 +43,9 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
     if (nick?.length >= 11) return nick.slice(0, 10) + "...";
     else return nick;
   };
-
+  const onClose = () => {
+    setSideBarAnimation("close");
+  };
   const logoutConfirm = () => {
     confirmAlert({
       // title: "",
@@ -93,7 +95,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
           <button
             onClick={() => {
               navigate("/main/0");
-              close();
+              onClose();
             }}
           >
             <ExtensionIcon fontSize="inherit" />
@@ -106,25 +108,18 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
               <div
                 onClick={() => {
                   navigate("/profile/0");
-                  close();
+                  onClose();
                 }}
               >
                 {user.profilePic ? (
                   <SideBar.ProfilePic
                     crop={true}
-                    className=""
                     src={user.profilePic}
                     altImg={`${user.profilePic.replace(/\/thumb\//, "/original/")}`}
                     alt="profilePic"
                   />
                 ) : (
-                  <SideBar.ProfilePic
-                    crop={true}
-                    className=""
-                    src="/img/defaultProfilePic.png"
-                    altImg=""
-                    alt="profilePic"
-                  />
+                  <SideBar.ProfilePic crop={true} src="/img/defaultProfilePic.png" alt="profilePic" />
                 )}
               </div>
 
@@ -132,7 +127,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                 id="info_text_box"
                 onClick={() => {
                   navigate("/profile/0");
-                  close();
+                  onClose();
                 }}
               >
                 <span id="nickname">{makeShortNickname(user?.nickname)}</span>
@@ -145,7 +140,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                   className="info_box"
                   onClick={() => {
                     navigate("/profile/3");
-                    close();
+                    onClose();
                   }}
                 >
                   <span>{makeK(user?.Posts?.length)}</span>
@@ -155,7 +150,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                   className="info_box"
                   onClick={() => {
                     navigate("/profile/1");
-                    close();
+                    onClose();
                   }}
                 >
                   <span>{makeK(user?.Followings?.length)}</span>
@@ -165,7 +160,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                   className="info_box"
                   onClick={() => {
                     navigate("/profile/2");
-                    close();
+                    onClose();
                   }}
                 >
                   <span>{makeK(user?.Followers?.length)}</span>
@@ -179,7 +174,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                   <button
                     onClick={() => {
                       navigate("/main/0");
-                      close();
+                      onClose();
                     }}
                   >
                     <HomeRoundedIcon />
@@ -188,7 +183,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                   <button
                     onClick={() => {
                       navigate("/main/1");
-                      close();
+                      onClose();
                     }}
                   >
                     <LightbulbRoundedIcon />
@@ -197,7 +192,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                   <button
                     onClick={() => {
                       navigate("/main/2");
-                      close();
+                      onClose();
                     }}
                   >
                     <ForumIcon />
@@ -206,7 +201,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                   <button
                     onClick={() => {
                       navigate("/main/3");
-                      close();
+                      onClose();
                     }}
                   >
                     <PhotoRoundedIcon />
@@ -215,7 +210,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                   <button
                     onClick={() => {
                       navigate("/profile/0");
-                      close();
+                      onClose();
                     }}
                   >
                     <PersonRoundedIcon />
@@ -227,7 +222,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                     id="logout"
                     onClick={() => {
                       logoutConfirm();
-                      close();
+                      onClose();
                     }}
                   >
                     <ExitToAppRoundedIcon />
@@ -244,7 +239,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
             <button
               onClick={() => {
                 navigate("/");
-                close();
+                onClose();
               }}
             >
               로그인

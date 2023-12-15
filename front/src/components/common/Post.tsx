@@ -174,19 +174,12 @@ const Post = ({ postProps }: any) => {
           {postProps?.User?.profilePic ? (
             <ProfilePic
               crop={true}
-              className=""
               alt="userProfilePic"
               src={`${postProps?.User?.profilePic}`}
               altImg={`${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
             />
           ) : (
-            <ProfilePic
-              crop={true}
-              className=""
-              alt="userProfilePic"
-              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-              altImg=""
-            />
+            <ProfilePic crop={true} alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}
           <span>{postProps?.User?.nickname}</span>
         </div>
@@ -203,13 +196,7 @@ const Post = ({ postProps }: any) => {
               setZoom(true);
             }}
           >
-            <Image
-              crop={true}
-              className=""
-              src={`${v?.src}`}
-              alt="img"
-              altImg={`${v?.src.replace(/\/thumb\//, "/original/")}`}
-            />
+            <Image crop={true} src={`${v?.src}`} alt="img" altImg={`${v?.src.replace(/\/thumb\//, "/original/")}`} />
           </div>
         ))}
       </CoustomCarousel>

@@ -3,7 +3,6 @@ import styled from "styled-components/macro";
 import Axios from "../apis/Axios";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
@@ -67,7 +66,7 @@ const UserInfo = () => {
       },
       onError: () => {
         // location.reload();
-        navigate("/404");
+        // navigate("/404");
       }
     }
   );
@@ -135,7 +134,7 @@ const UserInfo = () => {
         menuWrapper?.scrollTo({ top: 0, left: (width / 5) * categoryNum - 70, behavior: "smooth" });
       }
     } else {
-      navigate("/404");
+      // navigate("/404");
     }
   }, [categoryNum]);
 
@@ -146,19 +145,12 @@ const UserInfo = () => {
           {targetUser?.profilePic ? (
             <Pic
               crop={true}
-              className=""
               alt="userProfilePic"
               src={`${targetUser?.profilePic}`}
               altImg={targetUser?.profilePic.replace(/\/thumb\//, "/original/")}
             />
           ) : (
-            <Pic
-              crop={true}
-              className=""
-              alt="userProfilePic"
-              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-              altImg=""
-            />
+            <Pic crop={true} alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}
 
           <span id="nickname">{makeShortNickname(targetUser?.nickname)}</span>
@@ -255,7 +247,6 @@ const UserInfo = () => {
                         {v.profilePic ? (
                           <ProfilePic32
                             crop={true}
-                            className=""
                             alt="ProfilePic"
                             src={v.profilePic}
                             altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
@@ -263,10 +254,8 @@ const UserInfo = () => {
                         ) : (
                           <ProfilePic32
                             crop={true}
-                            className=""
                             alt="defaultProfilePic"
                             src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                            altImg=""
                           />
                         )}
                       </div>
@@ -299,7 +288,6 @@ const UserInfo = () => {
                         {v.profilePic ? (
                           <ProfilePic32
                             crop={true}
-                            className=""
                             alt="ProfilePic"
                             src={`${v.profilePic}`}
                             altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
@@ -307,10 +295,8 @@ const UserInfo = () => {
                         ) : (
                           <ProfilePic32
                             crop={true}
-                            className=""
                             alt="ProfilePic"
                             src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                            altImg=""
                           />
                         )}
                       </div>

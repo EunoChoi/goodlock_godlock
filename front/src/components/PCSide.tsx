@@ -62,7 +62,6 @@ const Side = () => {
         <button
           onClick={() => {
             navigate("/main/0");
-            close();
           }}
         >
           <ExtensionIcon fontSize="inherit" />
@@ -75,25 +74,17 @@ const Side = () => {
             <div
               onClick={() => {
                 navigate("/profile/0");
-                close();
               }}
             >
               {user.profilePic ? (
                 <SideBar.ProfilePic
                   crop={true}
-                  className=""
                   src={user.profilePic}
                   altImg={`${user.profilePic.replace(/\/thumb\//, "/original/")}`}
                   alt="profilePic"
                 />
               ) : (
-                <SideBar.ProfilePic
-                  crop={true}
-                  className=""
-                  src="/img/defaultProfilePic.png"
-                  altImg=""
-                  alt="profilePic"
-                />
+                <SideBar.ProfilePic crop={true} src="/img/defaultProfilePic.png" alt="profilePic" />
               )}
             </div>
 
@@ -101,7 +92,6 @@ const Side = () => {
               id="info_text_box"
               onClick={() => {
                 navigate("/profile/0");
-                close();
               }}
             >
               <span id="nickname">{makeShortNickname(user?.nickname)}</span>
@@ -114,7 +104,6 @@ const Side = () => {
                 className="info_box"
                 onClick={() => {
                   navigate("/profile/3");
-                  close();
                 }}
               >
                 <span>{makeK(user?.Posts?.length)}</span>
@@ -124,7 +113,6 @@ const Side = () => {
                 className="info_box"
                 onClick={() => {
                   navigate("/profile/1");
-                  close();
                 }}
               >
                 <span>{makeK(user?.Followings?.length)}</span>
@@ -134,7 +122,6 @@ const Side = () => {
                 className="info_box"
                 onClick={() => {
                   navigate("/profile/2");
-                  close();
                 }}
               >
                 <span>{makeK(user?.Followers?.length)}</span>
@@ -148,7 +135,6 @@ const Side = () => {
                 <button
                   onClick={() => {
                     navigate("/main/0");
-                    close();
                   }}
                 >
                   <HomeRoundedIcon />
@@ -157,7 +143,6 @@ const Side = () => {
                 <button
                   onClick={() => {
                     navigate("/main/1");
-                    close();
                   }}
                 >
                   <LightbulbRoundedIcon />
@@ -166,7 +151,6 @@ const Side = () => {
                 <button
                   onClick={() => {
                     navigate("/main/2");
-                    close();
                   }}
                 >
                   <ForumIcon />
@@ -175,7 +159,6 @@ const Side = () => {
                 <button
                   onClick={() => {
                     navigate("/main/3");
-                    close();
                   }}
                 >
                   <PhotoRoundedIcon />
@@ -184,7 +167,6 @@ const Side = () => {
                 <button
                   onClick={() => {
                     navigate("/profile/0");
-                    close();
                   }}
                 >
                   <PersonRoundedIcon />
@@ -196,7 +178,6 @@ const Side = () => {
                   id="logout"
                   onClick={() => {
                     logoutConfirm();
-                    close();
                   }}
                 >
                   <ExitToAppRoundedIcon />
@@ -213,7 +194,6 @@ const Side = () => {
           <button
             onClick={() => {
               navigate("/");
-              close();
             }}
           >
             로그인
