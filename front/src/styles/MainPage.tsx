@@ -27,7 +27,7 @@ const LoadingIconWrapper = styled.div`
 `;
 
 const HomeEl = styled.div`
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 68px);
   animation: ${Animation.smoothAppear} 1s ease-in-out;
 
   @media (orientation: portrait) or (max-height: 480px) {
@@ -60,8 +60,12 @@ const Pill = {
     justify-content: start;
     align-items: center;
 
-    padding-top: 24px;
-    padding-bottom: 24px;
+    /* padding-top: 24px;
+    padding-bottom: 24px; */
+    padding-top: 12px;
+    padding-bottom: 12px;
+    /* margin-top: 12px; */
+    margin-bottom: 12px;
 
     width: 100%;
     width: 500px;
@@ -69,11 +73,13 @@ const Pill = {
 
     @media (orientation: portrait) or (max-height: 480px) {
       top: 48px;
-      top: 46px;
+      top: 47px;
       background-color: #c8daf3;
       background-color: #fff;
       width: 100%;
-      padding: 24px 4vw;
+      padding: 12px 4vw;
+      /* margin-top: 12px; */
+      margin-bottom: 12px;
     }
     @media (orientation: landscape) and (max-height: 480px) {
       width: 400px;

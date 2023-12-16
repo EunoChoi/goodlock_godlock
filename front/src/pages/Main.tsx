@@ -9,7 +9,7 @@ import Home from "../components/mainPage/Home";
 import Tips from "../components/mainPage/Tips";
 import FreeBoard from "../components/mainPage/FreeBoard";
 import Gallery from "../components/mainPage/Gallery";
-import Profile from "./Profile";
+import Profile from "../components/mainPage/Profile";
 
 const Main = () => {
   const params = useParams();

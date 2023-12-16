@@ -21,8 +21,7 @@ const Side = () => {
   const logout = User.logout();
 
   const { type } = useParams();
-  let currentPage = type ? parseInt(type) : -1;
-  if (window.location.pathname.split("/")[1] === "profile") currentPage = 4;
+  const currentPage = type ? parseInt(type) : -1;
 
   const makeK = (n: number | null) => {
     if (n === null) {
@@ -73,7 +72,7 @@ const Side = () => {
           <SideBar.UserInfoWrapper>
             <div
               onClick={() => {
-                navigate("/profile/0");
+                navigate("/main/4/cat/0");
               }}
             >
               {user.profilePic ? (
@@ -91,7 +90,7 @@ const Side = () => {
             <div
               id="info_text_box"
               onClick={() => {
-                navigate("/profile/0");
+                navigate("/main/4/cat/0");
               }}
             >
               <span id="nickname">{makeShortNickname(user?.nickname)}</span>
@@ -103,7 +102,7 @@ const Side = () => {
               <button
                 className="info_box"
                 onClick={() => {
-                  navigate("/profile/3");
+                  navigate("/main/4/cat/3");
                 }}
               >
                 <span>{makeK(user?.Posts?.length)}</span>
@@ -112,7 +111,7 @@ const Side = () => {
               <button
                 className="info_box"
                 onClick={() => {
-                  navigate("/profile/1");
+                  navigate("/main/4/cat/1");
                 }}
               >
                 <span>{makeK(user?.Followings?.length)}</span>
@@ -121,7 +120,7 @@ const Side = () => {
               <button
                 className="info_box"
                 onClick={() => {
-                  navigate("/profile/2");
+                  navigate("/main/4/cat/2");
                 }}
               >
                 <span>{makeK(user?.Followers?.length)}</span>

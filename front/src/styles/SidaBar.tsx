@@ -80,7 +80,7 @@ const HeaderWrapper = styled.div`
   height: 10%;
   /* border: 1px solid white; */
 
-  padding: 0 40px;
+  padding: 0 30px;
 
   display: flex;
   justify-content: start;

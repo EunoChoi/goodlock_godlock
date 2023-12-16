@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components/macro";
-import Axios from "../apis/Axios";
+import Axios from "../../apis/Axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -10,17 +10,17 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { confirmAlert } from "react-confirm-alert";
 import moment from "moment";
 import "moment/locale/ko";
-import Img from "../components/common/Img";
+import Img from "../common/Img";
 
-import alertModal from "../components/common/Alert";
+import alertModal from "../common/Alert";
 
 //components
-import AppLayout from "../components/AppLayout";
-import Post from "../components/common/Post";
-import ProfileChangePopup from "../components/common/ProfileChangePopup";
+import AppLayout from "../AppLayout";
+import Post from "../common/Post";
+import ProfileChangePopup from "../common/ProfileChangePopup";
 
 //style
-import Animation from "../styles/Animation";
+import Animation from "../../styles/Animation";
 
 //mui
 import { Button } from "@mui/material";
@@ -33,9 +33,9 @@ import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import CancelIcon from "@mui/icons-material/Cancel";
-import User from "../functions/reactQuery/User";
-import UserDeleteConfirm from "../components/UserDeleteConfirm";
-import PasswordChangeConfirm from "../components/PasswordChangeConfirm";
+import User from "../../functions/reactQuery/User";
+import UserDeleteConfirm from "../UserDeleteConfirm";
+import PasswordChangeConfirm from "../PasswordChangeConfirm";
 import CircularProgress from "@mui/material/CircularProgress";
 
 interface userProps {
@@ -732,6 +732,8 @@ const MenuWrapper = styled.div`
   top: 0px;
 
   padding: 36px 0;
+  padding: 12px 0;
+  margin-bottom: 12px;
   z-index: 85;
   /* background: rgb(255, 255, 255);
   background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(245, 245, 245, 1) 11%, rgba(245, 245, 245, 1) 100%); */
@@ -771,13 +773,13 @@ const ContentWrapper = styled.div`
 
   width: 100%;
   //header : 48px
-  //pill wrapper : 104px
-  min-height: calc(100vh - 104px);
+  //pill wrapper : 68px
+  min-height: calc(100vh - 68px);
 
   @media (orientation: portrait) or (max-height: 480px) {
     //haeder height : 48px
-    //pill wrapper : 104px
-    min-height: calc(100vh - 48px - 104px);
+    //pill wrapper : 68px
+    min-height: calc(100vh - 48px - 68px);
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 60vw;

@@ -17,7 +17,6 @@ import "./styles/react-confirm.css";
 //Pages
 const Start = lazy(() => import("./pages/Start"));
 const Main = lazy(() => import("./pages/Main"));
-const Profile = lazy(() => import("./pages/Profile"));
 const UserInfo = lazy(() => import("./pages/UserInfo"));
 const PostView = lazy(() => import("./pages/PostView"));
 const NotFound = lazy(() => import("./pages/NotFound"));

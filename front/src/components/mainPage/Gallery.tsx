@@ -216,8 +216,11 @@ const Pill = {
     justify-content: start;
     align-items: center;
 
-    padding-top: 24px;
-    padding-bottom: 24px;
+    /* padding-top: 24px;
+    padding-bottom: 24px; */
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
 
     width: 90%;
     overflow-x: scroll;
@@ -228,7 +231,7 @@ const Pill = {
       /* background-color: #c8daf3; */
       /* background-color: #fff; */
       width: 100%;
-      padding: 24px 4vw;
+      padding: 12px 4vw;
     }
     @media (orientation: landscape) and (max-height: 480px) {
       width: 90%;

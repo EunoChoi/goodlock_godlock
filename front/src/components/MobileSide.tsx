@@ -27,8 +27,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
   const [sideBarAnimation, setSideBarAnimation] = useState<"open" | "close" | "">("");
 
   const { type } = useParams();
-  let currentPage = type ? parseInt(type) : -1;
-  if (window.location.pathname.split("/")[1] === "profile") currentPage = 4;
+  const currentPage = type ? parseInt(type) : -1;
 
   const makeK = (n: number | null) => {
     if (n === null) {
@@ -107,7 +106,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
             <SideBar.UserInfoWrapper>
               <div
                 onClick={() => {
-                  navigate("/profile/0");
+                  navigate("/main/4/cat/0");
                   onClose();
                 }}
               >
@@ -126,7 +125,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
               <div
                 id="info_text_box"
                 onClick={() => {
-                  navigate("/profile/0");
+                  navigate("/main/4/cat/0");
                   onClose();
                 }}
               >
@@ -139,7 +138,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                 <button
                   className="info_box"
                   onClick={() => {
-                    navigate("/profile/3");
+                    navigate("/main/4/cat/3");
                     onClose();
                   }}
                 >
@@ -149,7 +148,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                 <button
                   className="info_box"
                   onClick={() => {
-                    navigate("/profile/1");
+                    navigate("/main/4/cat/1");
                     onClose();
                   }}
                 >
@@ -159,7 +158,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                 <button
                   className="info_box"
                   onClick={() => {
-                    navigate("/profile/2");
+                    navigate("/main/4/cat/2");
                     onClose();
                   }}
                 >

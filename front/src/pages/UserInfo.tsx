@@ -550,7 +550,7 @@ const FollowButton = styled.button`
   border: 3px rgba(0, 0, 0, 0.6) solid;
   border-radius: 6px;
 
-  /* margin-bottom: 24px; */
+  margin-bottom: 12px;
 
   color: rgba(0, 0, 0, 0.6);
 
@@ -577,7 +577,9 @@ const MenuWrapper = styled.div`
   height: auto;
   width: 500px;
 
-  padding: 36px 0;
+  /* padding: 36px 0; */
+  padding: 12px 0;
+  margin-bottom: 12px;
 
   overflow-x: scroll;
   -ms-overflow-style: none; /* IE and Edge */
@@ -608,12 +610,14 @@ const ContentWrapper = styled.div`
 
   width: 100%;
   height: auto;
-  min-height: calc(100vh - 104px);
+  //pill wrapper : 68px
+  min-height: calc(100vh - 68px);
 
   padding-bottom: 24px;
   @media (orientation: portrait) or (max-height: 480px) {
     //haeder height : 48px
-    min-height: calc(100vh - 48px - 104px);
+    //pill wrapper : 68px
+    min-height: calc(100vh - 48px - 68px);
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 400px;
