@@ -3,7 +3,6 @@ import styled from "styled-components/macro";
 import Axios from "../../apis/Axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -12,10 +11,9 @@ import moment from "moment";
 import "moment/locale/ko";
 import Img from "../common/Img";
 
-import alertModal from "../common/Alert";
+import customAlert from "../common/Alert";
 
 //components
-import AppLayout from "../AppLayout";
 import Post from "../common/Post";
 import ProfileChangePopup from "../common/ProfileChangePopup";
 

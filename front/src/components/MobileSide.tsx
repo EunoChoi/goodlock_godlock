@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import User from "../functions/reactQuery/User";
 import { useNavigate, useParams } from "react-router-dom";
-import { confirmAlert } from "react-confirm-alert";
 
+import customAlert from "./common/Alert";
 import SideBar from "../styles/SidaBar";
 
 //mui
@@ -29,6 +29,8 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
   const { type } = useParams();
   const currentPage = type ? parseInt(type) : -1;
 
+  const { Alert: LogoutAlert, onOpen: logoutAlertOpen } = customAlert();
+
   const makeK = (n: number | null) => {
     if (n === null) {
       return null;
@@ -44,22 +46,6 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
   };
   const onClose = () => {
     setSideBarAnimation("close");
-  };
-  const logoutConfirm = () => {
-    confirmAlert({
-      // title: "",
-      message: "로그아웃 하시겠습니까?",
-      buttons: [
-        {
-          label: "취소",
-          onClick: () => console.log("로그아웃 취소")
-        },
-        {
-          label: "확인",
-          onClick: () => logout.mutate()
-        }
-      ]
-    });
   };
 
   useEffect(() => {
@@ -78,6 +64,12 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
   return (
     // 로그아웃 상태에서 접근시도 구현해야함. 싱글 포스트 뷰 때문에
     <>
+      <LogoutAlert
+        mainText="로그아웃 하시겠습니까?"
+        onSuccess={() => {
+          logout.mutate();
+        }}
+      ></LogoutAlert>
       <SideBar.BG
         animation={sideBarAnimation}
         onClick={() => {
@@ -220,8 +212,8 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                   <button
                     id="logout"
                     onClick={() => {
-                      logoutConfirm();
-                      onClose();
+                      // logoutConfirm();
+                      logoutAlertOpen();
                     }}
                   >
                     <ExitToAppRoundedIcon />

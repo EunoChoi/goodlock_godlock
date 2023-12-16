@@ -58,10 +58,13 @@ function App() {
     };
 
     updateMobileViewport();
+    removeModalUrl();
 
-    if (history.state.page === "modal") {
-      history.back();
-    }
+    // window.addEventListener("beforeunload", (event) => {
+    //   //새로고침 방지 확인
+    //   event.preventDefault();
+    //   event.returnValue = "";
+    // });
 
     visualViewport?.addEventListener("resize", () => updateMobileViewport());
     window.addEventListener("popstate", removeModalUrl);
@@ -91,7 +94,7 @@ function App() {
           <Routes>
             <Route path="postview/:id" element={<PostView />} />
             <Route path="main/:type" element={<AuthRoute accessType="login" component={<Main />} />} />
-            <Route path="main/:type/modal" element={<AuthRoute accessType="login" component={<Main />} />} />
+            <Route path="main/:type/*" element={<AuthRoute accessType="login" component={<Main />} />} />
             <Route path="main/:type/cat/:cat" element={<AuthRoute accessType="login" component={<Main />} />} />
             <Route path="main/:type/cat/:cat/modal" element={<AuthRoute accessType="login" component={<Main />} />} />
             <Route path="userinfo/:id/cat/:cat" element={<AuthRoute accessType="login" component={<UserInfo />} />} />

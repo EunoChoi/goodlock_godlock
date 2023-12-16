@@ -1,70 +1,78 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface Props {
-  text?: string;
+  mainText?: string;
   subText?: string;
   onSuccess: () => void;
+
+  //css
+  bgColor?: string;
+  borderRadius?: string;
 }
 
-const alertModal = () => {
+const customAlert = () => {
   const [isOpen, setOpen] = useState<boolean>(false);
   return {
-    modalOpen: () => {
+    onOpen: () => {
       const url = document.URL + "/modal";
       history.pushState({ page: "modal" }, "", url);
+      // console.log("dd");
       setOpen(true);
     },
-    Alert: ({ text, subText, onSuccess }: Props) => {
-      const [animation, setAnimation] = useState<"open" | "close" | "">("");
+    Alert: useCallback(
+      ({ mainText, subText, onSuccess, bgColor, borderRadius }: Props) => {
+        const [animation, setAnimation] = useState<"open" | "close" | "">("");
 
-      useEffect(() => {
-        const closeAnimation = () => {
-          setAnimation("close");
-        };
+        useEffect(() => {
+          const closeAnimation = () => {
+            setAnimation("close");
+          };
 
-        setAnimation("open");
-        window.addEventListener("popstate", closeAnimation);
-        return () => {
-          window.removeEventListener("popstate", closeAnimation);
-        };
-      }, []);
-      return (
-        <>
-          {isOpen && (
-            <BG
-              onClick={() => history.back()}
-              animation={animation}
-              onTransitionEnd={() => {
-                if (animation === "close") {
-                  setOpen(false);
-                }
-              }}
-            >
-              <Popup onClick={(event) => event.stopPropagation()}>
-                <span>{text}</span>
-                <span>{subText}</span>
-                <ButtonWrapper>
-                  <button onClick={() => history.back()}>취소</button>
-                  <button
-                    onClick={() => {
-                      onSuccess();
-                      history.back();
-                    }}
-                  >
-                    확인
-                  </button>
-                </ButtonWrapper>
-              </Popup>
-            </BG>
-          )}
-        </>
-      );
-    }
+          setAnimation("open");
+          window.addEventListener("popstate", closeAnimation);
+          return () => {
+            window.removeEventListener("popstate", closeAnimation);
+          };
+        }, []);
+        return (
+          <>
+            {isOpen && (
+              <BG
+                onClick={() => history.back()}
+                animation={animation}
+                onTransitionEnd={() => {
+                  if (animation === "close") {
+                    setOpen(false);
+                  }
+                }}
+              >
+                <Popup onClick={(event) => event.stopPropagation()} bgColor={bgColor} borderRadius={borderRadius}>
+                  <span>{mainText}</span>
+                  <span>{subText}</span>
+                  <ButtonWrapper>
+                    <button onClick={() => history.back()}>취소</button>
+                    <button
+                      onClick={() => {
+                        onSuccess();
+                        history.back();
+                      }}
+                    >
+                      확인
+                    </button>
+                  </ButtonWrapper>
+                </Popup>
+              </BG>
+            )}
+          </>
+        );
+      },
+      [isOpen]
+    )
   };
 };
 
-export default alertModal;
+export default customAlert;
 
 const BG = styled.div<{ animation?: string }>`
   /* opacity: 0; */
@@ -78,7 +86,7 @@ const BG = styled.div<{ animation?: string }>`
   height: 100vh;
   width: 100vw;
 
-  z-index: 2000;
+  z-index: 3000;
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(5px);
 
@@ -87,12 +95,14 @@ const BG = styled.div<{ animation?: string }>`
   align-items: center;
 `;
 
-const Popup = styled.div`
-  padding: 60px 30px;
+const Popup = styled.div<{ bgColor?: string; borderRadius?: string }>`
+  padding: 50px 30px;
   width: 400px;
 
-  background: #fff;
-  border-radius: 10px;
+  /* background-color: #fff; */
+  background-color: ${(props) => (props.bgColor ? props.bgColor : "#fff")};
+  /* border-radius: 10px; */
+  border-radius: ${(props) => (props.bgColor ? props.bgColor : "10px")};
   box-shadow: 0 20px 75px rgba(0, 0, 0, 0.13);
 
   display: flex;
