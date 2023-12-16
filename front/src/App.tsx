@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import GlobalStyle from "./styles/GlobalStyle";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthRoute from "./components/AuthRoute";
 
+import { useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 //external css
@@ -94,16 +95,9 @@ function App() {
           <Routes>
             <Route path="postview/:id" element={<PostView />} />
             <Route path="main/:type" element={<AuthRoute accessType="login" component={<Main />} />} />
-            <Route path="main/:type/*" element={<AuthRoute accessType="login" component={<Main />} />} />
             <Route path="main/:type/cat/:cat" element={<AuthRoute accessType="login" component={<Main />} />} />
-            <Route path="main/:type/cat/:cat/modal" element={<AuthRoute accessType="login" component={<Main />} />} />
             <Route path="userinfo/:id/cat/:cat" element={<AuthRoute accessType="login" component={<UserInfo />} />} />
-            <Route
-              path="userinfo/:id/cat/:cat/modal"
-              element={<AuthRoute accessType="login" component={<UserInfo />} />}
-            />
             <Route path="/" element={<Start />} />
-            <Route path="/modal" element={<Start />} />
             <Route path="/auth/kakao" element={<Kakao />} />
             <Route path="/auth/google" element={<Google />} />
             <Route path="/auth/naver" element={<Naver />} />

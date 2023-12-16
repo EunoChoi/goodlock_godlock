@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { confirmAlert } from "react-confirm-alert";
 import CommentFunction from "../../functions/reactQuery/Comment";
+import customAlert from "./Alert";
 
 import Img from "./Img";
 
@@ -30,6 +30,8 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
   const open = Boolean(morePop);
   const [timer, setTimer] = useState<NodeJS.Timeout>();
 
+  const { Alert: CommentDeleteAlert, onOpen: commentDeleteAlertOpen } = customAlert();
+
   const navigate = useNavigate();
 
   const commentRef = useRef<HTMLInputElement>(null);
@@ -50,6 +52,12 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
         clearTimeout(timer);
       }}
     >
+      <CommentDeleteAlert
+        mainText="댓글을 삭제 하시겠습니까?"
+        onSuccess={() => {
+          deleteComment.mutate({ postId: commentProps.PostId, commentId: commentProps.id });
+        }}
+      ></CommentDeleteAlert>
       <Popper open={open} anchorEl={morePop} placement="top-end">
         <EditPopup>
           <Button
@@ -69,20 +77,7 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
             onClick={() => {
               setMorePop(null);
               clearTimeout(timer);
-              confirmAlert({
-                // title: "",
-                message: "댓글을 삭제 하시겠습니까?",
-                buttons: [
-                  {
-                    label: "취소",
-                    onClick: () => console.log("취소")
-                  },
-                  {
-                    label: "확인",
-                    onClick: () => deleteComment.mutate({ postId: commentProps.PostId, commentId: commentProps.id })
-                  }
-                ]
-              });
+              commentDeleteAlertOpen();
             }}
           >
             <DeleteForeverIcon />

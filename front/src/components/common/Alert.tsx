@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 interface Props {
@@ -12,12 +13,15 @@ interface Props {
 }
 
 const customAlert = () => {
+  const location = useLocation();
   const [isOpen, setOpen] = useState<boolean>(false);
   return {
     onOpen: () => {
-      const url = document.URL + "/modal";
+      if (history.state.page === "modal") {
+        const url = document.URL + `&modal="alert"`;
+      }
+      const url = document.URL + `?modal="alert"`;
       history.pushState({ page: "modal" }, "", url);
-      // console.log("dd");
       setOpen(true);
     },
     Alert: useCallback(
@@ -30,6 +34,7 @@ const customAlert = () => {
           };
 
           setAnimation("open");
+
           window.addEventListener("popstate", closeAnimation);
           return () => {
             window.removeEventListener("popstate", closeAnimation);

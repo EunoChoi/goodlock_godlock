@@ -4,7 +4,6 @@ import moment from "moment";
 import "moment/locale/ko";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { confirmAlert } from "react-confirm-alert";
 import Clipboard from "react-clipboard.js";
 
 //components
@@ -15,6 +14,8 @@ import PostZoom from "../PostZoom";
 import Animation from "../../styles/Animation";
 import CoustomCarousel from "./CustomCarousel";
 import Img from "./Img";
+
+import customAlert from "./Alert";
 
 //mui
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -58,6 +59,8 @@ const Post = ({ postProps }: any) => {
 
   const commentScroll = useRef<null | HTMLDivElement>(null);
 
+  const { Alert: PostDeleteAlert, onOpen: postDeleteAlertOpen } = customAlert();
+
   const open = Boolean(morePop);
   const [timer, setTimer] = useState<NodeJS.Timeout>();
 
@@ -97,6 +100,12 @@ const Post = ({ postProps }: any) => {
     <PostWrapper onClick={() => setMorePop(null)}>
       {/* 포스트 줌 팝업 */}
       {isZoom && <PostZoom setZoom={setZoom} postProps={postProps} />}
+      <PostDeleteAlert
+        mainText="게시글을 삭제 하시겠습니까?"
+        onSuccess={() => {
+          deletePost.mutate(postProps?.id);
+        }}
+      ></PostDeleteAlert>
       <Popper open={open} anchorEl={morePop} placement="top-end">
         <EditPopup>
           <Button
@@ -106,7 +115,7 @@ const Post = ({ postProps }: any) => {
               setMorePop(null);
               clearTimeout(timer);
 
-              const url = document.URL + "/modal";
+              const url = document.URL + `?modal="editPost"`;
               history.pushState({ page: "modal" }, "", url);
               setPostEdit(true);
             }}
@@ -119,20 +128,7 @@ const Post = ({ postProps }: any) => {
             onClick={() => {
               setMorePop(null);
               clearTimeout(timer);
-              confirmAlert({
-                // title: "",
-                message: "게시글을 삭제 하시겠습니까?",
-                buttons: [
-                  {
-                    label: "취소",
-                    onClick: () => console.log("취소")
-                  },
-                  {
-                    label: "확인",
-                    onClick: () => deletePost.mutate(postProps?.id)
-                  }
-                ]
-              });
+              postDeleteAlertOpen();
             }}
           >
             <DeleteForeverIcon />
