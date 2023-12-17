@@ -80,11 +80,9 @@ const TextArea = styled.textarea`
     outline: none;
   }
   &::placeholder {
-    position: absolute;
-    left: 50%;
-    bottom: calc(var(--vh, 1vh) * 40);
+    text-align: center;
+    padding-top: calc(var(--vh, 1vh) * 40);
 
-    transform: translate(-50%, -50%);
     font-size: 1.5em;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.3);

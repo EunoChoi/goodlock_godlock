@@ -45,6 +45,7 @@ const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayou
   useEffect(() => {
     const closeAnimation = () => {
       setAnimation("close");
+      history.pushState({}, "", window.location.pathname);
     };
 
     setAnimation("open");

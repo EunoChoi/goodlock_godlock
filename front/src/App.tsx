@@ -41,7 +41,7 @@ function App() {
   useEffect(() => {
     const removeModalUrl = () => {
       if (history.state.page === "modal") {
-        history.back();
+        history.pushState({}, "", window.location.pathname);
       }
     };
     const updateMobileViewport = () => {
@@ -61,17 +61,11 @@ function App() {
     updateMobileViewport();
     removeModalUrl();
 
-    // window.addEventListener("beforeunload", (event) => {
-    //   //새로고침 방지 확인
-    //   event.preventDefault();
-    //   event.returnValue = "";
-    // });
-
     visualViewport?.addEventListener("resize", () => updateMobileViewport());
-    window.addEventListener("popstate", removeModalUrl);
+    // window.addEventListener("popstate", removeModalUrl);
     return () => {
       visualViewport?.removeEventListener("resize", () => updateMobileViewport());
-      window.removeEventListener("popstate", removeModalUrl);
+      // window.removeEventListener("popstate", removeModalUrl);
     };
   }, []);
 

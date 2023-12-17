@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 interface Props {
   mainText?: string;
   subText?: string;
   onSuccess: () => void;
+  onCancel?: () => void;
 
   //css
   bgColor?: string;
@@ -13,61 +13,90 @@ interface Props {
 }
 
 const customAlert = () => {
-  const location = useLocation();
   const [isOpen, setOpen] = useState<boolean>(false);
+
+  const AlertComponent = useCallback(
+    ({ mainText, subText, onSuccess, onCancel, bgColor, borderRadius }: Props) => {
+      const [animation, setAnimation] = useState<"open" | "close" | "">("");
+
+      useEffect(() => {
+        setAnimation("open");
+
+        const closeAnimation = () => {
+          setAnimation("close");
+        };
+
+        window.addEventListener("popstate", closeAnimation);
+        return () => {
+          window.removeEventListener("popstate", closeAnimation);
+        };
+      }, []);
+
+      return (
+        <BG
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          animation={animation}
+          onTransitionEnd={() => {
+            if (animation === "close") {
+              setOpen(false);
+            }
+          }}
+        >
+          <Popup onClick={(event) => event.stopPropagation()} bgColor={bgColor} borderRadius={borderRadius}>
+            <span>{mainText}</span>
+            <span>{subText}</span>
+            <ButtonWrapper>
+              <button
+                onClick={() => {
+                  history.back();
+                  setTimeout(() => {
+                    onCancel && onCancel();
+                  }, 100);
+                }}
+              >
+                취소
+              </button>
+              <button
+                onClick={() => {
+                  history.back();
+                  onSuccess();
+                }}
+              >
+                확인
+              </button>
+            </ButtonWrapper>
+          </Popup>
+        </BG>
+      );
+    },
+    [isOpen]
+  );
+
   return {
     onOpen: () => {
-      if (history.state.page === "modal") {
-        const url = document.URL + `&modal="alert"`;
-      }
-      const url = document.URL + `?modal="alert"`;
-      history.pushState({ page: "modal" }, "", url);
+      console.log("alert open");
+      const url = document.URL + `#alerts`;
+      setTimeout(() => {
+        history.pushState(null, "", url);
+      }, 0);
+
       setOpen(true);
     },
     Alert: useCallback(
-      ({ mainText, subText, onSuccess, bgColor, borderRadius }: Props) => {
-        const [animation, setAnimation] = useState<"open" | "close" | "">("");
-
-        useEffect(() => {
-          const closeAnimation = () => {
-            setAnimation("close");
-          };
-
-          setAnimation("open");
-
-          window.addEventListener("popstate", closeAnimation);
-          return () => {
-            window.removeEventListener("popstate", closeAnimation);
-          };
-        }, []);
+      ({ mainText, subText, onSuccess, onCancel, bgColor, borderRadius }: Props) => {
         return (
           <>
             {isOpen && (
-              <BG
-                onClick={() => history.back()}
-                animation={animation}
-                onTransitionEnd={() => {
-                  if (animation === "close") {
-                    setOpen(false);
-                  }
-                }}
-              >
-                <Popup onClick={(event) => event.stopPropagation()} bgColor={bgColor} borderRadius={borderRadius}>
-                  <span>{mainText}</span>
-                  <span>{subText}</span>
-                  <ButtonWrapper>
-                    <button onClick={() => history.back()}>취소</button>
-                    <button
-                      onClick={() => {
-                        onSuccess();
-                        history.back();
-                      }}
-                    >
-                      확인
-                    </button>
-                  </ButtonWrapper>
-                </Popup>
-              </BG>
+              <AlertComponent
+                mainText={mainText}
+                subText={subText}
+                onSuccess={onSuccess}
+                onCancel={onCancel}
+                bgColor={bgColor}
+                borderRadius={borderRadius}
+              ></AlertComponent>
             )}
           </>
         );
@@ -82,7 +111,7 @@ export default customAlert;
 const BG = styled.div<{ animation?: string }>`
   /* opacity: 0; */
   opacity: ${(props) => (props.animation === "open" ? 1 : 0)};
-  transition: ease-out 0.3s all;
+  /* transition: ease-out 0.3s all; */
 
   position: fixed;
   top: 0;
