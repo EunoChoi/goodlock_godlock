@@ -24,8 +24,7 @@ const Start = () => {
   const start = () => {
     if (isLoggedIn) navigate("/main/0");
     else {
-      const url = document.URL + "#login";
-      history.pushState({ page: "modal" }, "", url);
+      history.pushState({ page: "modal" }, "", "");
       setPopupOpen(true);
     }
   };

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
+import { useModalStack } from "../../store/modalStack";
 
 interface Props {
   mainText?: string;
@@ -15,73 +16,70 @@ interface Props {
 const customAlert = () => {
   const [isOpen, setOpen] = useState<boolean>(false);
 
-  const AlertComponent = useCallback(
-    ({ mainText, subText, onSuccess, onCancel, bgColor, borderRadius }: Props) => {
-      const [animation, setAnimation] = useState<"open" | "close" | "">("");
+  const AlertComponent = ({ mainText, subText, onSuccess, onCancel, bgColor, borderRadius }: Props) => {
+    const [animation, setAnimation] = useState<"open" | "close" | "">("");
+    const { push, pop, modalStack } = useModalStack();
 
-      useEffect(() => {
-        setAnimation("open");
+    window.onpopstate = () => {
+      if (modalStack[modalStack.length - 1] === "#alert") {
+        setAnimation("close");
+      }
+    };
 
-        const closeAnimation = () => {
-          setAnimation("close");
-        };
+    useEffect(() => {
+      setAnimation("open");
+      push("#alert");
+      return () => {
+        pop();
+      };
+    }, []);
 
-        window.addEventListener("popstate", closeAnimation);
-        return () => {
-          window.removeEventListener("popstate", closeAnimation);
-        };
-      }, []);
+    return (
+      <BG
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+        animation={animation}
+        onTransitionEnd={() => {
+          if (animation === "close") {
+            setOpen(false);
+          }
+        }}
+      >
+        <Popup onClick={(event) => event.stopPropagation()} bgColor={bgColor} borderRadius={borderRadius}>
+          <span>{mainText}</span>
+          <span>{subText}</span>
 
-      return (
-        <BG
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-          animation={animation}
-          onTransitionEnd={() => {
-            if (animation === "close") {
-              setOpen(false);
-            }
-          }}
-        >
-          <Popup onClick={(event) => event.stopPropagation()} bgColor={bgColor} borderRadius={borderRadius}>
-            <span>{mainText}</span>
-            <span>{subText}</span>
-            <ButtonWrapper>
-              <button
-                onClick={() => {
-                  history.back();
-                  setTimeout(() => {
-                    onCancel && onCancel();
-                  }, 100);
-                }}
-              >
-                취소
-              </button>
-              <button
-                onClick={() => {
-                  history.back();
-                  onSuccess();
-                }}
-              >
-                확인
-              </button>
-            </ButtonWrapper>
-          </Popup>
-        </BG>
-      );
-    },
-    [isOpen]
-  );
+          <ButtonWrapper>
+            <button
+              onClick={() => {
+                history.back();
+                setTimeout(() => {
+                  onCancel && onCancel();
+                }, 100);
+
+                // setAnimation("close");
+              }}
+            >
+              취소
+            </button>
+            <button
+              onClick={() => {
+                history.back();
+                onSuccess();
+              }}
+            >
+              확인
+            </button>
+          </ButtonWrapper>
+        </Popup>
+      </BG>
+    );
+  };
 
   return {
     onOpen: () => {
-      console.log("alert open");
-      const url = document.URL + `#alerts`;
-      setTimeout(() => {
-        history.pushState(null, "", url);
-      }, 0);
-
+      history.pushState({ page: "modal" }, "", "");
       setOpen(true);
     },
     Alert: useCallback(
@@ -111,13 +109,14 @@ export default customAlert;
 const BG = styled.div<{ animation?: string }>`
   /* opacity: 0; */
   opacity: ${(props) => (props.animation === "open" ? 1 : 0)};
-  /* transition: ease-out 0.3s all; */
+  transition: ease-out 0.3s all;
 
   position: fixed;
   top: 0;
   left: 0;
 
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   width: 100vw;
 
   z-index: 3000;

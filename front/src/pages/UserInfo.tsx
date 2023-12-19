@@ -61,7 +61,7 @@ const UserInfo = () => {
       onSuccess: (res) => {
         if (res.id === user.id) {
           console.log("내 페이지");
-          navigate("/profile/0");
+          navigate("/main/4/cat/0");
         }
       },
       onError: () => {

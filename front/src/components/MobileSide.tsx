@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import User from "../functions/reactQuery/User";
 import { useNavigate, useParams } from "react-router-dom";
 
 import customAlert from "./common/Alert";
 import SideBar from "../styles/SidaBar";
+
+import ReactDom from "react-dom"; //for react portal
+
+//zustanc
+import { useModalStack } from "../store/modalStack";
 
 //mui
 import Stack from "@mui/joy/Stack";
@@ -21,6 +26,8 @@ interface Props {
 }
 
 const MobileSide = ({ setMobileSideOpen }: Props) => {
+  const { push, pop, modalStack } = useModalStack();
+
   const user = User.getData();
   const navigate = useNavigate();
   const logout = User.logout();
@@ -48,198 +55,212 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
     setSideBarAnimation("close");
   };
 
+  window.onpopstate = () => {
+    if (modalStack[modalStack.length - 1] === "#sidebar") {
+      onClose();
+    }
+  };
+
   useEffect(() => {
+    push("#sidebar");
     setSideBarAnimation("open");
 
-    const closeAnimation = () => {
-      setSideBarAnimation("close");
-    };
-
-    window.addEventListener("popstate", closeAnimation);
     return () => {
-      window.removeEventListener("popstate", closeAnimation);
+      pop();
     };
   }, []);
 
   return (
-    // 로그아웃 상태에서 접근시도 구현해야함. 싱글 포스트 뷰 때문에
     <>
-      <LogoutAlert
-        mainText="로그아웃 하시겠습니까?"
-        onSuccess={() => {
-          logout.mutate();
-        }}
-      ></LogoutAlert>
-      <SideBar.BG
-        animation={sideBarAnimation}
-        onClick={() => {
-          history.back();
-        }}
-        onTransitionEnd={() => {
-          if (sideBarAnimation === "close") {
-            setMobileSideOpen(false);
-          }
-        }}
-      ></SideBar.BG>
-      <SideBar.MobileWrapper animation={sideBarAnimation}>
-        <SideBar.HeaderWrapper>
-          <button
+      {ReactDom.createPortal(
+        <LogoutAlert
+          mainText="로그아웃 하시겠습니까?"
+          onSuccess={() => {
+            logout.mutate();
+          }}
+        />,
+        document.getElementById("modal_root") as HTMLElement
+      )}
+      {ReactDom.createPortal(
+        <>
+          <SideBar.BG
+            animation={sideBarAnimation}
             onClick={() => {
-              navigate("/main/0");
-              onClose();
+              history.back();
             }}
-          >
-            <ExtensionIcon fontSize="inherit" />
-            <span>God Lock</span>
-          </button>
-        </SideBar.HeaderWrapper>
-        {user && (
-          <>
-            <SideBar.UserInfoWrapper>
-              <div
+            onTransitionEnd={(e) => {
+              e.stopPropagation();
+              if (sideBarAnimation === "close") {
+                setMobileSideOpen(false);
+              }
+            }}
+          ></SideBar.BG>
+          <SideBar.MobileWrapper animation={sideBarAnimation}>
+            <SideBar.HeaderWrapper>
+              <button
                 onClick={() => {
-                  navigate("/main/4/cat/0");
+                  navigate("/main/0");
                   onClose();
                 }}
               >
-                {user.profilePic ? (
-                  <SideBar.ProfilePic
-                    crop={true}
-                    src={user.profilePic}
-                    altImg={`${user.profilePic.replace(/\/thumb\//, "/original/")}`}
-                    alt="profilePic"
-                  />
-                ) : (
-                  <SideBar.ProfilePic crop={true} src="/img/defaultProfilePic.png" alt="profilePic" />
-                )}
-              </div>
-
-              <div
-                id="info_text_box"
-                onClick={() => {
-                  navigate("/main/4/cat/0");
-                  onClose();
-                }}
-              >
-                <span id="nickname">{makeShortNickname(user?.nickname)}</span>
-                <span id="email">{user?.email}</span>
-                <span id="usertext">{user?.usertext}</span>
-              </div>
-
-              <Stack direction="row" divider={<Divider orientation="vertical" />} spacing={1} justifyContent="center">
-                <button
-                  className="info_box"
-                  onClick={() => {
-                    navigate("/main/4/cat/3");
-                    onClose();
-                  }}
-                >
-                  <span>{makeK(user?.Posts?.length)}</span>
-                  <span>Posts</span>
-                </button>
-                <button
-                  className="info_box"
-                  onClick={() => {
-                    navigate("/main/4/cat/1");
-                    onClose();
-                  }}
-                >
-                  <span>{makeK(user?.Followings?.length)}</span>
-                  <span>Followings</span>
-                </button>
-                <button
-                  className="info_box"
-                  onClick={() => {
-                    navigate("/main/4/cat/2");
-                    onClose();
-                  }}
-                >
-                  <span>{makeK(user?.Followers?.length)}</span>
-                  <span>Followers</span>
-                </button>
-              </Stack>
-            </SideBar.UserInfoWrapper>
-            <SideBar.MenuWrapper currentPage={currentPage + 1}>
-              <Stack divider={<Divider orientation="horizontal" />} spacing={2} justifyContent="center">
-                <div id="buttons">
-                  <button
-                    onClick={() => {
-                      navigate("/main/0");
-                      onClose();
-                    }}
-                  >
-                    <HomeRoundedIcon />
-                    Home
-                  </button>
-                  <button
-                    onClick={() => {
-                      navigate("/main/1");
-                      onClose();
-                    }}
-                  >
-                    <LightbulbRoundedIcon />
-                    Tip Board
-                  </button>
-                  <button
-                    onClick={() => {
-                      navigate("/main/2");
-                      onClose();
-                    }}
-                  >
-                    <ForumIcon />
-                    Free Board
-                  </button>
-                  <button
-                    onClick={() => {
-                      navigate("/main/3");
-                      onClose();
-                    }}
-                  >
-                    <PhotoRoundedIcon />
-                    Gallery
-                  </button>
-                  <button
+                <ExtensionIcon fontSize="inherit" />
+                <span>God Lock</span>
+              </button>
+            </SideBar.HeaderWrapper>
+            {user && (
+              <>
+                <SideBar.UserInfoWrapper>
+                  <div
                     onClick={() => {
                       navigate("/main/4/cat/0");
                       onClose();
                     }}
                   >
-                    <PersonRoundedIcon />
-                    Profile
-                  </button>
-                </div>
-                <div>
-                  <button
-                    id="logout"
+                    {user.profilePic ? (
+                      <SideBar.ProfilePic
+                        crop={true}
+                        src={user.profilePic}
+                        altImg={`${user.profilePic.replace(/\/thumb\//, "/original/")}`}
+                        alt="profilePic"
+                      />
+                    ) : (
+                      <SideBar.ProfilePic crop={true} src="/img/defaultProfilePic.png" alt="profilePic" />
+                    )}
+                  </div>
+
+                  <div
+                    id="info_text_box"
                     onClick={() => {
-                      // logoutConfirm();
-                      logoutAlertOpen();
+                      navigate("/main/4/cat/0");
+                      onClose();
                     }}
                   >
-                    <ExitToAppRoundedIcon />
-                    Logout
-                  </button>
-                </div>
-              </Stack>
-            </SideBar.MenuWrapper>
-          </>
-        )}
-        {!user && (
-          <SideBar.LogInWrapper>
-            <span>로그인이 필요합니다.</span>
-            <button
-              onClick={() => {
-                navigate("/");
-                onClose();
-              }}
-            >
-              로그인
-            </button>
-          </SideBar.LogInWrapper>
-        )}
-      </SideBar.MobileWrapper>
+                    <span id="nickname">{makeShortNickname(user?.nickname)}</span>
+                    <span id="email">{user?.email}</span>
+                    <span id="usertext">{user?.usertext}</span>
+                  </div>
+
+                  <Stack
+                    direction="row"
+                    divider={<Divider orientation="vertical" />}
+                    spacing={1}
+                    justifyContent="center"
+                  >
+                    <button
+                      className="info_box"
+                      onClick={() => {
+                        navigate("/main/4/cat/3");
+                        onClose();
+                      }}
+                    >
+                      <span>{makeK(user?.Posts?.length)}</span>
+                      <span>Posts</span>
+                    </button>
+                    <button
+                      className="info_box"
+                      onClick={() => {
+                        navigate("/main/4/cat/1");
+                        onClose();
+                      }}
+                    >
+                      <span>{makeK(user?.Followings?.length)}</span>
+                      <span>Followings</span>
+                    </button>
+                    <button
+                      className="info_box"
+                      onClick={() => {
+                        navigate("/main/4/cat/2");
+                        onClose();
+                      }}
+                    >
+                      <span>{makeK(user?.Followers?.length)}</span>
+                      <span>Followers</span>
+                    </button>
+                  </Stack>
+                </SideBar.UserInfoWrapper>
+                <SideBar.MenuWrapper currentPage={currentPage + 1}>
+                  <Stack divider={<Divider orientation="horizontal" />} spacing={2} justifyContent="center">
+                    <div id="buttons">
+                      <button
+                        onClick={() => {
+                          navigate("/main/0");
+                          onClose();
+                        }}
+                      >
+                        <HomeRoundedIcon />
+                        Home
+                      </button>
+                      <button
+                        onClick={() => {
+                          navigate("/main/1");
+                          onClose();
+                        }}
+                      >
+                        <LightbulbRoundedIcon />
+                        Tip Board
+                      </button>
+                      <button
+                        onClick={() => {
+                          navigate("/main/2");
+                          onClose();
+                        }}
+                      >
+                        <ForumIcon />
+                        Free Board
+                      </button>
+                      <button
+                        onClick={() => {
+                          navigate("/main/3");
+                          onClose();
+                        }}
+                      >
+                        <PhotoRoundedIcon />
+                        Gallery
+                      </button>
+                      <button
+                        onClick={() => {
+                          navigate("/main/4/cat/0");
+                          onClose();
+                        }}
+                      >
+                        <PersonRoundedIcon />
+                        Profile
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        id="logout"
+                        onClick={() => {
+                          logoutAlertOpen();
+                        }}
+                      >
+                        <ExitToAppRoundedIcon />
+                        Logout
+                      </button>
+                    </div>
+                  </Stack>
+                </SideBar.MenuWrapper>
+              </>
+            )}
+            {!user && (
+              <SideBar.LogInWrapper>
+                <span>로그인이 필요합니다.</span>
+                <button
+                  onClick={() => {
+                    navigate("/");
+                    onClose();
+                  }}
+                >
+                  로그인
+                </button>
+              </SideBar.LogInWrapper>
+            )}
+          </SideBar.MobileWrapper>
+        </>,
+        document.getElementById("front_component_root") as HTMLElement
+      )}
     </>
   );
 };
 
-export default MobileSide;
+export default React.memo(MobileSide);

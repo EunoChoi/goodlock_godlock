@@ -7,7 +7,7 @@ import GlobalStyle from "./styles/GlobalStyle";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthRoute from "./components/AuthRoute";
 
-import { useLocation } from "react-router-dom";
+import { useModalStack } from "./store/modalStack";
 import { ToastContainer } from "react-toastify";
 
 //external css
@@ -28,6 +28,8 @@ import Google from "./pages/auth/Google";
 import Naver from "./pages/auth/Naver";
 
 function App() {
+  const { push, pop, modalStack } = useModalStack();
+
   // console.log("===== App 리렌더 =====");
 
   const queryClient = new QueryClient({
@@ -38,35 +40,46 @@ function App() {
     }
   });
 
+  const updateMobileViewport = () => {
+    const vh = window.visualViewport?.height;
+    const vw = window.visualViewport?.width;
+
+    if (vh && vw) {
+      if (vh > vw && vw == window.innerWidth) {
+        document.documentElement.style.setProperty("--vh", `${vh * 0.01}px`);
+      }
+      if (vw > vh && vh == window.innerHeight) {
+        document.documentElement.style.setProperty("--vh", `${vh * 0.01}px`);
+      }
+    }
+  };
+
+  if (visualViewport) {
+    visualViewport.onresize = () => {
+      updateMobileViewport();
+    };
+  }
+
   useEffect(() => {
-    const removeModalUrl = () => {
-      if (history.state.page === "modal") {
-        history.pushState({}, "", window.location.pathname);
-      }
-    };
-    const updateMobileViewport = () => {
-      const vh = window.visualViewport?.height;
-      const vw = window.visualViewport?.width;
+    console.log(modalStack);
+  }, [modalStack.length]);
 
-      if (vh && vw) {
-        if (vh > vw && vw == window.innerWidth) {
-          document.documentElement.style.setProperty("--vh", `${vh * 0.01}px`);
-        }
-        if (vw > vh && vh == window.innerHeight) {
-          document.documentElement.style.setProperty("--vh", `${vh * 0.01}px`);
-        }
-      }
-    };
-
+  useEffect(() => {
     updateMobileViewport();
-    removeModalUrl();
 
-    visualViewport?.addEventListener("resize", () => updateMobileViewport());
-    // window.addEventListener("popstate", removeModalUrl);
-    return () => {
-      visualViewport?.removeEventListener("resize", () => updateMobileViewport());
-      // window.removeEventListener("popstate", removeModalUrl);
-    };
+    // const removeModalUrl = () => {
+    //   if (history.state.page === "modal") {
+    //     console.log("clean url");
+    //     history.pushState({}, "", window.location.pathname);
+    //   }
+    // };
+
+    // removeModalUrl();
+
+    // visualViewport?.addEventListener("resize", () => updateMobileViewport());
+    // return () => {
+    //   visualViewport?.removeEventListener("resize", () => updateMobileViewport());
+    // };
   }, []);
 
   return (

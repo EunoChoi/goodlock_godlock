@@ -193,8 +193,7 @@ const Bot = () => {
   useEffect(() => {
     if (open === true) {
       //modal url 추가
-      const url = document.URL + "/modal";
-      history.pushState({ page: "modal" }, "", url);
+      history.pushState({ page: "modal" }, "", "");
 
       //백그라운드 body 스크롤 방지
       document.body.style.overflow = "hidden";
@@ -205,13 +204,8 @@ const Bot = () => {
   }, [open]);
 
   useEffect(() => {
-    const close = () => {
+    window.onpopstate = () => {
       setOpen(false);
-    };
-
-    window.addEventListener("popstate", close);
-    return () => {
-      window.removeEventListener("popstate", close);
     };
   }, []);
 

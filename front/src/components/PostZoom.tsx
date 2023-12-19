@@ -57,14 +57,10 @@ const PostZoom = ({ postProps, setZoom }: props) => {
   };
 
   useEffect(() => {
-    const closeAnimation = () => {
-      setAnimation("close");
-    };
-
     setAnimation("open");
-    window.addEventListener("popstate", closeAnimation);
-    return () => {
-      window.removeEventListener("popstate", closeAnimation);
+
+    window.onpopstate = () => {
+      setAnimation("close");
     };
   }, []);
 

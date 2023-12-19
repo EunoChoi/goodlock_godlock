@@ -6,13 +6,18 @@ const Img = ({
   src,
   alt,
   altImg,
-  crop
+  crop,
+  loading,
+  onClick
 }: {
   className?: string;
   src: string;
   alt: string;
   altImg?: string;
-  crop: boolean;
+  crop?: boolean;
+  loading?: "lazy" | "eager" | undefined;
+
+  onClick?: () => void;
 }) => {
   const [errorCount, setErrorCount] = useState<number>(0);
   const [altImage, setAltImage] = useState<string>(altImg ? altImg : "");
@@ -32,8 +37,9 @@ const Img = ({
   }, [errorCount]);
   return (
     <ImgSC
-      crop={crop}
-      // loading="lazy"
+      onClick={onClick}
+      crop={crop ? crop : false}
+      loading={loading ? loading : undefined}
       className={className}
       src={src}
       alt={alt}

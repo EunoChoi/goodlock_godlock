@@ -144,8 +144,7 @@ const InputPopup = ({ setPostInputOpen }: props) => {
           {
             label: "취소",
             onClick: () => {
-              const url = document.URL + "/modal";
-              history.pushState({ page: "modal" }, "", url);
+              history.pushState({ page: "modal" }, "", "");
             }
           },
           {
@@ -161,9 +160,8 @@ const InputPopup = ({ setPostInputOpen }: props) => {
     setAnimation("open");
     inputRef.current?.focus();
 
-    window.addEventListener("popstate", cancelConfirm);
-    return () => {
-      window.removeEventListener("popstate", cancelConfirm);
+    window.onpopstate = () => {
+      cancelConfirm();
     };
   }, []);
 

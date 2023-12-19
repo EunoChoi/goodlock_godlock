@@ -87,7 +87,7 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
       <CommentInfo>
         <FlexDiv
           onClick={() => {
-            if (user?.id === commentProps?.User?.id) navigate(`/profile/0`);
+            navigate(`/userinfo/${commentProps?.User?.id}/cat/0`);
           }}
         >
           {commentProps?.User?.profilePic ? (
@@ -100,9 +100,7 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
           ) : (
             <ProfilePic crop={true} alt="profilePic" src="/img/defaultProfilePic.png" />
           )}
-
           <UserNickname>{commentProps?.User?.nickname}</UserNickname>
-
           <CommentTime>{moment(commentProps?.createdAt).fromNow()}</CommentTime>
         </FlexDiv>
         <FlexDiv>

@@ -43,16 +43,11 @@ const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayou
   };
 
   useEffect(() => {
-    const closeAnimation = () => {
-      setAnimation("close");
-      history.pushState({}, "", window.location.pathname);
-    };
-
     setAnimation("open");
-
-    window.addEventListener("popstate", closeAnimation);
-    return () => {
-      window.removeEventListener("popstate", closeAnimation);
+    window.onpopstate = () => {
+      setAnimation("close");
+      //앞으로 가기 방지
+      history.pushState({}, "", window.location.pathname);
     };
   }, []);
   return (

@@ -115,8 +115,7 @@ const Post = ({ postProps }: any) => {
               setMorePop(null);
               clearTimeout(timer);
 
-              const url = document.URL + `?modal="editPost"`;
-              history.pushState({ page: "modal" }, "", url);
+              history.pushState({ page: "modal" }, "", "");
               setPostEdit(true);
             }}
           >
@@ -155,11 +154,8 @@ const Post = ({ postProps }: any) => {
       <PostInfoWrapper>
         <div
           onClick={() => {
-            if (user?.id === postProps?.User?.id) {
-              navigate(`/profile/0`);
-            } else {
-              navigate(`/userinfo/${postProps?.User?.id}/cat/0`);
-            }
+            navigate(`/userinfo/${postProps?.User?.id}/cat/0`);
+
             window.scrollTo({
               top: 0,
               left: 0,
@@ -187,8 +183,7 @@ const Post = ({ postProps }: any) => {
           <div
             key={i}
             onClick={() => {
-              const url = document.URL + "/modal";
-              history.pushState({ page: "modal" }, "", url);
+              history.pushState({ page: "modal" }, "", "");
               setZoom(true);
             }}
           >
@@ -199,8 +194,7 @@ const Post = ({ postProps }: any) => {
 
       <TextWrapper
         onClick={() => {
-          const url = document.URL + "/modal";
-          history.pushState({ page: "modal" }, "", url);
+          history.pushState({ page: "modal" }, "", "");
           setZoom(true);
         }}
       >

@@ -15,7 +15,7 @@ const BG = styled.div<{ animation: string }>`
   backdrop-filter: blur(8px);
 
   opacity: ${(props) => (props.animation === "open" ? "1" : "0")};
-  transition: all linear 0.3s;
+  transition: all linear 300ms;
 `;
 
 const MobileWrapper = styled.div<{ animation: string }>`
@@ -33,7 +33,7 @@ const MobileWrapper = styled.div<{ animation: string }>`
   border-right: 2px solid rgba(0, 0, 0, 0.1);
 
   transform: ${(props) => (props.animation === "open" ? "translateX(0px)" : "translateX(-80vw)")};
-  transition: all ease-out 0.3s;
+  transition: all ease-out 300ms;
 `;
 
 const LogInWrapper = styled.div`

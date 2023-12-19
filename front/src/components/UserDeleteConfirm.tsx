@@ -27,13 +27,8 @@ const UserDeleteConfirm = ({ setUserDeleteModal }: setStateProps) => {
   useEffect(() => {
     setAnimation("open");
 
-    const closeAnimation = () => {
+    window.onpopstate = () => {
       setAnimation("close");
-    };
-
-    window.addEventListener("popstate", closeAnimation);
-    return () => {
-      window.removeEventListener("popstate", closeAnimation);
     };
   }, []);
 

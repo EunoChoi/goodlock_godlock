@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Header from "./common/Header";
 import styled from "styled-components/macro";
 import { useParams } from "react-router-dom";
@@ -40,13 +40,11 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const isAdminPostOk: boolean = postType === 0 && user.level >= level ? true : false;
 
   const sideOpen = () => {
-    const url = document.URL + "/modal";
-    history.pushState({ page: "modal" }, "", url);
+    history.pushState({ page: "modal" }, "", "");
     setMobileSideOpen(true);
   };
   const InputEditOpen = () => {
-    const url = document.URL + "/modal";
-    history.pushState({ page: "modal" }, "", url);
+    history.pushState({ page: "modal" }, "", "");
     setPostInputOpen(true);
   };
   const scrollTop = () => {

@@ -64,7 +64,7 @@ const Header = () => {
           </LinkCenter>
         </span>
         <span>
-          <LinkCenter to="/profile/0">
+          <LinkCenter to="/main/4/cat/0">
             <PersonRoundedIcon></PersonRoundedIcon>Profile
           </LinkCenter>
         </span>

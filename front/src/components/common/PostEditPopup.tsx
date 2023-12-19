@@ -8,6 +8,7 @@ import { ko } from "date-fns/esm/locale";
 
 import styled from "styled-components/macro";
 import Img from "./Img";
+import customAlert from "./Alert";
 
 //mui
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
@@ -23,6 +24,7 @@ import Chip from "@mui/joy/Chip";
 import ChipDelete from "@mui/joy/ChipDelete";
 import Box from "@mui/joy/Box";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useModalStack } from "../../store/modalStack";
 
 interface serverImages {
   src: string;
@@ -43,6 +45,8 @@ interface props {
 }
 
 const PostEditPopup = ({ setPostEdit, postProps }: props) => {
+  const { push, pop, modalStack } = useModalStack();
+
   const [animation, setAnimation] = useState<"open" | "close" | "">("");
 
   const placeholders = ["Notice Post", "Tip Post", "Free Post"];
@@ -58,6 +62,8 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
   const isInfoPost = postProps.type === 1;
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  const { Alert: CancelAler, onOpen: openCancelAlert } = customAlert();
 
   //useMutation
   const editPost = Post.edit();
@@ -150,36 +156,19 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
     }
   };
 
-  useEffect(() => {
-    const cancelConfirm = () => {
-      return confirmAlert({
-        // title: "",
-        message: "게시글 수정을 중단하시겠습니까?",
-        buttons: [
-          {
-            label: "취소",
-            onClick: () => {
-              const url = document.URL + "/modal";
-              history.pushState({ page: "modal" }, "", url);
-            }
-          },
-          {
-            label: "확인",
-            onClick: () => {
-              setAnimation("close");
-              return true;
-            }
-          }
-        ]
-      });
-    };
+  console.log("edit render");
+  window.onpopstate = () => {
+    if (modalStack[modalStack.length - 1] === "#editpost") {
+      openCancelAlert();
+    }
+  };
 
+  useEffect(() => {
     setAnimation("open");
     inputRef.current?.focus();
-
-    window.addEventListener("popstate", cancelConfirm);
+    push("#editpost");
     return () => {
-      window.removeEventListener("popstate", cancelConfirm);
+      pop();
     };
   }, []);
 
@@ -193,6 +182,15 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
       animation={animation}
       onClick={() => history.back()}
     >
+      <CancelAler
+        mainText="게시글 수정을 중단하시겠습니까?"
+        onCancel={() => {
+          history.pushState({ page: "modal" }, "", "");
+        }}
+        onSuccess={() => {
+          setAnimation("close");
+        }}
+      ></CancelAler>
       <InputForm.InputWrapper animation={animation} onClick={(e) => e.stopPropagation()}>
         <InputForm.PostOptionWrapper>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>

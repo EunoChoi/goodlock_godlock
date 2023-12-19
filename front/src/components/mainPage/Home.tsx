@@ -93,7 +93,7 @@ const Home = () => {
     }
   );
   const shortNickname = (nick: string) => {
-    if (nick.length >= 11) return nick.slice(0, 10) + "...";
+    if (nick?.length >= 11) return nick.slice(0, 10) + "...";
     else return nick;
   };
 

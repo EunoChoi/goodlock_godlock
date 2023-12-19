@@ -99,7 +99,7 @@ const Profile = () => {
   };
   const nickUpdateConfirm = (nickname: string) => {
     const pattern = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,10}$/;
-    nickname = nickname.toLowerCase();
+    nickname = nickname?.toLowerCase();
     if (!nickname.match(pattern)) {
       toast.warning("2자 이상 10자 이하, 소문자 또는 숫자 또는 한글로 구성되어야 합니다.");
     } else {
@@ -128,7 +128,7 @@ const Profile = () => {
     }
   };
   const usertestUpdateConfirm = () => {
-    if (usertext.length > 30) {
+    if (usertext?.length > 30) {
       toast.warning("상태메세지는 최대 30자까지 가능합니다.");
     } else {
       confirmAlert({
@@ -252,16 +252,11 @@ const Profile = () => {
       navigate("/404");
     }
 
-    const inputclose = () => {
-      setUsertextInputToggle(false);
-      setNicknameInputToggle(false);
-    };
-
     scrollTop();
 
-    window.addEventListener("popstate", inputclose);
-    return () => {
-      window.removeEventListener("popstate", inputclose);
+    window.onpopstate = () => {
+      setUsertextInputToggle(false);
+      setNicknameInputToggle(false);
     };
   }, []);
 
@@ -315,8 +310,7 @@ const Profile = () => {
               <Button
                 color="inherit"
                 onClick={() => {
-                  const url = document.URL + "/modal";
-                  history.pushState({ page: "modal" }, "", url);
+                  history.pushState({ page: "modal" }, "", "");
                   setImageChangeModal((c) => !c);
                 }}
               >
@@ -422,8 +416,7 @@ const Profile = () => {
               {user?.level === 1 && (
                 <Button
                   onClick={() => {
-                    const url = document.URL + "/modal";
-                    history.pushState({ page: "modal" }, "", url);
+                    history.pushState({ page: "modal" }, "", "");
                     setPasswordChangeModal(true);
                   }}
                 >
@@ -432,8 +425,7 @@ const Profile = () => {
               )}
               <Button
                 onClick={() => {
-                  const url = document.URL + "/modal";
-                  history.pushState({ page: "modal" }, "", url);
+                  history.pushState({ page: "modal" }, "", "");
                   setUserDeleteModal(true);
                 }}
               >
