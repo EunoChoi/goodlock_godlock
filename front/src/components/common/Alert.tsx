@@ -27,7 +27,9 @@ const customAlert = () => {
     };
 
     useEffect(() => {
-      setAnimation("open");
+      setTimeout(() => {
+        setAnimation("open");
+      }, 50);
       push("#alert");
       return () => {
         pop();
@@ -129,7 +131,7 @@ const BG = styled.div<{ animation?: string }>`
 `;
 
 const Popup = styled.div<{ bgColor?: string; borderRadius?: string }>`
-  padding: 50px 30px;
+  padding: 40px 30px;
   width: 400px;
 
   /* background-color: #fff; */
@@ -180,7 +182,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 14px;
   button {
     box-sizing: border-box;
     outline: none;

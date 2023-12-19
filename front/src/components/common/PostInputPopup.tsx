@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import InputForm from "../../styles/InputForm";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { confirmAlert } from "react-confirm-alert";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
+import customAlert from "./Alert";
+import { useModalStack } from "../../store/modalStack";
 
 //mui
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
@@ -27,6 +28,8 @@ interface props {
 }
 
 const InputPopup = ({ setPostInputOpen }: props) => {
+  const { push, pop, modalStack } = useModalStack();
+
   const [animation, setAnimation] = useState<"open" | "close" | "">("");
 
   const params = useParams();
@@ -42,6 +45,8 @@ const InputPopup = ({ setPostInputOpen }: props) => {
   const isInfoPost = inputType === 1;
   const imageInput = useRef<HTMLInputElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  const { Alert: CancelAler, onOpen: openCancelAlert } = customAlert();
 
   //useMutation
   const addPost = Post.add();
@@ -135,33 +140,19 @@ const InputPopup = ({ setPostInputOpen }: props) => {
     }
   };
 
-  useEffect(() => {
-    const cancelConfirm = () => {
-      confirmAlert({
-        // title: "",
-        message: "게시글 수정을 중단하시겠습니까?",
-        buttons: [
-          {
-            label: "취소",
-            onClick: () => {
-              history.pushState({ page: "modal" }, "", "");
-            }
-          },
-          {
-            label: "확인",
-            onClick: () => {
-              setAnimation("close");
-            }
-          }
-        ]
-      });
-    };
+  console.log("add post render");
+  window.onpopstate = () => {
+    if (modalStack[modalStack.length - 1] === "#addpost") {
+      openCancelAlert();
+    }
+  };
 
+  useEffect(() => {
     setAnimation("open");
     inputRef.current?.focus();
-
-    window.onpopstate = () => {
-      cancelConfirm();
+    push("#addpost");
+    return () => {
+      pop();
     };
   }, []);
 
@@ -175,6 +166,15 @@ const InputPopup = ({ setPostInputOpen }: props) => {
       animation={animation}
       onClick={() => history.back()}
     >
+      <CancelAler
+        mainText="게시글 수정을 중단하시겠습니까?"
+        onCancel={() => {
+          history.pushState({ page: "modal" }, "", "");
+        }}
+        onSuccess={() => {
+          setAnimation("close");
+        }}
+      ></CancelAler>
       <InputForm.InputWrapper animation={animation} onClick={(e) => e.stopPropagation()}>
         <InputForm.PostOptionWrapper>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>

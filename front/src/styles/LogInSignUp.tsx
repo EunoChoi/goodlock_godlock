@@ -8,7 +8,7 @@ const LogInSignUp = {
     opacity: ${(props) => props.animation === "open" ? 1 : 0};
 
     z-index: 20;
-    transition: all linear 0.4s;
+    transition: all linear 0.3s;
     width: 100vw;
     height: 100vh;
 
