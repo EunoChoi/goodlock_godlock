@@ -190,11 +190,12 @@ const Bot = () => {
     }
   ];
 
+  window.onpopstate = () => {
+    setOpen(false);
+  };
+
   useEffect(() => {
     if (open === true) {
-      //modal url 추가
-      history.pushState({ page: "modal" }, "", "");
-
       //백그라운드 body 스크롤 방지
       document.body.style.overflow = "hidden";
     } else {
@@ -202,12 +203,6 @@ const Bot = () => {
       document.body.style.overflow = "auto";
     }
   }, [open]);
-
-  useEffect(() => {
-    window.onpopstate = () => {
-      setOpen(false);
-    };
-  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -234,6 +229,9 @@ const Bot = () => {
         opened={open}
         toggleFloating={(res) => {
           if (res.opened === true) {
+            //modal url 추가
+            history.pushState({ page: "modal" }, "", "#");
+
             setBGOpen(true);
             setTimeout(() => {
               setOpen(res.opened);

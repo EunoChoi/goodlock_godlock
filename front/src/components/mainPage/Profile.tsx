@@ -198,6 +198,11 @@ const Profile = () => {
   const unFollow = User.unFollow();
   const deleteFollower = User.deleteFollower();
 
+  window.onpopstate = () => {
+    setUsertextInputToggle(false);
+    setNicknameInputToggle(false);
+  };
+
   useEffect(() => {
     const menuWrapper = document.getElementById("menuWrapper");
     const width = menuWrapper?.scrollWidth;
@@ -218,13 +223,7 @@ const Profile = () => {
     } else {
       navigate("/404");
     }
-
     scrollTop();
-
-    window.onpopstate = () => {
-      setUsertextInputToggle(false);
-      setNicknameInputToggle(false);
-    };
   }, []);
 
   return (

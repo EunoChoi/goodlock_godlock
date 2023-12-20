@@ -47,6 +47,10 @@ const useAlert = () => {
       <BG
         onClick={(e) => {
           e.stopPropagation();
+          history.back();
+          setTimeout(() => {
+            onCancel && onCancel();
+          }, 100);
         }}
         animation={animation}
         onTransitionEnd={() => {
@@ -88,7 +92,9 @@ const useAlert = () => {
 
   return {
     openAlert: ({ mainText, subText, onSuccess, onCancel }: Props) => {
-      history.pushState({ page: "modal" }, "", "");
+      setTimeout(() => {
+        history.pushState({ page: "modal" }, "", "");
+      }, 100);
 
       setOnSuccess(() => onSuccess);
       onCancel ? setOnCalcel(() => onCancel) : null;
@@ -125,9 +131,9 @@ const BG = styled.div<{ animation?: string }>`
   top: 0;
   left: 0;
 
+  width: 100vw;
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
-  width: 100vw;
 
   z-index: 3000;
   background: rgba(0, 0, 0, 0.3);

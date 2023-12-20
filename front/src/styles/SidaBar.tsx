@@ -10,6 +10,7 @@ const BG = styled.div<{ animation: string }>`
 
   width: 100vw;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 
   background-color: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(8px);

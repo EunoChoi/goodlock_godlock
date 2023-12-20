@@ -24,12 +24,11 @@ const UserDeleteConfirm = ({ setUserDeleteModal }: setStateProps) => {
     }
   };
 
+  window.onpopstate = () => {
+    setAnimation("close");
+  };
   useEffect(() => {
     setAnimation("open");
-
-    window.onpopstate = () => {
-      setAnimation("close");
-    };
   }, []);
 
   return (
@@ -79,7 +78,7 @@ const BG = styled.div<{ animation: string }>`
 `;
 
 const Popup = styled.div`
-  padding: 30px;
+  padding: 30px 10px;
   width: 400px;
 
   background: #fff;
@@ -106,7 +105,7 @@ const Popup = styled.div`
     text-align: center;
     color: grey;
     font-size: 20px;
-    width: 100%;
+    width: 90%;
     margin-top: 20px;
     border: 2px rgba(0, 0, 0, 0.1) solid;
     border-radius: 8px;

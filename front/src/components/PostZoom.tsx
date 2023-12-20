@@ -56,12 +56,11 @@ const PostZoom = ({ postProps, setZoom }: props) => {
     history.back();
   };
 
+  window.onpopstate = () => {
+    setAnimation("close");
+  };
   useEffect(() => {
     setAnimation("open");
-
-    window.onpopstate = () => {
-      setAnimation("close");
-    };
   }, []);
 
   return (

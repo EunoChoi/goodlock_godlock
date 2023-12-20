@@ -42,13 +42,13 @@ const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayou
     // window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${REDIRECT_URI_NAVER}&state=${NAVER_STATE_CODE}&auth_type=reprompt`;
   };
 
+  window.onpopstate = () => {
+    setAnimation("close");
+    //앞으로 가기 방지
+    history.pushState({}, "", window.location.pathname);
+  };
   useEffect(() => {
     setAnimation("open");
-    window.onpopstate = () => {
-      setAnimation("close");
-      //앞으로 가기 방지
-      history.pushState({}, "", window.location.pathname);
-    };
   }, []);
   return (
     <>

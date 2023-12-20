@@ -53,12 +53,11 @@ const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
     }
   };
 
+  window.onpopstate = () => {
+    setAnimation("close");
+  };
   useEffect(() => {
     setAnimation("open");
-
-    window.onpopstate = () => {
-      setAnimation("close");
-    };
   }, []);
 
   return (
