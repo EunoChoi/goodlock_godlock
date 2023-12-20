@@ -4,10 +4,11 @@ import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
+import ReactDom from "react-dom";
 
 import styled from "styled-components/macro";
 import Img from "./Img";
-import customAlert from "./Alert";
+import useAlert from "./Alert";
 import { useModalStack } from "../../store/modalStack";
 
 //mui
@@ -62,7 +63,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  const { Alert: CancelAler, onOpen: openCancelAlert } = customAlert();
+  const { Alert: CancelAlert, openAlert: openCancelAlert } = useAlert();
 
   //useMutation
   const editPost = Post.edit();
@@ -155,10 +156,17 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
     }
   };
 
-  console.log("edit render");
   window.onpopstate = () => {
     if (modalStack[modalStack.length - 1] === "#editpost") {
-      openCancelAlert();
+      openCancelAlert({
+        mainText: "게시글 수정을 중단하시겠습니까?",
+        onSuccess: () => {
+          setAnimation("close");
+        },
+        onCancel: () => {
+          history.pushState({ page: "modal" }, "", "");
+        }
+      });
     }
   };
 
@@ -181,15 +189,8 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
       animation={animation}
       onClick={() => history.back()}
     >
-      <CancelAler
-        mainText="게시글 수정을 중단하시겠습니까?"
-        onCancel={() => {
-          history.pushState({ page: "modal" }, "", "");
-        }}
-        onSuccess={() => {
-          setAnimation("close");
-        }}
-      ></CancelAler>
+      {ReactDom.createPortal(<CancelAlert />, document.getElementById("modal_root") as HTMLElement)}
+
       <InputForm.InputWrapper animation={animation} onClick={(e) => e.stopPropagation()}>
         <InputForm.PostOptionWrapper>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>

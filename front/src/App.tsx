@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import GlobalStyle from "./styles/GlobalStyle";
@@ -32,13 +32,16 @@ function App() {
 
   // console.log("===== App 리렌더 =====");
 
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false
-      }
-    }
-  });
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry: false
+          }
+        }
+      })
+  );
 
   const updateMobileViewport = () => {
     const vh = window.visualViewport?.height;

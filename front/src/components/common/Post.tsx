@@ -15,7 +15,7 @@ import Animation from "../../styles/Animation";
 import CoustomCarousel from "./CustomCarousel";
 import Img from "./Img";
 
-import customAlert from "./Alert";
+import useAlert from "./Alert";
 
 //mui
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -34,6 +34,7 @@ import LinkIcon from "@mui/icons-material/Link";
 
 import PostFunction from "../../functions/reactQuery/Post";
 import User from "../../functions/reactQuery/User";
+import { createPortal } from "react-dom";
 
 interface Image {
   src: string;
@@ -59,7 +60,7 @@ const Post = ({ postProps }: any) => {
 
   const commentScroll = useRef<null | HTMLDivElement>(null);
 
-  const { Alert: PostDeleteAlert, onOpen: postDeleteAlertOpen } = customAlert();
+  const { Alert: PostDeleteConfirm, openAlert: openDeleteConfirm } = useAlert();
 
   const open = Boolean(morePop);
   const [timer, setTimer] = useState<NodeJS.Timeout>();
@@ -98,14 +99,12 @@ const Post = ({ postProps }: any) => {
 
   return (
     <PostWrapper onClick={() => setMorePop(null)}>
-      {/* 포스트 줌 팝업 */}
-      {isZoom && <PostZoom setZoom={setZoom} postProps={postProps} />}
-      <PostDeleteAlert
-        mainText="게시글을 삭제 하시겠습니까?"
-        onSuccess={() => {
-          deletePost.mutate(postProps?.id);
-        }}
-      ></PostDeleteAlert>
+      {createPortal(<PostDeleteConfirm></PostDeleteConfirm>, document.getElementById("modal_root") as HTMLElement)}
+      {createPortal(
+        <>{isZoom && <PostZoom setZoom={setZoom} postProps={postProps} />}</>,
+        document.getElementById("front_component_root") as HTMLElement
+      )}
+
       <Popper open={open} anchorEl={morePop} placement="top-end">
         <EditPopup>
           <Button
@@ -127,7 +126,12 @@ const Post = ({ postProps }: any) => {
             onClick={() => {
               setMorePop(null);
               clearTimeout(timer);
-              postDeleteAlertOpen();
+              openDeleteConfirm({
+                mainText: "게시글을 삭제 하시겠습니까?",
+                onSuccess: () => {
+                  deletePost.mutate(postProps?.id);
+                }
+              });
             }}
           >
             <DeleteForeverIcon />

@@ -5,7 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { confirmAlert } from "react-confirm-alert";
+import { createPortal } from "react-dom";
+
+import useAlert from "../components/common/Alert";
 
 //components
 import AppLayout from "../components/AppLayout";
@@ -53,6 +55,9 @@ const UserInfo = () => {
   const scrollTarget = useRef<HTMLDivElement>(null);
   const category = ["Followings", "Followers", "Tip Posts", "Free Posts", "Bookmark Tips"];
 
+  const { Alert: FollowConfirm, openAlert: openFollowConfirm } = useAlert();
+  const { Alert: UnFollowConfirm, openAlert: openUnFollowConfirm } = useAlert();
+
   const user = User.getData();
   const { data: targetUser, refetch } = useQuery(
     ["targetUser"],
@@ -72,6 +77,10 @@ const UserInfo = () => {
   );
 
   const isFollowed = targetUser?.Followers?.find((v: any) => v.id === user.id);
+
+  //useMutation
+  const follow = User.follow();
+  const unFollow = User.unFollow();
 
   const makeShortNickname = (nick: string) => {
     if (nick?.length >= 11) return nick.slice(0, 10) + "...";
@@ -109,9 +118,6 @@ const UserInfo = () => {
       }
     }
   );
-  //useMutation
-  const follow = User.follow();
-  const unFollow = User.unFollow();
 
   useEffect(() => {
     window.scrollTo({
@@ -141,6 +147,14 @@ const UserInfo = () => {
   return (
     <AppLayout>
       <Wrapper>
+        {createPortal(
+          <>
+            <FollowConfirm />
+            <UnFollowConfirm />
+          </>,
+          document.getElementById("modal_root") as HTMLElement
+        )}
+
         <UserInfoWrapper ref={scrollTarget}>
           {targetUser?.profilePic ? (
             <Pic
@@ -163,19 +177,9 @@ const UserInfo = () => {
           {isFollowed ? (
             <FollowButton
               onClick={() => {
-                confirmAlert({
-                  // title: "",
-                  message: "언팔로우 하시겠습니까?",
-                  buttons: [
-                    {
-                      label: "취소",
-                      onClick: () => console.log("취소")
-                    },
-                    {
-                      label: "확인",
-                      onClick: () => unFollow.mutate({ userId: targetUser?.id })
-                    }
-                  ]
+                openUnFollowConfirm({
+                  mainText: "언팔로우 하시겠습니까?",
+                  onSuccess: () => unFollow.mutate({ userId: targetUser?.id })
                 });
               }}
             >
@@ -184,19 +188,9 @@ const UserInfo = () => {
           ) : (
             <FollowButton
               onClick={() => {
-                confirmAlert({
-                  // title: "",
-                  message: "팔로우 하시겠습니까?",
-                  buttons: [
-                    {
-                      label: "취소",
-                      onClick: () => console.log("취소")
-                    },
-                    {
-                      label: "확인",
-                      onClick: () => follow.mutate(targetUser?.id)
-                    }
-                  ]
+                openFollowConfirm({
+                  mainText: "팔로우 하시겠습니까?",
+                  onSuccess: () => follow.mutate({ userId: targetUser?.id })
                 });
               }}
             >

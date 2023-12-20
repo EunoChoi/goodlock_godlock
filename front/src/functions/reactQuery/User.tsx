@@ -31,8 +31,8 @@ interface CustomError2 extends Error {
 const User = {
   getData: () => {
     return useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
-      // staleTime: 60 * 1000,
-      // refetchOnWindowFocus: true,
+      staleTime: 60 * 1000,
+      refetchOnWindowFocus: true,
       onSuccess: () => {
         // console.log("유저 정보 불러오기 성공");
       },
@@ -193,7 +193,7 @@ const User = {
   follow: () => {
     const queryClient = useQueryClient();
 
-    return useMutation((id: number) => Axios.patch(`user/${id}/follow`), {
+    return useMutation((data: { userId: number }) => Axios.patch(`user/${data.userId}/follow`), {
       onSuccess: () => {
         queryClient.invalidateQueries(["user"]);
         queryClient.invalidateQueries(["targetUser"]);

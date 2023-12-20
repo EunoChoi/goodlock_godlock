@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import User from "../functions/reactQuery/User";
 import { useNavigate, useParams } from "react-router-dom";
 
-import customAlert from "./common/Alert";
+import useAlert from "./common/Alert";
 import SideBar from "../styles/SidaBar";
 
 import ReactDom from "react-dom"; //for react portal
@@ -36,7 +36,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
   const { type } = useParams();
   const currentPage = type ? parseInt(type) : -1;
 
-  const { Alert: LogoutAlert, onOpen: logoutAlertOpen } = customAlert();
+  const { Alert: LogoutConfirm, openAlert: openLogoutConfirm } = useAlert();
 
   const makeK = (n: number | null) => {
     if (n === null) {
@@ -72,15 +72,8 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
 
   return (
     <>
-      {ReactDom.createPortal(
-        <LogoutAlert
-          mainText="로그아웃 하시겠습니까?"
-          onSuccess={() => {
-            logout.mutate();
-          }}
-        />,
-        document.getElementById("modal_root") as HTMLElement
-      )}
+      {ReactDom.createPortal(<LogoutConfirm />, document.getElementById("modal_root") as HTMLElement)}
+
       {ReactDom.createPortal(
         <>
           <SideBar.BG
@@ -231,7 +224,12 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                       <button
                         id="logout"
                         onClick={() => {
-                          logoutAlertOpen();
+                          openLogoutConfirm({
+                            mainText: "로그아웃 하시겠습니까?",
+                            onSuccess: () => {
+                              logout.mutate();
+                            }
+                          });
                         }}
                       >
                         <ExitToAppRoundedIcon />

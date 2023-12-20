@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
-import customAlert from "./Alert";
+import useAlert from "./Alert";
 import { useModalStack } from "../../store/modalStack";
-
+import ReactDom from "react-dom";
 //mui
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import PostAddIcon from "@mui/icons-material/PostAdd";
@@ -46,7 +46,7 @@ const InputPopup = ({ setPostInputOpen }: props) => {
   const imageInput = useRef<HTMLInputElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  const { Alert: CancelAler, onOpen: openCancelAlert } = customAlert();
+  const { Alert: CancelAlert, openAlert: openCancelAlert } = useAlert();
 
   //useMutation
   const addPost = Post.add();
@@ -140,10 +140,17 @@ const InputPopup = ({ setPostInputOpen }: props) => {
     }
   };
 
-  console.log("add post render");
   window.onpopstate = () => {
     if (modalStack[modalStack.length - 1] === "#addpost") {
-      openCancelAlert();
+      openCancelAlert({
+        mainText: "게시글 수정을 중단하시겠습니까?",
+        onSuccess: () => {
+          setAnimation("close");
+        },
+        onCancel: () => {
+          history.pushState({ page: "modal" }, "", "");
+        }
+      });
     }
   };
 
@@ -166,15 +173,7 @@ const InputPopup = ({ setPostInputOpen }: props) => {
       animation={animation}
       onClick={() => history.back()}
     >
-      <CancelAler
-        mainText="게시글 수정을 중단하시겠습니까?"
-        onCancel={() => {
-          history.pushState({ page: "modal" }, "", "");
-        }}
-        onSuccess={() => {
-          setAnimation("close");
-        }}
-      ></CancelAler>
+      {ReactDom.createPortal(<CancelAlert />, document.getElementById("modal_root") as HTMLElement)}
       <InputForm.InputWrapper animation={animation} onClick={(e) => e.stopPropagation()}>
         <InputForm.PostOptionWrapper>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>

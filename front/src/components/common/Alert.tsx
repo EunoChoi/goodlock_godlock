@@ -13,10 +13,17 @@ interface Props {
   borderRadius?: string;
 }
 
-const customAlert = () => {
+const useAlert = () => {
   const [isOpen, setOpen] = useState<boolean>(false);
 
-  const AlertComponent = ({ mainText, subText, onSuccess, onCancel, bgColor, borderRadius }: Props) => {
+  const [mainText, setMainText] = useState<string>("");
+  const [subText, setSubText] = useState<string>("");
+  const [onSuccess, setOnSuccess] = useState<() => void>(() => {
+    //
+  });
+  const [onCancel, setOnCalcel] = useState<() => void>();
+
+  const AlertComponent = ({ mainText, subText, onSuccess, onCancel }: Props) => {
     const [animation, setAnimation] = useState<"open" | "close" | "">("");
     const { push, pop, modalStack } = useModalStack();
 
@@ -48,7 +55,7 @@ const customAlert = () => {
           }
         }}
       >
-        <Popup onClick={(event) => event.stopPropagation()} bgColor={bgColor} borderRadius={borderRadius}>
+        <Popup onClick={(event) => event.stopPropagation()}>
           <span>{mainText}</span>
           <span>{subText}</span>
 
@@ -59,8 +66,6 @@ const customAlert = () => {
                 setTimeout(() => {
                   onCancel && onCancel();
                 }, 100);
-
-                // setAnimation("close");
               }}
             >
               취소
@@ -68,7 +73,9 @@ const customAlert = () => {
             <button
               onClick={() => {
                 history.back();
-                onSuccess();
+                setTimeout(() => {
+                  onSuccess();
+                }, 100);
               }}
             >
               확인
@@ -80,33 +87,34 @@ const customAlert = () => {
   };
 
   return {
-    onOpen: () => {
+    openAlert: ({ mainText, subText, onSuccess, onCancel }: Props) => {
       history.pushState({ page: "modal" }, "", "");
+
+      setOnSuccess(() => onSuccess);
+      onCancel ? setOnCalcel(() => onCancel) : null;
+      mainText ? setMainText(mainText) : null;
+      subText ? setSubText(subText) : null;
+
       setOpen(true);
     },
-    Alert: useCallback(
-      ({ mainText, subText, onSuccess, onCancel, bgColor, borderRadius }: Props) => {
-        return (
-          <>
-            {isOpen && (
-              <AlertComponent
-                mainText={mainText}
-                subText={subText}
-                onSuccess={onSuccess}
-                onCancel={onCancel}
-                bgColor={bgColor}
-                borderRadius={borderRadius}
-              ></AlertComponent>
-            )}
-          </>
-        );
-      },
-      [isOpen]
-    )
+    Alert: useCallback(() => {
+      return (
+        <>
+          {isOpen && (
+            <AlertComponent
+              mainText={mainText}
+              subText={subText}
+              onSuccess={onSuccess}
+              onCancel={onCancel}
+            ></AlertComponent>
+          )}
+        </>
+      );
+    }, [isOpen])
   };
 };
 
-export default customAlert;
+export default useAlert;
 
 const BG = styled.div<{ animation?: string }>`
   /* opacity: 0; */

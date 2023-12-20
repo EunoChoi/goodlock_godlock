@@ -2,7 +2,7 @@ import React from "react";
 import User from "../functions/reactQuery/User";
 import { useNavigate, useParams } from "react-router-dom";
 import SideBar from "../styles/SidaBar";
-import customAlert from "./common/Alert";
+import useAlert from "./common/Alert";
 
 //mui
 import Stack from "@mui/joy/Stack";
@@ -14,6 +14,7 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import ExtensionIcon from "@mui/icons-material/Extension";
 import ForumIcon from "@mui/icons-material/Forum";
+import { createPortal } from "react-dom";
 
 const Side = () => {
   const user = User.getData();
@@ -23,7 +24,7 @@ const Side = () => {
   const { type } = useParams();
   const currentPage = type ? parseInt(type) : -1;
 
-  const { Alert: LogoutAlert, onOpen: logoutAlertOpen } = customAlert();
+  const { Alert: LogoutConfirm, openAlert: openLogoutConfirm } = useAlert();
 
   const makeK = (n: number | null) => {
     if (n === null) {
@@ -40,18 +41,19 @@ const Side = () => {
   };
 
   const logoutConfirm = () => {
-    logoutAlertOpen();
+    openLogoutConfirm({
+      mainText: "로그아웃 하시겠습니까?",
+      onSuccess: () => {
+        logout.mutate();
+      }
+    });
   };
 
   return (
     // 로그아웃 상태에서 접근시도 구현해야함. 싱글 포스트 뷰 때문에
     <SideBar.PCWrapper>
-      <LogoutAlert
-        mainText="로그아웃 하시겠습니까?"
-        onSuccess={() => {
-          logout.mutate();
-        }}
-      ></LogoutAlert>
+      {createPortal(<LogoutConfirm />, document.getElementById("modal_root") as HTMLElement)}
+
       <SideBar.HeaderWrapper>
         <button
           onClick={() => {

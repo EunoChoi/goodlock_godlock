@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import ReactDOM from "react-dom";
 import styled from "styled-components/macro";
 import Axios from "../../apis/Axios";
 import { useParams } from "react-router-dom";
@@ -6,12 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { confirmAlert } from "react-confirm-alert";
+
 import moment from "moment";
 import "moment/locale/ko";
 import Img from "../common/Img";
 
-import customAlert from "../common/Alert";
+import useAlert from "../common/Alert";
 
 //components
 import Post from "../common/Post";
@@ -61,6 +62,13 @@ const Profile = () => {
 
   const navigate = useNavigate();
 
+  //alert
+  const { Alert: UsertextUpdateConfirm, openAlert: openUsertextUpdateConfirm } = useAlert();
+  const { Alert: NicknameUpdateConfirm, openAlert: openNicknameUpdateConfirm } = useAlert();
+  const { Alert: UnFollowConfirm, openAlert: openUnFollowConfirm } = useAlert();
+  const { Alert: DeleteFollowerConfirm, openAlert: openDeleteFollowerConfirm } = useAlert();
+  const { Alert: LogoutConfirm, openAlert: openLogoutConfirm } = useAlert();
+
   //state
   const [nicknameInputToggle, setNicknameInputToggle] = useState<boolean>(false);
   const [usertextInputToggle, setUsertextInputToggle] = useState<boolean>(false);
@@ -82,7 +90,6 @@ const Profile = () => {
   const category = ["My Info", "Followings", "Followers", "Tip Posts", "Free Posts"];
 
   //function
-
   const scrollToPill = () => {
     window.scrollTo({
       top: scrollTarget.current?.scrollHeight,
@@ -103,27 +110,18 @@ const Profile = () => {
     if (!nickname.match(pattern)) {
       toast.warning("2자 이상 10자 이하, 소문자 또는 숫자 또는 한글로 구성되어야 합니다.");
     } else {
-      confirmAlert({
-        // title: "",
-        message: "닉네임을 변경하시겠습니까?",
-        buttons: [
-          {
-            label: "취소",
-            onClick: () => console.log("닉네임 변경 취소")
-          },
-          {
-            label: "확인",
-            onClick: () =>
-              editNickname.mutate(
-                { nickname },
-                {
-                  onSuccess: () => {
-                    setNicknameInputToggle(false);
-                  }
-                }
-              )
-          }
-        ]
+      openNicknameUpdateConfirm({
+        mainText: "닉네임을 변경하시겠습니까?",
+        onSuccess: () => {
+          editNickname.mutate(
+            { nickname },
+            {
+              onSuccess: () => {
+                setNicknameInputToggle(false);
+              }
+            }
+          );
+        }
       });
     }
   };
@@ -131,76 +129,43 @@ const Profile = () => {
     if (usertext?.length > 30) {
       toast.warning("상태메세지는 최대 30자까지 가능합니다.");
     } else {
-      confirmAlert({
-        // title: "",
-        message: "상태메세지를 변경하시겠습니까?",
-        buttons: [
-          {
-            label: "취소",
-            onClick: () => console.log("상태메세지 변경 취소")
-          },
-          {
-            label: "확인",
-            onClick: () =>
-              editUsertext.mutate(
-                { usertext },
-                {
-                  onSuccess: () => {
-                    setUsertextInputToggle(false);
-                  }
-                }
-              )
-          }
-        ]
+      openUsertextUpdateConfirm({
+        mainText: "상태메세지를 변경하시겠습니까?",
+        onSuccess: () => {
+          editUsertext.mutate(
+            { usertext },
+            {
+              onSuccess: () => {
+                setUsertextInputToggle(false);
+              }
+            }
+          );
+        }
       });
     }
   };
   const logoutConfirm = () => {
-    confirmAlert({
-      // title: "",
-      message: "로그아웃 하시겠습니까?",
-      buttons: [
-        {
-          label: "취소",
-          onClick: () => console.log("로그아웃 취소")
-        },
-        {
-          label: "확인",
-          onClick: () => logout.mutate()
-        }
-      ]
+    openLogoutConfirm({
+      mainText: "로그아웃 하시겠습니까?",
+      onSuccess: () => {
+        logout.mutate();
+      }
     });
   };
   const unFollowConfirm = (userId: number) => {
-    confirmAlert({
-      // title: "",
-      message: "언팔로우 하시겠습니까?",
-      buttons: [
-        {
-          label: "취소",
-          onClick: () => console.log("취소")
-        },
-        {
-          label: "확인",
-          onClick: () => unFollow.mutate({ userId })
-        }
-      ]
+    openUnFollowConfirm({
+      mainText: "언팔로우 하시겠습니까?",
+      onSuccess: () => {
+        unFollow.mutate({ userId });
+      }
     });
   };
   const followerDeleteConfirm = (userId: number) => {
-    confirmAlert({
-      // title: "",
-      message: "팔로워를 삭제하시겠습니까?",
-      buttons: [
-        {
-          label: "취소",
-          onClick: () => console.log("취소")
-        },
-        {
-          label: "확인",
-          onClick: () => deleteFollower.mutate({ userId })
-        }
-      ]
+    openDeleteFollowerConfirm({
+      mainText: "팔로워를 삭제하시겠습니까?",
+      onSuccess: () => {
+        deleteFollower.mutate({ userId });
+      }
     });
   };
 
@@ -248,7 +213,9 @@ const Profile = () => {
   }, [imageChangeModal]);
 
   useEffect(() => {
-    if (categoryNum < 0 || categoryNum > 4) {
+    if (categoryNum >= 0 && categoryNum <= 4) {
+      console.log("올바른 catagory");
+    } else {
       navigate("/404");
     }
 
@@ -262,9 +229,20 @@ const Profile = () => {
 
   return (
     <ProfileWrapper>
-      {imageChangeModal && <ProfileChangePopup setImageChangeModal={setImageChangeModal} />}
-      {userDeleteModal && <UserDeleteConfirm setUserDeleteModal={setUserDeleteModal} />}
-      {passwordChangeModal && <PasswordChangeConfirm setPasswordChangeModal={setPasswordChangeModal} />}
+      {ReactDOM.createPortal(
+        <>
+          {imageChangeModal && <ProfileChangePopup setImageChangeModal={setImageChangeModal} />}
+          {userDeleteModal && <UserDeleteConfirm setUserDeleteModal={setUserDeleteModal} />}
+          {passwordChangeModal && <PasswordChangeConfirm setPasswordChangeModal={setPasswordChangeModal} />}
+          <UsertextUpdateConfirm />
+          <NicknameUpdateConfirm />
+          <UnFollowConfirm />
+          <DeleteFollowerConfirm />
+          <LogoutConfirm />
+        </>,
+        document.getElementById("modal_root") as HTMLElement
+      )}
+
       <ProfileTitle ref={scrollTarget}>
         <Title>Profile</Title>
         <span>정보 수정 및 작성 글 확인이 가능합니다.</span>
@@ -340,7 +318,7 @@ const Profile = () => {
                   <div>
                     <input
                       placeholder="닉네임 입력..."
-                      value={nickname}
+                      value={nickname || ""}
                       onChange={(e) => {
                         setNickname(e.target.value);
                       }}
