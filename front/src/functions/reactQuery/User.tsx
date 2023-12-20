@@ -29,15 +29,33 @@ interface CustomError2 extends Error {
 }
 
 const User = {
-  getData: () => {
+  get: () => {
+    const navigate = useNavigate();
     return useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
-      staleTime: 60 * 1000,
+      refetchOnMount: true,
       refetchOnWindowFocus: true,
       onSuccess: () => {
-        // console.log("유저 정보 불러오기 성공");
+        console.log("유저 정보 불러오기 성공");
       },
       onError: () => {
         console.log("유저 정보를 불러오지 못했습니다.");
+        navigate("/");
+      }
+    });
+  },
+  getData: () => {
+    const navigate = useNavigate();
+    return useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
+      staleTime: 60 * 1000,
+      refetchInterval: 60 * 1000,
+      refetchOnMount: true,
+      refetchOnWindowFocus: true,
+      onSuccess: () => {
+        console.log("유저 정보 불러오기 성공");
+      },
+      onError: () => {
+        console.log("유저 정보를 불러오지 못했습니다.");
+        navigate("/");
       }
     }).data;
   },

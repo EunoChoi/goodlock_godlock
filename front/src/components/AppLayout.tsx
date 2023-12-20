@@ -37,7 +37,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   //useQuery
   const user = User.getData();
   const isUserPostOk: boolean = postType === 1 || postType === 2;
-  const isAdminPostOk: boolean = postType === 0 && user.level >= level ? true : false;
+  const isAdminPostOk: boolean = postType === 0 && user?.level >= level ? true : false;
 
   const sideOpen = () => {
     history.pushState({ page: "modal" }, "", "");

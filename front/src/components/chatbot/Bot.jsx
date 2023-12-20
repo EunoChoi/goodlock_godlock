@@ -193,7 +193,6 @@ const Bot = () => {
   window.onpopstate = () => {
     setOpen(false);
   };
-
   useEffect(() => {
     if (open === true) {
       //백그라운드 body 스크롤 방지
@@ -230,7 +229,9 @@ const Bot = () => {
         toggleFloating={(res) => {
           if (res.opened === true) {
             //modal url 추가
-            history.pushState({ page: "modal" }, "", "#");
+            setTimeout(() => {
+              history.pushState({ page: "modal" }, "", "#");
+            }, 100);
 
             setBGOpen(true);
             setTimeout(() => {

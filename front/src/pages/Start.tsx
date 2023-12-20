@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import Axios from "../apis/Axios";
 import { useNavigate } from "react-router-dom";
+import User from "../functions/reactQuery/User";
 
 //components
 import PopupBox from "../components/startPage/PopupBox";
@@ -18,7 +19,8 @@ const Start = () => {
   const [popupOpen, setPopupOpen] = useState(false);
   const [toggle, setToggle] = useState<number>(0); //login - signup toggle
 
-  const { data: isLoggedIn } = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data));
+  const { data: isLoggedIn } = User.get();
+
   const navigate = useNavigate();
 
   const start = () => {

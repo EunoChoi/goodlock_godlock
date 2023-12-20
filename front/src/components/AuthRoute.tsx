@@ -1,9 +1,8 @@
 import React, { ReactElement } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Axios from "../apis/Axios";
-
+import User from "../functions/reactQuery/User";
 import { useNavigate } from "react-router-dom";
-
 import Loading from "../pages/Loading";
 
 interface AuthRouteProps {

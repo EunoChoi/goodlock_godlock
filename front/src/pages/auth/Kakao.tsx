@@ -14,11 +14,6 @@ const Kakao = () => {
   const REDIRECT_URI = process.env.REACT_APP_BASE_URL + "/auth/kakao";
   const code = new URL(window.location.href).searchParams.get("code");
 
-  const user = User.getData();
-  useEffect(() => {
-    if (user) navigate("/main/0");
-  }, [user]);
-
   if (code) {
     try {
       axios
@@ -50,7 +45,14 @@ const Kakao = () => {
               const email = res.data.kakao_account.email;
               const profilePic = res.data.properties.profile_image;
               console.log(email, profilePic);
-              socialLogIn.mutate({ email, profilePic });
+              socialLogIn.mutate(
+                { email, profilePic },
+                {
+                  onSuccess: () => {
+                    navigate("/main/0");
+                  }
+                }
+              );
             });
         });
       // .catch(() => {

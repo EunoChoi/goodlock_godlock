@@ -5,7 +5,7 @@ import axios from "axios";
 import User from "../../functions/reactQuery/User";
 import { useNavigate } from "react-router-dom";
 
-const Kakao = () => {
+const Google = () => {
   const navigate = useNavigate();
 
   const socialLogIn = User.socialLogIn();
@@ -14,11 +14,6 @@ const Kakao = () => {
   const GOOGLE_CLIENT_SECRET = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
 
   const code = new URL(window.location.href).searchParams.get("code");
-
-  const user = User.getData();
-  useEffect(() => {
-    if (user) navigate("/main/0");
-  }, [user]);
 
   if (code) {
     // console.log(code);
@@ -46,7 +41,14 @@ const Kakao = () => {
               const email = res.data.email;
               const profilePic = res.data.picture;
               // console.log(email, profilePic);
-              socialLogIn.mutate({ email, profilePic });
+              socialLogIn.mutate(
+                { email, profilePic },
+                {
+                  onSuccess: () => {
+                    navigate("/main/0");
+                  }
+                }
+              );
             });
         });
       // .catch(() => {
@@ -66,7 +68,7 @@ const Kakao = () => {
   );
 };
 
-export default Kakao;
+export default Google;
 
 const LoadingWrapper = styled.div`
   width: 100vw;

@@ -28,7 +28,7 @@ import Google from "./pages/auth/Google";
 import Naver from "./pages/auth/Naver";
 
 function App() {
-  const { modalStack } = useModalStack();
+  // const { modalStack } = useModalStack();
 
   // console.log("===== App 리렌더 =====");
 
@@ -63,9 +63,9 @@ function App() {
     };
   }
 
-  useEffect(() => {
-    console.log(modalStack);
-  }, [modalStack.length]);
+  // useEffect(() => {
+  //   console.log(modalStack);
+  // }, [modalStack.length]);
 
   useEffect(() => {
     updateMobileViewport();
