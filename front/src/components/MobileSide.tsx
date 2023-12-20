@@ -4,8 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import useAlert from "./common/Alert";
 import SideBar from "../styles/SidaBar";
-
-import ReactDom from "react-dom"; //for react portal
+import { createPortal } from "react-dom";
 
 //zustanc
 import { useModalStack } from "../store/modalStack";
@@ -72,9 +71,8 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
 
   return (
     <>
-      {ReactDom.createPortal(<LogoutConfirm />, document.getElementById("modal_root") as HTMLElement)}
-
-      {ReactDom.createPortal(
+      {createPortal(<LogoutConfirm />, document.getElementById("modal_root") as HTMLElement)}
+      {createPortal(
         <>
           <SideBar.BG
             animation={sideBarAnimation}

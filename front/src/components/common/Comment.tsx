@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CommentFunction from "../../functions/reactQuery/Comment";
 import useAlert from "./Alert";
-import ReactDom from "react-dom";
+import { createPortal } from "react-dom";
 
 import Img from "./Img";
 
@@ -53,7 +53,7 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
         clearTimeout(timer);
       }}
     >
-      {ReactDom.createPortal(<CommentDeleteConfirm />, document.getElementById("modal_root") as HTMLElement)}
+      {createPortal(<CommentDeleteConfirm />, document.getElementById("modal_root") as HTMLElement)}
 
       <Popper open={open} anchorEl={morePop} placement="top-end">
         <EditPopup>

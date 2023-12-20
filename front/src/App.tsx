@@ -28,7 +28,7 @@ import Google from "./pages/auth/Google";
 import Naver from "./pages/auth/Naver";
 
 function App() {
-  const { push, pop, modalStack } = useModalStack();
+  const { modalStack } = useModalStack();
 
   // console.log("===== App 리렌더 =====");
 
@@ -69,20 +69,6 @@ function App() {
 
   useEffect(() => {
     updateMobileViewport();
-
-    // const removeModalUrl = () => {
-    //   if (history.state.page === "modal") {
-    //     console.log("clean url");
-    //     history.pushState({}, "", window.location.pathname);
-    //   }
-    // };
-
-    // removeModalUrl();
-
-    // visualViewport?.addEventListener("resize", () => updateMobileViewport());
-    // return () => {
-    //   visualViewport?.removeEventListener("resize", () => updateMobileViewport());
-    // };
   }, []);
 
   return (

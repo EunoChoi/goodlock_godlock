@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
-import ReactDom from "react-dom";
+import { createPortal } from "react-dom";
 
 import styled from "styled-components/macro";
 import Img from "./Img";
@@ -189,7 +189,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
       animation={animation}
       onClick={() => history.back()}
     >
-      {ReactDom.createPortal(<CancelAlert />, document.getElementById("modal_root") as HTMLElement)}
+      {createPortal(<CancelAlert />, document.getElementById("modal_root") as HTMLElement)}
 
       <InputForm.InputWrapper animation={animation} onClick={(e) => e.stopPropagation()}>
         <InputForm.PostOptionWrapper>

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import ReactDOM from "react-dom";
+import { createPortal } from "react-dom";
 import styled from "styled-components/macro";
 import Axios from "../../apis/Axios";
 import { useParams } from "react-router-dom";
@@ -229,7 +229,7 @@ const Profile = () => {
 
   return (
     <ProfileWrapper>
-      {ReactDOM.createPortal(
+      {createPortal(
         <>
           {imageChangeModal && <ProfileChangePopup setImageChangeModal={setImageChangeModal} />}
           {userDeleteModal && <UserDeleteConfirm setUserDeleteModal={setUserDeleteModal} />}

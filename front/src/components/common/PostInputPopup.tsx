@@ -7,7 +7,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import useAlert from "./Alert";
 import { useModalStack } from "../../store/modalStack";
-import ReactDom from "react-dom";
+import { createPortal } from "react-dom";
+
 //mui
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import PostAddIcon from "@mui/icons-material/PostAdd";
@@ -173,7 +174,7 @@ const InputPopup = ({ setPostInputOpen }: props) => {
       animation={animation}
       onClick={() => history.back()}
     >
-      {ReactDom.createPortal(<CancelAlert />, document.getElementById("modal_root") as HTMLElement)}
+      {createPortal(<CancelAlert />, document.getElementById("modal_root") as HTMLElement)}
       <InputForm.InputWrapper animation={animation} onClick={(e) => e.stopPropagation()}>
         <InputForm.PostOptionWrapper>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>

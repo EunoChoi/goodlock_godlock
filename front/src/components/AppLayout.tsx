@@ -36,7 +36,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   //useQuery
   const user = User.getData();
-  const isUserPostOk: boolean = postType !== undefined && postType !== 0 && postType !== 3;
+  const isUserPostOk: boolean = postType === 1 || postType === 2;
   const isAdminPostOk: boolean = postType === 0 && user.level >= level ? true : false;
 
   const sideOpen = () => {
