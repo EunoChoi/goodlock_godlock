@@ -36,6 +36,7 @@ import User from "../../functions/reactQuery/User";
 import UserDeleteConfirm from "../UserDeleteConfirm";
 import PasswordChangeConfirm from "../PasswordChangeConfirm";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useModalStack } from "../../store/modalStack";
 
 interface userProps {
   email: string;
@@ -58,6 +59,8 @@ interface user {
 }
 
 const Profile = () => {
+  const { push, pop, modalStack } = useModalStack();
+
   moment.locale("ko");
 
   const navigate = useNavigate();
@@ -198,10 +201,15 @@ const Profile = () => {
   const unFollow = User.unFollow();
   const deleteFollower = User.deleteFollower();
 
-  window.onpopstate = () => {
-    setUsertextInputToggle(false);
-    setNicknameInputToggle(false);
-  };
+  useEffect(() => {
+    if (modalStack[modalStack.length - 1] === "#profile") {
+      window.onpopstate = () => {
+        console.log("pop: profile page");
+        setUsertextInputToggle(false);
+        setNicknameInputToggle(false);
+      };
+    }
+  }, [modalStack.length]);
 
   useEffect(() => {
     const menuWrapper = document.getElementById("menuWrapper");
@@ -218,12 +226,16 @@ const Profile = () => {
   }, [imageChangeModal]);
 
   useEffect(() => {
+    push("#profile");
     if (categoryNum >= 0 && categoryNum <= 4) {
       console.log("올바른 catagory");
     } else {
       navigate("/404");
     }
     scrollTop();
+    return () => {
+      pop();
+    };
   }, []);
 
   return (
@@ -301,6 +313,7 @@ const Profile = () => {
                   color="inherit"
                   onClick={() => {
                     setNicknameInputToggle((c) => !c);
+                    setUsertextInputToggle(false);
                   }}
                 >
                   <EditIcon />
@@ -322,15 +335,15 @@ const Profile = () => {
                         setNickname(e.target.value);
                       }}
                     />
-                    <Button onClick={() => nickUpdateConfirm(nickname)}>
-                      <CheckCircleIcon />
-                    </Button>
                     <Button
                       onClick={() => {
                         setNicknameInputToggle((c) => !c);
                       }}
                     >
                       <CancelIcon color="error" />
+                    </Button>
+                    <Button onClick={() => nickUpdateConfirm(nickname)}>
+                      <CheckCircleIcon />
                     </Button>
                   </div>
                 </InfoValue>
@@ -353,6 +366,7 @@ const Profile = () => {
                   color="inherit"
                   onClick={() => {
                     setUsertextInputToggle((c) => !c);
+                    setNicknameInputToggle(false);
                   }}
                 >
                   <EditIcon />
@@ -374,15 +388,15 @@ const Profile = () => {
                         setUsertext(e.target.value);
                       }}
                     />
-                    <Button onClick={() => usertestUpdateConfirm()}>
-                      <CheckCircleIcon />
-                    </Button>
                     <Button
                       onClick={() => {
                         setUsertextInputToggle((c) => !c);
                       }}
                     >
                       <CancelIcon color="error" />
+                    </Button>
+                    <Button onClick={() => usertestUpdateConfirm()}>
+                      <CheckCircleIcon />
                     </Button>
                   </div>
                 </InfoValue>
@@ -936,7 +950,7 @@ const InfoValue = styled.div`
 
     border: none;
     outline-style: none;
-    font-size: 16px;
+    font-size: 18px;
     background-color: rgba(0, 0, 0, 0);
   }
   input::placeholder {
@@ -963,6 +977,11 @@ const InfoValue = styled.div`
   > span {
     color: rgba(0, 0, 0, 0.6);
 
+    display: flex;
+    justify-content: start;
+    align-items: center;
+
+    height: 40px;
     width: 100%;
 
     font-size: 18px;

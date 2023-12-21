@@ -1,4 +1,6 @@
 *.pem
+*.key
+ssh-key-2023-12-20
 
 node_modules
 uploads

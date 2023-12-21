@@ -35,7 +35,7 @@ const User = {
       refetchOnMount: true,
       refetchOnWindowFocus: true,
       onSuccess: () => {
-        console.log("유저 정보 불러오기 성공");
+        // console.log("유저 정보 불러오기 성공");
       },
       onError: () => {
         console.log("유저 정보를 불러오지 못했습니다.");
@@ -51,7 +51,7 @@ const User = {
       refetchOnMount: true,
       refetchOnWindowFocus: true,
       onSuccess: () => {
-        console.log("유저 정보 불러오기 성공");
+        // console.log("유저 정보 불러오기 성공");
       },
       onError: () => {
         console.log("유저 정보를 불러오지 못했습니다.");

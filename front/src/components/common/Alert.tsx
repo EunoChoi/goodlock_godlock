@@ -27,11 +27,14 @@ const useAlert = () => {
     const [animation, setAnimation] = useState<"open" | "close" | "">("");
     const { push, pop, modalStack } = useModalStack();
 
-    window.onpopstate = () => {
+    useEffect(() => {
       if (modalStack[modalStack.length - 1] === "#alert") {
-        setAnimation("close");
+        window.onpopstate = () => {
+          console.log("pop: alert");
+          setAnimation("close");
+        };
       }
-    };
+    }, [modalStack.length]);
 
     useEffect(() => {
       setTimeout(() => {
@@ -66,20 +69,20 @@ const useAlert = () => {
           <ButtonWrapper>
             <button
               onClick={() => {
-                history.back();
                 setTimeout(() => {
                   onCancel && onCancel();
                 }, 100);
+                history.back();
               }}
             >
               취소
             </button>
             <button
               onClick={() => {
-                history.back();
                 setTimeout(() => {
                   onSuccess();
                 }, 100);
+                history.back();
               }}
             >
               확인

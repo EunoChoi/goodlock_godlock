@@ -16,12 +16,15 @@ import { Button } from "@mui/material";
 import User from "../../functions/reactQuery/User";
 import Upload from "../../functions/reactQuery/Upload";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useModalStack } from "../../store/modalStack";
 
 interface setStateProps {
   setImageChangeModal: (b: boolean) => void;
 }
 
 const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
+  const { push, pop, modalStack } = useModalStack();
+
   //useQuery
   const user = User.getData();
 
@@ -53,11 +56,23 @@ const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
     }
   };
 
-  window.onpopstate = () => {
-    setAnimation("close");
-  };
   useEffect(() => {
+    console.log("dd");
+    if (modalStack[modalStack.length - 1] === "#profilePicUpdate") {
+      console.log("dd");
+      window.onpopstate = () => {
+        console.log("pop: profile Pic change");
+        setAnimation("close");
+      };
+    }
+  }, [modalStack.length]);
+
+  useEffect(() => {
+    push("#profilePicUpdate");
     setAnimation("open");
+    return () => {
+      pop();
+    };
   }, []);
 
   return (
@@ -214,7 +229,7 @@ const PopupBox = styled.div`
   > span {
     font-size: 24px;
     color: rgba(0, 0, 0, 0.8);
-    /* font-weight: 600; */
+    font-weight: 500;
     margin-top: 50px;
   }
   @media (orientation: portrait) or (max-height: 480px) {

@@ -54,17 +54,21 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
     setSideBarAnimation("close");
   };
 
-  window.onpopstate = () => {
+  useEffect(() => {
     if (modalStack[modalStack.length - 1] === "#sidebar") {
-      onClose();
+      window.onpopstate = () => {
+        console.log("pop: mobile side");
+        onClose();
+      };
     }
-  };
+  }, [modalStack.length]);
 
   useEffect(() => {
     push("#sidebar");
     setSideBarAnimation("open");
 
     return () => {
+      // window.onpopstate = null;
       pop();
     };
   }, []);

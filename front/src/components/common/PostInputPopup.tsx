@@ -141,19 +141,23 @@ const InputPopup = ({ setPostInputOpen }: props) => {
     }
   };
 
-  window.onpopstate = () => {
+  useEffect(() => {
     if (modalStack[modalStack.length - 1] === "#addpost") {
-      openCancelAlert({
-        mainText: "게시글 수정을 중단하시겠습니까?",
-        onSuccess: () => {
-          setAnimation("close");
-        },
-        onCancel: () => {
-          history.pushState({ page: "modal" }, "", "");
-        }
-      });
+      window.onpopstate = () => {
+        console.log("pop: add post");
+
+        openCancelAlert({
+          mainText: "게시글 수정을 중단하시겠습니까?",
+          onSuccess: () => {
+            setAnimation("close");
+          },
+          onCancel: () => {
+            history.pushState({ page: "modal" }, "", "");
+          }
+        });
+      };
     }
-  };
+  }, [modalStack.length]);
 
   useEffect(() => {
     setAnimation("open");

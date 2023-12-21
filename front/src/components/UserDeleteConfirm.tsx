@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import User from "../functions/reactQuery/User";
+import { useModalStack } from "../store/modalStack";
 
 interface setStateProps {
   setUserDeleteModal: (b: boolean) => void;
 }
 
 const UserDeleteConfirm = ({ setUserDeleteModal }: setStateProps) => {
+  const { push, pop, modalStack } = useModalStack();
+
   const [animation, setAnimation] = useState<"open" | "close" | "">("");
 
   const [text, setText] = useState<string>("");
@@ -24,11 +27,22 @@ const UserDeleteConfirm = ({ setUserDeleteModal }: setStateProps) => {
     }
   };
 
-  window.onpopstate = () => {
-    setAnimation("close");
-  };
   useEffect(() => {
+    if (modalStack[modalStack.length - 1] === "#deleteUser") {
+      window.onpopstate = () => {
+        console.log("pop: user delete confirm");
+
+        setAnimation("close");
+      };
+    }
+  }, [modalStack.length]);
+
+  useEffect(() => {
+    push("#deleteUser");
     setAnimation("open");
+    return () => {
+      pop();
+    };
   }, []);
 
   return (

@@ -5,6 +5,7 @@ import styled from "styled-components";
 //mui
 import CancelIcon from "@mui/icons-material/Cancel";
 import IsMobile from "../../functions/IsMobile";
+import { useModalStack } from "../../store/modalStack";
 
 interface AppLayoutProps {
   setPopupOpen: (b: boolean) => void;
@@ -12,6 +13,8 @@ interface AppLayoutProps {
 }
 
 const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayoutProps) => {
+  const { push, pop, modalStack } = useModalStack();
+
   const [animation, setAnimation] = useState<string>("");
   const isMobile = IsMobile();
 
@@ -42,13 +45,24 @@ const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayou
     // window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${REDIRECT_URI_NAVER}&state=${NAVER_STATE_CODE}&auth_type=reprompt`;
   };
 
-  window.onpopstate = () => {
-    setAnimation("close");
-    //앞으로 가기 방지
-    history.pushState({}, "", window.location.pathname);
-  };
   useEffect(() => {
+    if (modalStack[modalStack.length - 1] === "#loginForm") {
+      window.onpopstate = () => {
+        console.log("pop: login signup box");
+
+        setAnimation("close");
+        //앞으로 가기 방지
+        history.pushState({}, "", window.location.pathname);
+      };
+    }
+  }, [modalStack.length]);
+
+  useEffect(() => {
+    push("#loginForm");
     setAnimation("open");
+    return () => {
+      pop();
+    };
   }, []);
   return (
     <>

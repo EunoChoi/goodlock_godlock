@@ -3,12 +3,15 @@ import { toast } from "react-toastify";
 import styled from "styled-components";
 import User from "../functions/reactQuery/User";
 import Axios from "../apis/Axios";
+import { useModalStack } from "../store/modalStack";
 
 interface setStateProps {
   setPasswordChangeModal: (b: boolean) => void;
 }
 
 const PasswordChangeConfirm = ({ setPasswordChangeModal }: setStateProps) => {
+  const { push, pop, modalStack } = useModalStack();
+
   const [animation, setAnimation] = useState<"open" | "close" | "">("");
 
   const [currentPassword, setCurrentPassword] = useState<string>("");
@@ -16,11 +19,22 @@ const PasswordChangeConfirm = ({ setPasswordChangeModal }: setStateProps) => {
   const user = User.getData();
   const [passwordConfirm, setPasswordConfirm] = useState<boolean>(false);
 
-  window.onpopstate = () => {
-    setAnimation("close");
-  };
   useEffect(() => {
+    if (modalStack[modalStack.length - 1] === "#pwChange") {
+      window.onpopstate = () => {
+        console.log("pop: password update");
+
+        setAnimation("close");
+      };
+    }
+  }, [modalStack.length]);
+
+  useEffect(() => {
+    push("#pwChange");
     setAnimation("open");
+    return () => {
+      pop();
+    };
   }, []);
 
   return (

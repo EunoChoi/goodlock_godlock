@@ -156,19 +156,23 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
     }
   };
 
-  window.onpopstate = () => {
+  useEffect(() => {
     if (modalStack[modalStack.length - 1] === "#editpost") {
-      openCancelAlert({
-        mainText: "게시글 수정을 중단하시겠습니까?",
-        onSuccess: () => {
-          setAnimation("close");
-        },
-        onCancel: () => {
-          history.pushState({ page: "modal" }, "", "");
-        }
-      });
+      window.onpopstate = () => {
+        console.log("pop: edit post");
+
+        openCancelAlert({
+          mainText: "게시글 수정을 중단하시겠습니까?",
+          onSuccess: () => {
+            setAnimation("close");
+          },
+          onCancel: () => {
+            history.pushState({ page: "modal" }, "", "");
+          }
+        });
+      };
     }
-  };
+  }, [modalStack.length]);
 
   useEffect(() => {
     setAnimation("open");

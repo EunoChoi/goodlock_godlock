@@ -1,7 +1,6 @@
 import React, { ReactElement } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Axios from "../apis/Axios";
-import User from "../functions/reactQuery/User";
 import { useNavigate } from "react-router-dom";
 import Loading from "../pages/Loading";
 
@@ -22,7 +21,7 @@ const AuthRoute = ({ accessType, component }: AuthRouteProps) => {
       refetchOnWindowFocus: true,
       // staleTime: 5 * 60 * 1000,
       onSuccess: () => {
-        console.log("유저 정보 불러오기 성공");
+        // console.log("유저 정보 불러오기 성공");
         return <>{component}</>;
       },
       onError: () => {

@@ -19,6 +19,7 @@ import IsMobile from "../functions/IsMobile";
 import Post from "../functions/reactQuery/Post";
 import User from "../functions/reactQuery/User";
 import LinkIcon from "@mui/icons-material/Link";
+import { useModalStack } from "../store/modalStack";
 
 interface Image {
   src: string;
@@ -29,6 +30,8 @@ interface props {
 }
 
 const PostZoom = ({ postProps, setZoom }: props) => {
+  const { push, pop, modalStack } = useModalStack();
+
   const [animation, setAnimation] = useState<"open" | "close" | "">("");
 
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -55,12 +58,22 @@ const PostZoom = ({ postProps, setZoom }: props) => {
   const onClose = () => {
     history.back();
   };
+  useEffect(() => {
+    if (modalStack[modalStack.length - 1] === "#zoom") {
+      window.onpopstate = () => {
+        console.log("pop: post zoom");
 
-  window.onpopstate = () => {
-    setAnimation("close");
-  };
+        setAnimation("close");
+      };
+    }
+  }, [modalStack.length]);
+
   useEffect(() => {
     setAnimation("open");
+    push("#zoom");
+    return () => {
+      pop();
+    };
   }, []);
 
   return (
