@@ -97,7 +97,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
           <ButtonWrapper isPostInputOpen={isPostInputOpen}>
             {goTopButton && (
-              <button color="inherit" onClick={() => scrollTop()}>
+              <button id="mobileTop" color="inherit" onClick={() => scrollTop()}>
                 <ArrowUpwardIcon fontSize="medium" />
               </button>
             )}
@@ -182,6 +182,8 @@ export default AppLayout;
 
 const BotWrapper = styled.div`
   .rsc-float-button {
+    animation: ${Animation.smoothAppear} 0.3s ease-in-out;
+
     width: 48px;
     height: 48px;
 
@@ -191,9 +193,7 @@ const BotWrapper = styled.div`
 
     @media (orientation: portrait) and (max-width: 480px) {
       right: 18px;
-      bottom: calc(24px + 44px + 6px + 44px + 6px);
-      width: 44px;
-      height: 44px;
+      bottom: calc(24px + 48px + 6px + 48px + 6px);
     }
     @media (hover: hover) and (pointer: fine) {
       &:hover {
@@ -243,6 +243,9 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
     right: 18px;
     bottom: calc(24px);
   }
+  #mobileTop {
+    margin-bottom: calc(48px + 6px);
+  }
   #menuButton {
     @media (orientation: landscape) and (max-height: 480px) {
       display: none;
@@ -265,8 +268,6 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
     border-radius: 100px;
 
     @media (orientation: portrait) and (max-width: 480px) {
-      width: 44px;
-      height: 44px;
       margin-top: 6px;
     }
 
