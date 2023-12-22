@@ -110,6 +110,7 @@ const Profile = () => {
   const nickUpdateConfirm = (nickname: string) => {
     const pattern = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,10}$/;
     nickname = nickname?.toLowerCase();
+    console.log(nickname);
     if (!nickname.match(pattern)) {
       toast.warning("2자 이상 10자 이하, 소문자 또는 숫자 또는 한글로 구성되어야 합니다.");
     } else {

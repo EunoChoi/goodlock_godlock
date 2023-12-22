@@ -64,7 +64,7 @@ const Home = () => {
   ).data;
   const thisWeekEndLiked = useQuery(
     ["thisweek/end/liked"],
-    () => Axios.get("post/thisweek/liked").then((v) => v.data),
+    () => Axios.get("post/thisweek/likeEnd").then((v) => v.data),
     {
       // staleTime: 60 * 1000
     }
@@ -109,17 +109,17 @@ const Home = () => {
         <MainPageStyle.Space height={32}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_Bold>
           <CalendarMonthIcon fontSize="large" />
-          This Week Info
+          This Week
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={20}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
           {/* {thisWeekNewInfo?.len + thisWeekNewComm?.len} Tip&Free Posts */}
-          {thisWeekNewInfo?.len} Tip Posts • {thisWeekNewComm?.len} Free Posts
+          {thisWeekNewInfo} Tip Posts • {thisWeekNewComm} Free Posts
         </MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.Space height={8}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_SubBold>Share Closing</MainPageStyle.TextWrapper_SubBold>
-        <MainPageStyle.TextWrapper_Normal>{thisWeekEndLiked?.len} Bookmark Tip Posts</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>{thisWeekEndLiked} Bookmark Tip Posts</MainPageStyle.TextWrapper_Normal>
       </MainPageStyle.TextWrapper>
       <MainPageStyle.Pill.Wrapper>
         {pillSub.map((v, i) => (

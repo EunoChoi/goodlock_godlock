@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 const Img = ({
   className,
+  id,
   src,
   alt,
   altImg,
@@ -11,6 +12,7 @@ const Img = ({
   onClick
 }: {
   className?: string;
+  id?: string;
   src: string;
   alt: string;
   altImg?: string;
@@ -41,6 +43,7 @@ const Img = ({
       crop={crop ? crop : false}
       loading={loading ? loading : undefined}
       className={className}
+      id={id}
       src={src}
       alt={alt}
       onError={(e) => {

@@ -237,8 +237,7 @@ router.get("/activinfo", async (req, res) => {
     console.error(e);
   }
 })
-
-//length - top post this week
+//load - top post this week
 router.get("/thisweek/top", tokenCheck, async (req, res) => {
 
   const { type } = req.query;
@@ -276,59 +275,30 @@ router.get("/thisweek/top", tokenCheck, async (req, res) => {
       },
       group: ['id'],
       include: [
-        // {
-        //   model: User,//게시글 작성자
-        //   attributes: ['id', 'nickname', 'profilePic', 'email'],
-        // },
+        {
+          model: User,//게시글 작성자
+          attributes: ['id', 'nickname', 'profilePic', 'email'],
+        },
         {
           model: User, //좋아요 누른 사람
           as: 'Likers', //모델에서 가져온대로 설정
           attributes: ['id'],
         },
-        // {
-        //   model: Image, //게시글의 이미지
-        // },
+        {
+          model: Image, //게시글의 이미지
+        },
       ],
-      order: [[sequelize.col("LikeCount"), "DESC"]]
+      order: [[sequelize.col("LikeCount"), "DESC"], [sequelize.literal('rand()')]]
     });
 
     return res.status(200).json(Posts);
-    // let sortedArrByLikeCount = Posts.map(v => ({ "PostId": v.id, "LikeCount": v.Likers.length }));
-    // sortedArrByLikeCount = sortedArrByLikeCount
-    //   .filter(v => v.LikeCount !== 0)
-    //   .sort((a, b) => (b.LikeCount - a.LikeCount))
-    //   .map(v => v.PostId);
 
-    // if (sortedArrByLikeCount.length >= 1) {
-    //   const TopPosts = await Post.findAll({
-    //     attributes: ['id'],
-    //     order: [],
-    //     where: [{
-    //       id: { [Op.in]: sortedArrByLikeCount },
-    //     }],
-
-    //     include: [
-    //       {
-    //         model: User,//게시글 작성자
-    //         attributes: ['id', 'nickname', 'profilePic', 'email'],
-    //       },
-    //       {
-    //         model: User, //좋아요 누른 사람
-    //         as: 'Likers', //모델에서 가져온대로 설정
-    //         attributes: ['id'],
-    //       },
-    //       {
-    //         model: Image, //게시글의 이미지
-    //       },
-    //     ],
-    //   });
-    //   return res.status(201).json({ TopPosts });
-    // }
-    // return res.status(201).json("인기글이 존재하지 않음");
   } catch (e) {
     console.error(e);
   }
 })
+
+
 //length - new post this week
 router.get("/thisweek/new", tokenCheck, async (req, res) => {
 
@@ -358,7 +328,7 @@ router.get("/thisweek/new", tokenCheck, async (req, res) => {
 
   try {
     const where = {};
-    const Posts = await Post.findAll({
+    const Posts = await Post.findAndCountAll({
       where: [{
         type,
         [Op.and]: [
@@ -366,17 +336,16 @@ router.get("/thisweek/new", tokenCheck, async (req, res) => {
           { createdAt: { [Op.lte]: rangeEnd } }
         ],
       }]
-      , attributes: ['id', 'createdAt'],
+      // , attributes: ['id', 'createdAt'],
     });
 
-    // return res.status(201).json({ Posts });
-    return res.status(201).json({ len: Posts.length });
+    return res.status(201).json(Posts.count);
   } catch (e) {
     console.error(e);
   }
 })
-//length - end post this week
-router.get("/thisweek/liked", tokenCheck, async (req, res) => {
+//length - end liked post this week
+router.get("/thisweek/likeEnd", tokenCheck, async (req, res) => {
 
   const todayfull = new Date();
   let year = todayfull.getFullYear(); // 년도
@@ -404,7 +373,7 @@ router.get("/thisweek/liked", tokenCheck, async (req, res) => {
       }]
     })
     if (likedPosts.length >= 1) {
-      const Posts = await Post.findAll({
+      const Posts = await Post.findAndCountAll({
         attributes: ['id'],
         where: [{
           type: 1,
@@ -415,9 +384,85 @@ router.get("/thisweek/liked", tokenCheck, async (req, res) => {
           ],
         }]
       });
-      return res.status(201).json({ len: Posts.length });
+      return res.status(201).json(Posts.count);
     }
-    else return res.status(201).json({ len: 0 });
+    else return res.status(201).json(0);
+  } catch (e) {
+    console.error(e);
+  }
+})
+//length - feed posts in this week
+router.get("/thisweek/feed", tokenCheck, async (req, res) => {
+  const { type } = req.query;
+  const todayfull = new Date();
+  let year = todayfull.getFullYear(); // 년도
+  let month = todayfull.getMonth();  // 월
+  let date = todayfull.getDate();  // 날짜
+  let day = todayfull.getDay(); // 요일
+
+  const today = new Date(year, month, date);
+  const rangeStart = new Date(year, month, date - ((day + 6) % 7));
+  const rangeEnd = new Date(year, month, date - ((day + 6) % 7) + 6, 23, 59, 59);
+
+  try {
+    const UserId = req.currentUserId;
+
+    const followings = await User.findAll({
+      attributes: ["id"],
+      include: [{
+        model: User,
+        as: "Followers",
+        where: {
+          id: UserId
+        }
+      }]
+    })
+
+    const Posts = await Post.findAndCountAll({
+      where: [{
+        type,
+        UserId: { [Op.in]: followings.map(v => v.id) },
+        [Op.and]: [
+          { createdAt: { [Op.gte]: rangeStart } },
+          { createdAt: { [Op.lte]: rangeEnd } }
+        ],
+      }],
+    });
+    return res.status(201).json(Posts.count);
+  } catch (e) {
+    console.error(e);
+  }
+})
+//length - ongoing in this week
+router.get("/thisweek/activeinfo", async (req, res) => {
+  const { type, pageParam, tempDataNum } = req.query;
+
+  const todayfull = new Date();
+  let year = todayfull.getFullYear(); // 년도
+  let month = todayfull.getMonth();  // 월
+  let date = todayfull.getDate();  // 날짜
+  let day = todayfull.getDay(); // 요일
+
+  const today = new Date(year, month, date);
+  const rangeStart = new Date(year, month, date - ((day + 6) % 7));
+  const rangeEnd = new Date(year, month, date - ((day + 6) % 7) + 6, 23, 59, 59);
+
+  try {
+    const Posts = await Post.findAndCountAll({
+      where: [{
+        type: 1,
+        [Op.and]: [
+          { createdAt: { [Op.gte]: rangeStart } },
+          { createdAt: { [Op.lte]: rangeEnd } }
+        ],
+        [Op.or]: [
+          { end: { [Op.gte]: today } },
+          { end: null }
+        ]
+      }],
+    });
+
+    return res.status(201).json(Posts.count);
   } catch (e) {
     console.error(e);
   }
@@ -770,12 +815,12 @@ router.post("/", tokenCheck, async (req, res) => {
         images.push(temp);
       }
       post.addImages(images);
-      setTimeout(() => {
-        return res.status(200).json({ postImages, images, post });
+      return setTimeout(() => {
+        res.status(200).json({ postImages, images, post });
       }, 1000);
     }
-    setTimeout(() => {
-      return res.status(200).json(post);
+    return setTimeout(() => {
+      res.status(200).json(post);
     }, 1000);
   } catch (e) {
     console.error(e);
@@ -820,12 +865,12 @@ router.patch("/:postId", tokenCheck, async (req, res) => {
       }
       post.addImages(images);
 
-      setTimeout(() => {
-        return res.status(200).json({ postImages, images, post });
+      return setTimeout(() => {
+        res.status(200).json({ postImages, images, post });
       }, 1000);
     }
-    setTimeout(() => {
-      return res.status(200).json(post);
+    return setTimeout(() => {
+      res.status(200).json(post);
     }, 1000);
   } catch (e) {
     console.error(e);
@@ -866,8 +911,8 @@ router.post("/:postId/comment", tokenCheck, async (req, res) => {
       PostId: postId,
       UserId: req.currentUserId,
     });
-    setTimeout(() => {
-      return res.status(201).json(comment);
+    return setTimeout(() => {
+      res.status(201).json(comment);
     }, 1000);
   }
   catch (e) {
@@ -911,7 +956,7 @@ router.patch("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
     }
     );
 
-    setTimeout(() => {
+    return setTimeout(() => {
       res.status(200).json("post edit success");
     }, 1000);
   } catch (e) {

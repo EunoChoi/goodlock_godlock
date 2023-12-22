@@ -73,7 +73,7 @@ const LogIn = ({ setToggle }: Props) => {
           </LogInSignUp.Text>
         </LogInSignUp.TextWrapper>
         <LogInSignUp.Button disabled={!isDirty || !isValid || login.isLoading} bgColor="">
-          {login.isLoading ? <CircularProgress size={24} /> : "로그인"}
+          {login.isLoading ? <CircularProgress size={24} color="inherit" /> : "로그인"}
         </LogInSignUp.Button>
       </LogInSignUp.Form>
       <LogInSignUp.TextWrapper>

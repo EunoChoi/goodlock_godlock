@@ -438,7 +438,7 @@ const Nickname = styled.span`
   /* max-width: 50%; */
   overflow: hidden;
   text-overflow: ellipsis;
-
+  width: 100%;
   padding: 8px;
   font-size: 1.2em !important;
 `;
@@ -804,8 +804,9 @@ const MobilePostInfo = styled.div`
   height: 64px;
 
   div {
+    width: 80%;
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
   }
 `;
