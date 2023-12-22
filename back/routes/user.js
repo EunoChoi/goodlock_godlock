@@ -139,7 +139,7 @@ router.post("/login/social", async (req, res) => {
               <div style="font-size: 20px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">닉네임 : ${nickname}</div>
             </div>
           </div>
-          <img src="https://i.ibb.co/SnYFYkj/Screenshot-2023-12-04-at-4-27-53-AM.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
+          <img src="https://moseoree-s3.s3.ap-northeast-2.amazonaws.com/mainImage.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
         </div>
         `
       });

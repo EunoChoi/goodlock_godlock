@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -16,6 +16,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import CircularProgress from "@mui/material/CircularProgress";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import Img from "../common/Img";
 
 interface userProps {
   email: string;
@@ -34,6 +35,7 @@ interface postProps {
 }
 
 const Tips = () => {
+  const navigate = useNavigate();
   const scrollTarget = useRef<HTMLDivElement>(null);
 
   const [toggle, setToggle] = useState<number>(0);
@@ -42,18 +44,19 @@ const Tips = () => {
   const pillWrapperRef = useRef<HTMLInputElement>(null);
 
   //this week
-  const thisWeekNewInfo = useQuery(
-    ["thisweek/new/1"],
-    () => Axios.get("post/thisweek/new", { params: { type: 1 } }).then((v) => v.data),
-    {
-      // staleTime: 60 * 1000
-    }
+  const thisWeekNewInfo = useQuery(["thisweek/new/1"], () =>
+    Axios.get("post/thisweek/new", { params: { type: 1 } }).then((v) => v.data)
+  ).data;
+  const thisWeekFeed = useQuery(["thisweek/feed"], () =>
+    Axios.get("post/thisweek/feed", { params: { type: 1 } }).then((v) => v.data)
+  ).data;
+  const thisWeekOngoing = useQuery(["thisweek/activeinfo"], () =>
+    Axios.get("post/thisweek/activeinfo", { params: { type: 1 } }).then((v) => v.data)
   ).data;
 
-  //load top posts
-  const topPosts = useQuery(["tops"], () =>
+  const topPosts = useQuery(["topPosts"], () =>
     Axios.get("post/thisweek/top", { params: { type: 1 } }).then((v) => v.data)
-  ).data?.filter((v: { LikeCount: number }) => v.LikeCount !== 0);
+  ).data;
 
   //load posts
   const infoPosts = useInfiniteQuery(
@@ -130,38 +133,52 @@ const Tips = () => {
 
         <MainPageStyle.TextWrapper_Bold>
           <CalendarMonthIcon fontSize="large" />
-          This Week Info
+          This Week
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={28} />
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
-          {thisWeekNewInfo?.len} Tip • 12 Ongoing • 12 Feed
+          {thisWeekNewInfo} Tip • {thisWeekOngoing} Ongoing • {thisWeekFeed} Feed
         </MainPageStyle.TextWrapper_Normal>
-        <MainPageStyle.Space height={8} />
-        <MainPageStyle.TextWrapper_SubBold>Popular Posts</MainPageStyle.TextWrapper_SubBold>
-        <MainPageStyle.TopWrapper>
-          {topPosts?.map((v: { Images: Array<{ src: string }>; content: string; LikeCount: number }, i: number) => (
-            <MainPageStyle.TopPostWrapper key={i}>
-              <MainPageStyle.TopPost
-                onClick={() => {
-                  console.log(v);
-                }}
-              >
-                {v?.Images?.length >= 1 ? (
-                  <img id="image" src={v?.Images[0].src} />
-                ) : (
-                  <span id="text">{v?.content}</span>
-                )}
-              </MainPageStyle.TopPost>
-              <div id="info">
-                <span>#{i + 1}</span>
-                <span>
-                  <BookmarkIcon id="icon" fontSize="inherit" /> {makeK(v.LikeCount)}
-                </span>
-              </div>
-            </MainPageStyle.TopPostWrapper>
-          ))}
-        </MainPageStyle.TopWrapper>
+
+        {topPosts?.length >= 1 && (
+          <>
+            <MainPageStyle.Space height={8} />
+            <MainPageStyle.TextWrapper_SubBold>Popular Posts</MainPageStyle.TextWrapper_SubBold>
+            <MainPageStyle.TopWrapper>
+              {topPosts?.map(
+                (v: { Images: Array<{ src: string }>; content: string; LikeCount: number; id: number }, i: number) => (
+                  <MainPageStyle.TopPostWrapper key={i}>
+                    <MainPageStyle.TopPost
+                      onClick={() => {
+                        // console.log(v);
+                        navigate(`/postview/${v?.id}`);
+                      }}
+                    >
+                      {v?.Images?.length >= 1 ? (
+                        <Img
+                          alt="TopImage"
+                          id="image"
+                          src={v?.Images[0].src}
+                          altImg={v?.Images[0].src.replace(/\/thumb\//, "/original/")}
+                        />
+                      ) : (
+                        <span id="text">{v?.content}</span>
+                      )}
+                    </MainPageStyle.TopPost>
+                    <div id="info">
+                      <span>#{i + 1}</span>
+                      <span>
+                        <BookmarkIcon id="icon" fontSize="inherit" /> {makeK(v.LikeCount)}
+                      </span>
+                    </div>
+                  </MainPageStyle.TopPostWrapper>
+                )
+              )}
+            </MainPageStyle.TopWrapper>
+          </>
+        )}
+
         <MainPageStyle.Space height={12} />
       </MainPageStyle.TextWrapper>
       <MainPageStyle.Pill.Wrapper ref={pillWrapperRef}>

@@ -43,7 +43,10 @@ const Post = {
           queryClient.invalidateQueries(["thisweek/end/liked"]);
           queryClient.invalidateQueries(["thisweek/new/1"]);
           queryClient.invalidateQueries(["thisweek/new/2"]);
+          queryClient.invalidateQueries(["thisweek/feed"]);
+          queryClient.invalidateQueries(["thisweek/activeinfo"]);
 
+          queryClient.invalidateQueries(["topPosts"]);
           queryClient.invalidateQueries(["noticePosts"]);
           queryClient.invalidateQueries(["infoPosts"]);
           queryClient.invalidateQueries(["searchInfo"]);
@@ -115,8 +118,13 @@ const Post = {
     return useMutation((id: number) => Axios.delete(`post/${id}`), {
       onSuccess: () => {
         queryClient.invalidateQueries(["user"]);
+        queryClient.invalidateQueries(["thisweek/new/1"]);
+        queryClient.invalidateQueries(["thisweek/new/2"]);
         queryClient.invalidateQueries(["thisweek/end/liked"]);
+        queryClient.invalidateQueries(["thisweek/feed"]);
+        queryClient.invalidateQueries(["thisweek/activeinfo"]);
 
+        queryClient.invalidateQueries(["topPosts"]);
         queryClient.invalidateQueries(["noticePosts"]);
         queryClient.invalidateQueries(["infoPosts"]);
         queryClient.invalidateQueries(["searchInfo"]);
@@ -152,6 +160,7 @@ const Post = {
 
         queryClient.invalidateQueries(["thisweek/end/liked"]);
 
+        queryClient.invalidateQueries(["single"]);
         queryClient.invalidateQueries(["noticePosts"]);
         queryClient.invalidateQueries(["infoPosts"]);
         queryClient.invalidateQueries(["searchInfo"]);
@@ -160,6 +169,7 @@ const Post = {
         queryClient.invalidateQueries(["activinfo"]);
         queryClient.invalidateQueries(["tipfeed"]);
         queryClient.invalidateQueries(["freefeed"]);
+        queryClient.invalidateQueries(["topPosts"]);
 
         queryClient.invalidateQueries(["userLikedPosts"]);
         queryClient.invalidateQueries(["userInfoPosts"]);
@@ -185,6 +195,7 @@ const Post = {
 
         queryClient.invalidateQueries(["thisweek/end/liked"]);
 
+        queryClient.invalidateQueries(["single"]);
         queryClient.invalidateQueries(["noticePosts"]);
         queryClient.invalidateQueries(["infoPosts"]);
         queryClient.invalidateQueries(["searchInfo"]);
@@ -193,6 +204,7 @@ const Post = {
         queryClient.invalidateQueries(["activinfo"]);
         queryClient.invalidateQueries(["tipfeed"]);
         queryClient.invalidateQueries(["freefeed"]);
+        queryClient.invalidateQueries(["topPosts"]);
 
         queryClient.invalidateQueries(["userLikedPosts"]);
         queryClient.invalidateQueries(["userInfoPosts"]);

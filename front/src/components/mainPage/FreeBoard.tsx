@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Axios from "../../apis/Axios";
 import { toast } from "react-toastify";
 import MainPageStyle from "../../styles/MainPage";
+import Img from "../common/Img";
 
 //components
 import Post from "../common/Post";
@@ -16,6 +17,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import CircularProgress from "@mui/material/CircularProgress";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 
 interface userProps {
   email: string;
@@ -34,18 +36,22 @@ interface postProps {
 }
 
 const FreeBoard = () => {
+  const navigate = useNavigate();
+
   const scrollTarget = useRef<HTMLDivElement>(null);
   const [toggle, setToggle] = useState<number>(0);
   const pillSub = ["All", "Feed"];
   const [searchComm, setSearchComm] = useState<string>("");
 
   //this week
-  const thisWeekNewComm = useQuery(
-    ["thisweek/new/2"],
-    () => Axios.get("post/thisweek/new", { params: { type: 2 } }).then((v) => v.data),
-    {
-      // staleTime: 60 * 1000
-    }
+  const thisWeekNew = useQuery(["thisweek/new/2"], () =>
+    Axios.get("post/thisweek/new", { params: { type: 2 } }).then((v) => v.data)
+  ).data;
+  const thisWeekFeed = useQuery(["thisweek/feed"], () =>
+    Axios.get("post/thisweek/feed", { params: { type: 2 } }).then((v) => v.data)
+  ).data;
+  const topPosts = useQuery(["topPosts"], () =>
+    Axios.get("post/thisweek/top", { params: { type: 2 } }).then((v) => v.data)
   ).data;
 
   //load posts
@@ -87,6 +93,15 @@ const FreeBoard = () => {
       enabled: true
     }
   );
+  const makeK = (n: number | null) => {
+    if (n === null) {
+      return null;
+    }
+    if (n > 1000) {
+      return (n / 1000).toFixed(1) + "k";
+    }
+    return n;
+  };
 
   return (
     <MainPageStyle.MainEl>
@@ -96,12 +111,56 @@ const FreeBoard = () => {
         <MainPageStyle.TextWrapper_Normal>자유 주제로 소통이 가능한 게시판입니다.</MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.TextWrapper_Normal>서로의 공감과 배려가 필요해요.</MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.Space height={32}></MainPageStyle.Space>
+
         <MainPageStyle.TextWrapper_Bold>
           <CalendarMonthIcon fontSize="large" />
           This Week
         </MainPageStyle.TextWrapper_Bold>
-        <MainPageStyle.Space height={16}></MainPageStyle.Space>
-        <MainPageStyle.TextWrapper_Normal>신규 등록 포스트 {thisWeekNewComm?.len}개</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.Space height={28} />
+        <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
+        <MainPageStyle.TextWrapper_Normal>
+          {thisWeekNew} Free Posts • {thisWeekFeed} Feed Posts
+        </MainPageStyle.TextWrapper_Normal>
+
+        {topPosts?.length >= 1 && (
+          <>
+            <MainPageStyle.Space height={8} />
+            <MainPageStyle.TextWrapper_SubBold>Popular Posts</MainPageStyle.TextWrapper_SubBold>
+            <MainPageStyle.TopWrapper>
+              {topPosts?.map(
+                (v: { Images: Array<{ src: string }>; content: string; LikeCount: number; id: number }, i: number) => (
+                  <MainPageStyle.TopPostWrapper key={i}>
+                    <MainPageStyle.TopPost
+                      onClick={() => {
+                        // console.log(v);
+                        navigate(`/postview/${v?.id}`);
+                      }}
+                    >
+                      {v?.Images?.length >= 1 ? (
+                        <Img
+                          alt="TopImage"
+                          id="image"
+                          src={v?.Images[0].src}
+                          altImg={v?.Images[0].src.replace(/\/thumb\//, "/original/")}
+                        />
+                      ) : (
+                        <span id="text">{v?.content}</span>
+                      )}
+                    </MainPageStyle.TopPost>
+                    <div id="info">
+                      <span>#{i + 1}</span>
+                      <span>
+                        <BookmarkIcon id="icon" fontSize="inherit" /> {makeK(v.LikeCount)}
+                      </span>
+                    </div>
+                  </MainPageStyle.TopPostWrapper>
+                )
+              )}
+            </MainPageStyle.TopWrapper>
+          </>
+        )}
+
+        <MainPageStyle.Space height={12} />
       </MainPageStyle.TextWrapper>
       <MainPageStyle.Pill.Wrapper>
         {pillSub.map((v, i) => (
