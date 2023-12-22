@@ -770,12 +770,12 @@ router.post("/", tokenCheck, async (req, res) => {
         images.push(temp);
       }
       post.addImages(images);
-      setTimeout(() => {
-        return res.status(200).json({ postImages, images, post });
+      return setTimeout(() => {
+        res.status(200).json({ postImages, images, post });
       }, 1000);
     }
-    setTimeout(() => {
-      return res.status(200).json(post);
+    return setTimeout(() => {
+      res.status(200).json(post);
     }, 1000);
   } catch (e) {
     console.error(e);
@@ -820,12 +820,12 @@ router.patch("/:postId", tokenCheck, async (req, res) => {
       }
       post.addImages(images);
 
-      setTimeout(() => {
-        return res.status(200).json({ postImages, images, post });
+      return setTimeout(() => {
+        res.status(200).json({ postImages, images, post });
       }, 1000);
     }
-    setTimeout(() => {
-      return res.status(200).json(post);
+    return setTimeout(() => {
+      res.status(200).json(post);
     }, 1000);
   } catch (e) {
     console.error(e);
@@ -866,8 +866,8 @@ router.post("/:postId/comment", tokenCheck, async (req, res) => {
       PostId: postId,
       UserId: req.currentUserId,
     });
-    setTimeout(() => {
-      return res.status(201).json(comment);
+    return setTimeout(() => {
+      res.status(201).json(comment);
     }, 1000);
   }
   catch (e) {
@@ -911,7 +911,7 @@ router.patch("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
     }
     );
 
-    setTimeout(() => {
+    return setTimeout(() => {
       res.status(200).json("post edit success");
     }, 1000);
   } catch (e) {
