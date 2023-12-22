@@ -48,7 +48,10 @@ module.exports = (sequelize, DataTypes) => { //sequelize는 시퀄라이즈 라�
     db.User.hasMany(db.Comment);
 
     //다른 모델간 다대다 관계 [좋아요]
-    db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' }); //중간 테이블 이름을 정해줄수있다
+    db.User.belongsToMany(db.Post, {
+      through: 'Like', as: 'Liked', foreignKey: "User_id",
+      sourceKey: "id",
+    }); //중간 테이블 이름을 정해줄수있다
 
     //같은 모델간 다대다 관계 [팔로잉, 팔로워], 같은 모델간 다대다 관계가 존재할때 foreignKey를 입력해야 한다.
     db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'FollowingId' });

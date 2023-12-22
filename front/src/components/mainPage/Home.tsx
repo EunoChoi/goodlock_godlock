@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -110,15 +109,17 @@ const Home = () => {
         <MainPageStyle.Space height={32}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_Bold>
           <CalendarMonthIcon fontSize="large" />
-          This Week
+          This Week Info
         </MainPageStyle.TextWrapper_Bold>
-        <MainPageStyle.Space height={16}></MainPageStyle.Space>
+        <MainPageStyle.Space height={20}></MainPageStyle.Space>
+        <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
-          신규 등록 팁&포스트 {thisWeekNewInfo?.len + thisWeekNewComm?.len}개
+          {/* {thisWeekNewInfo?.len + thisWeekNewComm?.len} Tip&Free Posts */}
+          {thisWeekNewInfo?.len} Tip Posts • {thisWeekNewComm?.len} Free Posts
         </MainPageStyle.TextWrapper_Normal>
-        <MainPageStyle.TextWrapper_Normal>
-          공유 마감 북마크 팁 {thisWeekEndLiked?.len}개
-        </MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.Space height={8}></MainPageStyle.Space>
+        <MainPageStyle.TextWrapper_SubBold>Share Closing</MainPageStyle.TextWrapper_SubBold>
+        <MainPageStyle.TextWrapper_Normal>{thisWeekEndLiked?.len} Bookmark Tip Posts</MainPageStyle.TextWrapper_Normal>
       </MainPageStyle.TextWrapper>
       <MainPageStyle.Pill.Wrapper>
         {pillSub.map((v, i) => (

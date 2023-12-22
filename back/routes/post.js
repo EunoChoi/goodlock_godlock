@@ -12,7 +12,8 @@ const tokenCheck = require("../middleware/tokenCheck.js");
 
 const db = require("../models/index.js");
 const Op = db.Sequelize.Op;
-// const { where } = require("sequelize");
+const sequelize = db.Sequelize;
+
 const router = express.Router();
 
 //model load
@@ -237,7 +238,97 @@ router.get("/activinfo", async (req, res) => {
   }
 })
 
+//length - top post this week
+router.get("/thisweek/top", tokenCheck, async (req, res) => {
 
+  const { type } = req.query;
+
+  const todayfull = new Date();
+  let year = todayfull.getFullYear(); // 년도
+  let month = todayfull.getMonth();  // 월
+  let date = todayfull.getDate();  // 날짜
+  let day = todayfull.getDay(); // 요일
+
+  const today = new Date(year, month, date);
+  const rangeStart = new Date(year, month, date - ((day + 6) % 7));
+  const rangeEnd = new Date(year, month, date - ((day + 6) % 7) + 6, 23, 59, 59);
+
+  try {
+    const where = {};
+    const Posts = await Post.findAll({
+      where: [{
+        type,
+        [Op.and]: [
+          { createdAt: { [Op.gte]: rangeStart } },
+          { createdAt: { [Op.lte]: rangeEnd } }
+        ],
+      }],
+      limit: 10,
+      through: { attributes: [] },
+      attributes: {
+        include: [
+          [
+            sequelize.literal(
+              '(SELECT COUNT(*) FROM goodlockgodlock.Like WHERE Post_id = Post.id)'),
+            'LikeCount'
+          ]
+        ],
+      },
+      group: ['id'],
+      include: [
+        // {
+        //   model: User,//게시글 작성자
+        //   attributes: ['id', 'nickname', 'profilePic', 'email'],
+        // },
+        {
+          model: User, //좋아요 누른 사람
+          as: 'Likers', //모델에서 가져온대로 설정
+          attributes: ['id'],
+        },
+        // {
+        //   model: Image, //게시글의 이미지
+        // },
+      ],
+      order: [[sequelize.col("LikeCount"), "DESC"]]
+    });
+
+    return res.status(200).json(Posts);
+    // let sortedArrByLikeCount = Posts.map(v => ({ "PostId": v.id, "LikeCount": v.Likers.length }));
+    // sortedArrByLikeCount = sortedArrByLikeCount
+    //   .filter(v => v.LikeCount !== 0)
+    //   .sort((a, b) => (b.LikeCount - a.LikeCount))
+    //   .map(v => v.PostId);
+
+    // if (sortedArrByLikeCount.length >= 1) {
+    //   const TopPosts = await Post.findAll({
+    //     attributes: ['id'],
+    //     order: [],
+    //     where: [{
+    //       id: { [Op.in]: sortedArrByLikeCount },
+    //     }],
+
+    //     include: [
+    //       {
+    //         model: User,//게시글 작성자
+    //         attributes: ['id', 'nickname', 'profilePic', 'email'],
+    //       },
+    //       {
+    //         model: User, //좋아요 누른 사람
+    //         as: 'Likers', //모델에서 가져온대로 설정
+    //         attributes: ['id'],
+    //       },
+    //       {
+    //         model: Image, //게시글의 이미지
+    //       },
+    //     ],
+    //   });
+    //   return res.status(201).json({ TopPosts });
+    // }
+    // return res.status(201).json("인기글이 존재하지 않음");
+  } catch (e) {
+    console.error(e);
+  }
+})
 //length - new post this week
 router.get("/thisweek/new", tokenCheck, async (req, res) => {
 

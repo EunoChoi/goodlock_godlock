@@ -15,6 +15,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import CircularProgress from "@mui/material/CircularProgress";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 
 interface userProps {
   email: string;
@@ -48,6 +49,11 @@ const Tips = () => {
       // staleTime: 60 * 1000
     }
   ).data;
+
+  //load top posts
+  const topPosts = useQuery(["tops"], () =>
+    Axios.get("post/thisweek/top", { params: { type: 1 } }).then((v) => v.data)
+  ).data?.filter((v: { LikeCount: number }) => v.LikeCount !== 0);
 
   //load posts
   const infoPosts = useInfiniteQuery(
@@ -100,6 +106,16 @@ const Tips = () => {
     }
   );
 
+  const makeK = (n: number | null) => {
+    if (n === null) {
+      return null;
+    }
+    if (n > 1000) {
+      return (n / 1000).toFixed(1) + "k";
+    }
+    return n;
+  };
+
   return (
     <MainPageStyle.MainEl>
       <MainPageStyle.TextWrapper ref={scrollTarget}>
@@ -114,10 +130,39 @@ const Tips = () => {
 
         <MainPageStyle.TextWrapper_Bold>
           <CalendarMonthIcon fontSize="large" />
-          This Week
+          This Week Info
         </MainPageStyle.TextWrapper_Bold>
-        <MainPageStyle.Space height={16}></MainPageStyle.Space>
-        <MainPageStyle.TextWrapper_Normal>신규 등록 팁 {thisWeekNewInfo?.len}개</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.Space height={28} />
+        <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
+        <MainPageStyle.TextWrapper_Normal>
+          {thisWeekNewInfo?.len} Tip • 12 Ongoing • 12 Feed
+        </MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.Space height={8} />
+        <MainPageStyle.TextWrapper_SubBold>Popular Posts</MainPageStyle.TextWrapper_SubBold>
+        <MainPageStyle.TopWrapper>
+          {topPosts?.map((v: { Images: Array<{ src: string }>; content: string; LikeCount: number }, i: number) => (
+            <MainPageStyle.TopPostWrapper key={i}>
+              <MainPageStyle.TopPost
+                onClick={() => {
+                  console.log(v);
+                }}
+              >
+                {v?.Images?.length >= 1 ? (
+                  <img id="image" src={v?.Images[0].src} />
+                ) : (
+                  <span id="text">{v?.content}</span>
+                )}
+              </MainPageStyle.TopPost>
+              <div id="info">
+                <span>#{i + 1}</span>
+                <span>
+                  <BookmarkIcon id="icon" fontSize="inherit" /> {makeK(v.LikeCount)}
+                </span>
+              </div>
+            </MainPageStyle.TopPostWrapper>
+          ))}
+        </MainPageStyle.TopWrapper>
+        <MainPageStyle.Space height={12} />
       </MainPageStyle.TextWrapper>
       <MainPageStyle.Pill.Wrapper ref={pillWrapperRef}>
         {pillSub.map((v, i) => (

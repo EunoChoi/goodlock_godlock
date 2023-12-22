@@ -16,12 +16,16 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 400;
     -webkit-tap-highlight-color : transparent !important;
     box-sizing: border-box;
+
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera*/
+    }
   }
   span, div, button{
    font-family: Pretendard;
    font-weight: 400;
-
-
   }
   
   html{
@@ -30,6 +34,14 @@ const GlobalStyle = createGlobalStyle`
 
     -ms-overflow-style: none !important; /* IE and Edge */
     scrollbar-width: none !important; /* Firefox */
+  }
+
+  body{
+    -ms-overflow-style: none !important; /* IE and Edge */
+    scrollbar-width: none !important; /* Firefox */
+    &::-webkit-scrollbar {
+      display: none !important; /* Chrome, Safari, Opera*/
+    }
   }
   html::-webkit-scrollbar {
     display: none;

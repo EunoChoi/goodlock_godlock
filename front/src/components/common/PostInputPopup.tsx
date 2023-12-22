@@ -97,14 +97,11 @@ const InputPopup = ({ setPostInputOpen }: props) => {
       },
       {
         onSuccess: () => {
-          onClose();
+          setPostInputOpen(false);
+          history.back();
         }
       }
     );
-  };
-  const onClose = () => {
-    setPostInputOpen(false);
-    history.back();
   };
 
   //로컬에서 이미지 등록 에러 처리

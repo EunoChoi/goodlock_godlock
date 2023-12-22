@@ -119,6 +119,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
       },
       {
         onSuccess: () => {
+          setPostEdit(false);
           history.back();
         }
       }

@@ -187,7 +187,7 @@ const TextWrapper = styled.div`
   @media (orientation: portrait) or (max-height: 480px) {
     width: 100%;
     padding-top: 72px;
-    padding-left: 5vw;
+    padding-left: 4vw;
     margin-top: 48px; //header height
     padding-bottom: 24px;
   }
@@ -234,6 +234,16 @@ const TextWrapper_Bold = styled.span`
 
   color: rgba(0, 0, 0, 0.65);
 `;
+const TextWrapper_SubBold = styled.span`
+  font-size: 22px;
+  line-height: 40px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: rgba(0, 0, 0, 0.6);
+`;
 const TextWrapper_Bold_Color = styled.span`
   font-size: 30px;
   line-height: 40px;
@@ -246,7 +256,7 @@ const TextWrapper_Bold_Color = styled.span`
   color: #8096b5;
 `;
 const TextWrapper_Normal = styled.span`
-  font-size: 20px;
+  font-size: 18px;
   line-height: 28px;
   font-weight: 500;
 
@@ -256,8 +266,104 @@ const TextWrapper_Normal = styled.span`
 
   color: rgba(0, 0, 0, 0.65);
 `;
+const TopWrapper = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+
+  width: 100%;
+  height: auto;
+
+  overflow-x: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+`;
+const TopPostWrapper = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+
+  margin-right: 12px;
+
+  height: auto;
+  #info {
+    span {
+      font-size: 18px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.8);
+    }
+    span:nth-child(2) {
+      margin-left: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: rgba(0, 0, 0, 0.6);
+      #icon {
+        color: #a9aed4;
+        margin-right: 4px;
+      }
+    }
+
+    padding: 4px 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    justify-content: start;
+    align-items: center;
+  }
+`;
+const TopPost = styled.div`
+  width: 150px;
+  height: 100px;
+  flex-shrink: 0;
+  height: 100px;
+  border-radius: 6px;
+  border: solid 2px rgba(0, 0, 0, 0.07);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:last-child {
+    margin-right: 0;
+    @media (orientation: portrait) and (min-height: 480px) {
+      margin-right: 4vw;
+    }
+  }
+  #image {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+  #text {
+    width: 90%;
+    /* padding: 8px; */
+    //줄바꿈 표시
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    overflow-y: scroll;
+    text-overflow: ellipsis;
+
+    line-height: 1.3em;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.65);
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 원하는 줄 수 표시 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+`;
 
 const MainPageStyle = {
+  TopWrapper,
+  TopPost,
+  TopPostWrapper,
   EmptyNoti,
   LoadingIconWrapper,
   HomeEl,
@@ -267,6 +373,7 @@ const MainPageStyle = {
   TextWrapper,
   TextWrapper_Title,
   TextWrapper_Bold,
+  TextWrapper_SubBold,
   TextWrapper_Bold_Color,
   TextWrapper_Normal
 };
