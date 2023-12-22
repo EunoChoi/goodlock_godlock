@@ -87,6 +87,8 @@ const Post = {
         queryClient.invalidateQueries(["thisweek/end/liked"]);
         queryClient.invalidateQueries(["thisweek/new/1"]);
         queryClient.invalidateQueries(["thisweek/new/2"]);
+        queryClient.invalidateQueries(["thisweek/feed"]);
+        queryClient.invalidateQueries(["thisweek/activeinfo"]);
 
         queryClient.invalidateQueries(["noticePosts"]);
         queryClient.invalidateQueries(["infoPosts"]);

@@ -53,7 +53,6 @@ const Tips = () => {
   const thisWeekOngoing = useQuery(["thisweek/activeinfo"], () =>
     Axios.get("post/thisweek/activeinfo", { params: { type: 1 } }).then((v) => v.data)
   ).data;
-
   const topPosts = useQuery(["topPosts"], () =>
     Axios.get("post/thisweek/top", { params: { type: 1 } }).then((v) => v.data)
   ).data;
@@ -138,7 +137,7 @@ const Tips = () => {
         <MainPageStyle.Space height={28} />
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
-          {thisWeekNewInfo} Tip • {thisWeekOngoing} Ongoing • {thisWeekFeed} Feed
+          {thisWeekNewInfo} Tip • {thisWeekOngoing} Ongoing • {thisWeekFeed} Feed Posts
         </MainPageStyle.TextWrapper_Normal>
 
         {topPosts?.length >= 1 && (

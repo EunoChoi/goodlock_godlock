@@ -115,7 +115,7 @@ const Home = () => {
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
           {/* {thisWeekNewInfo?.len + thisWeekNewComm?.len} Tip&Free Posts */}
-          {thisWeekNewInfo} Tip Posts • {thisWeekNewComm} Free Posts
+          {thisWeekNewInfo} Tip • {thisWeekNewComm} Free Posts
         </MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.Space height={8}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_SubBold>Share Closing</MainPageStyle.TextWrapper_SubBold>
