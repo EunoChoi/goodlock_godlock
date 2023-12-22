@@ -336,7 +336,7 @@ const TextWrapper = styled.div`
   @media (orientation: portrait) or (max-height: 480px) {
     width: 100%;
     padding-top: 72px;
-    padding-left: 5vw;
+    /* padding-left: 5vw; */
     margin-top: 48px; //header height
     padding-bottom: 24px;
   }
