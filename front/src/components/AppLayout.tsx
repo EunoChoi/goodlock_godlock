@@ -84,13 +84,16 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <>
       {isPostInputOpen && <InputPopup setPostInputOpen={setPostInputOpen} />}
-      <BotWrapper>
-        <Bot />
-      </BotWrapper>
 
       {isMobile ? (
         <MobileWrapper>
           {mobileSideOpen && <MobileSide setMobileSideOpen={setMobileSideOpen} />}
+
+          {mobileButtonVisible && (
+            <BotWrapper>
+              <Bot />
+            </BotWrapper>
+          )}
 
           <ButtonWrapper isPostInputOpen={isPostInputOpen}>
             {goTopButton && (
@@ -129,6 +132,9 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         </MobileWrapper>
       ) : (
         <PcWrapper>
+          <BotWrapper>
+            <Bot />
+          </BotWrapper>
           <ButtonWrapper isPostInputOpen={isPostInputOpen}>
             {goTopButton && (
               <button color="inherit" onClick={() => scrollTop()}>
@@ -185,7 +191,7 @@ const BotWrapper = styled.div`
 
     @media (orientation: portrait) and (max-width: 480px) {
       right: 18px;
-      bottom: 24px;
+      bottom: calc(24px + 44px + 6px + 44px + 6px);
       width: 44px;
       height: 44px;
     }
@@ -235,7 +241,7 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
   right: 32px;
   @media (orientation: portrait) and (max-width: 480px) {
     right: 18px;
-    bottom: calc(24px + 44px + 6px);
+    bottom: calc(24px);
   }
   #menuButton {
     @media (orientation: landscape) and (max-height: 480px) {

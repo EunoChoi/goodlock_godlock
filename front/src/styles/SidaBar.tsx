@@ -105,7 +105,7 @@ const HeaderWrapper = styled.div`
 `;
 const UserInfoWrapper = styled.div`
   width: 100%;
-  height: 40%;
+  height: 45%;
   /* border: 1px solid white; */
 
   padding: 0 20px;
@@ -183,7 +183,7 @@ const UserInfoWrapper = styled.div`
 `;
 const MenuWrapper = styled.div<{ currentPage: number | undefined }>`
   width: 100%;
-  height: 50%;
+  height: 45%;
   /* border: 1px solid white; */
 
   padding: 0 40px;
