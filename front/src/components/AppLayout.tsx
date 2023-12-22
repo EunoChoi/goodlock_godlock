@@ -30,6 +30,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const [goTopButton, setGoTopButton] = useState<boolean>(false);
 
   const [mobileSideOpen, setMobileSideOpen] = useState<boolean>(false);
+  const [mobileButtonVisible, setMobileButtonVisible] = useState<boolean>(false);
 
   //공지사항 작성 가능 레벨
   const level = 10;
@@ -57,6 +58,11 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   useEffect(() => {
     const handleScroll = async () => {
+      if (window.scrollY > 48) {
+        setMobileButtonVisible(true);
+      } else {
+        setMobileButtonVisible(false);
+      }
       if (window.scrollY > 2000) {
         setGoTopButton(true);
       } else {
@@ -81,46 +87,79 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       <BotWrapper>
         <Bot />
       </BotWrapper>
-      <ButtonWrapper isPostInputOpen={isPostInputOpen}>
-        {goTopButton && (
-          <button color="inherit" onClick={() => scrollTop()}>
-            <ArrowUpwardIcon fontSize="medium" />
-          </button>
-        )}
-        {
-          //user level이 10이상이여야 공지사항 작성이 가능
-          isAdminPostOk && (
-            <button color="inherit" onClick={() => InputEditOpen()}>
-              <PostAddIcon fontSize="medium" />
-            </button>
-          )
-        }
-        {isUserPostOk && (
-          <button color="inherit" onClick={() => InputEditOpen()}>
-            <PostAddIcon fontSize="medium" />
-          </button>
-        )}
-        {isMobile && (
-          <button
-            id="menuButton"
-            color="inherit"
-            onClick={() => {
-              sideOpen();
-            }}
-          >
-            <MenuIcon fontSize="medium" />
-          </button>
-        )}
-      </ButtonWrapper>
 
       {isMobile ? (
         <MobileWrapper>
           {mobileSideOpen && <MobileSide setMobileSideOpen={setMobileSideOpen} />}
+
+          <ButtonWrapper isPostInputOpen={isPostInputOpen}>
+            {goTopButton && (
+              <button color="inherit" onClick={() => scrollTop()}>
+                <ArrowUpwardIcon fontSize="medium" />
+              </button>
+            )}
+            {
+              //user level이 10이상이여야 공지사항 작성이 가능
+              mobileButtonVisible && isAdminPostOk && (
+                <button color="inherit" onClick={() => InputEditOpen()}>
+                  <PostAddIcon fontSize="medium" />
+                </button>
+              )
+            }
+            {mobileButtonVisible && isUserPostOk && (
+              <button color="inherit" onClick={() => InputEditOpen()}>
+                <PostAddIcon fontSize="medium" />
+              </button>
+            )}
+            {isMobile && (
+              <button
+                id="menuButton"
+                color="inherit"
+                onClick={() => {
+                  sideOpen();
+                }}
+              >
+                <MenuIcon fontSize="medium" />
+              </button>
+            )}
+          </ButtonWrapper>
+
           <Children>{children}</Children>
           <Header />
         </MobileWrapper>
       ) : (
         <PcWrapper>
+          <ButtonWrapper isPostInputOpen={isPostInputOpen}>
+            {goTopButton && (
+              <button color="inherit" onClick={() => scrollTop()}>
+                <ArrowUpwardIcon fontSize="medium" />
+              </button>
+            )}
+            {
+              //user level이 10이상이여야 공지사항 작성이 가능
+              isAdminPostOk && (
+                <button color="inherit" onClick={() => InputEditOpen()}>
+                  <PostAddIcon fontSize="medium" />
+                </button>
+              )
+            }
+            {isUserPostOk && (
+              <button color="inherit" onClick={() => InputEditOpen()}>
+                <PostAddIcon fontSize="medium" />
+              </button>
+            )}
+            {isMobile && (
+              <button
+                id="menuButton"
+                color="inherit"
+                onClick={() => {
+                  sideOpen();
+                }}
+              >
+                <MenuIcon fontSize="medium" />
+              </button>
+            )}
+          </ButtonWrapper>
           <LeftWrapper>
             <PCSide />
           </LeftWrapper>
