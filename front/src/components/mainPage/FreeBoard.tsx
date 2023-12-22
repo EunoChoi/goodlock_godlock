@@ -18,6 +18,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import CircularProgress from "@mui/material/CircularProgress";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import MessageIcon from "@mui/icons-material/Message";
 
 interface userProps {
   email: string;
@@ -128,7 +129,16 @@ const FreeBoard = () => {
             <MainPageStyle.TextWrapper_SubBold>Popular Posts</MainPageStyle.TextWrapper_SubBold>
             <MainPageStyle.TopWrapper>
               {topPosts?.map(
-                (v: { Images: Array<{ src: string }>; content: string; LikeCount: number; id: number }, i: number) => (
+                (
+                  v: {
+                    Comments: Array<{ id: number }>;
+                    Images: Array<{ src: string }>;
+                    content: string;
+                    LikeCount: number;
+                    id: number;
+                  },
+                  i: number
+                ) => (
                   <MainPageStyle.TopPostWrapper key={i}>
                     <MainPageStyle.TopPost
                       onClick={() => {
@@ -151,6 +161,9 @@ const FreeBoard = () => {
                       <span>#{i + 1}</span>
                       <span>
                         <FavoriteIcon id="icon2" fontSize="inherit" /> {makeK(v.LikeCount)}
+                      </span>
+                      <span>
+                        <MessageIcon id="icon" fontSize="inherit" /> {makeK(v?.Comments?.length)}
                       </span>
                     </div>
                   </MainPageStyle.TopPostWrapper>

@@ -307,18 +307,29 @@ const TopPostWrapper = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      color: rgba(0, 0, 0, 0.6);
+      color: rgba(0, 0, 0, 0.7);
       #icon {
         color: #a9aed4;
-        margin-right: 4px;
+        margin-right: 2px;
       }
       #icon2 {
         color: #d5a8d0;
-        margin-right: 4px;
+        margin-right: 2px;
+      }
+    }
+    span:nth-child(3) {
+      margin-left: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: rgba(0, 0, 0, 0.7);
+      #icon {
+        color: rgba(0, 0, 0, 0.7);
+        margin-right: 2px;
       }
     }
 
-    padding: 4px 10px;
+    padding: 4px;
     width: 100%;
     display: flex;
     justify-content: space-between;

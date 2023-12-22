@@ -23,6 +23,7 @@ const Comment = {
 
           queryClient.invalidateQueries(["single"]);
 
+          queryClient.invalidateQueries(["topPosts"]);
           queryClient.invalidateQueries(["noticePosts"]);
           queryClient.invalidateQueries(["infoPosts"]);
           queryClient.invalidateQueries(["searchInfo"]);
@@ -97,6 +98,7 @@ const Comment = {
 
           queryClient.invalidateQueries(["single"]);
 
+          queryClient.invalidateQueries(["topPosts"]);
           queryClient.invalidateQueries(["noticePosts"]);
           queryClient.invalidateQueries(["infoPosts"]);
           queryClient.invalidateQueries(["searchInfo"]);

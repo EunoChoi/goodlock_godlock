@@ -287,6 +287,10 @@ router.get("/thisweek/top", tokenCheck, async (req, res) => {
         {
           model: Image, //게시글의 이미지
         },
+        {
+          model: Comment, //게시글의 이미지
+          attributes: ['id']
+        },
       ],
       order: [[sequelize.col("LikeCount"), "DESC"], [sequelize.literal('rand()')]]
     });

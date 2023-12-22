@@ -9,6 +9,7 @@ import MainPageStyle from "../../styles/MainPage";
 
 //components
 import Post from "../common/Post";
+import Img from "../common/Img";
 
 //mui
 import SearchIcon from "@mui/icons-material/Search";
@@ -16,7 +17,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import CircularProgress from "@mui/material/CircularProgress";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-import Img from "../common/Img";
+import MessageIcon from "@mui/icons-material/Message";
 
 interface userProps {
   email: string;
@@ -147,11 +148,20 @@ const Tips = () => {
             <MainPageStyle.TextWrapper_SubBold>Popular Posts</MainPageStyle.TextWrapper_SubBold>
             <MainPageStyle.TopWrapper>
               {topPosts?.map(
-                (v: { Images: Array<{ src: string }>; content: string; LikeCount: number; id: number }, i: number) => (
+                (
+                  v: {
+                    Images: Array<{ src: string }>;
+                    content: string;
+                    LikeCount: number;
+                    id: number;
+                    Comments: Array<{ id: number }>;
+                  },
+                  i: number
+                ) => (
                   <MainPageStyle.TopPostWrapper key={i}>
                     <MainPageStyle.TopPost
                       onClick={() => {
-                        // console.log(v);
+                        console.log(v);
                         navigate(`/postview/${v?.id}`);
                       }}
                     >
@@ -169,7 +179,10 @@ const Tips = () => {
                     <div id="info">
                       <span>#{i + 1}</span>
                       <span>
-                        <BookmarkIcon id="icon" fontSize="inherit" /> {makeK(v.LikeCount)}
+                        <BookmarkIcon id="icon" fontSize="inherit" /> {makeK(v?.LikeCount)}
+                      </span>
+                      <span>
+                        <MessageIcon id="icon" fontSize="inherit" /> {makeK(v?.Comments?.length)}
                       </span>
                     </div>
                   </MainPageStyle.TopPostWrapper>
