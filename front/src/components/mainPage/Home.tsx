@@ -105,10 +105,11 @@ const Home = () => {
           {shortNickname(user?.nickname)}님 <EmojiPeopleIcon style={{ fontSize: "64px" }}></EmojiPeopleIcon>
         </MainPageStyle.TextWrapper_Title>
         <MainPageStyle.Space height={32}></MainPageStyle.Space>
-        <MainPageStyle.TextWrapper_Normal>나만의 감성 더하기, 굿락갓락</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>굿락갓락은 나만의 감성을 더하는</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>갤럭시&굿락 팁 공유 사이트입니다. :)</MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.Space height={32}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_Bold>
-          <CalendarMonthIcon fontSize="large" />
+          <CalendarMonthIcon id="icon" fontSize="large" />
           This Week
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={20}></MainPageStyle.Space>

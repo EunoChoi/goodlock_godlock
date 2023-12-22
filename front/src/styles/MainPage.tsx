@@ -233,6 +233,11 @@ const TextWrapper_Bold = styled.span`
   align-items: center;
 
   color: rgba(0, 0, 0, 0.65);
+
+  #icon {
+    margin-right: 4px;
+    color: #dd4e5c;
+  }
 `;
 const TextWrapper_SubBold = styled.span`
   font-size: 22px;
@@ -288,6 +293,7 @@ const TopPostWrapper = styled.div`
   flex-direction: column;
 
   margin-right: 12px;
+  animation: ${Animation.smoothAppear} 300ms ease-out;
 
   height: auto;
   #info {
@@ -304,6 +310,10 @@ const TopPostWrapper = styled.div`
       color: rgba(0, 0, 0, 0.6);
       #icon {
         color: #a9aed4;
+        margin-right: 4px;
+      }
+      #icon2 {
+        color: #d5a8d0;
         margin-right: 4px;
       }
     }

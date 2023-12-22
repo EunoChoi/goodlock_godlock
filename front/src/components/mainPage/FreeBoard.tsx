@@ -17,7 +17,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import CircularProgress from "@mui/material/CircularProgress";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 interface userProps {
   email: string;
@@ -109,14 +109,14 @@ const FreeBoard = () => {
         <MainPageStyle.TextWrapper_Title>Free Board</MainPageStyle.TextWrapper_Title>
         <MainPageStyle.Space height={32}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_Normal>자유 주제로 소통이 가능한 게시판입니다.</MainPageStyle.TextWrapper_Normal>
-        <MainPageStyle.TextWrapper_Normal>서로의 공감과 배려가 필요해요.</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>공감과 배려를 보여주세요 :)</MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.Space height={32}></MainPageStyle.Space>
 
         <MainPageStyle.TextWrapper_Bold>
-          <CalendarMonthIcon fontSize="large" />
+          <CalendarMonthIcon id="icon" fontSize="large" />
           This Week
         </MainPageStyle.TextWrapper_Bold>
-        <MainPageStyle.Space height={28} />
+        <MainPageStyle.Space height={20} />
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
           {thisWeekNew} Free • {thisWeekFeed} Feed Posts
@@ -150,7 +150,7 @@ const FreeBoard = () => {
                     <div id="info">
                       <span>#{i + 1}</span>
                       <span>
-                        <BookmarkIcon id="icon" fontSize="inherit" /> {makeK(v.LikeCount)}
+                        <FavoriteIcon id="icon2" fontSize="inherit" /> {makeK(v.LikeCount)}
                       </span>
                     </div>
                   </MainPageStyle.TopPostWrapper>

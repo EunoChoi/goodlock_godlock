@@ -156,7 +156,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                   {postProps.type === 1 &&
                     (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
                   {postProps.type === 1 ||
-                    (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
+                    (isLiked ? <FavoriteIcon style={{ color: "#D5A8D0" }} /> : <FavoriteBorderIcon />)}
                   <span>{postProps?.Likers?.length}</span>
                 </button>
               </Like>
@@ -335,8 +335,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 >
                   {postProps.type === 1 &&
                     (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
-                  {postProps.type === 1 ||
-                    (isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />)}
+                  {postProps.type === 1 || (isLiked ? <FavoriteIcon color="inherit" /> : <FavoriteBorderIcon />)}
                   <span>{postProps?.Likers?.length}</span>
                 </button>
                 <Clipboard
@@ -495,7 +494,7 @@ const Like = styled.div`
     color: #a9aed4;
   }
   #like {
-    color: #df1919;
+    color: #d5a8d0;
   }
   span {
     font-size: 1.5em;

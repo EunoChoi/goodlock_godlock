@@ -131,10 +131,11 @@ const Tips = () => {
         <MainPageStyle.Space height={32}></MainPageStyle.Space>
 
         <MainPageStyle.TextWrapper_Bold>
-          <CalendarMonthIcon fontSize="large" />
+          <CalendarMonthIcon id="icon" fontSize="large" />
           This Week
+          {/* <CalendarMonthIcon id="icon" fontSize="large" /> */}
         </MainPageStyle.TextWrapper_Bold>
-        <MainPageStyle.Space height={28} />
+        <MainPageStyle.Space height={20} />
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
           {thisWeekNewInfo} Tip • {thisWeekOngoing} Ongoing • {thisWeekFeed} Feed Posts

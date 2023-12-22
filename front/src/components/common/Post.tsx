@@ -242,7 +242,7 @@ const Post = ({ postProps }: any) => {
               }
             }}
           >
-            {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
+            {isLiked ? <FavoriteIcon style={{ color: "#D5A8D0" }} /> : <FavoriteBorderIcon />}
             <span>{postProps?.Likers?.length}</span>
           </ToggleButton>
         )}
@@ -285,7 +285,7 @@ const Post = ({ postProps }: any) => {
                 }
               }}
             >
-              {isLiked ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderIcon />}
+              {isLiked ? <FavoriteIcon style={{ color: "#D5A8D0" }} /> : <FavoriteBorderIcon />}
               <span>{postProps?.Likers?.length}</span>
             </ToggleButton>
             {/* comment toggle */}
