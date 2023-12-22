@@ -139,10 +139,17 @@ const BotWrapper = styled.div`
   .rsc-float-button {
     width: 48px;
     height: 48px;
+
     background-color: #f3e0f1 !important;
 
     transition: 0.3s ease-in-out all;
 
+    @media (orientation: portrait) and (max-width: 480px) {
+      right: 18px;
+      bottom: 24px;
+      width: 44px;
+      height: 44px;
+    }
     @media (hover: hover) and (pointer: fine) {
       &:hover {
         background-color: #c7d7ff !important;
@@ -187,6 +194,10 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
   position: fixed;
   bottom: calc(32px + 48px + 12px);
   right: 32px;
+  @media (orientation: portrait) and (max-width: 480px) {
+    right: 18px;
+    bottom: calc(24px + 44px + 6px);
+  }
   #menuButton {
     @media (orientation: landscape) and (max-height: 480px) {
       display: none;
@@ -207,6 +218,12 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
     padding: 0px;
     margin-top: 12px;
     border-radius: 100px;
+
+    @media (orientation: portrait) and (max-width: 480px) {
+      width: 44px;
+      height: 44px;
+      margin-top: 6px;
+    }
 
     color: rgba(0, 0, 0, 0.6);
     /* box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2); */
