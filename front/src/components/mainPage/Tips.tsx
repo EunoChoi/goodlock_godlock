@@ -136,15 +136,15 @@ const Tips = () => {
           This Week
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={20} />
-        <MainPageStyle.TextWrapper_SubBold>New Posts</MainPageStyle.TextWrapper_SubBold>
+        <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
           {thisWeekNewInfo} Tip • {thisWeekOngoing} Ongoing • {thisWeekFeed} Feed Posts
         </MainPageStyle.TextWrapper_Normal>
 
         {topPosts?.length >= 1 && (
           <>
-            <MainPageStyle.Space height={8} />
-            <MainPageStyle.TextWrapper_SubBold>Popular Posts</MainPageStyle.TextWrapper_SubBold>
+            {/* <MainPageStyle.Space height={8} /> */}
+            <MainPageStyle.TextWrapper_SubBold>Popular</MainPageStyle.TextWrapper_SubBold>
             <MainPageStyle.TopWrapper>
               {topPosts?.map(
                 (

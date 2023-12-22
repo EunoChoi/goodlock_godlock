@@ -113,12 +113,12 @@ const Home = () => {
           This Week
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={20}></MainPageStyle.Space>
-        <MainPageStyle.TextWrapper_SubBold>New Posts</MainPageStyle.TextWrapper_SubBold>
+        <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
           {/* {thisWeekNewInfo?.len + thisWeekNewComm?.len} Tip&Free Posts */}
           {thisWeekNewInfo} Tip • {thisWeekNewComm} Free Posts
         </MainPageStyle.TextWrapper_Normal>
-        <MainPageStyle.Space height={8}></MainPageStyle.Space>
+        {/* <MainPageStyle.Space height={8} /> */}
         <MainPageStyle.TextWrapper_SubBold>Share Closing</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>{thisWeekEndLiked} Bookmark Tip Posts</MainPageStyle.TextWrapper_Normal>
       </MainPageStyle.TextWrapper>

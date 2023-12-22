@@ -186,7 +186,7 @@ const Images = styled.div`
   }
 
   @media (orientation: portrait) and (max-width: 480px) {
-    width: 95%;
+    width: 92vw;
   }
 `;
 
