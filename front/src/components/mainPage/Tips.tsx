@@ -136,7 +136,7 @@ const Tips = () => {
           {/* <CalendarMonthIcon id="icon" fontSize="large" /> */}
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={20} />
-        <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
+        <MainPageStyle.TextWrapper_SubBold>New Posts</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
           {thisWeekNewInfo} Tip • {thisWeekOngoing} Ongoing • {thisWeekFeed} Feed Posts
         </MainPageStyle.TextWrapper_Normal>

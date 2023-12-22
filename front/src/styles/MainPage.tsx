@@ -331,6 +331,7 @@ const TopPost = styled.div`
   height: 100px;
   flex-shrink: 0;
   height: 100px;
+  background-color: #fafafa;
   border-radius: 6px;
   border: solid 2px rgba(0, 0, 0, 0.07);
 

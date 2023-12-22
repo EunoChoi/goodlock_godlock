@@ -117,7 +117,7 @@ const FreeBoard = () => {
           This Week
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={20} />
-        <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
+        <MainPageStyle.TextWrapper_SubBold>New Posts</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
           {thisWeekNew} Free • {thisWeekFeed} Feed Posts
         </MainPageStyle.TextWrapper_Normal>
