@@ -187,7 +187,7 @@ const TextWrapper = styled.div`
   @media (orientation: portrait) or (max-height: 480px) {
     width: 100%;
     padding-top: 50px;
-    padding-left: 4vw;
+    /* padding-left: 4vw; */
     margin-top: 48px; //header height
     padding-bottom: 24px;
   }
@@ -222,6 +222,9 @@ const TextWrapper_Title = styled.span`
   color: #bc9dcf;
   color: #d5a8d0;
   color: rgba(0, 0, 0, 0.7);
+  @media (orientation: portrait) and (max-width: 480px) {
+    padding-left: 4vw;
+  }
 `;
 
 const TextWrapper_Bold = styled.span`
@@ -238,6 +241,9 @@ const TextWrapper_Bold = styled.span`
     margin-right: 4px;
     color: #dd4e5c;
   }
+  @media (orientation: portrait) and (max-width: 480px) {
+    padding-left: 4vw;
+  }
 `;
 const TextWrapper_SubBold = styled.span`
   font-size: 22px;
@@ -248,6 +254,9 @@ const TextWrapper_SubBold = styled.span`
   align-items: center;
 
   color: rgba(0, 0, 0, 0.6);
+  @media (orientation: portrait) and (max-width: 480px) {
+    padding-left: 4vw;
+  }
 `;
 const TextWrapper_Bold_Color = styled.span`
   font-size: 30px;
@@ -259,6 +268,9 @@ const TextWrapper_Bold_Color = styled.span`
   align-items: center;
 
   color: #8096b5;
+  @media (orientation: portrait) and (max-width: 480px) {
+    padding-left: 4vw;
+  }
 `;
 const TextWrapper_Normal = styled.span`
   font-size: 18px;
@@ -270,6 +282,9 @@ const TextWrapper_Normal = styled.span`
   align-items: center;
 
   color: rgba(0, 0, 0, 0.65);
+  @media (orientation: portrait) and (max-width: 480px) {
+    padding-left: 4vw;
+  }
 `;
 const TopWrapper = styled.div`
   display: flex;
@@ -285,6 +300,9 @@ const TopWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
+  @media (orientation: portrait) and (max-width: 480px) {
+    padding-left: 4vw;
+  }
 `;
 const TopPostWrapper = styled.div`
   display: flex;
@@ -292,8 +310,18 @@ const TopPostWrapper = styled.div`
   align-items: center;
   flex-direction: column;
 
-  margin-right: 12px;
   animation: ${Animation.smoothAppear} 300ms ease-out;
+
+  margin-right: 12px;
+  &:last-child {
+    margin-right: 0px;
+  }
+
+  @media (orientation: portrait) and (max-width: 480px) {
+    &:last-child {
+      margin-right: 4vw;
+    }
+  }
 
   height: auto;
   #info {
