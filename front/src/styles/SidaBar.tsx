@@ -105,17 +105,18 @@ const HeaderWrapper = styled.div`
 `;
 const UserInfoWrapper = styled.div`
   width: 100%;
-  height: 45%;
+  height: 40%;
   /* border: 1px solid white; */
 
   padding: 0 20px;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: end;
   align-items: center;
 
   #info_text_box {
+    margin: 16px 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -182,7 +183,7 @@ const UserInfoWrapper = styled.div`
 `;
 const MenuWrapper = styled.div<{ currentPage: number | undefined }>`
   width: 100%;
-  height: 45%;
+  height: 50%;
   /* border: 1px solid white; */
 
   padding: 0 40px;
