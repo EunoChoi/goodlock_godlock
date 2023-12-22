@@ -333,8 +333,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                     }
                   }}
                 >
-                  {postProps.type === 1 &&
-                    (isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />)}
+                  {postProps.type === 1 && (isLiked ? <BookmarkIcon color="inherit" /> : <BookmarkBorderIcon />)}
                   {postProps.type === 1 || (isLiked ? <FavoriteIcon color="inherit" /> : <FavoriteBorderIcon />)}
                   <span>{postProps?.Likers?.length}</span>
                 </button>
