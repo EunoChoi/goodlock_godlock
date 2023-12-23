@@ -187,10 +187,10 @@ const Images = styled.div`
   width: 90%;
   min-height: 100vh;
   .MuiImageListItem-img {
-    /* border: solid 3px rgba(0, 0, 0, 0.1); */
+    border: solid 2px rgba(0, 0, 0, 0.05);
     border-radius: 8px;
-    background-color: #fff;
-    background-color: rgba(255, 255, 255, 0.7);
+    /* background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.7); */
   }
 
   @media (orientation: portrait) and (max-width: 480px) {
