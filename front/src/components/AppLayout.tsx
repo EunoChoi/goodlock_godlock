@@ -104,13 +104,13 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             {
               //user level이 10이상이여야 공지사항 작성이 가능
               mobileButtonVisible && isAdminPostOk && (
-                <button color="inherit" onClick={() => InputEditOpen()}>
+                <button id="mobileAddPost" color="inherit" onClick={() => InputEditOpen()}>
                   <PostAddIcon fontSize="medium" />
                 </button>
               )
             }
             {mobileButtonVisible && isUserPostOk && (
-              <button color="inherit" onClick={() => InputEditOpen()}>
+              <button id="mobileAddPost" color="inherit" onClick={() => InputEditOpen()}>
                 <PostAddIcon fontSize="medium" />
               </button>
             )}
@@ -193,7 +193,7 @@ const BotWrapper = styled.div`
 
     @media (orientation: portrait) and (max-width: 480px) {
       right: 18px;
-      bottom: calc(24px + 48px + 6px + 48px + 6px);
+      bottom: calc(24px + 48px + 6px);
     }
     @media (hover: hover) and (pointer: fine) {
       &:hover {
@@ -244,6 +244,9 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
     bottom: calc(24px);
   }
   #mobileTop {
+    /* margin-bottom: calc(48px + 6px); */
+  }
+  #mobileAddPost {
     margin-bottom: calc(48px + 6px);
   }
   #menuButton {
