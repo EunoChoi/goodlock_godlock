@@ -160,7 +160,7 @@ const Tips = () => {
                   <MainPageStyle.TopPostWrapper key={i}>
                     <MainPageStyle.TopPost
                       onClick={() => {
-                        console.log(v);
+                        // console.log(v);
                         navigate(`/postview/${v?.id}`);
                       }}
                     >
