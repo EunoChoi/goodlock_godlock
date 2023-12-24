@@ -132,9 +132,9 @@ const HeaderMobileLand = styled.div<{ currentPage: number | undefined }>`
   flex-direction: column;
   justify-content: center;
   align-items: start;
-  font-size: 20px;
+  font-size: 18px;
 
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.6);
   width: 100%;
   height: 70vh;
 
@@ -142,6 +142,7 @@ const HeaderMobileLand = styled.div<{ currentPage: number | undefined }>`
 
   span:nth-child(${(props) => props.currentPage}) {
     color: rgba(0, 0, 0, 0.55);
+    color: #d5a8d0;
     font-weight: 600;
   }
   span {
@@ -172,13 +173,12 @@ const HeaderLogoMobile = styled.span`
   justify-content: center;
   align-items: center;
   color: #d5a8d0;
-  font-size: 26px;
   span {
     margin-left: 4px;
     font-family: OAGothic-ExtraBold;
     color: rgba(0, 0, 0, 0.7);
 
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
   }
 
