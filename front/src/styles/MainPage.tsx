@@ -300,7 +300,7 @@ const TopWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  @media (orientation: portrait) and (max-width: 480px) {
+  @media (orientation: portrait) {
     padding-left: 4vw;
   }
 `;
@@ -317,7 +317,7 @@ const TopPostWrapper = styled.div`
     margin-right: 0px;
   }
 
-  @media (orientation: portrait) and (max-width: 480px) {
+  @media (orientation: portrait) {
     &:last-child {
       margin-right: 4vw;
     }
