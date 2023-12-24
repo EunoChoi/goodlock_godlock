@@ -704,8 +704,8 @@ const MenuWrapper = styled.div`
   position: sticky;
   top: 0px;
 
-  padding: 36px 0;
-  padding: 12px 0;
+  padding: 24px 0;
+
   margin-bottom: 12px;
   z-index: 85;
   /* background: rgb(255, 255, 255);
@@ -722,6 +722,7 @@ const MenuWrapper = styled.div`
     top: 48px;
     top: 46px;
     width: 100vw;
+    padding: 12px 0;
     /* background: rgb(255, 255, 255);
     background: linear-gradient(
       0deg,

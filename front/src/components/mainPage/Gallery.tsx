@@ -224,10 +224,10 @@ const Pill = {
     justify-content: start;
     align-items: center;
 
-    /* padding-top: 24px;
-    padding-bottom: 24px; */
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    /* padding-top: 12px;
+    padding-bottom: 12px; */
     margin-bottom: 12px;
 
     width: 90%;

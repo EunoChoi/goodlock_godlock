@@ -571,8 +571,7 @@ const MenuWrapper = styled.div`
   height: auto;
   width: 500px;
 
-  /* padding: 36px 0; */
-  padding: 12px 0;
+  padding: 24px 0;
   margin-bottom: 12px;
 
   overflow-x: scroll;
@@ -582,6 +581,7 @@ const MenuWrapper = styled.div`
     display: none; /* Chrome, Safari, Opera*/
   }
   @media (orientation: portrait) or (max-height: 480px) {
+    padding: 12px 0;
     top: 48px;
     top: 46px;
     width: 100%;
