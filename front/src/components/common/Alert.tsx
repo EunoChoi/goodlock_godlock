@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useModalStack } from "../../store/modalStack";
+import { useBrowserCheck } from "../../store/borowserCheck";
 
 interface Props {
   mainText?: string;
@@ -26,6 +27,18 @@ const useAlert = () => {
   const AlertComponent = ({ mainText, subText, onSuccess, onCancel }: Props) => {
     const [animation, setAnimation] = useState<"open" | "close" | "">("");
     const { push, pop, modalStack } = useModalStack();
+    const { browser } = useBrowserCheck();
+
+    const [timer, setTimer] = useState<NodeJS.Timeout>();
+
+    const ButtonClose = () => {
+      setAnimation("close");
+      setTimer(
+        setTimeout(() => {
+          history.back();
+        }, 300)
+      );
+    };
 
     useEffect(() => {
       if (modalStack[modalStack.length - 1] === "#alert") {
@@ -38,8 +51,8 @@ const useAlert = () => {
           }, 200);
           setAnimation("close");
 
-          // if (browser === "Safari") setOpen(false);
-          // else setAnimation("close");
+          if (browser === "Safari") setOpen(false);
+          else setAnimation("close");
         };
       }
     }, [modalStack.length]);
@@ -49,6 +62,7 @@ const useAlert = () => {
         setAnimation("open");
       }, 50);
       push("#alert");
+      clearTimeout(timer);
       return () => {
         window.onpopstate = null;
         pop();
@@ -62,15 +76,7 @@ const useAlert = () => {
           setTimeout(() => {
             if (onCancel !== undefined) onCancel();
           }, 100);
-          history.back();
-
-          // setAnimation("close");
-          // setTimeout(() => {
-          //   history.back();
-          // }, 250);
-
-          // if (browser === "Safari") setOpen(false);
-          // else setAnimation("close");
+          ButtonClose();
         }}
         animation={animation}
         onTransitionEnd={() => {
@@ -89,15 +95,7 @@ const useAlert = () => {
                 setTimeout(() => {
                   if (onCancel !== undefined) onCancel();
                 }, 100);
-                history.back();
-
-                // setAnimation("close");
-                // setTimeout(() => {
-                //   history.back();
-                // }, 300);
-
-                // if (browser === "Safari") setOpen(false);
-                // else setAnimation("close");
+                ButtonClose();
               }}
             >
               취소
@@ -153,9 +151,9 @@ const useAlert = () => {
 export default useAlert;
 
 const BG = styled.div<{ animation?: string }>`
-  /* opacity: 0; */
+  opacity: 0;
   opacity: ${(props) => (props.animation === "open" ? 1 : 0)};
-  transition: ease-out 0.3s all;
+  transition: ease-in 0.3s all;
 
   position: fixed;
   top: 0;

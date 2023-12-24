@@ -57,15 +57,26 @@ const PostZoom = ({ postProps, setZoom }: props) => {
   const isOnlyText = postProps.Images.length === 0;
   const isLiked = postProps?.Likers?.find((v: any) => v.id === user?.id);
 
-  const onClose = () => {
-    history.back();
+  const [timer, setTimer] = useState<NodeJS.Timeout>();
+
+  const ButtonClose = () => {
+    setAnimation("close");
+    setTimer(
+      setTimeout(() => {
+        history.back();
+      }, 300)
+    );
   };
+
   useEffect(() => {
     if (modalStack[modalStack.length - 1] === "#zoom") {
       window.onpopstate = () => {
         console.log("pop: post zoom");
 
-        setAnimation("close");
+        // setAnimation("close");
+
+        if (browser === "Safari") setZoom(false);
+        else setAnimation("close");
       };
     }
   }, [modalStack.length]);
@@ -73,6 +84,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
   useEffect(() => {
     setAnimation("open");
     push("#zoom");
+    clearTimeout(timer);
     return () => {
       window.onpopstate = null;
       pop();
@@ -88,7 +100,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
         }
       }}
       onClick={() => {
-        onClose();
+        ButtonClose();
       }}
     >
       {
@@ -164,7 +176,11 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 </button>
               </Like>
             </PCTextPost_Right>
-            <PCCancelBtn onClick={() => onClose()}>
+            <PCCancelBtn
+              onClick={() => {
+                ButtonClose();
+              }}
+            >
               <CloseIcon fontSize="medium" />
             </PCCancelBtn>
           </PCTextPost>
@@ -249,7 +265,11 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 </button>
               </Like>
             </PCImagePost_RightWrapper>
-            <PCCancelBtn onClick={() => onClose()}>
+            <PCCancelBtn
+              onClick={() => {
+                ButtonClose();
+              }}
+            >
               <CloseIcon fontSize="medium" />
             </PCCancelBtn>
           </PCImagePost>
@@ -322,7 +342,12 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 </MobileText>
               </CustomCarousel>
               <MobilePostMenu>
-                <button id="close" onClick={() => onClose()}>
+                <button
+                  id="close"
+                  onClick={() => {
+                    ButtonClose();
+                  }}
+                >
                   <CloseIcon />
                   <span>Close</span>
                 </button>

@@ -316,10 +316,9 @@ const TopPostWrapper = styled.div`
   &:last-child {
     margin-right: 0px;
   }
-
   @media (orientation: portrait) {
     &:last-child {
-      margin-right: 4vw;
+      margin-right: 4vw !important;
     }
   }
 
@@ -378,12 +377,6 @@ const TopPost = styled.div`
   justify-content: center;
   align-items: center;
 
-  &:last-child {
-    margin-right: 0;
-    @media (orientation: portrait) and (min-height: 480px) {
-      margin-right: 4vw;
-    }
-  }
   #image {
     width: 100%;
     height: 100%;

@@ -203,21 +203,13 @@ const Profile = () => {
   const deleteFollower = User.deleteFollower();
 
   useEffect(() => {
-    if (modalStack[modalStack.length - 1] === "#profile") {
-      window.onpopstate = () => {
-        console.log("pop: profile page");
-        setUsertextInputToggle(false);
-        setNicknameInputToggle(false);
-      };
-    }
-  }, [modalStack.length]);
-
-  useEffect(() => {
     const menuWrapper = document.getElementById("menuWrapper");
     const width = menuWrapper?.scrollWidth;
     if (width) {
       menuWrapper?.scrollTo({ top: 0, left: (width / 5) * categoryNum - 70, behavior: "smooth" });
     }
+    setUsertextInputToggle(false);
+    setNicknameInputToggle(false);
   }, [categoryNum]);
 
   //프로필 이미지 변경 팝업 뜬 경우 배경 스크롤 방지
@@ -227,7 +219,6 @@ const Profile = () => {
   }, [imageChangeModal]);
 
   useEffect(() => {
-    push("#profile");
     if (categoryNum >= 0 && categoryNum <= 4) {
       console.log("올바른 catagory");
     } else {
@@ -235,8 +226,7 @@ const Profile = () => {
     }
     scrollTop();
     return () => {
-      window.onpopstate = null;
-      pop();
+      //
     };
   }, []);
 

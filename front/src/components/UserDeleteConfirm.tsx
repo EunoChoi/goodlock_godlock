@@ -20,6 +20,17 @@ const UserDeleteConfirm = ({ setUserDeleteModal }: setStateProps) => {
   const user = User.getData();
   const confirmWord = "회원 탈퇴";
 
+  const [timer, setTimer] = useState<NodeJS.Timeout>();
+
+  const ButtonClose = () => {
+    setAnimation("close");
+    setTimer(
+      setTimeout(() => {
+        history.back();
+      }, 300)
+    );
+  };
+
   const userDeleteConfirm = () => {
     if (text === confirmWord) {
       userDelete.mutate(user.id);
@@ -34,7 +45,10 @@ const UserDeleteConfirm = ({ setUserDeleteModal }: setStateProps) => {
       window.onpopstate = () => {
         console.log("pop: user delete confirm");
 
-        setAnimation("close");
+        // setAnimation("close");
+
+        if (browser === "Safari") setUserDeleteModal(false);
+        else setAnimation("close");
       };
     }
   }, [modalStack.length]);
@@ -42,6 +56,8 @@ const UserDeleteConfirm = ({ setUserDeleteModal }: setStateProps) => {
   useEffect(() => {
     push("#deleteUser");
     setAnimation("open");
+    clearTimeout(timer);
+
     return () => {
       window.onpopstate = null;
       pop();
@@ -56,14 +72,22 @@ const UserDeleteConfirm = ({ setUserDeleteModal }: setStateProps) => {
           setUserDeleteModal(false);
         }
       }}
-      onClick={() => history.back()}
+      onClick={() => {
+        ButtonClose();
+      }}
     >
       <Popup onClick={(event) => event.stopPropagation()}>
         <span>탈퇴를 진행하려면 &quot;{confirmWord}&quot;를 입력해주세요.</span>
         <span>🚨 탈퇴가 완료되면 작성한 모든 게시글이 삭제됩니다.</span>
         <input value={text} onChange={(e) => setText(e.target.value)} />
         <ButtonWrapper>
-          <button onClick={() => history.back()}>취소</button>
+          <button
+            onClick={() => {
+              ButtonClose();
+            }}
+          >
+            취소
+          </button>
           <button onClick={userDeleteConfirm}> 확인</button>
         </ButtonWrapper>
       </Popup>
@@ -76,7 +100,7 @@ export default UserDeleteConfirm;
 const BG = styled.div<{ animation: string }>`
   opacity: 0;
   opacity: ${(props) => (props.animation === "open" ? 1 : 0)};
-  transition: linear 0.3s all;
+  transition: ease-in 0.3s all;
 
   position: fixed;
   top: 0;
@@ -95,7 +119,7 @@ const BG = styled.div<{ animation: string }>`
 `;
 
 const Popup = styled.div`
-  padding: 30px 10px;
+  padding: 40px 10px;
   width: 400px;
 
   background: #fff;

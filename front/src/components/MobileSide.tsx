@@ -28,11 +28,12 @@ interface Props {
 const MobileSide = ({ setMobileSideOpen }: Props) => {
   const { push, pop, modalStack } = useModalStack();
   const { browser } = useBrowserCheck();
+  const [timer, setTimer] = useState<NodeJS.Timeout>();
 
   const user = User.getData();
   const navigate = useNavigate();
   const logout = User.logout();
-  const [sideBarAnimation, setSideBarAnimation] = useState<"open" | "close" | "">("");
+  const [sideBarAnimation, setAnimation] = useState<"open" | "close" | "">("");
 
   const { type } = useParams();
   const currentPage = type ? parseInt(type) : -1;
@@ -53,7 +54,16 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
     else return nick;
   };
   const onClose = () => {
-    setSideBarAnimation("close");
+    setAnimation("close");
+  };
+
+  const ButtonClose = () => {
+    setAnimation("close");
+    setTimer(
+      setTimeout(() => {
+        history.back();
+      }, 300)
+    );
   };
 
   useEffect(() => {
@@ -61,13 +71,17 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
       window.onpopstate = () => {
         console.log("pop: mobile side");
         onClose();
+
+        if (browser === "Safari") setMobileSideOpen(false);
+        else setAnimation("close");
       };
     }
   }, [modalStack.length]);
 
   useEffect(() => {
     push("#sidebar");
-    setSideBarAnimation("open");
+    setAnimation("open");
+    clearTimeout(timer);
 
     return () => {
       window.onpopstate = null;
@@ -83,7 +97,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
           <SideBar.BG
             animation={sideBarAnimation}
             onClick={() => {
-              history.back();
+              ButtonClose();
             }}
             onTransitionEnd={(e) => {
               e.stopPropagation();

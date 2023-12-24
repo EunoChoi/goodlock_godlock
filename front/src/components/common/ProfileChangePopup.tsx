@@ -17,6 +17,7 @@ import User from "../../functions/reactQuery/User";
 import Upload from "../../functions/reactQuery/Upload";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useModalStack } from "../../store/modalStack";
+import { useBrowserCheck } from "../../store/borowserCheck";
 
 interface setStateProps {
   setImageChangeModal: (b: boolean) => void;
@@ -29,6 +30,7 @@ const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
   const user = User.getData();
 
   const [animation, setAnimation] = useState<"open" | "close" | "">("");
+  const { browser } = useBrowserCheck();
 
   const [image, setImage] = useState<string>(user?.profilePic);
   const imageInput = useRef<HTMLInputElement>(null);
@@ -37,6 +39,17 @@ const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
   //useMutatton
   const editProfilePic = User.editPic();
   const uploadImage = Upload.images();
+
+  const [timer, setTimer] = useState<NodeJS.Timeout>();
+
+  const ButtonClose = () => {
+    setAnimation("close");
+    setTimer(
+      setTimeout(() => {
+        history.back();
+      }, 300)
+    );
+  };
 
   //로컬에서 이미지 에러 처리
   const onChangeImages = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,12 +70,13 @@ const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
   };
 
   useEffect(() => {
-    console.log("dd");
     if (modalStack[modalStack.length - 1] === "#profilePicUpdate") {
-      console.log("dd");
       window.onpopstate = () => {
         console.log("pop: profile Pic change");
-        setAnimation("close");
+        // setAnimation("close");
+
+        if (browser === "Safari") setImageChangeModal(false);
+        else setAnimation("close");
       };
     }
   }, [modalStack.length]);
@@ -70,6 +84,8 @@ const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
   useEffect(() => {
     push("#profilePicUpdate");
     setAnimation("open");
+    clearTimeout(timer);
+
     return () => {
       window.onpopstate = null;
       pop();
@@ -84,7 +100,9 @@ const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
           setImageChangeModal(false);
         }
       }}
-      onClick={() => history.back()}
+      onClick={() => {
+        ButtonClose();
+      }}
     >
       <PopupBox
         onClick={(e) => {
@@ -120,16 +138,20 @@ const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
         </ProfileImageBox>
 
         <ButtonArea>
-          <Button onClick={() => history.back()}>
+          <button
+            onClick={() => {
+              ButtonClose();
+            }}
+          >
             <CancelIcon />
             <span>취소</span>
-          </Button>
+          </button>
           <FlexBox>
-            <Button disabled={uploadLoading} onClick={() => imageInput.current?.click()}>
+            <button disabled={uploadLoading} onClick={() => imageInput.current?.click()}>
               <InsertPhotoIcon />
               <span>이미지 업로드</span>
-            </Button>
-            <Button
+            </button>
+            <button
               disabled={uploadLoading}
               onClick={() => {
                 setUploadLoading(true);
@@ -154,7 +176,7 @@ const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
                   <span>확인</span>
                 </>
               )}
-            </Button>
+            </button>
           </FlexBox>
         </ButtonArea>
       </PopupBox>
@@ -191,6 +213,8 @@ const ButtonArea = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
+    margin: 0 4px;
 
     font-size: 18px;
     color: rgba(0, 0, 0, 0.7);
@@ -230,7 +254,7 @@ const PopupBox = styled.div`
   > span {
     font-size: 24px;
     color: rgba(0, 0, 0, 0.8);
-    font-weight: 500;
+    font-weight: 600;
     margin-top: 50px;
   }
   @media (orientation: portrait) or (max-height: 480px) {

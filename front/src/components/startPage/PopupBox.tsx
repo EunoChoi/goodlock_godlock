@@ -6,6 +6,7 @@ import styled from "styled-components";
 import CancelIcon from "@mui/icons-material/Cancel";
 import IsMobile from "../../functions/IsMobile";
 import { useModalStack } from "../../store/modalStack";
+import { useBrowserCheck } from "../../store/borowserCheck";
 
 interface AppLayoutProps {
   setPopupOpen: (b: boolean) => void;
@@ -14,6 +15,7 @@ interface AppLayoutProps {
 
 const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayoutProps) => {
   const { push, pop, modalStack } = useModalStack();
+  const { browser } = useBrowserCheck();
 
   const [animation, setAnimation] = useState<string>("");
   const isMobile = IsMobile();
@@ -27,6 +29,17 @@ const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayou
   const NAVER_CLIENT_ID = process.env.REACT_APP_NAVER_CLIENT_ID;
   const REDIRECT_URI_NAVER = process.env.REACT_APP_BASE_URL + "/auth/naver";
   const NAVER_STATE_CODE = process.env.REACT_APP_NAVER_STATE_CODE;
+
+  const [timer, setTimer] = useState<NodeJS.Timeout>();
+
+  const ButtonClose = () => {
+    setAnimation("close");
+    setTimer(
+      setTimeout(() => {
+        history.back();
+      }, 300)
+    );
+  };
 
   //google login
   const googleLogin = () => {
@@ -51,8 +64,8 @@ const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayou
         console.log("pop: login signup box");
 
         setAnimation("close");
-        //앞으로 가기 방지
-        history.pushState({}, "", window.location.pathname);
+        if (browser === "Safari") setPopupOpen(false);
+        else setAnimation("close");
       };
     }
   }, [modalStack.length]);
@@ -60,6 +73,7 @@ const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayou
   useEffect(() => {
     push("#loginForm");
     setAnimation("open");
+    clearTimeout(timer);
     return () => {
       window.onpopstate = null;
       pop();
@@ -70,7 +84,7 @@ const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayou
       <LogInSignUp.Background
         animation={animation}
         onClick={() => {
-          history.back();
+          ButtonClose();
         }}
         onTransitionEnd={() => {
           if (animation === "close") {

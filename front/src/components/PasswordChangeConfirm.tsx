@@ -21,12 +21,26 @@ const PasswordChangeConfirm = ({ setPasswordChangeModal }: setStateProps) => {
   const user = User.getData();
   const [passwordConfirm, setPasswordConfirm] = useState<boolean>(false);
 
+  const [timer, setTimer] = useState<NodeJS.Timeout>();
+
+  const ButtonClose = () => {
+    setAnimation("close");
+    setTimer(
+      setTimeout(() => {
+        history.back();
+      }, 300)
+    );
+  };
+
   useEffect(() => {
     if (modalStack[modalStack.length - 1] === "#pwChange") {
       window.onpopstate = () => {
         console.log("pop: password update");
 
-        setAnimation("close");
+        // setAnimation("close");
+
+        if (browser === "Safari") setPasswordChangeModal(false);
+        else setAnimation("close");
       };
     }
   }, [modalStack.length]);
@@ -34,6 +48,7 @@ const PasswordChangeConfirm = ({ setPasswordChangeModal }: setStateProps) => {
   useEffect(() => {
     push("#pwChange");
     setAnimation("open");
+    clearTimeout(timer);
     return () => {
       window.onpopstate = null;
       pop();
@@ -48,7 +63,9 @@ const PasswordChangeConfirm = ({ setPasswordChangeModal }: setStateProps) => {
           setPasswordChangeModal(false);
         }
       }}
-      onClick={() => history.back()}
+      onClick={() => {
+        ButtonClose();
+      }}
     >
       <Popup onClick={(event) => event.stopPropagation()}>
         {passwordConfirm || (
@@ -56,7 +73,13 @@ const PasswordChangeConfirm = ({ setPasswordChangeModal }: setStateProps) => {
             <span>현재 사용중인 비밀번호를 입력해주세요.</span>
             <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
             <ButtonWrapper>
-              <button onClick={() => history.back()}>취소</button>
+              <button
+                onClick={() => {
+                  ButtonClose();
+                }}
+              >
+                취소
+              </button>
               <button
                 onClick={() => {
                   //현재 비밀번호 확인 api 요청
@@ -113,7 +136,7 @@ export default PasswordChangeConfirm;
 const BG = styled.div<{ animation: string }>`
   opacity: 0;
   opacity: ${(props) => (props.animation === "open" ? 1 : 0)};
-  transition: linear 0.3s all;
+  transition: ease-in 0.3s all;
 
   position: fixed;
   top: 0;
@@ -132,7 +155,7 @@ const BG = styled.div<{ animation: string }>`
 `;
 
 const Popup = styled.div`
-  padding: 30px 10px;
+  padding: 40px 10px;
   width: 400px;
 
   background: #fff;
