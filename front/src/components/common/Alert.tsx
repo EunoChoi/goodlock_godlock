@@ -30,13 +30,14 @@ const useAlert = () => {
     useEffect(() => {
       if (modalStack[modalStack.length - 1] === "#alert") {
         window.onpopstate = () => {
-          history.go(1);
+          // history.go(1);
 
-          //그냥 모달에선 뒤로가기를 막자
-          // console.log("pop: alert");
-          // setTimeout(() => {
-          //   if (onCancel !== undefined) onCancel();
-          // }, 200);
+          console.log("pop: alert");
+          setTimeout(() => {
+            if (onCancel !== undefined) onCancel();
+          }, 200);
+          setAnimation("close");
+
           // if (browser === "Safari") setOpen(false);
           // else setAnimation("close");
         };
@@ -61,13 +62,15 @@ const useAlert = () => {
           setTimeout(() => {
             if (onCancel !== undefined) onCancel();
           }, 100);
-          setAnimation("close");
-          setTimeout(() => {
-            history.back();
-          }, 250);
+          history.back();
+
+          // setAnimation("close");
+          // setTimeout(() => {
+          //   history.back();
+          // }, 250);
+
           // if (browser === "Safari") setOpen(false);
           // else setAnimation("close");
-          // history.back();
         }}
         animation={animation}
         onTransitionEnd={() => {
@@ -86,14 +89,15 @@ const useAlert = () => {
                 setTimeout(() => {
                   if (onCancel !== undefined) onCancel();
                 }, 100);
-                setAnimation("close");
-                setTimeout(() => {
-                  history.back();
-                }, 300);
+                history.back();
+
+                // setAnimation("close");
+                // setTimeout(() => {
+                //   history.back();
+                // }, 300);
 
                 // if (browser === "Safari") setOpen(false);
                 // else setAnimation("close");
-                // history.back();
               }}
             >
               취소
@@ -118,8 +122,8 @@ const useAlert = () => {
   return {
     openAlert: ({ mainText, subText, onSuccess, onCancel }: Props) => {
       setTimeout(() => {
-        const url = location.href + "#alert";
-        history.pushState({ page: "modal" }, "", url);
+        // const url = location.href + "#alert";
+        history.pushState({ page: "modal" }, "", "");
       }, 100);
 
       setOnSuccess(() => onSuccess);

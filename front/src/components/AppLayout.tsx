@@ -191,7 +191,7 @@ const BotWrapper = styled.div`
 
     transition: 0.3s ease-in-out all;
 
-    @media (orientation: portrait) and (max-width: 480px) {
+    @media (orientation: portrait) {
       right: 18px;
       bottom: calc(24px + 48px + 6px);
     }
@@ -239,9 +239,12 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
   position: fixed;
   bottom: calc(32px + 48px + 12px);
   right: 32px;
-  @media (orientation: portrait) and (max-width: 480px) {
+  @media (orientation: portrait) {
     right: 18px;
     bottom: calc(24px);
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    bottom: calc(36px);
   }
   #mobileTop {
     /* margin-bottom: calc(48px + 6px); */
