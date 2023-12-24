@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import styled from "styled-components";
 import User from "../functions/reactQuery/User";
 import { useModalStack } from "../store/modalStack";
+import { useBrowserCheck } from "../store/borowserCheck";
 
 interface setStateProps {
   setUserDeleteModal: (b: boolean) => void;
@@ -10,6 +11,7 @@ interface setStateProps {
 
 const UserDeleteConfirm = ({ setUserDeleteModal }: setStateProps) => {
   const { push, pop, modalStack } = useModalStack();
+  const { browser } = useBrowserCheck();
 
   const [animation, setAnimation] = useState<"open" | "close" | "">("");
 
@@ -41,6 +43,7 @@ const UserDeleteConfirm = ({ setUserDeleteModal }: setStateProps) => {
     push("#deleteUser");
     setAnimation("open");
     return () => {
+      window.onpopstate = null;
       pop();
     };
   }, []);

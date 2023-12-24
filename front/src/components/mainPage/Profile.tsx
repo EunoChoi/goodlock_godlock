@@ -235,6 +235,7 @@ const Profile = () => {
     }
     scrollTop();
     return () => {
+      window.onpopstate = null;
       pop();
     };
   }, []);
@@ -408,7 +409,7 @@ const Profile = () => {
               {user?.level === 1 && (
                 <Button
                   onClick={() => {
-                    history.pushState({ page: "modal" }, "", "");
+                    history.pushState({ page: "modal" }, "", "###");
                     setPasswordChangeModal(true);
                   }}
                 >

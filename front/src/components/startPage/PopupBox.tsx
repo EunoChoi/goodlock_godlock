@@ -61,6 +61,7 @@ const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayou
     push("#loginForm");
     setAnimation("open");
     return () => {
+      window.onpopstate = null;
       pop();
     };
   }, []);

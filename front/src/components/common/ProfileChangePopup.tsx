@@ -71,6 +71,7 @@ const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
     push("#profilePicUpdate");
     setAnimation("open");
     return () => {
+      window.onpopstate = null;
       pop();
     };
   }, []);

@@ -30,8 +30,15 @@ const useAlert = () => {
     useEffect(() => {
       if (modalStack[modalStack.length - 1] === "#alert") {
         window.onpopstate = () => {
-          console.log("pop: alert");
-          setAnimation("close");
+          history.go(1);
+
+          //그냥 모달에선 뒤로가기를 막자
+          // console.log("pop: alert");
+          // setTimeout(() => {
+          //   if (onCancel !== undefined) onCancel();
+          // }, 200);
+          // if (browser === "Safari") setOpen(false);
+          // else setAnimation("close");
         };
       }
     }, [modalStack.length]);
@@ -42,6 +49,7 @@ const useAlert = () => {
       }, 50);
       push("#alert");
       return () => {
+        window.onpopstate = null;
         pop();
       };
     }, []);
@@ -50,10 +58,16 @@ const useAlert = () => {
       <BG
         onClick={(e) => {
           e.stopPropagation();
-          history.back();
           setTimeout(() => {
-            onCancel && onCancel();
+            if (onCancel !== undefined) onCancel();
           }, 100);
+          setAnimation("close");
+          setTimeout(() => {
+            history.back();
+          }, 250);
+          // if (browser === "Safari") setOpen(false);
+          // else setAnimation("close");
+          // history.back();
         }}
         animation={animation}
         onTransitionEnd={() => {
@@ -70,9 +84,16 @@ const useAlert = () => {
             <button
               onClick={() => {
                 setTimeout(() => {
-                  onCancel && onCancel();
+                  if (onCancel !== undefined) onCancel();
                 }, 100);
-                history.back();
+                setAnimation("close");
+                setTimeout(() => {
+                  history.back();
+                }, 300);
+
+                // if (browser === "Safari") setOpen(false);
+                // else setAnimation("close");
+                // history.back();
               }}
             >
               취소
@@ -82,7 +103,8 @@ const useAlert = () => {
                 setTimeout(() => {
                   onSuccess();
                 }, 100);
-                history.back();
+                setAnimation("close");
+                // history.back();
               }}
             >
               확인
@@ -96,7 +118,8 @@ const useAlert = () => {
   return {
     openAlert: ({ mainText, subText, onSuccess, onCancel }: Props) => {
       setTimeout(() => {
-        history.pushState({ page: "modal" }, "", "");
+        const url = location.href + "#alert";
+        history.pushState({ page: "modal" }, "", url);
       }, 100);
 
       setOnSuccess(() => onSuccess);

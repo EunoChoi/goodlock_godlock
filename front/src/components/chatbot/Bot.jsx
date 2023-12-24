@@ -240,6 +240,7 @@ const Bot = () => {
               setOpen(res.opened);
             }, 10);
           } else {
+            window.onpopstate = null;
             history.back();
           }
         }}

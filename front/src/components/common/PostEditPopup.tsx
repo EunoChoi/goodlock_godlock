@@ -25,6 +25,7 @@ import Chip from "@mui/joy/Chip";
 import ChipDelete from "@mui/joy/ChipDelete";
 import Box from "@mui/joy/Box";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useBrowserCheck } from "../../store/borowserCheck";
 
 interface serverImages {
   src: string;
@@ -46,6 +47,7 @@ interface props {
 
 const PostEditPopup = ({ setPostEdit, postProps }: props) => {
   const { push, pop, modalStack } = useModalStack();
+  const { browser } = useBrowserCheck();
 
   const [animation, setAnimation] = useState<"open" | "close" | "">("");
 
@@ -180,6 +182,7 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
     inputRef.current?.focus();
     push("#editpost");
     return () => {
+      window.onpopstate = null;
       pop();
     };
   }, []);

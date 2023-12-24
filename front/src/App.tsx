@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthRoute from "./components/AuthRoute";
 
 import { useModalStack } from "./store/modalStack";
+import { useBrowserCheck } from "./store/borowserCheck";
 import { ToastContainer } from "react-toastify";
 
 //external css
@@ -29,6 +30,7 @@ import Naver from "./pages/auth/Naver";
 
 function App() {
   const { modalStack } = useModalStack();
+  const { setBrowser } = useBrowserCheck();
 
   // console.log("===== App 리렌더 =====");
 
@@ -68,6 +70,7 @@ function App() {
   }, [modalStack.length]);
 
   useEffect(() => {
+    setBrowser();
     updateMobileViewport();
   }, []);
 

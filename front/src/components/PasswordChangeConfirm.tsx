@@ -4,6 +4,7 @@ import styled from "styled-components";
 import User from "../functions/reactQuery/User";
 import Axios from "../apis/Axios";
 import { useModalStack } from "../store/modalStack";
+import { useBrowserCheck } from "../store/borowserCheck";
 
 interface setStateProps {
   setPasswordChangeModal: (b: boolean) => void;
@@ -11,6 +12,7 @@ interface setStateProps {
 
 const PasswordChangeConfirm = ({ setPasswordChangeModal }: setStateProps) => {
   const { push, pop, modalStack } = useModalStack();
+  const { browser } = useBrowserCheck();
 
   const [animation, setAnimation] = useState<"open" | "close" | "">("");
 
@@ -33,6 +35,7 @@ const PasswordChangeConfirm = ({ setPasswordChangeModal }: setStateProps) => {
     push("#pwChange");
     setAnimation("open");
     return () => {
+      window.onpopstate = null;
       pop();
     };
   }, []);

@@ -19,6 +19,7 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import ExtensionIcon from "@mui/icons-material/Extension";
 import ForumIcon from "@mui/icons-material/Forum";
+import { useBrowserCheck } from "../store/borowserCheck";
 
 interface Props {
   setMobileSideOpen: (b: boolean) => void;
@@ -26,6 +27,7 @@ interface Props {
 
 const MobileSide = ({ setMobileSideOpen }: Props) => {
   const { push, pop, modalStack } = useModalStack();
+  const { browser } = useBrowserCheck();
 
   const user = User.getData();
   const navigate = useNavigate();
@@ -68,7 +70,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
     setSideBarAnimation("open");
 
     return () => {
-      // window.onpopstate = null;
+      window.onpopstate = null;
       pop();
     };
   }, []);

@@ -144,7 +144,7 @@ const InputPopup = ({ setPostInputOpen }: props) => {
         console.log("pop: add post");
 
         openCancelAlert({
-          mainText: "게시글 수정을 중단하시겠습니까?",
+          mainText: "게시글 등록을 중단하시겠습니까?",
           onSuccess: () => {
             setAnimation("close");
           },
@@ -161,6 +161,7 @@ const InputPopup = ({ setPostInputOpen }: props) => {
     inputRef.current?.focus();
     push("#addpost");
     return () => {
+      window.onpopstate = null;
       pop();
     };
   }, []);

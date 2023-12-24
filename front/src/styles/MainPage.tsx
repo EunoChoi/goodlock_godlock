@@ -222,7 +222,7 @@ const TextWrapper_Title = styled.span`
   color: #bc9dcf;
   color: #d5a8d0;
   color: rgba(0, 0, 0, 0.7);
-  @media (orientation: portrait) and (max-width: 480px) {
+  @media (orientation: portrait) {
     padding-left: 4vw;
   }
 `;
@@ -241,7 +241,7 @@ const TextWrapper_Bold = styled.span`
     margin-right: 4px;
     color: #dd4e5c;
   }
-  @media (orientation: portrait) and (max-width: 480px) {
+  @media (orientation: portrait) {
     padding-left: 4vw;
   }
 `;
@@ -254,7 +254,7 @@ const TextWrapper_SubBold = styled.span`
   align-items: center;
 
   color: rgba(0, 0, 0, 0.6);
-  @media (orientation: portrait) and (max-width: 480px) {
+  @media (orientation: portrait) {
     padding-left: 4vw;
   }
 `;
@@ -268,7 +268,7 @@ const TextWrapper_Bold_Color = styled.span`
   align-items: center;
 
   color: #8096b5;
-  @media (orientation: portrait) and (max-width: 480px) {
+  @media (orientation: portrait) {
     padding-left: 4vw;
   }
 `;
@@ -282,7 +282,7 @@ const TextWrapper_Normal = styled.span`
   align-items: center;
 
   color: rgba(0, 0, 0, 0.65);
-  @media (orientation: portrait) and (max-width: 480px) {
+  @media (orientation: portrait) {
     padding-left: 4vw;
   }
 `;

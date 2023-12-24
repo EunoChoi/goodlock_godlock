@@ -20,6 +20,7 @@ import Post from "../functions/reactQuery/Post";
 import User from "../functions/reactQuery/User";
 import LinkIcon from "@mui/icons-material/Link";
 import { useModalStack } from "../store/modalStack";
+import { useBrowserCheck } from "../store/borowserCheck";
 
 interface Image {
   src: string;
@@ -31,6 +32,7 @@ interface props {
 
 const PostZoom = ({ postProps, setZoom }: props) => {
   const { push, pop, modalStack } = useModalStack();
+  const { browser } = useBrowserCheck();
 
   const [animation, setAnimation] = useState<"open" | "close" | "">("");
 
@@ -72,6 +74,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
     setAnimation("open");
     push("#zoom");
     return () => {
+      window.onpopstate = null;
       pop();
     };
   }, []);
