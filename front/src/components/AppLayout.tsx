@@ -181,6 +181,9 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 export default AppLayout;
 
 const BotWrapper = styled.div`
+  .rsc-header-close-button {
+    display: none !important;
+  }
   .rsc-float-button {
     animation: ${Animation.smoothAppear} 0.3s ease-in-out;
 
@@ -219,9 +222,7 @@ const BotWrapper = styled.div`
     }
   }
   .rsc-footer {
-    /* @media (orientation: landscape) and (max-height: 480px) {
-      display: none;
-    } */
+    /*  */
   }
   * {
     z-index: 1000;
