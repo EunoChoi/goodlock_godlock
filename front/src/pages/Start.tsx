@@ -19,12 +19,12 @@ const Start = () => {
   const [popupOpen, setPopupOpen] = useState(false);
   const [toggle, setToggle] = useState<number>(0); //login - signup toggle
 
-  const { data: isLoggedIn } = User.get();
+  const user = User.getData();
 
   const navigate = useNavigate();
 
   const start = () => {
-    if (isLoggedIn) navigate("/main/0");
+    if (user) navigate("/main/0");
     else {
       history.pushState({ page: "modal" }, "", "");
       setPopupOpen(true);
