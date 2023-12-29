@@ -236,6 +236,9 @@ router.get("/current", tokenCheck, async (req, res) => {
 
     const currentUser = await User.findOne({
       where: { email: user.email },
+      attributes: {
+        exclude: ['password']
+      },
       include: [{
         model: User, //
         as: 'Followers',
@@ -392,7 +395,7 @@ router.delete("/:userId/follower", tokenCheck, async (req, res) => {
     if (!targetUser) return res.status(403).json("존재하지 않은 유저입니다.");
 
     targetUser.removeFollowings(req.currentUserId);
-    return res.status(200).json(targetUser)
+    return res.status(200).json(targetUserId)
   }
   catch (err) {
     console.error(err);
@@ -439,7 +442,11 @@ router.get("/info", tokenCheck, async (req, res) => {
 
     const user = await User.findOne(
       {
-        where: { id }, include: [{
+        where: { id },
+        attributes: {
+          exclude: ['password']
+        },
+        include: [{
           model: User, //
           as: 'Followers',
           attributes: ['id', 'nickname', 'profilePic'],
