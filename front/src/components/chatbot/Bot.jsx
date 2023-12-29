@@ -40,8 +40,7 @@ const Bot = () => {
       options: [
         { value: 1, label: "사이트 소개", trigger: "3" },
         { value: 2, label: "유용한 팁", trigger: "4" },
-        { value: 3, label: "문의", trigger: "5" },
-        { value: 4, label: "처음으로", trigger: "1" }
+        { value: 3, label: "문의", trigger: "5" }
       ]
     },
     {
