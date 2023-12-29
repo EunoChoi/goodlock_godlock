@@ -112,7 +112,7 @@ const Button = styled.button`
   width: 72px;
   height: 28px;
 
-  border: solid 2px rgba(0, 0, 0, 0.1);
+  border: solid 2px rgba(0, 0, 0, 0.05);
   border-radius: 20px;
   background-color: #cddcf3;
 
