@@ -13,8 +13,6 @@ import { ToastContainer } from "react-toastify";
 
 //external css
 import "react-toastify/dist/ReactToastify.css";
-// import "react-confirm-alert/src/react-confirm-alert.css";
-import "./styles/react-confirm.css";
 
 //Pages
 const Start = lazy(() => import("./pages/Start"));

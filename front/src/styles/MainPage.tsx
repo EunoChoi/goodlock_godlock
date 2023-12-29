@@ -365,10 +365,10 @@ const TopPostWrapper = styled.div`
   }
 `;
 const TopPost = styled.div`
-  width: 150px;
-  height: 100px;
+  width: 130px;
+  height: 130px;
   flex-shrink: 0;
-  height: 100px;
+
   background-color: #fafafa;
   border-radius: 6px;
   border: solid 2px rgba(0, 0, 0, 0.07);
@@ -398,7 +398,7 @@ const TopPost = styled.div`
     color: rgba(0, 0, 0, 0.65);
 
     display: -webkit-box;
-    -webkit-line-clamp: 3; /* 원하는 줄 수 표시 */
+    -webkit-line-clamp: 4; /* 원하는 줄 수 표시 */
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
