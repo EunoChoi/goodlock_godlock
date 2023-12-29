@@ -18,7 +18,7 @@ const PasswordChangeConfirm = ({ setPasswordChangeModal }: setStateProps) => {
 
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [afterPassword, setAfterPassword] = useState<string>("");
-  const user = User.getData();
+  const user = User.get().data;
   const [passwordConfirm, setPasswordConfirm] = useState<boolean>(false);
 
   const [timer, setTimer] = useState<NodeJS.Timeout>();

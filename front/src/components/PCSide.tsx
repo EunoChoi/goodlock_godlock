@@ -17,7 +17,7 @@ import ForumIcon from "@mui/icons-material/Forum";
 import { createPortal } from "react-dom";
 
 const Side = () => {
-  const user = User.getData();
+  const user = User.get().data;
   const navigate = useNavigate();
   const logout = User.logout();
 

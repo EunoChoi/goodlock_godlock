@@ -83,7 +83,7 @@ const Profile = () => {
   const categoryNum = params.cat ? parseInt(params.cat) : -1;
 
   //useQuery
-  const user = User.getData();
+  const user = User.get().data;
 
   //input state
   const [nickname, setNickname] = useState<string>(user?.nickname);

@@ -36,7 +36,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const level = 10;
 
   //useQuery
-  const user = User.getData();
+  const user = User.get().data;
   const isUserPostOk: boolean = postType === 1 || postType === 2;
   const isAdminPostOk: boolean = postType === 0 && user?.level >= level ? true : false;
 

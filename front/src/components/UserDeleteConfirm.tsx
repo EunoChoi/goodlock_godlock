@@ -17,7 +17,7 @@ const UserDeleteConfirm = ({ setUserDeleteModal }: setStateProps) => {
 
   const [text, setText] = useState<string>("");
   const userDelete = User.delete();
-  const user = User.getData();
+  const user = User.get().data;
   const confirmWord = "회원 탈퇴";
 
   const [timer, setTimer] = useState<NodeJS.Timeout>();

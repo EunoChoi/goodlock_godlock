@@ -58,7 +58,7 @@ const UserInfo = () => {
   const { Alert: FollowConfirm, openAlert: openFollowConfirm } = useAlert();
   const { Alert: UnFollowConfirm, openAlert: openUnFollowConfirm } = useAlert();
 
-  const user = User.getData();
+  const user = User.get().data;
   const { data: targetUser, refetch } = useQuery(
     ["targetUser"],
     () => Axios.get("user/info", { params: { id } }).then((res) => res.data),
@@ -71,7 +71,7 @@ const UserInfo = () => {
       },
       onError: () => {
         // location.reload();
-        navigate("/404");
+        navigate("/");
       }
     }
   );

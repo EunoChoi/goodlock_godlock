@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 
 const SendEmail = () => {
   const navigate = useNavigate();
-  const { email } = User.getData();
+  const { email } = User.get().data;
 
   const [text, setText] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);

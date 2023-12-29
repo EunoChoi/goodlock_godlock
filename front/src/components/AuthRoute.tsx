@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import Axios from "../apis/Axios";
 import { useNavigate } from "react-router-dom";
 import Loading from "../pages/Loading";
+import User from "../functions/reactQuery/User";
+import { toast } from "react-toastify";
 
 interface AuthRouteProps {
   component: ReactElement;
@@ -13,24 +15,23 @@ const AuthRoute = ({ accessType, component }: AuthRouteProps) => {
   const navigate = useNavigate();
 
   if (accessType === "admin") {
-    //need admin auth page
+    //for admin page
   }
   if (accessType === "login") {
     //need login auth page
-    const { isLoading } = useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
-      refetchOnWindowFocus: true,
-      // staleTime: 5 * 60 * 1000,
-      onSuccess: () => {
-        // console.log("유저 정보 불러오기 성공");
-        return <>{component}</>;
-      },
-      onError: () => {
-        console.log("유저 정보를 불러오지 못했습니다.");
-        navigate("/");
-        location.reload();
-      }
-    });
-    if (isLoading) return <Loading></Loading>;
+    const { isSuccess, isError, isLoading } = User.getForAuth();
+
+    if (isSuccess) {
+      return <>{component}</>;
+    } else if (isError) {
+      console.log("유저 정보를 불러오지 못했습니다.");
+      navigate("/");
+      setTimeout(() => {
+        toast.error("로그인이 필요합니다.");
+      }, 100);
+    } else if (isLoading) {
+      return <Loading />;
+    }
   }
 
   return <>{component}</>;

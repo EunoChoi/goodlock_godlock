@@ -8,7 +8,7 @@ import SmartToyIcon from "@mui/icons-material/SmartToy";
 import SendEmail from "./SendEmail";
 
 const Bot = () => {
-  const user = User.getData();
+  const user = User.get().data;
   const [open, setOpen] = useState(false);
   const [bgOpen, setBGOpen] = useState(false);
 

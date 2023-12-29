@@ -38,7 +38,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
 
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-  const user = User.getData();
+  const user = User.get().data;
   const postHaveDate = postProps?.start && postProps?.end;
   const postHaveLink = postProps?.link && true;
   const [crop, setCrop] = useState<boolean>(false);

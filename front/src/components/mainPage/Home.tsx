@@ -37,7 +37,7 @@ const Home = () => {
   const pillSub = ["Notice", "Bookmark Tip"];
   const [toggle, setToggle] = useState<number>(0);
 
-  const user = User.getData();
+  const user = User.get().data;
 
   const scrollTargerheight = () => {
     window.scrollTo({

@@ -30,7 +30,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
   const { browser } = useBrowserCheck();
   const [timer, setTimer] = useState<NodeJS.Timeout>();
 
-  const user = User.getData();
+  const user = User.get().data;
   const navigate = useNavigate();
   const logout = User.logout();
   const [sideBarAnimation, setAnimation] = useState<"open" | "close" | "">("");

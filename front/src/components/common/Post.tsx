@@ -44,7 +44,7 @@ const Post = ({ postProps }: any) => {
   moment.locale("ko");
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-  const user = User.getData();
+  const user = User.get().data;
 
   const [commentLoadLength, setCommentLoadLength] = useState<number>(5);
   const [isPostEdit, setPostEdit] = useState<boolean>(false);

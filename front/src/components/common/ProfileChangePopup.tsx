@@ -27,7 +27,7 @@ const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
   const { push, pop, modalStack } = useModalStack();
 
   //useQuery
-  const user = User.getData();
+  const user = User.get().data;
 
   const [animation, setAnimation] = useState<"open" | "close" | "">("");
   const { browser } = useBrowserCheck();

@@ -40,8 +40,6 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
     commentRef.current?.focus();
   }, [isCommentEdit]);
 
-  const user = User.getData();
-
   //useMutation
   const editComment = CommentFunction.edit();
   const deleteComment = CommentFunction.delete();
