@@ -645,19 +645,17 @@ const ProfileTitle = styled.div`
 
   margin-top: 0px;
   padding-top: 64px;
-
-  > span:nth-child(2) {
-    font-size: 20px;
+  > span {
+    font-size: 18px;
     color: rgba(0, 0, 0, 0.5);
-    margin-top: 24px;
     font-weight: 500;
+    line-height: 28px;
+  }
+  > span:nth-child(2) {
+    margin-top: 32px;
   }
   > span:nth-child(3) {
-    font-size: 20px;
-    color: rgba(0, 0, 0, 0.5);
-    margin-top: 8px;
-    margin-bottom: 12px;
-    font-weight: 500;
+    margin-bottom: 24px;
   }
 
   @media (orientation: portrait) or (max-height: 480px) {
