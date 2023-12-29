@@ -24,7 +24,17 @@ const PostView = () => {
   const single = useQuery(["single"], () =>
     Axios.get("post/single", { params: { id: Number(id) } }).then((v) => v.data)
   );
+  const scrollTop = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    });
+  };
 
+  useEffect(() => {
+    scrollTop();
+  });
   useEffect(() => {
     if (single.isError) {
       toast.error("공유 링크가 올바르지 않습니다.");
@@ -70,7 +80,7 @@ const SingePostText = styled.div`
     font-weight: 600;
   }
 
-  @media (orientation: portrait) or (max-height: 480px) {
+  @media (orientation: portrait) {
     width: 100%;
     padding-left: 4vw;
     padding-top: 100px;
