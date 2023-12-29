@@ -69,8 +69,8 @@ const Gallery = () => {
       <TextWrapper ref={scrollTarget}>
         <MainPageStyle.TextWrapper_Title>Gallery</MainPageStyle.TextWrapper_Title>
         <MainPageStyle.Space height={32}></MainPageStyle.Space>
-        <MainPageStyle.TextWrapper_Normal>이미지만 모아서 보여주는 갤러리입니다.</MainPageStyle.TextWrapper_Normal>
-        <MainPageStyle.TextWrapper_Normal>이미지를 누르면 게시글로 이동해요.</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>모든 이미지를 모아서 보여줍니다.</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>포스트를 보려면 이미지를 눌러주세요.</MainPageStyle.TextWrapper_Normal>
       </TextWrapper>
       <Pill.Wrapper>
         <Pill.Sub
