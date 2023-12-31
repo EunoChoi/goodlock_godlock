@@ -26,14 +26,16 @@ interface Props {
 }
 
 const MobileSide = ({ setMobileSideOpen }: Props) => {
+  const navigate = useNavigate();
+
   const { push, pop, modalStack } = useModalStack();
   const { browser } = useBrowserCheck();
-  const [timer, setTimer] = useState<NodeJS.Timeout>();
 
   const user = User.get().data;
-  const navigate = useNavigate();
   const logout = User.logout();
+
   const [sideBarAnimation, setAnimation] = useState<"open" | "close" | "">("");
+  const [timer, setTimer] = useState<NodeJS.Timeout>();
 
   const { type } = useParams();
   const currentPage = type ? parseInt(type) : -1;

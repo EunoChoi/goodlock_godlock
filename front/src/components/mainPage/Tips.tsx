@@ -55,7 +55,7 @@ const Tips = () => {
     Axios.get("post/thisweek/activeinfo", { params: { type: 1 } }).then((v) => v.data)
   ).data;
   const topPosts = useQuery(["topPosts"], () =>
-    Axios.get("post/thisweek/top", { params: { type: 1 } }).then((v) => v.data)
+    Axios.get("post/thisweek/top", { params: { type: [1] } }).then((v) => v.data)
   ).data;
 
   //load posts

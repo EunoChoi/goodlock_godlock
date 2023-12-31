@@ -29,9 +29,58 @@ const LoadingIconWrapper = styled.div`
 const HomeEl = styled.div`
   min-height: calc(100vh - 68px);
   animation: ${Animation.smoothAppear} 1s ease-in-out;
+  /* min-width: 70%; */
+  /* max-width: 70%; */
+  width: 70%;
+
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  #tags {
+    overflow-x: scroll !important;
+    position: sticky;
+    top: 80px;
+    width: calc(100% - 500px);
+    width: 0%;
+    flex-grow: 1;
+    min-height: 500px;
+    margin-left: 12px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    /* align-items: end; */
+
+    /* border: 1px solid rgba(0, 0, 0, 0.2); */
+    span {
+      font-size: 20px;
+      line-height: 36px;
+      color: rgba(0, 0, 0, 0.7);
+      width: 100%;
+
+      text-align: end;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .title {
+      font-size: 26px;
+      font-weight: 600;
+      /* line-height: 56px; */
+      text-transform: uppercase;
+    }
+    .subTitle {
+      margin: 20px 0;
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 42px;
+    }
+  }
 
   @media (orientation: portrait) or (max-height: 480px) {
     min-height: calc(100vh - 116px);
+    width: auto;
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 400px;
@@ -50,6 +99,15 @@ const MainEl = styled.div`
 
 const Pill = {
   Wrapper: styled.div`
+    position: absolute;
+    #test {
+      position: relative;
+      top: 0px;
+      right: 0;
+      width: 100px;
+      height: 400px;
+      background-color: red;
+    }
     z-index: 80;
     position: sticky;
     top: 0px;
@@ -69,6 +127,7 @@ const Pill = {
 
     width: 100%;
     width: 500px;
+    min-width: 70%;
     overflow-x: scroll;
 
     @media (orientation: portrait) or (max-height: 480px) {
@@ -96,7 +155,7 @@ const Pill = {
   Search: styled.button<{ toggle: boolean }>`
     transition: all ease-in-out 0.5s;
     padding: 8px 16px;
-    width: ${(props) => (props.toggle ? "200px" : "56px")};
+    width: ${(props) => (props.toggle ? "200px" : "62px")};
     border: solid 2px rgba(0, 0, 0, 0.05);
     height: 32px;
     border-radius: 100px;
@@ -176,6 +235,7 @@ const Space = styled.div<{ height: number }>`
 
 const TextWrapper = styled.div`
   width: 500px;
+  min-width: 70%;
   padding-top: 64px;
   padding-bottom: 24px;
 

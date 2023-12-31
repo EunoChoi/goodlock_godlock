@@ -14,7 +14,6 @@ import Post from "../components/common/Post";
 import Animation from "../styles/Animation";
 
 //mui
-import ShareIcon from "@mui/icons-material/Share";
 
 const PostView = () => {
   const { id } = useParams();
