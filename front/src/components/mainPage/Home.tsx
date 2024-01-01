@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -20,7 +20,7 @@ import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import MessageIcon from "@mui/icons-material/Message";
 import Img from "../common/Img";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface userProps {
   email: string;
@@ -40,7 +40,6 @@ interface postProps {
 
 const Home = () => {
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const tagTarget = useRef<HTMLDivElement>(null);
   const pillSub = ["Notice", "Bookmark Tip"];
   const [toggle, setToggle] = useState<number>(0);
   const navigate = useNavigate();
@@ -57,32 +56,24 @@ const Home = () => {
     });
   };
 
-  console.log(tagTarget.current?.offsetWidth);
-
   //this week
-  const thisWeekNewInfo = useQuery(
-    ["thisweek/new/1"],
-    () => Axios.get("post/thisweek/new", { params: { type: 1 } }).then((v) => v.data),
+  const monthNewInfo = useQuery(
+    ["month/new/1"],
+    () => Axios.get("post/month/new", { params: { type: 1 } }).then((v) => v.data),
     {
       // staleTime: 60 * 1000
     }
   ).data;
-  const thisWeekNewComm = useQuery(
-    ["thisweek/new/2"],
-    () => Axios.get("post/thisweek/new", { params: { type: 2 } }).then((v) => v.data),
+  const monthNewComm = useQuery(
+    ["month/new/2"],
+    () => Axios.get("post/month/new", { params: { type: 2 } }).then((v) => v.data),
     {
       // staleTime: 60 * 1000
     }
   ).data;
-  const thisWeekEndLiked = useQuery(
-    ["thisweek/end/liked"],
-    () => Axios.get("post/thisweek/likeEnd").then((v) => v.data),
-    {
-      // staleTime: 60 * 1000
-    }
-  ).data;
+
   const topPosts = useQuery(["topPosts"], () =>
-    Axios.get("post/thisweek/top", { params: { type: [1, 2] } }).then((v) => v.data)
+    Axios.get("post/month/top", { params: { type: [1, 2] } }).then((v) => v.data)
   ).data;
 
   //load posts
@@ -142,12 +133,12 @@ const Home = () => {
         <MainPageStyle.Space height={20}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
-          {/* {thisWeekNewInfo?.len + thisWeekNewComm?.len} Tip&Free Posts */}
-          {thisWeekNewInfo + thisWeekNewComm} All • {thisWeekNewInfo} Tip • {thisWeekNewComm} Free Posts
+          {/* {monthNewInfo?.len + monthNewComm?.len} Tip&Free Posts */}
+          {monthNewInfo + monthNewComm} All • {monthNewInfo} Tip • {monthNewComm} Free Posts
         </MainPageStyle.TextWrapper_Normal>
         {/* <MainPageStyle.Space height={8} /> */}
         {/* <MainPageStyle.TextWrapper_SubBold>Share Closing</MainPageStyle.TextWrapper_SubBold>
-        <MainPageStyle.TextWrapper_Normal>{thisWeekEndLiked} Bookmark Tip Posts</MainPageStyle.TextWrapper_Normal> */}
+        <MainPageStyle.TextWrapper_Normal>{monthEndLiked} Bookmark Tip Posts</MainPageStyle.TextWrapper_Normal> */}
         {topPosts?.length >= 1 && (
           <>
             {/* <MainPageStyle.Space height={8} /> */}
@@ -215,76 +206,86 @@ const Home = () => {
         ))}
       </MainPageStyle.Pill.Wrapper>
 
-      {toggle === 0 && ( //공지사항
-        <MainPageStyle.HomeEl>
-          <div>
-            {noticePosts.data?.pages[0].length === 0 && (
-              <MainPageStyle.EmptyNoti>
-                <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-                <span>포스트가 존재하지 않습니다.</span>
-              </MainPageStyle.EmptyNoti>
-            )}
-            <InfiniteScroll
-              hasMore={noticePosts.hasNextPage || false}
-              loader={
-                <MainPageStyle.LoadingIconWrapper>
-                  <CircularProgress size={96} color="inherit" />
-                </MainPageStyle.LoadingIconWrapper>
-              }
-              next={() => noticePosts.fetchNextPage()}
-              dataLength={noticePosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-            >
-              {noticePosts?.data?.pages?.map((p) =>
-                p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+      <MainPageStyle.HomeEl>
+        <div id="posts">
+          {toggle === 0 && ( //공지사항
+            <>
+              {noticePosts.data?.pages[0].length === 0 && (
+                <MainPageStyle.EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>포스트가 존재하지 않습니다.</span>
+                </MainPageStyle.EmptyNoti>
               )}
-            </InfiniteScroll>
+              <InfiniteScroll
+                hasMore={noticePosts.hasNextPage || false}
+                loader={
+                  <MainPageStyle.LoadingIconWrapper>
+                    <CircularProgress size={96} color="inherit" />
+                  </MainPageStyle.LoadingIconWrapper>
+                }
+                next={() => noticePosts.fetchNextPage()}
+                dataLength={noticePosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {noticePosts?.data?.pages?.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </>
+          )}
+          {toggle === 1 && ( //관심 팁
+            <>
+              {likedPosts.data?.pages[0].length === 0 && (
+                <MainPageStyle.EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>포스트가 존재하지 않습니다.</span>
+                </MainPageStyle.EmptyNoti>
+              )}
+              <InfiniteScroll
+                hasMore={likedPosts.hasNextPage || false}
+                loader={
+                  <MainPageStyle.LoadingIconWrapper>
+                    <CircularProgress size={96} color="inherit" />
+                  </MainPageStyle.LoadingIconWrapper>
+                }
+                next={() => likedPosts.fetchNextPage()}
+                dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {likedPosts?.data?.pages?.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </>
+          )}
+        </div>
+
+        {!isMobile && (
+          <div id="tags">
+            <span className="title">Top Tags</span>
+            <span className="subTitle">Tip Posts</span>
+            <span
+              onClick={() => {
+                console.log("a");
+                navigate({ pathname: "/main/1", search: `?search=test` });
+              }}
+            >
+              #상단바
+            </span>
+            <span>#홈버튼</span>
+            <span>#굿락</span>
+            <span>#좋아요</span>
+            <span>#원핸드오퍼레이션</span>
+
+            <MainPageStyle.Space height={24} />
+
+            <span className="subTitle">Free Posts</span>
+            <span>#상단바</span>
+            <span>#홈버튼</span>
+            <span>#굿락</span>
+            <span>#좋아요</span>
+            <span>#원핸드오퍼레이션</span>
           </div>
-          {isMobile || (
-            <div id="tags" ref={tagTarget}>
-              <span className="title">Popular Tags</span>
-              <span className="subTitle">Tip Posts</span>
-              <span>상단바</span>
-              <span>홈버튼</span>
-              <span>굿락</span>
-              <span>좋아요</span>
-              <span>원핸드오퍼레이션</span>
-
-              <MainPageStyle.Space height={24} />
-
-              <span className="subTitle">Free Posts</span>
-              <span>상단바</span>
-              <span>홈버튼</span>
-              <span>굿락</span>
-              <span>좋아요</span>
-              <span>원핸드오퍼레이션</span>
-            </div>
-          )}
-        </MainPageStyle.HomeEl>
-      )}
-      {toggle === 1 && ( //관심 팁
-        <MainPageStyle.HomeEl>
-          {likedPosts.data?.pages[0].length === 0 && (
-            <MainPageStyle.EmptyNoti>
-              <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-              <span>포스트가 존재하지 않습니다.</span>
-            </MainPageStyle.EmptyNoti>
-          )}
-          <InfiniteScroll
-            hasMore={likedPosts.hasNextPage || false}
-            loader={
-              <MainPageStyle.LoadingIconWrapper>
-                <CircularProgress size={96} color="inherit" />
-              </MainPageStyle.LoadingIconWrapper>
-            }
-            next={() => likedPosts.fetchNextPage()}
-            dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-          >
-            {likedPosts?.data?.pages?.map((p) =>
-              p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
-            )}
-          </InfiniteScroll>
-        </MainPageStyle.HomeEl>
-      )}
+        )}
+      </MainPageStyle.HomeEl>
     </MainPageStyle.MainEl>
   );
 };

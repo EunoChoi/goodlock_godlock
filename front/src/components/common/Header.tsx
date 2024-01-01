@@ -99,7 +99,7 @@ const MobileHeaderWrapper = styled.div`
   background-color: #fff;
 
   @media (orientation: portrait) and (max-width: 480px) {
-    background-color: white;
+    /* background-color: white; */
   }
 
   @media (orientation: landscape) and (max-height: 480px) {

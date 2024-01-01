@@ -238,19 +238,16 @@ router.get("/activinfo", async (req, res) => {
   }
 })
 //load - top post this week
-router.get("/thisweek/top", tokenCheck, async (req, res) => {
+router.get("/month/top", tokenCheck, async (req, res) => {
 
   const { type } = req.query;
 
   const todayfull = new Date();
   let year = todayfull.getFullYear(); // 년도
   let month = todayfull.getMonth();  // 월
-  let date = todayfull.getDate();  // 날짜
-  let day = todayfull.getDay(); // 요일
 
-  const today = new Date(year, month, date);
-  const rangeStart = new Date(year, month, date - ((day + 6) % 7));
-  const rangeEnd = new Date(year, month, date - ((day + 6) % 7) + 6, 23, 59, 59);
+  const rangeStart = new Date(year, month);
+  const rangeEnd = new Date(year, month + 1);
 
   try {
     const where = {};
@@ -304,31 +301,16 @@ router.get("/thisweek/top", tokenCheck, async (req, res) => {
 
 
 //length - new post this week
-router.get("/thisweek/new", tokenCheck, async (req, res) => {
+router.get("/month/new", tokenCheck, async (req, res) => {
 
   const { type } = req.query;
 
   const todayfull = new Date();
   let year = todayfull.getFullYear(); // 년도
   let month = todayfull.getMonth();  // 월
-  let date = todayfull.getDate();  // 날짜
-  let day = todayfull.getDay(); // 요일
 
-  const today = new Date(year, month, date);
-  const rangeStart = new Date(year, month, date - ((day + 6) % 7));
-  const rangeEnd = new Date(year, month, date - ((day + 6) % 7) + 6, 23, 59, 59);
-
-
-  //일 0, 월 1, 화 2, 수 3, 목 4, 금 5, 토 6
-  console.log("===================")
-  console.log(day);
-  console.log((day + 6) % 7);
-
-  console.log(rangeStart)
-  console.log(rangeEnd)
-
-  console.log("===================")
-
+  const rangeStart = new Date(year, month);
+  const rangeEnd = new Date(year, month + 1);
 
   try {
     const where = {};
@@ -349,18 +331,14 @@ router.get("/thisweek/new", tokenCheck, async (req, res) => {
   }
 })
 //length - end liked post this week
-router.get("/thisweek/likeEnd", tokenCheck, async (req, res) => {
+router.get("/month/likeEnd", tokenCheck, async (req, res) => {
 
   const todayfull = new Date();
   let year = todayfull.getFullYear(); // 년도
   let month = todayfull.getMonth();  // 월
-  let date = todayfull.getDate();  // 날짜
-  let day = todayfull.getDay(); // 요일
 
-  const today = new Date(year, month, date);
-  //this week range date
-  const rangeStart = new Date(year, month, date - ((day + 6) % 7));
-  const rangeEnd = new Date(year, month, date - ((day + 6) % 7) + 6, 23, 59, 59);
+  const rangeStart = new Date(year, month);
+  const rangeEnd = new Date(year, month + 1);
 
 
 
@@ -396,17 +374,14 @@ router.get("/thisweek/likeEnd", tokenCheck, async (req, res) => {
   }
 })
 //length - feed posts in this week
-router.get("/thisweek/feed", tokenCheck, async (req, res) => {
+router.get("/month/feed", tokenCheck, async (req, res) => {
   const { type } = req.query;
   const todayfull = new Date();
   let year = todayfull.getFullYear(); // 년도
   let month = todayfull.getMonth();  // 월
-  let date = todayfull.getDate();  // 날짜
-  let day = todayfull.getDay(); // 요일
 
-  const today = new Date(year, month, date);
-  const rangeStart = new Date(year, month, date - ((day + 6) % 7));
-  const rangeEnd = new Date(year, month, date - ((day + 6) % 7) + 6, 23, 59, 59);
+  const rangeStart = new Date(year, month);
+  const rangeEnd = new Date(year, month + 1);
 
   try {
     const UserId = req.currentUserId;
@@ -438,18 +413,13 @@ router.get("/thisweek/feed", tokenCheck, async (req, res) => {
   }
 })
 //length - ongoing in this week
-router.get("/thisweek/activeinfo", async (req, res) => {
-  const { type, pageParam, tempDataNum } = req.query;
-
+router.get("/month/activeinfo", async (req, res) => {
   const todayfull = new Date();
   let year = todayfull.getFullYear(); // 년도
   let month = todayfull.getMonth();  // 월
-  let date = todayfull.getDate();  // 날짜
-  let day = todayfull.getDay(); // 요일
 
-  const today = new Date(year, month, date);
-  const rangeStart = new Date(year, month, date - ((day + 6) % 7));
-  const rangeEnd = new Date(year, month, date - ((day + 6) % 7) + 6, 23, 59, 59);
+  const rangeStart = new Date(year, month);
+  const rangeEnd = new Date(year, month + 1);
 
   try {
     const Posts = await Post.findAndCountAll({

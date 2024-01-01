@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -18,6 +18,7 @@ import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDiss
 import CircularProgress from "@mui/material/CircularProgress";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import MessageIcon from "@mui/icons-material/Message";
+import IsMobile from "../../functions/IsMobile";
 
 interface userProps {
   email: string;
@@ -39,23 +40,46 @@ const Tips = () => {
   const navigate = useNavigate();
   const scrollTarget = useRef<HTMLDivElement>(null);
 
+  const isMobile = IsMobile();
+
   const [toggle, setToggle] = useState<number>(0);
   const [searchInfo, setSearchInfo] = useState<string>("");
   const pillSub = ["All", "Ongoing", "Feed"];
   const pillWrapperRef = useRef<HTMLInputElement>(null);
 
+  const { search } = useLocation();
+  useEffect(() => {
+    if (search) {
+      console.log(search);
+      const query = search.split("?search=");
+      console.log(query[1]);
+      setTimeout(() => {
+        setToggle(3);
+        setSearchInfo(query[1]);
+        window.scrollTo({
+          top: scrollTarget.current?.scrollHeight,
+          left: 0,
+          behavior: "smooth"
+        });
+      }, 100);
+      setTimeout(() => {
+        searchInfoPosts.refetch();
+      }, 200);
+    }
+  }, [search]);
+
   //this week
-  const thisWeekNewInfo = useQuery(["thisweek/new/1"], () =>
-    Axios.get("post/thisweek/new", { params: { type: 1 } }).then((v) => v.data)
+  const monthNewInfo = useQuery(["month/new/1"], () =>
+    Axios.get("post/month/new", { params: { type: 1 } }).then((v) => v.data)
   ).data;
-  const thisWeekFeed = useQuery(["thisweek/feed"], () =>
-    Axios.get("post/thisweek/feed", { params: { type: 1 } }).then((v) => v.data)
+  const monthFeed = useQuery(["month/feed"], () =>
+    Axios.get("post/month/feed", { params: { type: 1 } }).then((v) => v.data)
   ).data;
-  const thisWeekOngoing = useQuery(["thisweek/activeinfo"], () =>
-    Axios.get("post/thisweek/activeinfo", { params: { type: 1 } }).then((v) => v.data)
+  const monthOngoing = useQuery(["month/activeinfo"], () =>
+    Axios.get("post/month/activeinfo", { params: { type: 1 } }).then((v) => v.data)
   ).data;
   const topPosts = useQuery(["topPosts"], () =>
-    Axios.get("post/thisweek/top", { params: { type: [1] } }).then((v) => v.data)
+    Axios.get("post/month/top", { params: { type: [1] } }).then((v) => v.data)
   ).data;
 
   //load posts
@@ -138,7 +162,7 @@ const Tips = () => {
         <MainPageStyle.Space height={20} />
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
-          {thisWeekNewInfo} Tip • {thisWeekOngoing} Ongoing • {thisWeekFeed} Feed Posts
+          {monthNewInfo} Tip • {monthOngoing} Ongoing • {monthFeed} Feed Posts
         </MainPageStyle.TextWrapper_Normal>
 
         {topPosts?.length >= 1 && (
@@ -249,108 +273,140 @@ const Tips = () => {
           </form>
         </MainPageStyle.Pill.Search>
       </MainPageStyle.Pill.Wrapper>
-      {toggle === 0 && ( //팁&설정 포스트
-        <MainPageStyle.HomeEl>
-          {infoPosts.data?.pages[0].length === 0 && (
-            <MainPageStyle.EmptyNoti>
-              <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-              <span>포스트가 존재하지 않습니다.</span>
-            </MainPageStyle.EmptyNoti>
+      <MainPageStyle.HomeEl>
+        <div id="posts">
+          {toggle === 0 && ( //팁&설정 포스트
+            <>
+              {infoPosts.data?.pages[0].length === 0 && (
+                <MainPageStyle.EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>포스트가 존재하지 않습니다.</span>
+                </MainPageStyle.EmptyNoti>
+              )}
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={infoPosts.hasNextPage || false}
+                loader={
+                  <MainPageStyle.LoadingIconWrapper>
+                    <CircularProgress size={96} color="inherit" />
+                  </MainPageStyle.LoadingIconWrapper>
+                }
+                next={() => infoPosts.fetchNextPage()}
+                dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {infoPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </>
           )}
-          <InfiniteScroll
-            // scrollableTarget="scrollWrapper"
-            hasMore={infoPosts.hasNextPage || false}
-            loader={
-              <MainPageStyle.LoadingIconWrapper>
-                <CircularProgress size={96} color="inherit" />
-              </MainPageStyle.LoadingIconWrapper>
-            }
-            next={() => infoPosts.fetchNextPage()}
-            dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-          >
-            {infoPosts?.data?.pages.map((p) =>
-              p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
-            )}
-          </InfiniteScroll>
-        </MainPageStyle.HomeEl>
-      )}
-      {toggle === 1 && (
-        <MainPageStyle.HomeEl>
-          {activInfo.data?.pages[0].length === 0 && (
-            <MainPageStyle.EmptyNoti>
-              <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-              <span>포스트가 존재하지 않습니다.</span>
-            </MainPageStyle.EmptyNoti>
+          {toggle === 1 && (
+            <>
+              {activInfo.data?.pages[0].length === 0 && (
+                <MainPageStyle.EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>포스트가 존재하지 않습니다.</span>
+                </MainPageStyle.EmptyNoti>
+              )}
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={activInfo.hasNextPage || false}
+                loader={
+                  <MainPageStyle.LoadingIconWrapper>
+                    <CircularProgress size={96} color="inherit" />
+                  </MainPageStyle.LoadingIconWrapper>
+                }
+                next={() => activInfo.fetchNextPage()}
+                dataLength={activInfo.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {activInfo?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </>
           )}
-          <InfiniteScroll
-            // scrollableTarget="scrollWrapper"
-            hasMore={activInfo.hasNextPage || false}
-            loader={
-              <MainPageStyle.LoadingIconWrapper>
-                <CircularProgress size={96} color="inherit" />
-              </MainPageStyle.LoadingIconWrapper>
-            }
-            next={() => activInfo.fetchNextPage()}
-            dataLength={activInfo.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-          >
-            {activInfo?.data?.pages.map((p) =>
-              p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
-            )}
-          </InfiniteScroll>
-        </MainPageStyle.HomeEl>
-      )}
-      {toggle === 2 && (
-        <MainPageStyle.HomeEl>
-          {feedPosts.data?.pages[0].length === 0 && (
-            <MainPageStyle.EmptyNoti>
-              <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-              <span>포스트가 존재하지 않습니다.</span>
-            </MainPageStyle.EmptyNoti>
+          {toggle === 2 && (
+            <>
+              {feedPosts.data?.pages[0].length === 0 && (
+                <MainPageStyle.EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>포스트가 존재하지 않습니다.</span>
+                </MainPageStyle.EmptyNoti>
+              )}
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={feedPosts.hasNextPage || false}
+                loader={
+                  <MainPageStyle.LoadingIconWrapper>
+                    <CircularProgress size={96} color="inherit" />
+                  </MainPageStyle.LoadingIconWrapper>
+                }
+                next={() => feedPosts.fetchNextPage()}
+                dataLength={feedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {feedPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </>
           )}
-          <InfiniteScroll
-            // scrollableTarget="scrollWrapper"
-            hasMore={feedPosts.hasNextPage || false}
-            loader={
-              <MainPageStyle.LoadingIconWrapper>
-                <CircularProgress size={96} color="inherit" />
-              </MainPageStyle.LoadingIconWrapper>
-            }
-            next={() => feedPosts.fetchNextPage()}
-            dataLength={feedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-          >
-            {feedPosts?.data?.pages.map((p) =>
-              p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
-            )}
-          </InfiniteScroll>
-        </MainPageStyle.HomeEl>
-      )}
-      {toggle === 3 && ( //모집 공고 검색
-        <MainPageStyle.HomeEl>
-          {/* 검색 결과가 존재하지 않는 경우 */}
-          {searchInfoPosts.data?.pages[0].length === 0 && (
-            <MainPageStyle.EmptyNoti>
-              <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-              <span>검색 결과가 존재하지 않습니다.</span>
-            </MainPageStyle.EmptyNoti>
-          )}
+          {toggle === 3 && ( //모집 공고 검색
+            <>
+              {/* 검색 결과가 존재하지 않는 경우 */}
+              {searchInfoPosts.data?.pages[0].length === 0 && (
+                <MainPageStyle.EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>검색 결과가 존재하지 않습니다.</span>
+                </MainPageStyle.EmptyNoti>
+              )}
 
-          <InfiniteScroll
-            // scrollableTarget="scrollWrapper"
-            hasMore={searchInfoPosts.hasNextPage || false}
-            loader={
-              <MainPageStyle.LoadingIconWrapper>
-                <CircularProgress size={96} color="inherit" />
-              </MainPageStyle.LoadingIconWrapper>
-            }
-            next={() => searchInfoPosts.fetchNextPage()}
-            dataLength={searchInfoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-          >
-            {searchInfoPosts?.data?.pages.map((p) =>
-              p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
-            )}
-          </InfiniteScroll>
-        </MainPageStyle.HomeEl>
-      )}
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={searchInfoPosts.hasNextPage || false}
+                loader={
+                  <MainPageStyle.LoadingIconWrapper>
+                    <CircularProgress size={96} color="inherit" />
+                  </MainPageStyle.LoadingIconWrapper>
+                }
+                next={() => searchInfoPosts.fetchNextPage()}
+                dataLength={searchInfoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {searchInfoPosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </>
+          )}
+        </div>
+        {!isMobile && (
+          <div id="tags">
+            <span className="title">Top Tags</span>
+            <span className="subTitle">Tip Posts</span>
+            <span
+              onClick={() => {
+                navigate({ pathname: "/main/1", search: `?search=test` });
+              }}
+            >
+              #test
+            </span>
+            <span
+              onClick={() => {
+                navigate({ pathname: "/main/1", search: `?search=test2` });
+              }}
+            >
+              #test2
+            </span>
+            <span>#굿락</span>
+            <span>#좋아요</span>
+            <span>#원핸드오퍼레이션</span>
+            <span>#상단바</span>
+            <span>#홈버튼</span>
+            <span>#굿락</span>
+            <span>#좋아요</span>
+            <span>#원핸드오퍼레이션</span>
+          </div>
+        )}
+      </MainPageStyle.HomeEl>
     </MainPageStyle.MainEl>
   );
 };

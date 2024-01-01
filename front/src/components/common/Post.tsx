@@ -455,6 +455,7 @@ const PostWrapper = styled.div`
 
   height: auto;
   width: 500px;
+  max-width: 500px;
 
   border-radius: 6px;
 
@@ -469,6 +470,8 @@ const PostWrapper = styled.div`
   /* border-radius: 7px; */
   @media (orientation: portrait) or (max-height: 480px) {
     width: 92vw;
+    max-width: auto;
+    max-width: 92vw;
     &:last-child {
       margin-bottom: 150px;
     }

@@ -29,22 +29,24 @@ const LoadingIconWrapper = styled.div`
 const HomeEl = styled.div`
   min-height: calc(100vh - 68px);
   animation: ${Animation.smoothAppear} 1s ease-in-out;
-  /* min-width: 70%; */
-  /* max-width: 70%; */
+  min-width: 500px;
   width: 70%;
 
   display: flex;
   justify-content: center;
   align-items: start;
+  #posts {
+    width: 500px;
+  }
   #tags {
     overflow-x: scroll !important;
     position: sticky;
     top: 80px;
+
     width: calc(100% - 500px);
-    width: 0%;
-    flex-grow: 1;
-    min-height: 500px;
-    margin-left: 12px;
+    /* min-width: 120px; */
+
+    /* margin-left: 36px; */
 
     display: flex;
     flex-direction: column;
@@ -53,9 +55,10 @@ const HomeEl = styled.div`
 
     /* border: 1px solid rgba(0, 0, 0, 0.2); */
     span {
-      font-size: 20px;
+      padding-left: 36px;
+      font-size: 18px;
       line-height: 36px;
-      color: rgba(0, 0, 0, 0.7);
+      color: rgba(0, 0, 0, 0.6);
       width: 100%;
 
       text-align: end;
@@ -65,14 +68,15 @@ const HomeEl = styled.div`
       text-overflow: ellipsis;
     }
     .title {
-      font-size: 26px;
+      font-size: 22px;
       font-weight: 600;
       /* line-height: 56px; */
       text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.7);
     }
     .subTitle {
       margin: 20px 0;
-      font-size: 24px;
+      font-size: 20px;
       font-weight: 500;
       line-height: 42px;
     }
@@ -81,6 +85,10 @@ const HomeEl = styled.div`
   @media (orientation: portrait) or (max-height: 480px) {
     min-height: calc(100vh - 116px);
     width: auto;
+    min-width: auto;
+    #posts {
+      width: auto;
+    }
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 400px;
@@ -99,15 +107,6 @@ const MainEl = styled.div`
 
 const Pill = {
   Wrapper: styled.div`
-    position: absolute;
-    #test {
-      position: relative;
-      top: 0px;
-      right: 0;
-      width: 100px;
-      height: 400px;
-      background-color: red;
-    }
     z-index: 80;
     position: sticky;
     top: 0px;
@@ -120,22 +119,21 @@ const Pill = {
 
     padding-top: 24px;
     padding-bottom: 24px;
-    /* padding-top: 12px;
-    padding-bottom: 12px; */
-    /* margin-top: 12px; */
+
     margin-bottom: 12px;
 
-    width: 100%;
-    width: 500px;
-    min-width: 70%;
+    min-width: 500px;
+    width: 70%;
     overflow-x: scroll;
 
     @media (orientation: portrait) or (max-height: 480px) {
       top: 48px;
       top: 47px;
-      background-color: #c8daf3;
+      /* background-color: #c8daf3; */
       background-color: #fff;
       width: 100%;
+      min-width: auto;
+
       padding: 12px 4vw;
       /* margin-top: 12px; */
       margin-bottom: 12px;
@@ -253,6 +251,7 @@ const TextWrapper = styled.div`
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 400px;
+    min-width: auto;
     padding-left: 0;
     margin-top: 0;
     padding-top: 24px;

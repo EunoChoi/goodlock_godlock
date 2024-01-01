@@ -40,11 +40,11 @@ const Post = {
       {
         onSuccess: () => {
           queryClient.invalidateQueries(["user"]);
-          queryClient.invalidateQueries(["thisweek/end/liked"]);
-          queryClient.invalidateQueries(["thisweek/new/1"]);
-          queryClient.invalidateQueries(["thisweek/new/2"]);
-          queryClient.invalidateQueries(["thisweek/feed"]);
-          queryClient.invalidateQueries(["thisweek/activeinfo"]);
+          queryClient.invalidateQueries(["month/end/liked"]);
+          queryClient.invalidateQueries(["month/new/1"]);
+          queryClient.invalidateQueries(["month/new/2"]);
+          queryClient.invalidateQueries(["month/feed"]);
+          queryClient.invalidateQueries(["month/activeinfo"]);
 
           queryClient.invalidateQueries(["topPosts"]);
           queryClient.invalidateQueries(["noticePosts"]);
@@ -84,11 +84,11 @@ const Post = {
     return useMutation(({ id, data }: { id: number; data: localPostData }) => Axios.patch(`/post/${id}`, data), {
       onSuccess: () => {
         queryClient.invalidateQueries(["user"]);
-        queryClient.invalidateQueries(["thisweek/end/liked"]);
-        queryClient.invalidateQueries(["thisweek/new/1"]);
-        queryClient.invalidateQueries(["thisweek/new/2"]);
-        queryClient.invalidateQueries(["thisweek/feed"]);
-        queryClient.invalidateQueries(["thisweek/activeinfo"]);
+        queryClient.invalidateQueries(["month/end/liked"]);
+        queryClient.invalidateQueries(["month/new/1"]);
+        queryClient.invalidateQueries(["month/new/2"]);
+        queryClient.invalidateQueries(["month/feed"]);
+        queryClient.invalidateQueries(["month/activeinfo"]);
 
         queryClient.invalidateQueries(["noticePosts"]);
         queryClient.invalidateQueries(["infoPosts"]);
@@ -120,11 +120,11 @@ const Post = {
     return useMutation((id: number) => Axios.delete(`post/${id}`), {
       onSuccess: () => {
         queryClient.invalidateQueries(["user"]);
-        queryClient.invalidateQueries(["thisweek/new/1"]);
-        queryClient.invalidateQueries(["thisweek/new/2"]);
-        queryClient.invalidateQueries(["thisweek/end/liked"]);
-        queryClient.invalidateQueries(["thisweek/feed"]);
-        queryClient.invalidateQueries(["thisweek/activeinfo"]);
+        queryClient.invalidateQueries(["month/new/1"]);
+        queryClient.invalidateQueries(["month/new/2"]);
+        queryClient.invalidateQueries(["month/end/liked"]);
+        queryClient.invalidateQueries(["month/feed"]);
+        queryClient.invalidateQueries(["month/activeinfo"]);
 
         queryClient.invalidateQueries(["topPosts"]);
         queryClient.invalidateQueries(["noticePosts"]);
@@ -144,8 +144,8 @@ const Post = {
         queryClient.invalidateQueries(["myCommPosts"]);
         queryClient.invalidateQueries(["myInfoPosts"]);
 
-        queryClient.invalidateQueries(["thisweek/new/1"]);
-        queryClient.invalidateQueries(["thisweek/new/2"]);
+        queryClient.invalidateQueries(["month/new/1"]);
+        queryClient.invalidateQueries(["month/new/2"]);
         toast.success("게시글 삭제 완료");
       },
       onError: (err: CustomError2) => {
@@ -160,7 +160,7 @@ const Post = {
       onSuccess: (res) => {
         queryClient.invalidateQueries(["user"]);
 
-        queryClient.invalidateQueries(["thisweek/end/liked"]);
+        queryClient.invalidateQueries(["month/end/liked"]);
 
         queryClient.invalidateQueries(["single"]);
         queryClient.invalidateQueries(["noticePosts"]);
@@ -195,7 +195,7 @@ const Post = {
       onSuccess: (res) => {
         queryClient.invalidateQueries(["user"]);
 
-        queryClient.invalidateQueries(["thisweek/end/liked"]);
+        queryClient.invalidateQueries(["month/end/liked"]);
 
         queryClient.invalidateQueries(["single"]);
         queryClient.invalidateQueries(["noticePosts"]);
