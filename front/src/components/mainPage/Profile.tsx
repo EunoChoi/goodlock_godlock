@@ -47,6 +47,7 @@ interface imageProps {
   src: string;
 }
 interface postProps {
+  id: number;
   User: userProps;
   Images: imageProps[];
   content: string;
@@ -59,8 +60,6 @@ interface user {
 }
 
 const Profile = () => {
-  const { push, pop, modalStack } = useModalStack();
-
   moment.locale("ko");
 
   const navigate = useNavigate();
@@ -535,18 +534,31 @@ const Profile = () => {
                 next={() => myInfoPosts.fetchNextPage()}
                 dataLength={myInfoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
-                {myInfoPosts?.data?.pages.map(
-                  (p) => (
-                    <Grid key={"grid" + p}>
-                      {p.map((v: postProps, i: number) => (
-                        <div id="item" key={"post" + i}>
-                          {v.content}
-                        </div>
-                      ))}
-                    </Grid>
-                  )
-                  // p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
-                )}
+                {myInfoPosts?.data?.pages.map((p) => (
+                  <Grid key={"grid" + p}>
+                    {p.map((v: postProps, i: number) => {
+                      if (v.Images.length >= 1) {
+                        return (
+                          <Img
+                            onClick={() => navigate(`/postview/${v.id}`)}
+                            id="imageItem"
+                            key={"post" + i}
+                            crop={true}
+                            src={`${v.Images[0].src}`}
+                            altImg={`${v.Images[0].src.replace(/\/thumb\//, "/original/")}`}
+                            alt="img"
+                          />
+                        );
+                      } else {
+                        return (
+                          <div onClick={() => navigate(`/postview/${v.id}`)} id="textItem" key={"post" + i}>
+                            <span>{v.content}</span>
+                          </div>
+                        );
+                      }
+                    })}
+                  </Grid>
+                ))}
               </InfiniteScroll>
             )}
           </Posts>
@@ -572,9 +584,31 @@ const Profile = () => {
                 next={() => myCommPosts.fetchNextPage()}
                 dataLength={myCommPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
-                {myCommPosts?.data?.pages.map((p) =>
-                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
-                )}
+                {myCommPosts?.data?.pages.map((p) => (
+                  <Grid key={"grid" + p}>
+                    {p.map((v: postProps, i: number) => {
+                      if (v.Images.length >= 1) {
+                        return (
+                          <Img
+                            onClick={() => navigate(`/postview/${v.id}`)}
+                            id="imageItem"
+                            key={"post" + i}
+                            crop={true}
+                            src={`${v.Images[0].src}`}
+                            altImg={`${v.Images[0].src.replace(/\/thumb\//, "/original/")}`}
+                            alt="img"
+                          />
+                        );
+                      } else {
+                        return (
+                          <div onClick={() => navigate(`/postview/${v.id}`)} id="textItem" key={"post" + i}>
+                            <span>{v.content}</span>
+                          </div>
+                        );
+                      }
+                    })}
+                  </Grid>
+                ))}
               </InfiniteScroll>
             )}
           </Posts>
@@ -589,15 +623,59 @@ const Grid = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  align-items: stretch;
+
   row-gap: 8px;
   column-gap: 8px;
+  margin-bottom: 8px;
 
-  #item {
+  #imageItem {
     width: 100%;
+    aspect-ratio: 1 / 1;
+
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  #textItem {
+    background-color: #fafafa;
+    width: 100;
     aspect-ratio: 1 / 1;
 
     border: 2px solid rgba(0, 0, 0, 0.05);
     border-radius: 8px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+    > span {
+      width: 80% !important;
+      overflow-x: hidden !important;
+      height: auto;
+
+      line-height: 1.3em;
+      font-size: 18px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.65);
+
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+      text-overflow: ellipsis;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 5 !important;
+      -webkit-box-orient: vertical;
+    }
+  }
+  @media (orientation: portrait) {
+    row-gap: 4px;
+    column-gap: 4px;
+    margin-bottom: 4px;
+    #textItem > span {
+      font-size: 16px;
+      -webkit-line-clamp: 4 !important; /* 원하는 줄 수 표시 */
+    }
   }
 `;
 const ProfileWrapper = styled.div`
@@ -1027,11 +1105,15 @@ const Posts = styled.div`
   width: 70%;
   height: auto;
 
+  .infinite-scroll-component__outerdiv {
+    width: 100%;
+  }
+
   * {
     flex-shrink: 0;
   }
   @media (orientation: portrait) or (max-height: 480px) {
-    width: 96vw;
+    width: 92vw;
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 80%;
