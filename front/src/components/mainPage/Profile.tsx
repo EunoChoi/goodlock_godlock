@@ -91,7 +91,7 @@ const Profile = () => {
   const [usertext, setUsertext] = useState<string>(user?.usertext);
 
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["My Info", "Followings", "Followers", "Tip Posts", "Free Posts"];
+  const category = ["My Info", "Tip Posts", "Free Posts", "Followings", "Followers"];
 
   //function
   const scrollToPill = () => {
@@ -109,11 +109,14 @@ const Profile = () => {
     });
   };
   const nickUpdateConfirm = (nickname: string) => {
-    const pattern = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,10}$/;
+    const pattern = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,8}$/;
     nickname = nickname?.toLowerCase();
-    console.log(nickname);
+    // console.log(nickname);
     if (!nickname.match(pattern)) {
-      toast.warning("2자 이상 10자 이하, 소문자 또는 숫자 또는 한글로 구성되어야 합니다.");
+      toast.warning("2자 이상 8자 이하, 소문자 또는 숫자 또는 한글로 구성되어야 합니다.");
+    } else if (nickname === user.nickname) {
+      // toast.warning("변경 내역이 없습니다.");
+      setNicknameInputToggle(false);
     } else {
       openNicknameUpdateConfirm({
         mainText: "닉네임을 변경하시겠습니까?",
@@ -425,101 +428,6 @@ const Profile = () => {
       )}
       {categoryNum === 1 && (
         <ContentWrapper>
-          <ContentBox width={500} padding={0}>
-            <ListTitle>
-              <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
-                <InsertEmoticonRoundedIcon fontSize="large" />
-              </Badge>
-              <div>Followings</div>
-            </ListTitle>
-
-            <List>
-              {user?.Followings?.length === 0 ? (
-                <EmptyUserNoti>
-                  <span>팔로잉 목록이 존재하지 않습니다.</span>
-                </EmptyUserNoti>
-              ) : (
-                user?.Followings?.map((v: user, i: number) => (
-                  <ListItem key={v.nickname + i}>
-                    <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
-                      {v.profilePic ? (
-                        <ProfilePic32
-                          crop={true}
-                          alt="ProfilePic"
-                          src={v.profilePic}
-                          altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
-                        />
-                      ) : (
-                        <ProfilePic32
-                          crop={true}
-                          alt="defaultProfilePic"
-                          src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                        />
-                      )}
-
-                      <span>{v.nickname}</span>
-                    </div>
-                    {isMobile || <span id="usertext">{v.usertext}</span>}
-
-                    <Button onClick={() => unFollowConfirm(v.id)}>
-                      <PersonRemoveIcon color="error" />
-                    </Button>
-                  </ListItem>
-                ))
-              )}
-            </List>
-          </ContentBox>
-        </ContentWrapper>
-      )}
-      {categoryNum === 2 && (
-        <ContentWrapper>
-          <ContentBox width={500} padding={0}>
-            <ListTitle>
-              <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
-                <InsertEmoticonOutlinedIcon fontSize="large" />
-              </Badge>
-              <div>Followers</div>
-            </ListTitle>
-
-            <List>
-              {user?.Followers?.length === 0 ? (
-                <EmptyUserNoti>
-                  <span>팔로워 목록이 존재하지 않습니다.</span>
-                </EmptyUserNoti>
-              ) : (
-                user?.Followers?.map((v: user, i: number) => (
-                  <ListItem key={v.nickname + i}>
-                    <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
-                      {v.profilePic ? (
-                        <ProfilePic32
-                          crop={true}
-                          alt="ProfilePic"
-                          src={v.profilePic}
-                          altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
-                        />
-                      ) : (
-                        <ProfilePic32
-                          crop={true}
-                          alt="ProfilePic"
-                          src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                        />
-                      )}
-                      <span>{v.nickname}</span>
-                    </div>
-                    {isMobile || <span id="usertext">{v.usertext}</span>}
-
-                    <Button onClick={() => followerDeleteConfirm(v.id)}>
-                      <RemoveCircleOutlinedIcon color="error" />
-                    </Button>
-                  </ListItem>
-                ))
-              )}
-            </List>
-          </ContentBox>
-        </ContentWrapper>
-      )}
-      {categoryNum === 3 && (
-        <ContentWrapper>
           <Posts>
             {myInfoPosts?.data?.pages[0].length === 0 && (
               <EmptyNoti>
@@ -568,7 +476,7 @@ const Profile = () => {
           </Posts>
         </ContentWrapper>
       )}
-      {categoryNum === 4 && (
+      {categoryNum === 2 && (
         <ContentWrapper>
           <Posts>
             {myCommPosts?.data?.pages[0].length === 0 && (
@@ -616,6 +524,101 @@ const Profile = () => {
               </InfiniteScroll>
             )}
           </Posts>
+        </ContentWrapper>
+      )}
+      {categoryNum === 3 && (
+        <ContentWrapper>
+          <ContentBox width={500} padding={0}>
+            <ListTitle>
+              <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
+                <InsertEmoticonRoundedIcon fontSize="large" />
+              </Badge>
+              <div>Followings</div>
+            </ListTitle>
+
+            <List>
+              {user?.Followings?.length === 0 ? (
+                <EmptyUserNoti>
+                  <span>팔로잉 목록이 존재하지 않습니다.</span>
+                </EmptyUserNoti>
+              ) : (
+                user?.Followings?.map((v: user, i: number) => (
+                  <ListItem key={v.nickname + i}>
+                    <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
+                      {v.profilePic ? (
+                        <ProfilePic32
+                          crop={true}
+                          alt="ProfilePic"
+                          src={v.profilePic}
+                          altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
+                        />
+                      ) : (
+                        <ProfilePic32
+                          crop={true}
+                          alt="defaultProfilePic"
+                          src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                        />
+                      )}
+
+                      <span>{v.nickname}</span>
+                    </div>
+                    {isMobile || <span id="usertext">{v.usertext}</span>}
+
+                    <Button onClick={() => unFollowConfirm(v.id)}>
+                      <PersonRemoveIcon color="error" />
+                    </Button>
+                  </ListItem>
+                ))
+              )}
+            </List>
+          </ContentBox>
+        </ContentWrapper>
+      )}
+      {categoryNum === 4 && (
+        <ContentWrapper>
+          <ContentBox width={500} padding={0}>
+            <ListTitle>
+              <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
+                <InsertEmoticonOutlinedIcon fontSize="large" />
+              </Badge>
+              <div>Followers</div>
+            </ListTitle>
+
+            <List>
+              {user?.Followers?.length === 0 ? (
+                <EmptyUserNoti>
+                  <span>팔로워 목록이 존재하지 않습니다.</span>
+                </EmptyUserNoti>
+              ) : (
+                user?.Followers?.map((v: user, i: number) => (
+                  <ListItem key={v.nickname + i}>
+                    <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
+                      {v.profilePic ? (
+                        <ProfilePic32
+                          crop={true}
+                          alt="ProfilePic"
+                          src={v.profilePic}
+                          altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
+                        />
+                      ) : (
+                        <ProfilePic32
+                          crop={true}
+                          alt="ProfilePic"
+                          src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                        />
+                      )}
+                      <span>{v.nickname}</span>
+                    </div>
+                    {isMobile || <span id="usertext">{v.usertext}</span>}
+
+                    <Button onClick={() => followerDeleteConfirm(v.id)}>
+                      <RemoveCircleOutlinedIcon color="error" />
+                    </Button>
+                  </ListItem>
+                ))
+              )}
+            </List>
+          </ContentBox>
         </ContentWrapper>
       )}
     </ProfileWrapper>

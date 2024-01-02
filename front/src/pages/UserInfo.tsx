@@ -57,7 +57,7 @@ const UserInfo = () => {
 
   const navigate = useNavigate();
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["Followings", "Followers", "Tip Posts", "Free Posts", "Bookmark"];
+  const category = ["Tip Posts", "Free Posts", "Bookmark", "Followings", "Followers"];
 
   const { Alert: FollowConfirm, openAlert: openFollowConfirm } = useAlert();
   const { Alert: UnFollowConfirm, openAlert: openUnFollowConfirm } = useAlert();
@@ -226,90 +226,6 @@ const UserInfo = () => {
         </MenuWrapper>
         {categoryNum === 0 && (
           <ContentWrapper>
-            <ContentBox>
-              <ListTitle>
-                <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
-                  <InsertEmoticonRoundedIcon fontSize="large" color="inherit" />
-                </Badge>
-                <div>Followings</div>
-              </ListTitle>
-              <List>
-                {targetUser?.Followings?.length === 0 ? (
-                  <EmptyUserNoti>
-                    <span>팔로잉 목록이 존재하지 않습니다.</span>
-                  </EmptyUserNoti>
-                ) : (
-                  targetUser?.Followings?.map((v: user, i: number) => (
-                    <ListItem key={v.nickname + i}>
-                      <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
-                        {v.profilePic ? (
-                          <ProfilePic32
-                            crop={true}
-                            alt="ProfilePic"
-                            src={v.profilePic}
-                            altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
-                          />
-                        ) : (
-                          <ProfilePic32
-                            crop={true}
-                            alt="defaultProfilePic"
-                            src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                          />
-                        )}
-                        <span>{v.nickname}</span>
-                      </div>
-                      {isMobile || <span id="usertext">{v.usertext}</span>}
-                    </ListItem>
-                  ))
-                )}
-              </List>
-            </ContentBox>
-          </ContentWrapper>
-        )}
-        {categoryNum === 1 && (
-          <ContentWrapper>
-            <ContentBox>
-              <ListTitle>
-                <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
-                  <InsertEmoticonOutlinedIcon fontSize="large" />
-                </Badge>
-                <div>Followers</div>
-              </ListTitle>
-              <List>
-                {targetUser?.Followers?.length === 0 ? (
-                  <EmptyUserNoti>
-                    <span>팔로워 목록이 존재하지 않습니다.</span>
-                  </EmptyUserNoti>
-                ) : (
-                  targetUser?.Followers?.map((v: user, i: number) => (
-                    <ListItem key={v.nickname + i}>
-                      <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
-                        {v.profilePic ? (
-                          <ProfilePic32
-                            crop={true}
-                            alt="ProfilePic"
-                            src={`${v.profilePic}`}
-                            altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
-                          />
-                        ) : (
-                          <ProfilePic32
-                            crop={true}
-                            alt="ProfilePic"
-                            src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                          />
-                        )}
-                        <span>{v.nickname}</span>
-                      </div>
-                      {isMobile || <span id="usertext">{v.usertext}</span>}
-                    </ListItem>
-                  ))
-                )}
-              </List>
-            </ContentBox>
-          </ContentWrapper>
-        )}
-        {categoryNum === 2 && (
-          <ContentWrapper>
             <Posts>
               {infoPosts?.data?.pages[0].length === 0 && (
                 <EmptyNoti>
@@ -358,7 +274,7 @@ const UserInfo = () => {
             </Posts>
           </ContentWrapper>
         )}
-        {categoryNum === 3 && (
+        {categoryNum === 1 && (
           <ContentWrapper>
             <Posts>
               {commPosts?.data?.pages[0].length === 0 && (
@@ -408,7 +324,7 @@ const UserInfo = () => {
             </Posts>
           </ContentWrapper>
         )}
-        {categoryNum === 4 && (
+        {categoryNum === 2 && (
           <ContentWrapper>
             <Posts>
               {likedPosts?.data?.pages[0].length === 0 && (
@@ -456,6 +372,90 @@ const UserInfo = () => {
                 </InfiniteScroll>
               )}
             </Posts>
+          </ContentWrapper>
+        )}
+        {categoryNum === 3 && (
+          <ContentWrapper>
+            <ContentBox>
+              <ListTitle>
+                <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
+                  <InsertEmoticonRoundedIcon fontSize="large" color="inherit" />
+                </Badge>
+                <div>Followings</div>
+              </ListTitle>
+              <List>
+                {targetUser?.Followings?.length === 0 ? (
+                  <EmptyUserNoti>
+                    <span>팔로잉 목록이 존재하지 않습니다.</span>
+                  </EmptyUserNoti>
+                ) : (
+                  targetUser?.Followings?.map((v: user, i: number) => (
+                    <ListItem key={v.nickname + i}>
+                      <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
+                        {v.profilePic ? (
+                          <ProfilePic32
+                            crop={true}
+                            alt="ProfilePic"
+                            src={v.profilePic}
+                            altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
+                          />
+                        ) : (
+                          <ProfilePic32
+                            crop={true}
+                            alt="defaultProfilePic"
+                            src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                          />
+                        )}
+                        <span>{v.nickname}</span>
+                      </div>
+                      {isMobile || <span id="usertext">{v.usertext}</span>}
+                    </ListItem>
+                  ))
+                )}
+              </List>
+            </ContentBox>
+          </ContentWrapper>
+        )}
+        {categoryNum === 4 && (
+          <ContentWrapper>
+            <ContentBox>
+              <ListTitle>
+                <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
+                  <InsertEmoticonOutlinedIcon fontSize="large" />
+                </Badge>
+                <div>Followers</div>
+              </ListTitle>
+              <List>
+                {targetUser?.Followers?.length === 0 ? (
+                  <EmptyUserNoti>
+                    <span>팔로워 목록이 존재하지 않습니다.</span>
+                  </EmptyUserNoti>
+                ) : (
+                  targetUser?.Followers?.map((v: user, i: number) => (
+                    <ListItem key={v.nickname + i}>
+                      <div onClick={() => navigate(`/userinfo/${v?.id}/cat/0`)}>
+                        {v.profilePic ? (
+                          <ProfilePic32
+                            crop={true}
+                            alt="ProfilePic"
+                            src={`${v.profilePic}`}
+                            altImg={v.profilePic.replace(/\/thumb\//, "/original/")}
+                          />
+                        ) : (
+                          <ProfilePic32
+                            crop={true}
+                            alt="ProfilePic"
+                            src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                          />
+                        )}
+                        <span>{v.nickname}</span>
+                      </div>
+                      {isMobile || <span id="usertext">{v.usertext}</span>}
+                    </ListItem>
+                  ))
+                )}
+              </List>
+            </ContentBox>
           </ContentWrapper>
         )}
       </Wrapper>
@@ -644,7 +644,7 @@ const UserInfoWrapper = styled.div`
   }
   #userstate {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 500;
     color: rgba(0, 0, 0, 0.65);
     margin-bottom: 48px;
   }

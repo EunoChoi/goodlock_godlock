@@ -118,8 +118,8 @@ const SignUp = ({ setToggle }: Props) => {
               message: "닉네임을 입력해주세요."
             },
             maxLength: {
-              value: 10,
-              message: "최대 10자 입력가능합니다."
+              value: 8,
+              message: "최대 8자 입력가능합니다."
             },
             pattern: {
               value: /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,10}$/i,
