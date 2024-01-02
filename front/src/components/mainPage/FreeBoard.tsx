@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -47,6 +47,24 @@ const FreeBoard = () => {
   const pillSub = ["All", "Feed"];
   const [searchComm, setSearchComm] = useState<string>("");
 
+  const { search } = useLocation();
+  useEffect(() => {
+    const query = decodeURI(search.split("?search=")[1]);
+    if (search) {
+      setTimeout(() => {
+        setToggle(2);
+        setSearchComm(query);
+        window.scrollTo({
+          top: scrollTarget.current?.scrollHeight,
+          left: 0,
+          behavior: "smooth"
+        });
+      }, 100);
+      setTimeout(() => {
+        searchCommPosts.refetch();
+      }, 200);
+    }
+  }, [search]);
   useEffect(() => {
     const hash = decodeURI(window.location.hash);
     if (hash) {

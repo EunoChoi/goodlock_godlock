@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -48,6 +48,25 @@ const Tips = () => {
   const pillSub = ["All", "Ongoing", "Feed"];
   const pillWrapperRef = useRef<HTMLInputElement>(null);
 
+  const { search } = useLocation();
+  useEffect(() => {
+    if (search) {
+      console.log(search);
+      const query = decodeURI(search.split("?search=")[1]);
+      setTimeout(() => {
+        setToggle(3);
+        setSearchInfo(query);
+        window.scrollTo({
+          top: scrollTarget.current?.scrollHeight,
+          left: 0,
+          behavior: "smooth"
+        });
+      }, 100);
+      setTimeout(() => {
+        searchInfoPosts.refetch();
+      }, 200);
+    }
+  }, [search]);
   useEffect(() => {
     const hash = decodeURI(window.location.hash);
     if (hash) {
