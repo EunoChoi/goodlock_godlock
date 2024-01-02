@@ -255,6 +255,9 @@ const Tips = () => {
             toggle={toggle}
             onClick={() => {
               setToggle(i);
+              navigate({
+                pathname: "/main/1"
+              });
               window.scrollTo({
                 top: scrollTarget.current?.scrollHeight,
                 left: 0,

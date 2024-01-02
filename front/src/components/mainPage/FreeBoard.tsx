@@ -228,6 +228,9 @@ const FreeBoard = () => {
             toggle={toggle}
             onClick={() => {
               setToggle(i);
+              navigate({
+                pathname: "/main/2"
+              });
               window.scrollTo({
                 top: scrollTarget.current?.scrollHeight,
                 left: 0,

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -13,6 +13,7 @@ import IsMobile from "../../functions/IsMobile";
 import Post from "../common/Post";
 
 //mui
+import SearchIcon from "@mui/icons-material/Search";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -20,8 +21,9 @@ import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import MessageIcon from "@mui/icons-material/Message";
 import Img from "../common/Img";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Hashtag from "../../functions/reactQuery/Hashtag";
+import { toast } from "react-toastify";
 
 interface userProps {
   email: string;
@@ -43,6 +45,8 @@ const Home = () => {
   const scrollTarget = useRef<HTMLDivElement>(null);
   const pillSub = ["Notice"];
   const [toggle, setToggle] = useState<number>(0);
+  const [searchNotice, setSearchNotice] = useState<string>("");
+
   const navigate = useNavigate();
 
   const isMobile = IsMobile();
@@ -50,6 +54,26 @@ const Home = () => {
   const user = User.get().data;
   const tipHashtag = Hashtag.get({ type: 1, limit: 5 }).data;
   const freeHashtag = Hashtag.get({ type: 2, limit: 5 }).data;
+
+  const { search } = useLocation();
+  useEffect(() => {
+    if (search) {
+      console.log(search);
+      const query = decodeURI(search.split("?search=")[1]);
+      setTimeout(() => {
+        setToggle(1);
+        setSearchNotice(query);
+        window.scrollTo({
+          top: scrollTarget.current?.scrollHeight,
+          left: 0,
+          behavior: "smooth"
+        });
+      }, 100);
+      setTimeout(() => {
+        searchNoticePosts.refetch();
+      }, 200);
+    }
+  }, [search]);
 
   const scrollTargerheight = () => {
     window.scrollTo({
@@ -79,6 +103,24 @@ const Home = () => {
     Axios.get("post/month/top", { params: { type: [1, 2] } }).then((v) => v.data)
   ).data;
 
+  //load search posts
+  const searchNoticePosts = useInfiniteQuery(
+    ["searchNoticePosts"],
+    ({ pageParam = 1 }) => {
+      if (searchNotice.length >= 1)
+        return Axios.get("post/search", { params: { type: 0, search: searchNotice, pageParam, tempDataNum: 5 } }).then(
+          (res) => res.data
+        );
+      else return [];
+    },
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.length === 0 ? undefined : allPages.length + 1;
+      },
+      refetchOnWindowFocus: false,
+      enabled: true
+    }
+  );
   //load posts
   const noticePosts = useInfiniteQuery(
     ["noticePosts"],
@@ -194,12 +236,48 @@ const Home = () => {
             toggle={toggle}
             onClick={() => {
               setToggle(i);
+              navigate({
+                pathname: "/main/0"
+              });
               scrollTargerheight();
             }}
           >
             {v}
           </MainPageStyle.Pill.Sub>
         ))}
+
+        <MainPageStyle.Pill.Search
+          toggle={toggle === 1}
+          onClick={() => {
+            setToggle(1);
+            window.scrollTo({
+              top: scrollTarget.current?.scrollHeight,
+              left: 0,
+              behavior: "smooth"
+            });
+          }}
+        >
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (searchNotice.length !== 0) {
+                navigate({
+                  pathname: "/main/0",
+                  search: `?search=${searchNotice}`
+                });
+              } else toast.error(`검색어는 최소 1글자 이상 필요합니다.`);
+            }}
+          >
+            <SearchIcon />
+            <input
+              value={searchNotice}
+              onChange={(e) => {
+                setSearchNotice(e.target.value);
+              }}
+              placeholder="검색"
+            />
+          </form>
+        </MainPageStyle.Pill.Search>
       </MainPageStyle.Pill.Wrapper>
 
       <MainPageStyle.HomeEl>
@@ -228,8 +306,32 @@ const Home = () => {
               </InfiniteScroll>
             </>
           )}
-          {toggle === 1 && ( //관심 팁
-            <></>
+          {toggle === 1 && ( //검색
+            <>
+              {/* 검색 결과가 존재하지 않는 경우 */}
+              {searchNoticePosts.data?.pages[0].length === 0 && (
+                <MainPageStyle.EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>검색 결과가 존재하지 않습니다.</span>
+                </MainPageStyle.EmptyNoti>
+              )}
+
+              <InfiniteScroll
+                // scrollableTarget="scrollWrapper"
+                hasMore={searchNoticePosts.hasNextPage || false}
+                loader={
+                  <MainPageStyle.LoadingIconWrapper>
+                    <CircularProgress size={96} color="inherit" />
+                  </MainPageStyle.LoadingIconWrapper>
+                }
+                next={() => searchNoticePosts.fetchNextPage()}
+                dataLength={searchNoticePosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {searchNoticePosts?.data?.pages.map((p) =>
+                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                )}
+              </InfiniteScroll>
+            </>
           )}
         </div>
 
