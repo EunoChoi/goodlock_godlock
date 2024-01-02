@@ -177,7 +177,7 @@ const Profile = () => {
   const myInfoPosts = useInfiniteQuery(
     ["myInfoPosts"],
     ({ pageParam = 1 }) =>
-      Axios.get("post/my", { params: { type: 1, pageParam, tempDataNum: 5 } }).then((res) => res.data),
+      Axios.get("post/my", { params: { type: 1, pageParam, tempDataNum: 9 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -187,7 +187,7 @@ const Profile = () => {
   const myCommPosts = useInfiniteQuery(
     ["myCommPosts"],
     ({ pageParam = 1 }) =>
-      Axios.get("post/my", { params: { type: 2, pageParam, tempDataNum: 5 } }).then((res) => res.data),
+      Axios.get("post/my", { params: { type: 2, pageParam, tempDataNum: 9 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -535,8 +535,17 @@ const Profile = () => {
                 next={() => myInfoPosts.fetchNextPage()}
                 dataLength={myInfoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
               >
-                {myInfoPosts?.data?.pages.map((p) =>
-                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
+                {myInfoPosts?.data?.pages.map(
+                  (p) => (
+                    <Grid key={"grid" + p}>
+                      {p.map((v: postProps, i: number) => (
+                        <div id="item" key={"post" + i}>
+                          {v.content}
+                        </div>
+                      ))}
+                    </Grid>
+                  )
+                  // p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
                 )}
               </InfiniteScroll>
             )}
@@ -576,7 +585,21 @@ const Profile = () => {
 };
 
 export default Profile;
+const Grid = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  row-gap: 8px;
+  column-gap: 8px;
 
+  #item {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+
+    border: 2px solid rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+  }
+`;
 const ProfileWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -642,6 +665,7 @@ const ProfileTitle = styled.div`
   justify-content: center;
   align-items: start;
   width: 500px;
+  width: 70%;
 
   margin-top: 0px;
   padding-top: 64px;
@@ -652,7 +676,7 @@ const ProfileTitle = styled.div`
     line-height: 28px;
   }
   > span:nth-child(2) {
-    margin-top: 32px;
+    margin-top: 8px;
   }
   > span:nth-child(3) {
     margin-bottom: 24px;
@@ -668,7 +692,7 @@ const ProfileTitle = styled.div`
   @media (orientation: landscape) and (max-height: 480px) {
     padding-top: 32px;
     margin-top: 0;
-    width: 400px;
+    width: 80%;
     span {
       padding-left: 0;
     }
@@ -678,7 +702,7 @@ const Title = styled.div`
   font-weight: 600;
   font-weight: 700;
   font-size: 44px;
-  line-height: 36px;
+  /* line-height: 36px; */
 
   color: #cf9dc9;
   color: #bc9dcf;
@@ -698,13 +722,14 @@ const MenuWrapper = styled.div`
   align-items: center;
   height: auto;
   width: 500px;
+  width: 70%;
 
   position: sticky;
   top: 0px;
 
   padding: 24px 0;
 
-  margin-bottom: 12px;
+  /* margin-bottom: 12px; */
   z-index: 85;
   /* background: rgb(255, 255, 255);
   background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(245, 245, 245, 1) 11%, rgba(245, 245, 245, 1) 100%); */
@@ -720,7 +745,7 @@ const MenuWrapper = styled.div`
     top: 48px;
     top: 46px;
     width: 100vw;
-    padding: 12px 0;
+    padding: 20px 0;
     /* background: rgb(255, 255, 255);
     background: linear-gradient(
       0deg,
@@ -731,6 +756,7 @@ const MenuWrapper = styled.div`
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 400px;
+    width: 80%;
     top: 0px;
     padding: 18px 0;
   }
@@ -745,20 +771,22 @@ const ContentWrapper = styled.div`
 
   width: 100%;
   //header : 48px
-  //pill wrapper : 68px
-  min-height: calc(100vh - 68px);
+  //pill wrapper : 48+32
+  min-height: calc(100vh - 80px);
 
   @media (orientation: portrait) or (max-height: 480px) {
     //haeder height : 48px
-    //pill wrapper : 68px
-    min-height: calc(100vh - 48px - 68px);
+    //pill wrapper : 68px + 16
+    min-height: calc(100vh - 48px - 68px - 16px);
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 60vw;
+    /* width: 60vw; */
+    width: 100%;
   }
 `;
-const ContentBox = styled.div<{ width: number; padding: number }>`
+const ContentBox = styled.div<{ width?: number; padding?: number }>`
   width: ${(props) => props.width + "px"};
+  width: 70%;
   border-radius: 6px;
   min-height: calc(100vh - 104px - 24px);
   padding: 40px ${(props) => props.padding + "px"};
@@ -789,6 +817,7 @@ const ContentBox = styled.div<{ width: number; padding: number }>`
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 400px;
+    width: 80%;
     min-height: 400px;
     margin-bottom: 32px;
   }
@@ -995,10 +1024,17 @@ const Posts = styled.div`
 
   padding-top: 4px;
 
-  width: 100%;
+  width: 70%;
   height: auto;
+
   * {
     flex-shrink: 0;
+  }
+  @media (orientation: portrait) or (max-height: 480px) {
+    width: 96vw;
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 80%;
   }
 `;
 const ProfilePicWrapper = styled.div`

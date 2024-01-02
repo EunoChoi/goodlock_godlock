@@ -68,7 +68,7 @@ const Gallery = () => {
     <Wrapper>
       <TextWrapper ref={scrollTarget}>
         <MainPageStyle.TextWrapper_Title>Gallery</MainPageStyle.TextWrapper_Title>
-        <MainPageStyle.Space height={32}></MainPageStyle.Space>
+        <MainPageStyle.Space height={8}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_Normal>모든 이미지를 모아서 보여줍니다.</MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.TextWrapper_Normal>포스트를 보려면 이미지를 눌러주세요.</MainPageStyle.TextWrapper_Normal>
       </TextWrapper>
@@ -184,7 +184,7 @@ const ImageListSC = styled(ImageList)`
 const Images = styled.div`
   animation: ${Animation.smoothAppear} 1s ease-in-out;
 
-  width: 90%;
+  width: 70%;
   min-height: 100vh;
   .MuiImageListItem-img {
     border: solid 2px rgba(0, 0, 0, 0.05);
@@ -230,7 +230,7 @@ const Pill = {
     padding-bottom: 12px; */
     margin-bottom: 12px;
 
-    width: 90%;
+    width: 70%;
     overflow-x: scroll;
 
     @media (orientation: portrait) or (max-height: 480px) {
@@ -332,7 +332,7 @@ const Pill = {
 };
 
 const TextWrapper = styled.div`
-  width: 90%;
+  width: 70%;
   padding-top: 64px;
   padding-bottom: 24px;
 

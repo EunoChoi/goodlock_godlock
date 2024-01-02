@@ -126,17 +126,17 @@ const Home = () => {
         <MainPageStyle.TextWrapper_Title>
           {shortNickname(user?.nickname)}님 <EmojiPeopleIcon style={{ fontSize: "64px" }}></EmojiPeopleIcon>
         </MainPageStyle.TextWrapper_Title>
-        <MainPageStyle.Space height={32}></MainPageStyle.Space>
+        <MainPageStyle.Space height={8}></MainPageStyle.Space>
 
         <MainPageStyle.TextWrapper_Normal>굿락갓락은 나만의 감성을 더하는</MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.TextWrapper_Normal>갤럭시&굿락 팁 공유 사이트입니다. :)</MainPageStyle.TextWrapper_Normal>
 
-        <MainPageStyle.Space height={32}></MainPageStyle.Space>
+        <MainPageStyle.Space height={48}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_Bold>
           <CalendarMonthIcon id="icon" fontSize="large" />
           this month
         </MainPageStyle.TextWrapper_Bold>
-        <MainPageStyle.Space height={20}></MainPageStyle.Space>
+        <MainPageStyle.Space height={8}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
           {/* {monthNewInfo?.len + monthNewComm?.len} Tip&Free Posts */}
@@ -164,7 +164,6 @@ const Home = () => {
                   <MainPageStyle.TopPostWrapper key={i}>
                     <MainPageStyle.TopPost
                       onClick={() => {
-                        // console.log(v);
                         navigate(`/postview/${v?.id}`);
                       }}
                     >

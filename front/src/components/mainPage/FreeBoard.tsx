@@ -136,16 +136,16 @@ const FreeBoard = () => {
     <MainPageStyle.MainEl>
       <MainPageStyle.TextWrapper ref={scrollTarget}>
         <MainPageStyle.TextWrapper_Title>Free Board</MainPageStyle.TextWrapper_Title>
-        <MainPageStyle.Space height={32}></MainPageStyle.Space>
+        <MainPageStyle.Space height={8}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_Normal>자유 주제로 소통이 가능한 게시판입니다.</MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.TextWrapper_Normal>공감과 배려를 보여주세요 :)</MainPageStyle.TextWrapper_Normal>
-        <MainPageStyle.Space height={32}></MainPageStyle.Space>
+        <MainPageStyle.Space height={48}></MainPageStyle.Space>
 
         <MainPageStyle.TextWrapper_Bold>
           <CalendarMonthIcon id="icon" fontSize="large" />
           this month
         </MainPageStyle.TextWrapper_Bold>
-        <MainPageStyle.Space height={20} />
+        <MainPageStyle.Space height={8} />
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
           {monthNew} Free • {monthFeed} Feed Posts

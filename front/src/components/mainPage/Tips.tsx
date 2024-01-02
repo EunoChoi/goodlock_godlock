@@ -160,18 +160,18 @@ const Tips = () => {
       <MainPageStyle.TextWrapper ref={scrollTarget}>
         <MainPageStyle.TextWrapper_Title>Tip Board</MainPageStyle.TextWrapper_Title>
 
-        <MainPageStyle.Space height={32}></MainPageStyle.Space>
+        <MainPageStyle.Space height={8}></MainPageStyle.Space>
 
         <MainPageStyle.TextWrapper_Normal>굿락 팁과 설정을 공유하는 게시판입니다.</MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.TextWrapper_Normal>GTS를 활용하면 공유가 쉬워져요!</MainPageStyle.TextWrapper_Normal>
 
-        <MainPageStyle.Space height={32}></MainPageStyle.Space>
+        <MainPageStyle.Space height={48}></MainPageStyle.Space>
 
         <MainPageStyle.TextWrapper_Bold>
           <CalendarMonthIcon id="icon" fontSize="large" />
           this month
         </MainPageStyle.TextWrapper_Bold>
-        <MainPageStyle.Space height={20} />
+        <MainPageStyle.Space height={8} />
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
           {monthNewInfo} Tip • {monthOngoing} Ongoing • {monthFeed} Feed Posts

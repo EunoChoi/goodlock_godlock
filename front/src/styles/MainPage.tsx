@@ -427,8 +427,8 @@ const TopPostWrapper = styled.div`
   }
 `;
 const TopPost = styled.div`
-  width: 130px;
-  height: 130px;
+  width: 120px;
+  height: 120px;
   flex-shrink: 0;
 
   background-color: #fafafa;
