@@ -91,7 +91,7 @@ const Profile = () => {
   const [usertext, setUsertext] = useState<string>(user?.usertext);
 
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["My Info", "Tip Posts", "Free Posts", "Followings", "Followers"];
+  const category = ["My Info", "Tip Posts", "Free Posts", "Bookmark", "Like Posts", "Followings", "Followers"];
 
   //function
   const scrollToPill = () => {
@@ -198,6 +198,26 @@ const Profile = () => {
       }
     }
   );
+  const bookmarkPosts = useInfiniteQuery(
+    ["bookmarkPosts"],
+    ({ pageParam = 1 }) =>
+      Axios.get("post/liked", { params: { type: 1, pageParam, tempDataNum: 9 } }).then((res) => res.data),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.length === 0 ? undefined : allPages.length + 1;
+      }
+    }
+  );
+  const likePosts = useInfiniteQuery(
+    ["likePosts"],
+    ({ pageParam = 1 }) =>
+      Axios.get("post/liked", { params: { type: 2, pageParam, tempDataNum: 9 } }).then((res) => res.data),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.length === 0 ? undefined : allPages.length + 1;
+      }
+    }
+  );
 
   //useMutation
   const logout = User.logout();
@@ -210,7 +230,7 @@ const Profile = () => {
     const menuWrapper = document.getElementById("menuWrapper");
     const width = menuWrapper?.scrollWidth;
     if (width) {
-      menuWrapper?.scrollTo({ top: 0, left: (width / 5) * categoryNum - 70, behavior: "smooth" });
+      menuWrapper?.scrollTo({ top: 0, left: (width / 7) * categoryNum - 70, behavior: "smooth" });
     }
     setUsertextInputToggle(false);
     setNicknameInputToggle(false);
@@ -223,7 +243,7 @@ const Profile = () => {
   }, [imageChangeModal]);
 
   useEffect(() => {
-    if (categoryNum >= 0 && categoryNum <= 4) {
+    if (categoryNum >= 0 && categoryNum <= 6) {
       console.log("올바른 catagory");
     } else {
       navigate("/404");
@@ -528,6 +548,106 @@ const Profile = () => {
       )}
       {categoryNum === 3 && (
         <ContentWrapper>
+          <Posts>
+            {bookmarkPosts?.data?.pages[0].length === 0 && (
+              <EmptyNoti>
+                <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                <span>포스트가 존재하지 않습니다.</span>
+              </EmptyNoti>
+            )}
+            {bookmarkPosts?.data?.pages[0].length !== 0 && (
+              <InfiniteScroll
+                hasMore={bookmarkPosts.hasNextPage || false}
+                loader={
+                  <LoadingIconWrapper>
+                    <CircularProgress size={96} color="inherit" />
+                  </LoadingIconWrapper>
+                }
+                next={() => bookmarkPosts.fetchNextPage()}
+                dataLength={bookmarkPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {bookmarkPosts?.data?.pages.map((p) => (
+                  <Grid key={"grid" + p}>
+                    {p.map((v: postProps, i: number) => {
+                      if (v.Images.length >= 1) {
+                        return (
+                          <Img
+                            onClick={() => navigate(`/postview/${v.id}`)}
+                            id="imageItem"
+                            key={"post" + i}
+                            crop={true}
+                            src={`${v.Images[0].src}`}
+                            altImg={`${v.Images[0].src.replace(/\/thumb\//, "/original/")}`}
+                            alt="img"
+                          />
+                        );
+                      } else {
+                        return (
+                          <div onClick={() => navigate(`/postview/${v.id}`)} id="textItem" key={"post" + i}>
+                            <span>{v.content}</span>
+                          </div>
+                        );
+                      }
+                    })}
+                  </Grid>
+                ))}
+              </InfiniteScroll>
+            )}
+          </Posts>
+        </ContentWrapper>
+      )}
+      {categoryNum === 4 && (
+        <ContentWrapper>
+          <Posts>
+            {likePosts?.data?.pages[0].length === 0 && (
+              <EmptyNoti>
+                <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                <span>포스트가 존재하지 않습니다.</span>
+              </EmptyNoti>
+            )}
+            {likePosts?.data?.pages[0].length !== 0 && (
+              <InfiniteScroll
+                hasMore={likePosts.hasNextPage || false}
+                loader={
+                  <LoadingIconWrapper>
+                    <CircularProgress size={96} color="inherit" />
+                  </LoadingIconWrapper>
+                }
+                next={() => likePosts.fetchNextPage()}
+                dataLength={likePosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+              >
+                {likePosts?.data?.pages.map((p) => (
+                  <Grid key={"grid" + p}>
+                    {p.map((v: postProps, i: number) => {
+                      if (v.Images.length >= 1) {
+                        return (
+                          <Img
+                            onClick={() => navigate(`/postview/${v.id}`)}
+                            id="imageItem"
+                            key={"post" + i}
+                            crop={true}
+                            src={`${v.Images[0].src}`}
+                            altImg={`${v.Images[0].src.replace(/\/thumb\//, "/original/")}`}
+                            alt="img"
+                          />
+                        );
+                      } else {
+                        return (
+                          <div onClick={() => navigate(`/postview/${v.id}`)} id="textItem" key={"post" + i}>
+                            <span>{v.content}</span>
+                          </div>
+                        );
+                      }
+                    })}
+                  </Grid>
+                ))}
+              </InfiniteScroll>
+            )}
+          </Posts>
+        </ContentWrapper>
+      )}
+      {categoryNum === 5 && (
+        <ContentWrapper>
           <ContentBox width={500} padding={0}>
             <ListTitle>
               <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
@@ -574,7 +694,7 @@ const Profile = () => {
           </ContentBox>
         </ContentWrapper>
       )}
-      {categoryNum === 4 && (
+      {categoryNum === 6 && (
         <ContentWrapper>
           <ContentBox width={500} padding={0}>
             <ListTitle>

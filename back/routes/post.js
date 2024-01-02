@@ -552,7 +552,7 @@ router.get("/my", tokenCheck, async (req, res) => {
 })
 //load posts - my liked
 router.get("/liked", tokenCheck, async (req, res) => {
-  const { pageParam, tempDataNum } = req.query;
+  const { type, pageParam, tempDataNum } = req.query;
   try {
     const UserId = req.currentUserId;
     const likedPosts = await Post.findAll({
@@ -565,7 +565,7 @@ router.get("/liked", tokenCheck, async (req, res) => {
     })
     const Posts = await Post.findAll({
       where: [{
-        type: 1,
+        type,
         id: { [Op.in]: likedPosts.map(v => v.id) }
       }],
       // limit: 10,
@@ -704,7 +704,7 @@ router.get("/user", tokenCheck, async (req, res) => {
 })
 //load posts - target user bookmarked tip
 router.get("/user/liked", tokenCheck, async (req, res) => {
-  const { id } = req.query;
+  const { id, type } = req.query;
   const { pageParam, tempDataNum } = req.query;
 
   try {
@@ -718,7 +718,7 @@ router.get("/user/liked", tokenCheck, async (req, res) => {
     })
     const Posts = await Post.findAll({
       where: [{
-        type: 1,
+        type,
         id: { [Op.in]: likedPosts.map(v => v.id) }
       }],
       // limit: 10,

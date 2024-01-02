@@ -41,7 +41,7 @@ interface postProps {
 
 const Home = () => {
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const pillSub = ["Notice", "Bookmark Tip"];
+  const pillSub = ["Notice"];
   const [toggle, setToggle] = useState<number>(0);
   const navigate = useNavigate();
 
@@ -90,16 +90,7 @@ const Home = () => {
       }
     }
   );
-  const likedPosts = useInfiniteQuery(
-    ["likedPosts"],
-    ({ pageParam = 1 }) =>
-      Axios.get("post/liked", { params: { type: 0, pageParam, tempDataNum: 5 } }).then((res) => res.data),
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        return lastPage.length === 0 ? undefined : allPages.length + 1;
-      }
-    }
-  );
+
   const shortNickname = (nick: string) => {
     if (nick?.length >= 9) return nick.slice(0, 8) + "...";
     else return nick;
@@ -238,28 +229,7 @@ const Home = () => {
             </>
           )}
           {toggle === 1 && ( //관심 팁
-            <>
-              {likedPosts.data?.pages[0].length === 0 && (
-                <MainPageStyle.EmptyNoti>
-                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
-                  <span>포스트가 존재하지 않습니다.</span>
-                </MainPageStyle.EmptyNoti>
-              )}
-              <InfiniteScroll
-                hasMore={likedPosts.hasNextPage || false}
-                loader={
-                  <MainPageStyle.LoadingIconWrapper>
-                    <CircularProgress size={96} color="inherit" />
-                  </MainPageStyle.LoadingIconWrapper>
-                }
-                next={() => likedPosts.fetchNextPage()}
-                dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
-              >
-                {likedPosts?.data?.pages?.map((p) =>
-                  p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
-                )}
-              </InfiniteScroll>
-            </>
+            <></>
           )}
         </div>
 

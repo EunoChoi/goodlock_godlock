@@ -57,7 +57,7 @@ const UserInfo = () => {
 
   const navigate = useNavigate();
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["Tip Posts", "Free Posts", "Bookmark", "Followings", "Followers"];
+  const category = ["Tip Posts", "Free Posts", "Bookmark", "Like Posts", "Followings", "Followers"];
 
   const { Alert: FollowConfirm, openAlert: openFollowConfirm } = useAlert();
   const { Alert: UnFollowConfirm, openAlert: openUnFollowConfirm } = useAlert();
@@ -92,10 +92,20 @@ const UserInfo = () => {
   };
 
   //bookmarked tips
-  const likedPosts = useInfiniteQuery(
-    ["userLikedPosts"],
+  const bookmarkPosts = useInfiniteQuery(
+    ["bookmarkPosts"],
     ({ pageParam = 1 }) =>
-      Axios.get("post/user/liked", { params: { id, pageParam, tempDataNum: 9 } }).then((res) => res.data),
+      Axios.get("post/user/liked", { params: { type: 1, id, pageParam, tempDataNum: 9 } }).then((res) => res.data),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.length === 0 ? undefined : allPages.length + 1;
+      }
+    }
+  );
+  const likePosts = useInfiniteQuery(
+    ["likePosts"],
+    ({ pageParam = 1 }) =>
+      Axios.get("post/user/liked", { params: { type: 2, id, pageParam, tempDataNum: 9 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -130,18 +140,18 @@ const UserInfo = () => {
       behavior: "smooth"
     });
     refetch();
-    likedPosts.refetch();
+    bookmarkPosts.refetch();
     infoPosts.refetch();
     commPosts.refetch();
   }, [id]);
 
   useEffect(() => {
-    if (categoryNum >= 0 && categoryNum < 5) {
+    if (categoryNum >= 0 && categoryNum <= 5) {
       // console.log("올바른 링크 접근");
       const menuWrapper = document.getElementById("menuWrapper");
       const width = menuWrapper?.scrollWidth;
       if (width) {
-        menuWrapper?.scrollTo({ top: 0, left: (width / 5) * categoryNum - 70, behavior: "smooth" });
+        menuWrapper?.scrollTo({ top: 0, left: (width / 6) * categoryNum - 70, behavior: "smooth" });
       }
     } else {
       navigate("/404");
@@ -327,24 +337,24 @@ const UserInfo = () => {
         {categoryNum === 2 && (
           <ContentWrapper>
             <Posts>
-              {likedPosts?.data?.pages[0].length === 0 && (
+              {bookmarkPosts?.data?.pages[0].length === 0 && (
                 <EmptyNoti>
                   <SentimentVeryDissatisfiedIcon fontSize="inherit" />
                   <span>포스트가 존재하지 않습니다.</span>
                 </EmptyNoti>
               )}
-              {likedPosts?.data?.pages[0].length !== 0 && (
+              {bookmarkPosts?.data?.pages[0].length !== 0 && (
                 <InfiniteScroll
-                  hasMore={likedPosts.hasNextPage || false}
+                  hasMore={bookmarkPosts.hasNextPage || false}
                   loader={
                     <LoadingIconWrapper>
                       <CircularProgress size={96} color="inherit" />
                     </LoadingIconWrapper>
                   }
-                  next={() => likedPosts.fetchNextPage()}
-                  dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+                  next={() => bookmarkPosts.fetchNextPage()}
+                  dataLength={bookmarkPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
-                  {likedPosts?.data?.pages.map((p) => (
+                  {bookmarkPosts?.data?.pages.map((p) => (
                     <Grid key={"grid" + p}>
                       {p.map((v: postProps, i: number) => {
                         if (v.Images.length >= 1) {
@@ -375,6 +385,56 @@ const UserInfo = () => {
           </ContentWrapper>
         )}
         {categoryNum === 3 && (
+          <ContentWrapper>
+            <Posts>
+              {likePosts?.data?.pages[0].length === 0 && (
+                <EmptyNoti>
+                  <SentimentVeryDissatisfiedIcon fontSize="inherit" />
+                  <span>포스트가 존재하지 않습니다.</span>
+                </EmptyNoti>
+              )}
+              {likePosts?.data?.pages[0].length !== 0 && (
+                <InfiniteScroll
+                  hasMore={likePosts.hasNextPage || false}
+                  loader={
+                    <LoadingIconWrapper>
+                      <CircularProgress size={96} color="inherit" />
+                    </LoadingIconWrapper>
+                  }
+                  next={() => likePosts.fetchNextPage()}
+                  dataLength={likePosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
+                >
+                  {likePosts?.data?.pages.map((p) => (
+                    <Grid key={"grid" + p}>
+                      {p.map((v: postProps, i: number) => {
+                        if (v.Images.length >= 1) {
+                          return (
+                            <Img
+                              onClick={() => navigate(`/postview/${v.id}`)}
+                              id="imageItem"
+                              key={"post" + i}
+                              crop={true}
+                              src={`${v.Images[0].src}`}
+                              altImg={`${v.Images[0].src.replace(/\/thumb\//, "/original/")}`}
+                              alt="img"
+                            />
+                          );
+                        } else {
+                          return (
+                            <div onClick={() => navigate(`/postview/${v.id}`)} id="textItem" key={"post" + i}>
+                              <span>{v.content}</span>
+                            </div>
+                          );
+                        }
+                      })}
+                    </Grid>
+                  ))}
+                </InfiniteScroll>
+              )}
+            </Posts>
+          </ContentWrapper>
+        )}
+        {categoryNum === 4 && (
           <ContentWrapper>
             <ContentBox>
               <ListTitle>
@@ -416,7 +476,7 @@ const UserInfo = () => {
             </ContentBox>
           </ContentWrapper>
         )}
-        {categoryNum === 4 && (
+        {categoryNum === 5 && (
           <ContentWrapper>
             <ContentBox>
               <ListTitle>
