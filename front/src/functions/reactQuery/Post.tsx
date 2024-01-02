@@ -90,6 +90,7 @@ const Post = {
         queryClient.invalidateQueries(["month/feed"]);
         queryClient.invalidateQueries(["month/activeinfo"]);
 
+        queryClient.invalidateQueries(["single"]);
         queryClient.invalidateQueries(["noticePosts"]);
         queryClient.invalidateQueries(["infoPosts"]);
         queryClient.invalidateQueries(["searchInfo"]);

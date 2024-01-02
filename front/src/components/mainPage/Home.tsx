@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -20,7 +20,8 @@ import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import MessageIcon from "@mui/icons-material/Message";
 import Img from "../common/Img";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Hashtag from "../../functions/reactQuery/Hashtag";
 
 interface userProps {
   email: string;
@@ -47,6 +48,8 @@ const Home = () => {
   const isMobile = IsMobile();
 
   const user = User.get().data;
+  const tipHashtag = Hashtag.get({ type: 1, limit: 5 }).data;
+  const freeHashtag = Hashtag.get({ type: 2, limit: 5 }).data;
 
   const scrollTargerheight = () => {
     window.scrollTo({
@@ -56,7 +59,7 @@ const Home = () => {
     });
   };
 
-  //this week
+  //this month
   const monthNewInfo = useQuery(
     ["month/new/1"],
     () => Axios.get("post/month/new", { params: { type: 1 } }).then((v) => v.data),
@@ -101,7 +104,10 @@ const Home = () => {
     if (nick?.length >= 11) return nick.slice(0, 10) + "...";
     else return nick;
   };
-
+  const shortTag = (tag: string) => {
+    if (tag?.length >= 11) return tag.slice(0, 10) + "...";
+    else return tag;
+  };
   const makeK = (n: number | null) => {
     if (n === null) {
       return null;
@@ -128,7 +134,7 @@ const Home = () => {
         <MainPageStyle.Space height={32}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_Bold>
           <CalendarMonthIcon id="icon" fontSize="large" />
-          This Week
+          this month
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={20}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
@@ -260,29 +266,33 @@ const Home = () => {
 
         {!isMobile && (
           <div id="tags">
-            <span className="title">Top Tags</span>
+            <span className="title">Popular Tag</span>
+            <MainPageStyle.Space height={24} />
             <span className="subTitle">Tip Posts</span>
-            <span
-              onClick={() => {
-                console.log("a");
-                navigate({ pathname: "/main/1", search: `?search=test` });
-              }}
-            >
-              #상단바
-            </span>
-            <span>#홈버튼</span>
-            <span>#굿락</span>
-            <span>#좋아요</span>
-            <span>#원핸드오퍼레이션</span>
+            {tipHashtag?.map((v: { id: number; name: string }) => (
+              <span
+                key={v?.id}
+                onClick={() => {
+                  navigate(`/main/1/search/#${encodeURI(v?.name)}`);
+                }}
+              >
+                #{shortTag(v?.name)}
+              </span>
+            ))}
 
             <MainPageStyle.Space height={24} />
 
             <span className="subTitle">Free Posts</span>
-            <span>#상단바</span>
-            <span>#홈버튼</span>
-            <span>#굿락</span>
-            <span>#좋아요</span>
-            <span>#원핸드오퍼레이션</span>
+            {freeHashtag?.map((v: { id: number; name: string }) => (
+              <span
+                key={v?.id}
+                onClick={() => {
+                  navigate(`/main/2/search/#${encodeURI(v?.name)}`);
+                }}
+              >
+                #{shortTag(v?.name)}
+              </span>
+            ))}
           </div>
         )}
       </MainPageStyle.HomeEl>

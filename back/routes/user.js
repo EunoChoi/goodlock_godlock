@@ -256,7 +256,7 @@ router.get("/current", tokenCheck, async (req, res) => {
         attributes: ['id', 'type'],
       }]
     });
-    res.status(200).json(currentUser);
+    if (currentUser) res.status(200).json(currentUser);
   }
   catch (error) {
     //엑세스 토큰이 만료되었다면 새롭게 발급받은 엑세스 토큰이 있는지 확인하고 진행합니다.

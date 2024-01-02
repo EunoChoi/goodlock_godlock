@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -20,6 +19,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MessageIcon from "@mui/icons-material/Message";
 import IsMobile from "../../functions/IsMobile";
+import Hashtag from "../../functions/reactQuery/Hashtag";
 
 interface userProps {
   email: string;
@@ -47,7 +47,28 @@ const FreeBoard = () => {
   const pillSub = ["All", "Feed"];
   const [searchComm, setSearchComm] = useState<string>("");
 
-  //this week
+  useEffect(() => {
+    const hash = decodeURI(window.location.hash);
+    if (hash) {
+      console.log(decodeURI(window.location.hash));
+      setTimeout(() => {
+        setToggle(2);
+        setSearchComm(hash);
+        window.scrollTo({
+          top: scrollTarget.current?.scrollHeight,
+          left: 0,
+          behavior: "smooth"
+        });
+      }, 100);
+      setTimeout(() => {
+        searchCommPosts.refetch();
+      }, 200);
+    }
+  }, [window.location.hash]);
+
+  const freeHashtag = Hashtag.get({ type: 2, limit: 10 }).data;
+
+  //this month
   const monthNew = useQuery(["month/new/2"], () =>
     Axios.get("post/month/new", { params: { type: 2 } }).then((v) => v.data)
   ).data;
@@ -97,6 +118,10 @@ const FreeBoard = () => {
       enabled: true
     }
   );
+  const shortTag = (tag: string) => {
+    if (tag?.length >= 11) return tag.slice(0, 10) + "...";
+    else return tag;
+  };
   const makeK = (n: number | null) => {
     if (n === null) {
       return null;
@@ -118,7 +143,7 @@ const FreeBoard = () => {
 
         <MainPageStyle.TextWrapper_Bold>
           <CalendarMonthIcon id="icon" fontSize="large" />
-          This Week
+          this month
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={20} />
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
@@ -206,8 +231,10 @@ const FreeBoard = () => {
             onSubmit={(e) => {
               e.preventDefault();
               if (searchComm.length !== 0) {
-                searchCommPosts.refetch();
-                toast.success(`"${searchComm}" 검색...`);
+                navigate({
+                  pathname: "/main/2",
+                  search: `?search=${searchComm}`
+                });
               } else toast.error(`검색어는 최소 1글자 이상 필요합니다.`);
             }}
           >
@@ -224,7 +251,6 @@ const FreeBoard = () => {
       </MainPageStyle.Pill.Wrapper>
       <MainPageStyle.HomeEl>
         <div id="posts">
-          {" "}
           {toggle === 0 && (
             //모든 소통글
             <>
@@ -304,18 +330,19 @@ const FreeBoard = () => {
         </div>
         {!isMobile && (
           <div id="tags">
-            <span className="title">Top Tags</span>
+            <span className="title">Popular Tag</span>
+            <MainPageStyle.Space height={24} />
             <span className="subTitle">Free Posts</span>
-            <span>#상단바</span>
-            <span>#홈버튼</span>
-            <span>#굿락</span>
-            <span>#좋아요</span>
-            <span>#원핸드오퍼레이션</span>
-            <span>#상단바</span>
-            <span>#홈버튼</span>
-            <span>#굿락</span>
-            <span>#좋아요</span>
-            <span>#원핸드오퍼레이션</span>
+            {freeHashtag?.map((v: { id: number; name: string }) => (
+              <span
+                key={v?.id}
+                onClick={() => {
+                  navigate(`/main/2/search/#${encodeURI(v?.name)}`);
+                }}
+              >
+                #{shortTag(v?.name)}
+              </span>
+            ))}
           </div>
         )}
       </MainPageStyle.HomeEl>

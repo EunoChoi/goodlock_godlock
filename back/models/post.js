@@ -42,7 +42,9 @@ module.exports = (sequelize, DataTypes) => {
     db.Post.hasMany(db.Image); //post.addImages
 
     //post가 복수의 모델에 속함
-    db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' }); // PostHashtag 테이블 생성
+    db.Post.belongsToMany(db.Hashtag, {
+      through: 'PostHashtag'
+    }); // PostHashtag 테이블 생성
 
     //좋아요는 유저와 포스트가 다대다 관계를 가지는 것
     db.Post.belongsToMany(db.User, {

@@ -202,7 +202,12 @@ const Post = ({ postProps }: any) => {
           setZoom(true);
         }}
       >
-        {postProps?.content}
+        {postProps?.content?.split(/(#[^\s#]{1,15})/g).map((v: string, i: number) => {
+          if (v.match(/(#[^\s#]{1,15})/)) {
+            return <Hashtag key={i}>{v}</Hashtag>;
+          }
+          return v;
+        })}
       </TextWrapper>
       {(postHaveDate || postHaveLink) && (
         <SubContentWrapper>
@@ -373,6 +378,11 @@ const Post = ({ postProps }: any) => {
 };
 
 export default Post;
+
+const Hashtag = styled.span`
+  color: #5e89c7;
+  /* font-weight: 500; */
+`;
 
 const Image = styled(Img)`
   width: 100% !important;

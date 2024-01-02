@@ -29,7 +29,7 @@ const LoadingIconWrapper = styled.div`
 const HomeEl = styled.div`
   min-height: calc(100vh - 68px);
   animation: ${Animation.smoothAppear} 1s ease-in-out;
-  min-width: 500px;
+  min-width: 700px;
   width: 70%;
 
   display: flex;
@@ -51,17 +51,14 @@ const HomeEl = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: start;
-    /* align-items: end; */
+    align-items: end;
 
     /* border: 1px solid rgba(0, 0, 0, 0.2); */
     span {
-      padding-left: 36px;
+      /* padding-left: 36px; */
       font-size: 18px;
       line-height: 36px;
       color: rgba(0, 0, 0, 0.6);
-      width: 100%;
-
-      text-align: end;
 
       white-space: nowrap;
       overflow: hidden;
@@ -71,14 +68,14 @@ const HomeEl = styled.div`
       font-size: 22px;
       font-weight: 600;
       /* line-height: 56px; */
-      text-transform: uppercase;
+      text-transform: capitalize;
       color: rgba(0, 0, 0, 0.7);
     }
     .subTitle {
-      margin: 20px 0;
+      margin: 12px 0;
       font-size: 20px;
       font-weight: 500;
-      line-height: 42px;
+      line-height: 36px;
     }
   }
 
@@ -122,8 +119,9 @@ const Pill = {
 
     margin-bottom: 12px;
 
-    min-width: 500px;
     width: 70%;
+    min-width: 700px;
+
     overflow-x: scroll;
 
     @media (orientation: portrait) or (max-height: 480px) {
@@ -139,6 +137,7 @@ const Pill = {
       margin-bottom: 12px;
     }
     @media (orientation: landscape) and (max-height: 480px) {
+      min-width: auto;
       width: 400px;
       padding-left: 0;
       top: 0px;
@@ -232,8 +231,8 @@ const Space = styled.div<{ height: number }>`
 `;
 
 const TextWrapper = styled.div`
-  width: 500px;
-  min-width: 70%;
+  width: 70%;
+  min-width: 700px;
   padding-top: 64px;
   padding-bottom: 24px;
 
@@ -245,6 +244,7 @@ const TextWrapper = styled.div`
   @media (orientation: portrait) or (max-height: 480px) {
     width: 100%;
     padding-top: 50px;
+    min-width: auto;
     /* padding-left: 4vw; */
     margin-top: 48px; //header height
     padding-bottom: 24px;
@@ -262,6 +262,8 @@ const TextWrapper_Title = styled.span`
   line-height: 48px;
   font-weight: 600;
   font-weight: 700;
+
+  text-transform: uppercase;
 
   max-width: 100%;
   white-space: nowrap;
@@ -294,6 +296,7 @@ const TextWrapper_Bold = styled.span`
   justify-content: center;
   align-items: center;
 
+  text-transform: capitalize;
   color: rgba(0, 0, 0, 0.65);
 
   #icon {

@@ -10,6 +10,7 @@ const postRouter = require('./routes/post');
 const authRouter = require('./routes/auth');
 const imageRouter = require('./routes/image');
 const botRouter = require('./routes/bot');
+const hashtagRouter = require('./routes/hashtag');
 
 
 // db.sequelize.sync({ force: true }).then(() => {
@@ -45,6 +46,7 @@ app.use("/post", postRouter);
 app.use("/auth", authRouter);
 app.use("/image", imageRouter);
 app.use("/bot", botRouter);
+app.use("/hashtag", hashtagRouter);
 
 app.get("/", (req, res) => {
     res.send("server 실행중");

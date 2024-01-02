@@ -21,6 +21,7 @@ const User = db.User;
 const Post = db.Post;
 const Comment = db.Comment;
 const Image = db.Image;
+const Hashtag = db.Hashtag;
 
 //image upload
 try {
@@ -237,7 +238,7 @@ router.get("/activinfo", async (req, res) => {
     console.error(e);
   }
 })
-//load - top post this week
+//load - top post this month
 router.get("/month/top", tokenCheck, async (req, res) => {
 
   const { type } = req.query;
@@ -300,7 +301,7 @@ router.get("/month/top", tokenCheck, async (req, res) => {
 })
 
 
-//length - new post this week
+//length - new post this month
 router.get("/month/new", tokenCheck, async (req, res) => {
 
   const { type } = req.query;
@@ -330,7 +331,7 @@ router.get("/month/new", tokenCheck, async (req, res) => {
     console.error(e);
   }
 })
-//length - end liked post this week
+//length - end liked post this month
 router.get("/month/likeEnd", tokenCheck, async (req, res) => {
 
   const todayfull = new Date();
@@ -373,7 +374,7 @@ router.get("/month/likeEnd", tokenCheck, async (req, res) => {
     console.error(e);
   }
 })
-//length - feed posts in this week
+//length - feed posts in this month
 router.get("/month/feed", tokenCheck, async (req, res) => {
   const { type } = req.query;
   const todayfull = new Date();
@@ -412,7 +413,7 @@ router.get("/month/feed", tokenCheck, async (req, res) => {
     console.error(e);
   }
 })
-//length - ongoing in this week
+//length - ongoing in this month
 router.get("/month/activeinfo", async (req, res) => {
   const todayfull = new Date();
   let year = todayfull.getFullYear(); // 년도
@@ -779,6 +780,16 @@ router.post("/", tokenCheck, async (req, res) => {
       link: req.body.link
     });
 
+    if (post.type !== 0) {
+      const hashtags = req.body.content.match(/#[^\s#]{1,15}/g);
+      if (hashtags) {
+        const result = await Promise.all(hashtags.map(tag => Hashtag.findOrCreate({
+          where: { name: tag.slice(1).toLowerCase() }
+        })))
+        await post.addHashtag(result.map(v => v[0]));
+      }
+    }
+
     //image 모델 요소 생성 후 Post 모델과 연결
     const postImages = req.body.images;
 
@@ -807,11 +818,19 @@ router.patch("/:postId", tokenCheck, async (req, res) => {
 
     //수정 요청된 post가 로그인 유저의 post 인지 확인
     const post = await Post.findOne({
-      where: { id: postId, UserId: req.currentUserId }
+      where: { id: postId, UserId: req.currentUserId },
+      include: [
+        {
+          model: Hashtag,
+          attributes: ['id'],
+        }
+      ]
     });
+
     if (!post) return res.status(403).json("자신의 게시글이 아닙니다.");
 
-    //현재 로그인된 유저의 id와 포스트 text로 post 모델의 요소 생성
+
+    // 현재 로그인된 유저의 id와 포스트 text로 post 모델의 요소 생성
     await Post.update({
       content: req.body.content,
       start: req.body.start,
@@ -821,6 +840,20 @@ router.patch("/:postId", tokenCheck, async (req, res) => {
       where: { id: postId, UserId: req.currentUserId }
     }
     );
+
+    if (post.type !== 0) {
+      const beforeTags = post.Hashtags.map(v => v.id);
+      post.removeHashtag(beforeTags);
+
+      const hashtags = req.body.content.match(/#[^\s#]{1,15}/g);
+      if (hashtags) {
+        const result = await Promise.all(hashtags.map(tag => Hashtag.findOrCreate({
+          where: { name: tag.slice(1).toLowerCase() }
+        })))
+        await post.addHashtag(result.map(v => v[0]));
+      }
+    }
+
 
     //기존에 등록되어 있는 이미지 모델 삭제
     await Image.destroy({

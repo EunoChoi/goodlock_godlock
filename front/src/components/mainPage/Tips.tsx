@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -19,6 +19,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import MessageIcon from "@mui/icons-material/Message";
 import IsMobile from "../../functions/IsMobile";
+import Hashtag from "../../functions/reactQuery/Hashtag";
 
 interface userProps {
   email: string;
@@ -47,15 +48,13 @@ const Tips = () => {
   const pillSub = ["All", "Ongoing", "Feed"];
   const pillWrapperRef = useRef<HTMLInputElement>(null);
 
-  const { search } = useLocation();
   useEffect(() => {
-    if (search) {
-      console.log(search);
-      const query = search.split("?search=");
-      console.log(query[1]);
+    const hash = decodeURI(window.location.hash);
+    if (hash) {
+      console.log(decodeURI(window.location.hash));
       setTimeout(() => {
         setToggle(3);
-        setSearchInfo(query[1]);
+        setSearchInfo(hash);
         window.scrollTo({
           top: scrollTarget.current?.scrollHeight,
           left: 0,
@@ -65,10 +64,19 @@ const Tips = () => {
       setTimeout(() => {
         searchInfoPosts.refetch();
       }, 200);
+      setTimeout(() => {
+        pillWrapperRef.current?.scrollTo({
+          top: 0,
+          left: window.visualViewport?.width,
+          behavior: "smooth"
+        });
+      }, 500);
     }
-  }, [search]);
+  }, [window.location.hash]);
 
-  //this week
+  const tipHashtag = Hashtag.get({ type: 1, limit: 10 }).data;
+
+  //this month
   const monthNewInfo = useQuery(["month/new/1"], () =>
     Axios.get("post/month/new", { params: { type: 1 } }).then((v) => v.data)
   ).data;
@@ -133,6 +141,10 @@ const Tips = () => {
     }
   );
 
+  const shortTag = (tag: string) => {
+    if (tag?.length >= 11) return tag.slice(0, 10) + "...";
+    else return tag;
+  };
   const makeK = (n: number | null) => {
     if (n === null) {
       return null;
@@ -157,7 +169,7 @@ const Tips = () => {
 
         <MainPageStyle.TextWrapper_Bold>
           <CalendarMonthIcon id="icon" fontSize="large" />
-          This Week
+          this month
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={20} />
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
@@ -257,8 +269,10 @@ const Tips = () => {
             onSubmit={(e) => {
               e.preventDefault();
               if (searchInfo.length !== 0) {
-                searchInfoPosts.refetch();
-                toast.success(`"${searchInfo}" 검색...`);
+                navigate({
+                  pathname: "/main/1",
+                  search: `?search=${searchInfo}`
+                });
               } else toast.error(`검색어는 최소 1글자 이상 필요합니다.`);
             }}
           >
@@ -380,30 +394,19 @@ const Tips = () => {
         </div>
         {!isMobile && (
           <div id="tags">
-            <span className="title">Top Tags</span>
+            <span className="title">Popular Tag</span>
+            <MainPageStyle.Space height={24} />
             <span className="subTitle">Tip Posts</span>
-            <span
-              onClick={() => {
-                navigate({ pathname: "/main/1", search: `?search=test` });
-              }}
-            >
-              #test
-            </span>
-            <span
-              onClick={() => {
-                navigate({ pathname: "/main/1", search: `?search=test2` });
-              }}
-            >
-              #test2
-            </span>
-            <span>#굿락</span>
-            <span>#좋아요</span>
-            <span>#원핸드오퍼레이션</span>
-            <span>#상단바</span>
-            <span>#홈버튼</span>
-            <span>#굿락</span>
-            <span>#좋아요</span>
-            <span>#원핸드오퍼레이션</span>
+            {tipHashtag?.map((v: { id: number; name: string }) => (
+              <span
+                key={v?.id}
+                onClick={() => {
+                  navigate(`/main/1/search/#${encodeURI(v?.name)}`);
+                }}
+              >
+                #{shortTag(v?.name)}
+              </span>
+            ))}
           </div>
         )}
       </MainPageStyle.HomeEl>

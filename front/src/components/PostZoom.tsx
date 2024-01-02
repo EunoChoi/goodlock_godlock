@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components/macro";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import CustomCarousel from "./common/CustomCarousel";
 import Img from "./common/Img";
@@ -57,6 +57,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
   const isOnlyText = postProps.Images.length === 0;
   const isLiked = postProps?.Likers?.find((v: any) => v.id === user?.id);
 
+  const navigate = useNavigate();
   const [timer, setTimer] = useState<NodeJS.Timeout>();
 
   const ButtonClose = () => {
@@ -131,7 +132,24 @@ const PostZoom = ({ postProps, setZoom }: props) => {
               <span id="time">{moment(postProps?.createdAt).fromNow()}</span>
             </PCTextPost_Left>
             <PCTextPost_Right>
-              <PCText>{postProps.content}</PCText>
+              <PCText>
+                {postProps?.content?.split(/(#[^\s#]{1,15})/g).map((v: string, i: number) => {
+                  if (v.match(/(#[^\s#]{1,15})/)) {
+                    return (
+                      <Hashtag
+                        onClick={() => {
+                          setAnimation("close");
+                          navigate(`/main/${postProps.type}/search/${encodeURI(v)}`);
+                        }}
+                        key={i}
+                      >
+                        {v}
+                      </Hashtag>
+                    );
+                  }
+                  return v;
+                })}
+              </PCText>
               {(postHaveDate || postHaveLink) && (
                 <SubContent>
                   {postHaveDate && (
@@ -222,7 +240,24 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 </div>
                 <span>{moment(postProps?.createdAt).fromNow()}</span>
               </PCImagePost_Info>
-              <PCText>{postProps.content}</PCText>
+              <PCText>
+                {postProps?.content?.split(/(#[^\s#]{1,15})/g).map((v: string, i: number) => {
+                  if (v.match(/(#[^\s#]{1,15})/)) {
+                    return (
+                      <Hashtag
+                        onClick={() => {
+                          setAnimation("close");
+                          navigate(`/main/${postProps.type}/search/${encodeURI(v)}`);
+                        }}
+                        key={i}
+                      >
+                        {v}
+                      </Hashtag>
+                    );
+                  }
+                  return v;
+                })}
+              </PCText>
 
               {(postHaveDate || postHaveLink) && (
                 <SubContent>
@@ -314,7 +349,24 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                   </div>
                 ))}
                 <MobileText key="text">
-                  <div id="content">{postProps.content}</div>
+                  <div id="content">
+                    {postProps?.content?.split(/(#[^\s#]{1,15})/g).map((v: string, i: number) => {
+                      if (v.match(/(#[^\s#]{1,15})/)) {
+                        return (
+                          <Hashtag
+                            onClick={() => {
+                              setAnimation("close");
+                              navigate(`/main/${postProps.type}/search/${encodeURI(v)}`);
+                            }}
+                            key={i}
+                          >
+                            {v}
+                          </Hashtag>
+                        );
+                      }
+                      return v;
+                    })}
+                  </div>
                   {(postHaveDate || postHaveLink) && (
                     <SubContent>
                       {postHaveDate && (
@@ -385,6 +437,11 @@ const PostZoom = ({ postProps, setZoom }: props) => {
 };
 
 export default PostZoom;
+
+const Hashtag = styled.span`
+  color: #5e89c7;
+  /* font-weight: 500; */
+`;
 
 const ImageBox = styled.div`
   img {
@@ -637,6 +694,7 @@ const PCTextPost_Left = styled.div`
     font-weight: 500;
     color: rgba(0, 0, 0, 0.7);
     font-size: 36px;
+    line-height: 48px;
   }
   #email {
     margin-top: 8px;
