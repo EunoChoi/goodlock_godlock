@@ -242,11 +242,11 @@ router.get("/current", tokenCheck, async (req, res) => {
       include: [{
         model: User, //
         as: 'Followers',
-        attributes: ['id', 'nickname', 'profilePic'],
+        attributes: ['id', 'nickname', 'profilePic', 'usertext'],
       }, {
         model: User,
         as: 'Followings',
-        attributes: ['id', 'nickname', 'profilePic'],
+        attributes: ['id', 'nickname', 'profilePic', 'usertext'],
       }, {
         model: Post,
         attributes: ['id', 'type'],
@@ -449,11 +449,11 @@ router.get("/info", tokenCheck, async (req, res) => {
         include: [{
           model: User, //
           as: 'Followers',
-          attributes: ['id', 'nickname', 'profilePic'],
+          attributes: ['id', 'nickname', 'profilePic', 'usertext'],
         }, {
           model: User,
           as: 'Followings',
-          attributes: ['id', 'nickname', 'profilePic'],
+          attributes: ['id', 'nickname', 'profilePic', 'usertext'],
         }, {
           model: Post,
           attributes: ['id', 'type'],

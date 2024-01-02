@@ -25,6 +25,7 @@ import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlin
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import User from "../functions/reactQuery/User";
 import CircularProgress from "@mui/material/CircularProgress";
+import IsMobile from "../functions/IsMobile";
 
 interface userProps {
   email: string;
@@ -35,25 +36,28 @@ interface imageProps {
   src: string;
 }
 interface postProps {
+  id: number;
   User: userProps;
   Images: imageProps[];
   content: string;
   createdAt: string;
 }
 interface user {
+  usertext: string;
   nickname: string;
   id: number;
   profilePic: string;
 }
 
 const UserInfo = () => {
+  const isMobile = IsMobile();
   const params = useParams();
   const categoryNum = params.cat ? parseInt(params.cat) : 0;
   const id = params.id ? parseInt(params.id) : 0;
 
   const navigate = useNavigate();
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["Followings", "Followers", "Tip Posts", "Free Posts", "Bookmark Tips"];
+  const category = ["Followings", "Followers", "Tip Posts", "Free Posts", "Bookmark"];
 
   const { Alert: FollowConfirm, openAlert: openFollowConfirm } = useAlert();
   const { Alert: UnFollowConfirm, openAlert: openUnFollowConfirm } = useAlert();
@@ -91,7 +95,7 @@ const UserInfo = () => {
   const likedPosts = useInfiniteQuery(
     ["userLikedPosts"],
     ({ pageParam = 1 }) =>
-      Axios.get("post/user/liked", { params: { id, pageParam, tempDataNum: 5 } }).then((res) => res.data),
+      Axios.get("post/user/liked", { params: { id, pageParam, tempDataNum: 9 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -101,7 +105,7 @@ const UserInfo = () => {
   const infoPosts = useInfiniteQuery(
     ["userInfoPosts"],
     ({ pageParam = 1 }) =>
-      Axios.get("post/user", { params: { id, type: 1, pageParam, tempDataNum: 5 } }).then((res) => res.data),
+      Axios.get("post/user", { params: { id, type: 1, pageParam, tempDataNum: 9 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -111,7 +115,7 @@ const UserInfo = () => {
   const commPosts = useInfiniteQuery(
     ["userCommPosts"],
     ({ pageParam = 1 }) =>
-      Axios.get("post/user", { params: { id, type: 2, pageParam, tempDataNum: 5 } }).then((res) => res.data),
+      Axios.get("post/user", { params: { id, type: 2, pageParam, tempDataNum: 9 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -252,8 +256,9 @@ const UserInfo = () => {
                             src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
                           />
                         )}
+                        <span>{v.nickname}</span>
                       </div>
-                      <span>{v.nickname}</span>
+                      {isMobile || <span id="usertext">{v.usertext}</span>}
                     </ListItem>
                   ))
                 )}
@@ -293,8 +298,9 @@ const UserInfo = () => {
                             src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
                           />
                         )}
+                        <span>{v.nickname}</span>
                       </div>
-                      <span>{v.nickname}</span>
+                      {isMobile || <span id="usertext">{v.usertext}</span>}
                     </ListItem>
                   ))
                 )}
@@ -322,9 +328,31 @@ const UserInfo = () => {
                   next={() => infoPosts.fetchNextPage()}
                   dataLength={infoPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
-                  {infoPosts?.data?.pages.map((p) =>
-                    p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
-                  )}
+                  {infoPosts?.data?.pages.map((p) => (
+                    <Grid key={"grid" + p}>
+                      {p.map((v: postProps, i: number) => {
+                        if (v.Images.length >= 1) {
+                          return (
+                            <Img
+                              onClick={() => navigate(`/postview/${v.id}`)}
+                              id="imageItem"
+                              key={"post" + i}
+                              crop={true}
+                              src={`${v.Images[0].src}`}
+                              altImg={`${v.Images[0].src.replace(/\/thumb\//, "/original/")}`}
+                              alt="img"
+                            />
+                          );
+                        } else {
+                          return (
+                            <div onClick={() => navigate(`/postview/${v.id}`)} id="textItem" key={"post" + i}>
+                              <span>{v.content}</span>
+                            </div>
+                          );
+                        }
+                      })}
+                    </Grid>
+                  ))}
                 </InfiniteScroll>
               )}
             </Posts>
@@ -350,9 +378,31 @@ const UserInfo = () => {
                   next={() => commPosts.fetchNextPage()}
                   dataLength={commPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
-                  {commPosts?.data?.pages.map((p) =>
-                    p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
-                  )}
+                  {commPosts?.data?.pages.map((p) => (
+                    <Grid key={"grid" + p}>
+                      {p.map((v: postProps, i: number) => {
+                        if (v.Images.length >= 1) {
+                          return (
+                            <Img
+                              onClick={() => navigate(`/postview/${v.id}`)}
+                              id="imageItem"
+                              key={"post" + i}
+                              crop={true}
+                              src={`${v.Images[0].src}`}
+                              altImg={`${v.Images[0].src.replace(/\/thumb\//, "/original/")}`}
+                              alt="img"
+                            />
+                          );
+                        } else {
+                          return (
+                            <div onClick={() => navigate(`/postview/${v.id}`)} id="textItem" key={"post" + i}>
+                              <span>{v.content}</span>
+                            </div>
+                          );
+                        }
+                      })}
+                    </Grid>
+                  ))}
                 </InfiniteScroll>
               )}
             </Posts>
@@ -378,9 +428,31 @@ const UserInfo = () => {
                   next={() => likedPosts.fetchNextPage()}
                   dataLength={likedPosts.data?.pages.reduce((total, page) => total + page.length, 0) || 0}
                 >
-                  {likedPosts?.data?.pages.map((p) =>
-                    p.map((v: postProps, i: number) => <Post key={"post" + i} postProps={v} />)
-                  )}
+                  {likedPosts?.data?.pages.map((p) => (
+                    <Grid key={"grid" + p}>
+                      {p.map((v: postProps, i: number) => {
+                        if (v.Images.length >= 1) {
+                          return (
+                            <Img
+                              onClick={() => navigate(`/postview/${v.id}`)}
+                              id="imageItem"
+                              key={"post" + i}
+                              crop={true}
+                              src={`${v.Images[0].src}`}
+                              altImg={`${v.Images[0].src.replace(/\/thumb\//, "/original/")}`}
+                              alt="img"
+                            />
+                          );
+                        } else {
+                          return (
+                            <div onClick={() => navigate(`/postview/${v.id}`)} id="textItem" key={"post" + i}>
+                              <span>{v.content}</span>
+                            </div>
+                          );
+                        }
+                      })}
+                    </Grid>
+                  ))}
                 </InfiniteScroll>
               )}
             </Posts>
@@ -392,7 +464,65 @@ const UserInfo = () => {
 };
 
 export default UserInfo;
+const Grid = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: stretch;
 
+  row-gap: 8px;
+  column-gap: 8px;
+  margin-bottom: 8px;
+
+  #imageItem {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  #textItem {
+    background-color: #fafafa;
+    width: 100;
+    aspect-ratio: 1 / 1;
+
+    border: 2px solid rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+    > span {
+      width: 80% !important;
+      overflow-x: hidden !important;
+      height: auto;
+
+      line-height: 1.3em;
+      font-size: 18px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.65);
+
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+      text-overflow: ellipsis;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 5 !important;
+      -webkit-box-orient: vertical;
+    }
+  }
+  @media (orientation: portrait) {
+    row-gap: 4px;
+    column-gap: 4px;
+    margin-bottom: 4px;
+    #textItem > span {
+      font-size: 16px;
+      -webkit-line-clamp: 4 !important; /* 원하는 줄 수 표시 */
+    }
+  }
+`;
 const Wrapper = styled.div`
   animation: ${Animation.smoothAppear} 0.5s ease-in-out;
   width: 100%;
@@ -488,9 +618,12 @@ const UserInfoWrapper = styled.div`
   align-items: start;
 
   width: 500px;
+  width: 70%;
   height: 500px;
 
   #nickname {
+    text-transform: uppercase;
+
     font-size: 44px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.7);
@@ -527,6 +660,7 @@ const UserInfoWrapper = styled.div`
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 400px;
+    width: 80%;
     height: auto;
     padding-left: 0;
     margin-top: 0;
@@ -570,6 +704,7 @@ const MenuWrapper = styled.div`
   align-items: center;
   height: auto;
   width: 500px;
+  width: 70%;
 
   padding: 24px 0;
   margin-bottom: 12px;
@@ -590,6 +725,7 @@ const MenuWrapper = styled.div`
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 400px;
+    width: 80%;
     padding-left: 4px;
     top: 0;
   }
@@ -615,12 +751,15 @@ const ContentWrapper = styled.div`
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 400px;
+    width: 100%;
+    min-height: calc(100vh - 68px);
   }
 `;
 const ContentBox = styled.div`
   border-radius: 6px;
   transition: all ease-in-out 0.3s;
   width: 500px;
+  width: 70%;
   min-height: calc(100vh - 104px - 24px);
 
   padding: 40px 20px;
@@ -650,8 +789,9 @@ const ContentBox = styled.div`
     backdrop-filter: blur(4px); */
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 400px;
-    min-height: 400px;
+    /* width: 400px; */
+    width: 80%;
+    /* min-height: 80%; */
   }
 `;
 
@@ -709,6 +849,13 @@ const ListItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  #usertext {
+    max-width: 40%;
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   > div {
     display: flex;
     justify-content: center;
@@ -745,11 +892,19 @@ const Posts = styled.div`
   padding-top: 4px;
 
   width: 100%;
+  width: 70%;
+  overflow: hidden;
   height: auto;
   * {
     flex-shrink: 0;
   }
   > div {
     animation: ${Animation.smoothAppear} 0.7s;
+  }
+  @media (orientation: portrait) or (max-height: 480px) {
+    width: 92vw;
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 80%;
   }
 `;

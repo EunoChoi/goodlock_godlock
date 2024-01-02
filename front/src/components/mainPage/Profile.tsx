@@ -37,6 +37,7 @@ import UserDeleteConfirm from "../UserDeleteConfirm";
 import PasswordChangeConfirm from "../PasswordChangeConfirm";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useModalStack } from "../../store/modalStack";
+import IsMobile from "../../functions/IsMobile";
 
 interface userProps {
   email: string;
@@ -54,6 +55,7 @@ interface postProps {
   createdAt: string;
 }
 interface user {
+  usertext: string;
   nickname: string;
   id: number;
   profilePic: string;
@@ -61,7 +63,7 @@ interface user {
 
 const Profile = () => {
   moment.locale("ko");
-
+  const isMobile = IsMobile();
   const navigate = useNavigate();
 
   //alert
@@ -457,6 +459,7 @@ const Profile = () => {
 
                       <span>{v.nickname}</span>
                     </div>
+                    {isMobile || <span id="usertext">{v.usertext}</span>}
 
                     <Button onClick={() => unFollowConfirm(v.id)}>
                       <PersonRemoveIcon color="error" />
@@ -503,6 +506,7 @@ const Profile = () => {
                       )}
                       <span>{v.nickname}</span>
                     </div>
+                    {isMobile || <span id="usertext">{v.usertext}</span>}
 
                     <Button onClick={() => followerDeleteConfirm(v.id)}>
                       <RemoveCircleOutlinedIcon color="error" />
@@ -780,6 +784,7 @@ const Title = styled.div`
   font-weight: 600;
   font-weight: 700;
   font-size: 44px;
+  text-transform: uppercase;
   /* line-height: 36px; */
 
   color: #cf9dc9;
@@ -978,6 +983,14 @@ const ListItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  #usertext {
+    max-width: 50%;
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   > div {
     display: flex;
     justify-content: center;
