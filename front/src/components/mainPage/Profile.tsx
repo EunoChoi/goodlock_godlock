@@ -676,7 +676,7 @@ const ProfileTitle = styled.div`
     line-height: 28px;
   }
   > span:nth-child(2) {
-    margin-top: 8px;
+    margin-top: 16px;
   }
   > span:nth-child(3) {
     margin-bottom: 24px;

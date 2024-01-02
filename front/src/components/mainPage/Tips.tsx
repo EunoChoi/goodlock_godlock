@@ -179,7 +179,7 @@ const Tips = () => {
       <MainPageStyle.TextWrapper ref={scrollTarget}>
         <MainPageStyle.TextWrapper_Title>Tip Board</MainPageStyle.TextWrapper_Title>
 
-        <MainPageStyle.Space height={8}></MainPageStyle.Space>
+        <MainPageStyle.Space height={16}></MainPageStyle.Space>
 
         <MainPageStyle.TextWrapper_Normal>굿락 팁과 설정을 공유하는 게시판입니다.</MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.TextWrapper_Normal>GTS를 활용하면 공유가 쉬워져요!</MainPageStyle.TextWrapper_Normal>

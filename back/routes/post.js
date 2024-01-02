@@ -418,7 +418,9 @@ router.get("/month/activeinfo", async (req, res) => {
   const todayfull = new Date();
   let year = todayfull.getFullYear(); // 년도
   let month = todayfull.getMonth();  // 월
+  let date = todayfull.getDate();  // 날짜
 
+  const today = new Date(year, month, date);
   const rangeStart = new Date(year, month);
   const rangeEnd = new Date(year, month + 1);
 

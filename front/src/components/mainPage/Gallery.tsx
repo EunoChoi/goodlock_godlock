@@ -68,7 +68,7 @@ const Gallery = () => {
     <Wrapper>
       <TextWrapper ref={scrollTarget}>
         <MainPageStyle.TextWrapper_Title>Gallery</MainPageStyle.TextWrapper_Title>
-        <MainPageStyle.Space height={8}></MainPageStyle.Space>
+        <MainPageStyle.Space height={16}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_Normal>모든 이미지를 모아서 보여줍니다.</MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.TextWrapper_Normal>포스트를 보려면 이미지를 눌러주세요.</MainPageStyle.TextWrapper_Normal>
       </TextWrapper>
