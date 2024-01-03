@@ -196,6 +196,9 @@ const Images = styled.div`
   @media (orientation: portrait) and (max-width: 480px) {
     width: 92vw;
   }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 80%;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -242,7 +245,7 @@ const Pill = {
       padding: 12px 4vw;
     }
     @media (orientation: landscape) and (max-height: 480px) {
-      width: 90%;
+      width: 80%;
       padding-left: 0;
       padding-right: 0;
       top: 0px;
@@ -349,7 +352,7 @@ const TextWrapper = styled.div`
     padding-bottom: 24px;
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 90%;
+    width: 80%;
     padding-left: 0;
     margin-top: 0;
     padding-top: 24px;

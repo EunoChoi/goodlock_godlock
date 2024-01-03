@@ -240,7 +240,7 @@ router.get("/current", tokenCheck, async (req, res) => {
         exclude: ['password']
       },
       include: [{
-        model: User, //
+        model: User,
         as: 'Followers',
         attributes: ['id', 'nickname', 'profilePic', 'usertext'],
       }, {

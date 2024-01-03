@@ -273,7 +273,7 @@ const Profile = () => {
       <ProfileTitle ref={scrollTarget}>
         <div id="title">
           <Title>Profile</Title>
-          <span id="bar">-</span>
+          {/* <span id="bar">-</span> */}
           <span id="timeinfo">마지막 수정 ⋯ {moment(user?.updatedAt).fromNow()}</span>
         </div>
 
@@ -905,6 +905,7 @@ const ProfileTitle = styled.div`
   margin-top: 0px;
   padding-top: 64px;
   #title {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -919,7 +920,10 @@ const ProfileTitle = styled.div`
   #timeinfo {
     font-size: 18px;
     width: 100%;
+
     text-align: start;
+    text-align: end;
+
     white-space: nowrap;
     color: rgba(0, 0, 0, 0.4);
     @media (orientation: portrait) {
@@ -1194,8 +1198,8 @@ const ProfilePicTitle = styled(Img)`
   /* position: absolute;
   right: 0px; */
   background-color: white;
-  width: 170px;
-  height: 170px;
+  width: 140px;
+  height: 140px;
   border-radius: 12px;
   /* box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2); */
   border: 3px solid rgba(0, 0, 0, 0.1);
@@ -1219,7 +1223,6 @@ const InfoAttribute = styled.div<{ height: number }>`
     font-weight: 600;
     /* text-transform: uppercase; */
     color: rgba(0, 0, 0, 0.7);
-    margin: 6px 0;
   }
   #email {
     font-size: 20px;
@@ -1330,6 +1333,7 @@ const ProfilePicWrapper = styled.div`
   align-items: end;
 
   padding-top: 32px;
+  margin-bottom: 8px;
 
   button {
     color: #a9a7d4;

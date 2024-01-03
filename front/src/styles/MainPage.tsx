@@ -91,6 +91,10 @@ const HomeEl = styled.div`
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 400px;
+    width: 100%;
+    #posts {
+      width: 80%;
+    }
   }
 `;
 const MainEl = styled.div`
@@ -141,6 +145,7 @@ const Pill = {
     @media (orientation: landscape) and (max-height: 480px) {
       min-width: auto;
       width: 400px;
+      width: 80%;
       padding-left: 0;
       top: 0px;
     }
@@ -253,6 +258,7 @@ const TextWrapper = styled.div`
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 400px;
+    width: 80%;
     min-width: auto;
     padding-left: 0;
     margin-top: 0;
@@ -295,11 +301,12 @@ const TextWrapper_Bold = styled.span`
   line-height: 40px;
   font-weight: 600;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 
   /* text-transform: capitalize;
   text-transform: uppercase; */
+
   color: rgba(0, 0, 0, 0.65);
 
   #icon {
@@ -307,7 +314,11 @@ const TextWrapper_Bold = styled.span`
     color: #dd4e5c;
   }
   @media (orientation: portrait) {
+    font-size: 26px;
     padding-left: 4vw;
+    width: 98vw;
+    white-space: nowrap;
+    overflow: scroll;
   }
 `;
 const TextWrapper_SubBold = styled.span`
@@ -430,8 +441,9 @@ const TopPostWrapper = styled.div`
   }
 `;
 const TopPost = styled.div`
-  width: 120px;
-  height: 120px;
+  width: 180px;
+  height: 180px;
+
   flex-shrink: 0;
 
   background-color: #f9f9f9;
@@ -467,6 +479,14 @@ const TopPost = styled.div`
     -webkit-line-clamp: 4; /* 원하는 줄 수 표시 */
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+  @media (orientation: portrait) {
+    width: 130px;
+    height: 130px;
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 148px;
+    height: 148px;
   }
 `;
 

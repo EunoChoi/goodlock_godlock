@@ -30,12 +30,18 @@ interface CustomError2 extends Error {
 
 const User = {
   get: () => {
+    const queryClient = useQueryClient();
     return useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
       // staleTime: 60 * 1000,
       refetchInterval: 60 * 1000,
       refetchOnMount: true,
       refetchOnWindowFocus: true,
-      onSuccess: () => {
+      onSuccess: (res) => {
+        // console.log(res);
+        //가끔 포스트 안딸려오는 문제 해결
+        if (!res.Posts) {
+          queryClient.invalidateQueries(["user"]);
+        }
         // console.log("유저 정보 불러오기 성공");
       },
       onError: () => {
