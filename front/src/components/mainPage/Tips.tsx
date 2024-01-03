@@ -105,7 +105,7 @@ const Tips = () => {
   const monthOngoing = useQuery(["month/activeinfo"], () =>
     Axios.get("post/month/activeinfo", { params: { type: 1 } }).then((v) => v.data)
   ).data;
-  const topPosts = useQuery(["topPosts"], () =>
+  const topPosts = useQuery(["topPosts-tip"], () =>
     Axios.get("post/month/top", { params: { type: [1] } }).then((v) => v.data)
   ).data?.filter((v: { LikeCount: number }) => v.LikeCount !== 0);
 

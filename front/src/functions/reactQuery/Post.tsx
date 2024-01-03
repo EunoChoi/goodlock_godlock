@@ -46,7 +46,10 @@ const Post = {
           queryClient.invalidateQueries(["month/feed"]);
           queryClient.invalidateQueries(["month/activeinfo"]);
 
-          queryClient.invalidateQueries(["topPosts"]);
+          queryClient.invalidateQueries(["topPosts-all"]);
+          queryClient.invalidateQueries(["topPosts-tip"]);
+          queryClient.invalidateQueries(["topPosts-free"]);
+
           queryClient.invalidateQueries(["noticePosts"]);
           queryClient.invalidateQueries(["infoPosts"]);
           queryClient.invalidateQueries(["searchInfo"]);
@@ -127,7 +130,10 @@ const Post = {
         queryClient.invalidateQueries(["month/feed"]);
         queryClient.invalidateQueries(["month/activeinfo"]);
 
-        queryClient.invalidateQueries(["topPosts"]);
+        queryClient.invalidateQueries(["topPosts-all"]);
+        queryClient.invalidateQueries(["topPosts-tip"]);
+        queryClient.invalidateQueries(["topPosts-free"]);
+
         queryClient.invalidateQueries(["noticePosts"]);
         queryClient.invalidateQueries(["infoPosts"]);
         queryClient.invalidateQueries(["searchInfo"]);
@@ -172,7 +178,10 @@ const Post = {
         queryClient.invalidateQueries(["activinfo"]);
         queryClient.invalidateQueries(["tipfeed"]);
         queryClient.invalidateQueries(["freefeed"]);
-        queryClient.invalidateQueries(["topPosts"]);
+
+        queryClient.invalidateQueries(["topPosts-all"]);
+        queryClient.invalidateQueries(["topPosts-tip"]);
+        queryClient.invalidateQueries(["topPosts-free"]);
 
         queryClient.invalidateQueries(["userLikedPosts"]);
         queryClient.invalidateQueries(["userInfoPosts"]);
@@ -207,7 +216,10 @@ const Post = {
         queryClient.invalidateQueries(["activinfo"]);
         queryClient.invalidateQueries(["tipfeed"]);
         queryClient.invalidateQueries(["freefeed"]);
-        queryClient.invalidateQueries(["topPosts"]);
+
+        queryClient.invalidateQueries(["topPosts-all"]);
+        queryClient.invalidateQueries(["topPosts-tip"]);
+        queryClient.invalidateQueries(["topPosts-free"]);
 
         queryClient.invalidateQueries(["userLikedPosts"]);
         queryClient.invalidateQueries(["userInfoPosts"]);

@@ -93,7 +93,7 @@ const FreeBoard = () => {
   const monthFeed = useQuery(["month/feed"], () =>
     Axios.get("post/month/feed", { params: { type: 2 } }).then((v) => v.data)
   ).data;
-  const topPosts = useQuery(["topPosts"], () =>
+  const topPosts = useQuery(["topPosts-free"], () =>
     Axios.get("post/month/top", { params: { type: 2 } }).then((v) => v.data)
   ).data?.filter((v: { LikeCount: number }) => v.LikeCount !== 0);
 

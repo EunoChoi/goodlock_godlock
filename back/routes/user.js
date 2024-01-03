@@ -108,7 +108,7 @@ router.post("/login/social", async (req, res) => {
     if (!isEmailExist) {
       //회원가입 
       console.log("가입되어있지 않음, 회원가입 진행 중...");
-      const newUser = await userController.register({ email, password, nickname: `신규-${lastUser.id + 1}`, profilePic });
+      const newUser = await userController.register({ email, password, nickname: `신규${lastUser.id + 1}`, profilePic });
       // console.log(newUser);
 
       //회원가입 메일 발송

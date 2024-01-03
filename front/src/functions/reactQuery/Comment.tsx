@@ -23,7 +23,10 @@ const Comment = {
 
           queryClient.invalidateQueries(["single"]);
 
-          queryClient.invalidateQueries(["topPosts"]);
+          queryClient.invalidateQueries(["topPosts-all"]);
+          queryClient.invalidateQueries(["topPosts-tip"]);
+          queryClient.invalidateQueries(["topPosts-free"]);
+
           queryClient.invalidateQueries(["noticePosts"]);
           queryClient.invalidateQueries(["infoPosts"]);
           queryClient.invalidateQueries(["searchInfo"]);
@@ -98,7 +101,10 @@ const Comment = {
 
           queryClient.invalidateQueries(["single"]);
 
-          queryClient.invalidateQueries(["topPosts"]);
+          queryClient.invalidateQueries(["topPosts-all"]);
+          queryClient.invalidateQueries(["topPosts-tip"]);
+          queryClient.invalidateQueries(["topPosts-free"]);
+
           queryClient.invalidateQueries(["noticePosts"]);
           queryClient.invalidateQueries(["infoPosts"]);
           queryClient.invalidateQueries(["searchInfo"]);

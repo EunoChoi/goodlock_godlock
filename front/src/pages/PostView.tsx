@@ -41,12 +41,14 @@ const PostView = () => {
     }
   }, [single.isError]);
 
+  const title = ["Notice", "Tip", "Free"];
+
   return (
     <AppLayout>
       <SinglePostWrapper>
         <SingePostText>
           {/* <ShareIcon fontSize="large" /> */}
-          <span>Post</span>
+          <span>{title[single?.data?.type]} Post</span>
         </SingePostText>
         {single.data && <Post key={"singlePost"} postProps={single.data} />}
       </SinglePostWrapper>

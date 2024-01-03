@@ -99,7 +99,7 @@ const Home = () => {
     }
   ).data;
 
-  const topPosts = useQuery(["topPosts"], () =>
+  const topPosts = useQuery(["topPosts-all"], () =>
     Axios.get("post/month/top", { params: { type: [1, 2] } }).then((v) => v.data)
   ).data?.filter((v: { LikeCount: number }) => v.LikeCount !== 0);
 
