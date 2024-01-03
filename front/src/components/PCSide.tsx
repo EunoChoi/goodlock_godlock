@@ -28,7 +28,7 @@ const Side = () => {
 
   const makeK = (n: number | null) => {
     if (n === null) {
-      return null;
+      return "-";
     }
     if (n > 1000) {
       return (n / 1000).toFixed(1) + "k";

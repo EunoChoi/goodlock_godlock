@@ -137,8 +137,8 @@ const Home = () => {
     if (nick?.length >= 9) return nick.slice(0, 8) + "...";
     else return nick;
   };
-  const shortTag = (tag: string) => {
-    if (tag?.length >= 11) return tag.slice(0, 10) + "...";
+  const shortTag = (tag: string | undefined) => {
+    if (tag && tag?.length >= 11) return tag.slice(0, 10) + "...";
     else return tag;
   };
   const makeK = (n: number | null) => {

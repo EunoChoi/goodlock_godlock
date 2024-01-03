@@ -181,7 +181,7 @@ const Profile = () => {
   const myInfoPosts = useInfiniteQuery(
     ["myInfoPosts"],
     ({ pageParam = 1 }) =>
-      Axios.get("post/my", { params: { type: 1, pageParam, tempDataNum: 9 } }).then((res) => res.data),
+      Axios.get("post/my", { params: { type: 1, pageParam, tempDataNum: 12 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -191,7 +191,7 @@ const Profile = () => {
   const myCommPosts = useInfiniteQuery(
     ["myCommPosts"],
     ({ pageParam = 1 }) =>
-      Axios.get("post/my", { params: { type: 2, pageParam, tempDataNum: 9 } }).then((res) => res.data),
+      Axios.get("post/my", { params: { type: 2, pageParam, tempDataNum: 12 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -201,7 +201,7 @@ const Profile = () => {
   const bookmarkPosts = useInfiniteQuery(
     ["bookmarkPosts"],
     ({ pageParam = 1 }) =>
-      Axios.get("post/liked", { params: { type: 1, pageParam, tempDataNum: 9 } }).then((res) => res.data),
+      Axios.get("post/liked", { params: { type: 1, pageParam, tempDataNum: 12 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -211,7 +211,7 @@ const Profile = () => {
   const likePosts = useInfiniteQuery(
     ["likePosts"],
     ({ pageParam = 1 }) =>
-      Axios.get("post/liked", { params: { type: 2, pageParam, tempDataNum: 9 } }).then((res) => res.data),
+      Axios.get("post/liked", { params: { type: 2, pageParam, tempDataNum: 12 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -248,7 +248,7 @@ const Profile = () => {
     } else {
       navigate("/404");
     }
-    scrollTop();
+    // scrollTop();
     return () => {
       //
     };
@@ -387,9 +387,6 @@ const Profile = () => {
             </InputWrapper>
           )}
         </InfoAttribute>
-        {/* <Userstatus>
-          Posts {user?.Posts?.length} • Followings {user?.Followings?.length} • Followers {user?.Followers?.length}
-        </Userstatus> */}
 
         <ButtonWrapper>
           {user?.level === 1 && (
@@ -1138,9 +1135,9 @@ const ButtonWrapper = styled.div`
     color: rgba(0, 0, 0, 0.6);
     transition: all 0.3s;
     margin-right: 6px;
-  }
-  span {
-    font-weight: 500;
+    span {
+      font-weight: 500;
+    }
   }
 `;
 const List = styled.div`

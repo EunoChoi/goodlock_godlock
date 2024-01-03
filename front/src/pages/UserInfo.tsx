@@ -95,7 +95,7 @@ const UserInfo = () => {
   const bookmarkPosts = useInfiniteQuery(
     ["bookmarkPosts"],
     ({ pageParam = 1 }) =>
-      Axios.get("post/user/liked", { params: { type: 1, id, pageParam, tempDataNum: 9 } }).then((res) => res.data),
+      Axios.get("post/user/liked", { params: { type: 1, id, pageParam, tempDataNum: 12 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -105,7 +105,7 @@ const UserInfo = () => {
   const likePosts = useInfiniteQuery(
     ["likePosts"],
     ({ pageParam = 1 }) =>
-      Axios.get("post/user/liked", { params: { type: 2, id, pageParam, tempDataNum: 9 } }).then((res) => res.data),
+      Axios.get("post/user/liked", { params: { type: 2, id, pageParam, tempDataNum: 12 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -115,7 +115,7 @@ const UserInfo = () => {
   const infoPosts = useInfiniteQuery(
     ["userInfoPosts"],
     ({ pageParam = 1 }) =>
-      Axios.get("post/user", { params: { id, type: 1, pageParam, tempDataNum: 9 } }).then((res) => res.data),
+      Axios.get("post/user", { params: { id, type: 1, pageParam, tempDataNum: 12 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
@@ -125,7 +125,7 @@ const UserInfo = () => {
   const commPosts = useInfiniteQuery(
     ["userCommPosts"],
     ({ pageParam = 1 }) =>
-      Axios.get("post/user", { params: { id, type: 2, pageParam, tempDataNum: 9 } }).then((res) => res.data),
+      Axios.get("post/user", { params: { id, type: 2, pageParam, tempDataNum: 12 } }).then((res) => res.data),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === 0 ? undefined : allPages.length + 1;
