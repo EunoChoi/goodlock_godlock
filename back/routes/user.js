@@ -15,9 +15,48 @@ const router = express.Router();
 //회원가입
 router.post("/register", async (req, res) => {
   try {
-    const newUser = await userController.register(req.body);
-    console.log(newUser);
-    res.status(newUser.status).json(newUser.message);
+    const registerInfo = req.body;
+    const newUser = await userController.register({ ...registerInfo, level: 1 });
+    if (newUser) {
+      //회원가입 메일 발송
+      let transporter = nodemailer.createTransport({
+        service: 'gmail'
+        , port: 587
+        , host: 'smtp.gmail.com'
+        , secure: false
+        , requireTLS: true
+        , auth: {
+          user: process.env.AUTH_EMAIL
+          , pass: process.env.AUTH_PW
+        }
+      });
+      await transporter.sendMail({
+        from: 'goodlockgodlock@gmail.com',
+        to: registerInfo.email,
+        subject: '굿락갓락에 오신 것을 환영합니다.',
+        text: '굿락갓락에 오신 것을 환영합니다.',
+        html: `
+<div style="width: 100%;height: auto;background-color: #C7D7FF; box-sizing: border-box; border-radius: 8px; padding: 12px;">
+  <div style="background-color: white; width: 100%; box-sizing: border-box; border-radius: 8px; padding: 24px;margin-top: 40px;">
+  <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
+    <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">굿락갓락에 오신 것을 환영합니다. 🎉🎉🎉</div>
+    <div>
+      <div style="font-size: 16px;line-height: 24px;">안녕하세요.</div>
+      <div style="font-size: 16px;line-height: 24px;">굿락갓락에 오신 것을 환영합니다.</div>
+      <div style="font-size: 16px;line-height: 24px;">아래의 정보로 회원가입이 완료되었습니다.</div>
+      <div style="font-size: 16px;line-height: 16px;color:salmon">*간편가입의 경우 임시로 이메일과 같은 닉네임이 설정되었습니다. 로그인 후 마이페이지에서 변경가능합니다.</div>
+      <div style="font-size: 16px;line-height: 24px;">감사합니다.</div>
+      <div style="font-size: 20px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">이메일 : ${registerInfo.email}</div>
+      <div style="font-size: 20px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">닉네임 : ${registerInfo.nickname}</div>
+    </div>
+  </div>
+  <img src="https://moseoree-s3.s3.ap-northeast-2.amazonaws.com/mainImage.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
+</div>
+`
+      });
+      console.log("회원가입 메일 발송");
+      res.status(newUser.status).json(newUser.message);
+    }
   }
   catch (error) {
     console.error(error);
@@ -63,8 +102,6 @@ router.post("/login", async (req, res) => {
       res.status(401).json({ message: "간편 로그인으로 가입된 계정입니다." });
     }
 
-
-
     const user = await userController.login(req.body);
 
     if (user.status === 200) {
@@ -89,82 +126,79 @@ router.post("/login", async (req, res) => {
 //소셜 로그인
 router.post("/login/social", async (req, res) => {
   try {
+
     const email = req.body.email;
-    const nickname = email;
+    const nickname = `NEW${new Date().getTime()}`;
     const password = process.env.SOCIAL_PW;
     const profilePic = req.body.profilePic;
 
-    console.log(email);
-
     const isEmailExist = await User.findOne({
       where: { email }
-    });
-    const lastUser = await User.findOne({
-      where: {},
-      order: [['createdAt', 'DESC']],
     });
 
     //가입되어있지 않은 경우 -> 회원가입
     if (!isEmailExist) {
       //회원가입 
       console.log("가입되어있지 않음, 회원가입 진행 중...");
-      const newUser = await userController.register({ email, password, nickname: `신규${lastUser.id + 1}`, profilePic });
+      const newUser = await userController.register({ email, password, nickname, profilePic, level: 2 });
       // console.log(newUser);
 
-      //회원가입 메일 발송
-      let transporter = nodemailer.createTransport({
-        service: 'gmail'
-        , port: 587
-        , host: 'smtp.gmail.com'
-        , secure: false
-        , requireTLS: true
-        , auth: {
-          user: process.env.AUTH_EMAIL
-          , pass: process.env.AUTH_PW
-        }
-      });
-      await transporter.sendMail({
-        from: 'goodlockgodlock@gmail.com',
-        to: email,
-        subject: '굿락갓락에 오신 것을 환영합니다.',
-        text: '굿락갓락에 오신 것을 환영합니다.',
-        html: `
-        <div style="width: 100%;height: auto;background-color: #C7D7FF; box-sizing: border-box; border-radius: 8px; padding: 12px;">
-          <div style="background-color: white; width: 100%; box-sizing: border-box; border-radius: 8px; padding: 24px;margin-top: 40px;">
-          <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
-            <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">굿락갓락에 오신 것을 환영합니다. 🎉🎉🎉</div>
-            <div>
-              <div style="font-size: 16px;line-height: 24px;">안녕하세요.</div>
-              <div style="font-size: 16px;line-height: 24px;">굿락갓락에 오신 것을 환영합니다.</div>
-              <div style="font-size: 16px;line-height: 24px;">아래의 정보로 회원가입이 완료되었습니다.</div>
-              <div style="font-size: 16px;line-height: 16px;color:salmon">*간편가입의 경우 임시로 이메일과 같은 닉네임이 설정되었습니다. 로그인 후 마이페이지에서 변경가능합니다.</div>
-              <div style="font-size: 16px;line-height: 24px;">감사합니다.</div>
-              <div style="font-size: 20px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">이메일 : ${email}</div>
-              <div style="font-size: 20px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">닉네임 : ${nickname}</div>
-            </div>
-          </div>
-          <img src="https://moseoree-s3.s3.ap-northeast-2.amazonaws.com/mainImage.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
-        </div>
-        `
-      });
-      console.log("회원가입 메일 발송");
+      if (newUser) {
+        //회원가입 메일 발송
+        let transporter = nodemailer.createTransport({
+          service: 'gmail'
+          , port: 587
+          , host: 'smtp.gmail.com'
+          , secure: false
+          , requireTLS: true
+          , auth: {
+            user: process.env.AUTH_EMAIL
+            , pass: process.env.AUTH_PW
+          }
+        });
+        await transporter.sendMail({
+          from: 'goodlockgodlock@gmail.com',
+          to: email,
+          subject: '굿락갓락에 오신 것을 환영합니다.',
+          text: '굿락갓락에 오신 것을 환영합니다.',
+          html: `
+  <div style="width: 100%;height: auto;background-color: #C7D7FF; box-sizing: border-box; border-radius: 8px; padding: 12px;">
+    <div style="background-color: white; width: 100%; box-sizing: border-box; border-radius: 8px; padding: 24px;margin-top: 40px;">
+    <div style="font-size: 14px;">나만의 감성 더하기, 굿락갓락</div>
+      <div style="font-size: 32px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">굿락갓락에 오신 것을 환영합니다. 🎉🎉🎉</div>
+      <div>
+        <div style="font-size: 16px;line-height: 24px;">안녕하세요.</div>
+        <div style="font-size: 16px;line-height: 24px;">굿락갓락에 오신 것을 환영합니다.</div>
+        <div style="font-size: 16px;line-height: 24px;">아래의 정보로 회원가입이 완료되었습니다.</div>
+        <div style="font-size: 16px;line-height: 16px;color:salmon">*간편가입의 경우 임시로 이메일과 같은 닉네임이 설정되었습니다. 로그인 후 마이페이지에서 변경가능합니다.</div>
+        <div style="font-size: 16px;line-height: 24px;">감사합니다.</div>
+        <div style="font-size: 20px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">이메일 : ${email}</div>
+        <div style="font-size: 20px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">닉네임 : ${nickname}</div>
+      </div>
+    </div>
+    <img src="https://moseoree-s3.s3.ap-northeast-2.amazonaws.com/mainImage.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
+  </div>
+  `
+        });
+        console.log("회원가입 메일 발송");
 
-      //로그인
-      console.log("로그인 진행 중...");
-      const user = await userController.login({ email, password });
-      if (user.status === 200) {
-        res.cookie("accessToken", user.accessToken, {
-          secure: false,
-          httpOnly: true,
-        })
-        res.cookie("refreshToken", user.refreshToken, {
-          secure: false,
-          httpOnly: true,
-        })
-        res.status(200).json("로그인 성공, 토큰 발급 완료");
-      }
-      else {
-        res.status(user.status).json({ message: user.message });
+        //로그인
+        console.log("로그인 진행 중...");
+        const user = await userController.login({ email, password });
+        if (user.status === 200) {
+          res.cookie("accessToken", user.accessToken, {
+            secure: false,
+            httpOnly: true,
+          })
+          res.cookie("refreshToken", user.refreshToken, {
+            secure: false,
+            httpOnly: true,
+          })
+          res.status(200).json("로그인 성공, 토큰 발급 완료");
+        }
+        else {
+          res.status(user.status).json({ message: user.message });
+        }
       }
     }
     //이메일이 존재한 경우 -> 로그인 시도

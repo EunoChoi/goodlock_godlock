@@ -7,7 +7,7 @@ const User = db.User;
 const userController = {
   register: async (data) => {
     let message;
-    const { email, nickname, password, profilePic } = data;
+    const { email, nickname, password, profilePic, level } = data;
     const isEmailExist = await User.findOne({
       where: { email }
     });
@@ -37,34 +37,23 @@ const userController = {
     //회원가입이 가능한 경우
     else {
       const hashedPassword = await bcrypt.hash(password, 12);
-      if (email === nickname) {
-        await User.create(
-          {
-            level: 2,
-            usertext: "상태메세지를 입력하세요.",
-            email,
-            profilePic,
-            nickname,
-            password: hashedPassword //암호화된 비밀번호로 회원가입
-          }
-        );
-      }
-      else {
-        await User.create(
-          {
-            level: 1,
-            usertext: "상태메세지를 입력하세요.",
-            email,
-            profilePic,
-            nickname,
-            password: hashedPassword //암호화된 비밀번호로 회원가입
-          }
-        );
-      }
 
-      message =
-        "회원가입이 완료되었습니다.";
-      return { status: 200, message };
+      const newUser = await User.create(
+        {
+          level,
+          usertext: "상태메세지를 입력하세요.",
+          email,
+          profilePic,
+          nickname,
+          password: hashedPassword //암호화된 비밀번호로 회원가입
+        }
+      );
+
+      if (newUser) {
+        message =
+          "회원가입이 완료되었습니다.";
+        return { status: 200, message };
+      }
     }
   },
   login: async (data) => {
