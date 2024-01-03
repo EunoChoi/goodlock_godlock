@@ -191,7 +191,7 @@ const Tips = () => {
           This Month
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={8} />
-        <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
+        <MainPageStyle.TextWrapper_SubBold>New Upload</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
           Tip {monthNewInfo} • Ongoing {monthOngoing}• Feed Posts {monthFeed}
         </MainPageStyle.TextWrapper_Normal>
@@ -199,7 +199,7 @@ const Tips = () => {
         {topPosts?.length >= 1 && (
           <>
             {/* <MainPageStyle.Space height={8} /> */}
-            <MainPageStyle.TextWrapper_SubBold>Popular</MainPageStyle.TextWrapper_SubBold>
+            <MainPageStyle.TextWrapper_SubBold>Popular Tip Posts</MainPageStyle.TextWrapper_SubBold>
             <MainPageStyle.TopWrapper>
               {topPosts?.map(
                 (

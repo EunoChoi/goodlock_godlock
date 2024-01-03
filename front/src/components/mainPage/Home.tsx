@@ -133,14 +133,12 @@ const Home = () => {
     }
   );
 
-  const shortNickname = (nick: string) => {
-    if (nick?.length >= 9) return nick.slice(0, 8) + "...";
-    else return nick;
-  };
-  const shortTag = (tag: string | undefined) => {
+  const shortTag = (tag: string | undefined | null) => {
+    if (tag === undefined || tag === null) return "-";
     if (tag && tag?.length >= 11) return tag.slice(0, 10) + "...";
     else return tag;
   };
+
   const makeK = (n: number | null) => {
     if (n === null) {
       return null;
@@ -157,7 +155,7 @@ const Home = () => {
         <MainPageStyle.TextWrapper_Title>home</MainPageStyle.TextWrapper_Title>
         <MainPageStyle.Space height={32}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_Bold>
-          반갑습니다. {shortNickname(user?.nickname)}님 <EmojiPeopleIcon style={{ fontSize: "36px" }}></EmojiPeopleIcon>
+          반갑습니다. {user?.nickname?.slice(0, 8)}님 <EmojiPeopleIcon style={{ fontSize: "36px" }}></EmojiPeopleIcon>
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={8}></MainPageStyle.Space>
 
@@ -179,7 +177,7 @@ const Home = () => {
 
         {topPosts?.length >= 1 && (
           <>
-            <MainPageStyle.TextWrapper_SubBold>Popular</MainPageStyle.TextWrapper_SubBold>
+            <MainPageStyle.TextWrapper_SubBold>Popular Posts</MainPageStyle.TextWrapper_SubBold>
             <MainPageStyle.TopWrapper>
               {topPosts?.map(
                 (

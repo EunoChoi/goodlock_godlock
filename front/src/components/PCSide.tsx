@@ -35,10 +35,6 @@ const Side = () => {
     }
     return n;
   };
-  const makeShortNickname = (nick: string) => {
-    if (nick?.length >= 9) return nick.slice(0, 8) + "...";
-    else return nick;
-  };
 
   const logoutConfirm = () => {
     openLogoutConfirm({
@@ -90,7 +86,7 @@ const Side = () => {
                 navigate("/main/4/cat/0");
               }}
             >
-              <span id="nickname">{makeShortNickname(user?.nickname)}</span>
+              <span id="nickname">{user?.nickname?.slice(0, 8)}</span>
               <span id="email">{user?.email}</span>
               <span id="usertext">{user?.usertext}</span>
             </div>

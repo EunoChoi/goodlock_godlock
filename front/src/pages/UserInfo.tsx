@@ -86,11 +86,6 @@ const UserInfo = () => {
   const follow = User.follow();
   const unFollow = User.unFollow();
 
-  const makeShortNickname = (nick: string) => {
-    if (nick?.length >= 9) return nick.slice(0, 8) + "...";
-    else return nick;
-  };
-
   //bookmarked tips
   const bookmarkPosts = useInfiniteQuery(
     ["bookmarkPosts"],
@@ -181,7 +176,7 @@ const UserInfo = () => {
             <Pic crop={true} alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}
 
-          <span id="nickname">{makeShortNickname(targetUser?.nickname)}</span>
+          <span id="nickname">{targetUser?.nickname?.slice(0, 8)}</span>
           <span id="email">{targetUser?.email}</span>
           <span id="usertext">{targetUser?.usertext ? targetUser?.usertext : "-"}</span>
           <span id="userstate">

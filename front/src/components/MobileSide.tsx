@@ -51,10 +51,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
     }
     return n;
   };
-  const makeShortNickname = (nick: string) => {
-    if (nick?.length >= 9) return nick.slice(0, 8) + "...";
-    else return nick;
-  };
+
   const onClose = () => {
     setAnimation("close");
   };
@@ -148,7 +145,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                       onClose();
                     }}
                   >
-                    <span id="nickname">{makeShortNickname(user?.nickname)}</span>
+                    <span id="nickname">{user?.nickname?.slice(0, 8)}</span>
                     <span id="email">{user?.email}</span>
                     <span id="usertext">{user?.usertext}</span>
                   </div>

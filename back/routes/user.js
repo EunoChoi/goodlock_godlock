@@ -99,12 +99,16 @@ router.post("/login/social", async (req, res) => {
     const isEmailExist = await User.findOne({
       where: { email }
     });
+    const lastUser = await User.findOne({
+      where: {},
+      order: [['createdAt', 'DESC']],
+    });
 
     //가입되어있지 않은 경우 -> 회원가입
     if (!isEmailExist) {
       //회원가입 
       console.log("가입되어있지 않음, 회원가입 진행 중...");
-      const newUser = await userController.register({ email, password, nickname, profilePic });
+      const newUser = await userController.register({ email, password, nickname: `신규-${lastUser.id + 1}`, profilePic });
       // console.log(newUser);
 
       //회원가입 메일 발송
