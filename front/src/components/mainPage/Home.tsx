@@ -165,11 +165,15 @@ const Home = () => {
         <MainPageStyle.TextWrapper_Normal>갤럭시&굿락 팁 공유 사이트입니다. :)</MainPageStyle.TextWrapper_Normal>
 
         <MainPageStyle.Space height={48}></MainPageStyle.Space>
-        <MainPageStyle.TextWrapper_Bold>
-          <CalendarMonthIcon id="icon" fontSize="large" />
-          This Month
-        </MainPageStyle.TextWrapper_Bold>
-        <MainPageStyle.Space height={8}></MainPageStyle.Space>
+        {topPosts?.length >= 1 && (
+          <>
+            <MainPageStyle.TextWrapper_Bold>
+              <CalendarMonthIcon id="icon" fontSize="large" />
+              This Month
+            </MainPageStyle.TextWrapper_Bold>
+            <MainPageStyle.Space height={8}></MainPageStyle.Space>
+          </>
+        )}
 
         {topPosts?.length >= 1 && (
           <>

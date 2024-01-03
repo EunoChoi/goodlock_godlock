@@ -99,7 +99,7 @@ const Side = () => {
               <button
                 className="info_box"
                 onClick={() => {
-                  navigate("/main/4/cat/3");
+                  navigate("/main/4/cat/0");
                 }}
               >
                 <span>{makeK(user?.Posts?.length)}</span>
@@ -108,7 +108,7 @@ const Side = () => {
               <button
                 className="info_box"
                 onClick={() => {
-                  navigate("/main/4/cat/1");
+                  navigate("/main/4/cat/4");
                 }}
               >
                 <span>{makeK(user?.Followings?.length)}</span>
@@ -117,7 +117,7 @@ const Side = () => {
               <button
                 className="info_box"
                 onClick={() => {
-                  navigate("/main/4/cat/2");
+                  navigate("/main/4/cat/5");
                 }}
               >
                 <span>{makeK(user?.Followers?.length)}</span>

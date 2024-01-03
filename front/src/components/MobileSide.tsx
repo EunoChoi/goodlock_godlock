@@ -162,7 +162,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                     <button
                       className="info_box"
                       onClick={() => {
-                        navigate("/main/4/cat/3");
+                        navigate("/main/4/cat/0");
                         onClose();
                       }}
                     >
@@ -172,7 +172,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                     <button
                       className="info_box"
                       onClick={() => {
-                        navigate("/main/4/cat/1");
+                        navigate("/main/4/cat/4");
                         onClose();
                       }}
                     >
@@ -182,7 +182,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                     <button
                       className="info_box"
                       onClick={() => {
-                        navigate("/main/4/cat/2");
+                        navigate("/main/4/cat/5");
                         onClose();
                       }}
                     >
