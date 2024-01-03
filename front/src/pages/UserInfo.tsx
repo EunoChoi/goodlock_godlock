@@ -678,7 +678,7 @@ const UserInfoWrapper = styled.div`
   height: 500px;
 
   #nickname {
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
 
     font-size: 44px;
     font-weight: 600;

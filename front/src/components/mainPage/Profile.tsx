@@ -1234,6 +1234,7 @@ const InfoAttribute = styled.div<{ height: number }>`
     width: 100%;
     overflow: scroll;
     font-size: 22px;
+    line-height: 26px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.6);
   }
