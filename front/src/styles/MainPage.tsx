@@ -434,9 +434,10 @@ const TopPost = styled.div`
   height: 120px;
   flex-shrink: 0;
 
-  background-color: #fafafa;
+  background-color: #f9f9f9;
+
   border-radius: 6px;
-  border: solid 2px rgba(0, 0, 0, 0.07);
+  border: solid 2px rgba(0, 0, 0, 0.06);
 
   display: flex;
   justify-content: center;

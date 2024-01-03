@@ -101,7 +101,7 @@ const Home = () => {
 
   const topPosts = useQuery(["topPosts"], () =>
     Axios.get("post/month/top", { params: { type: [1, 2] } }).then((v) => v.data)
-  ).data;
+  ).data?.filter((v: { LikeCount: number }) => v.LikeCount !== 0);
 
   //load search posts
   const searchNoticePosts = useInfiniteQuery(
@@ -170,14 +170,7 @@ const Home = () => {
           This Month
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={8}></MainPageStyle.Space>
-        <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
-        <MainPageStyle.TextWrapper_Normal>
-          {/* {monthNewInfo?.len + monthNewComm?.len} Tip&Free Posts */}
-          All {monthNewInfo + monthNewComm} • Tip {monthNewInfo} • Free Posts {monthNewComm}
-        </MainPageStyle.TextWrapper_Normal>
-        {/* <MainPageStyle.Space height={8} /> */}
-        {/* <MainPageStyle.TextWrapper_SubBold>Share Closing</MainPageStyle.TextWrapper_SubBold>
-        <MainPageStyle.TextWrapper_Normal>{monthEndLiked} Bookmark Tip Posts</MainPageStyle.TextWrapper_Normal> */}
+
         {topPosts?.length >= 1 && (
           <>
             {/* <MainPageStyle.Space height={8} /> */}

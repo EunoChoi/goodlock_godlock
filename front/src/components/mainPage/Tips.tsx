@@ -107,7 +107,7 @@ const Tips = () => {
   ).data;
   const topPosts = useQuery(["topPosts"], () =>
     Axios.get("post/month/top", { params: { type: [1] } }).then((v) => v.data)
-  ).data;
+  ).data?.filter((v: { LikeCount: number }) => v.LikeCount !== 0);
 
   //load posts
   const infoPosts = useInfiniteQuery(

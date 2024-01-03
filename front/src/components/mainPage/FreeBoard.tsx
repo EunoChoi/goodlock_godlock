@@ -95,7 +95,7 @@ const FreeBoard = () => {
   ).data;
   const topPosts = useQuery(["topPosts"], () =>
     Axios.get("post/month/top", { params: { type: 2 } }).then((v) => v.data)
-  ).data;
+  ).data?.filter((v: { LikeCount: number }) => v.LikeCount !== 0);
 
   //load posts
   const communityPosts = useInfiniteQuery(

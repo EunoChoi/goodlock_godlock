@@ -31,7 +31,10 @@ const MobileWrapper = styled.div<{ animation: string }>`
   height: calc(var(--vh, 1vh) * 100);
 
   background-color: #f2f2f2;
-  border-right: 2px solid rgba(0, 0, 0, 0.1);
+  /* border-right: 2px solid rgba(0, 0, 0, 0.1); */
+  background-color: #f1f1f1;
+  box-shadow: 2px 0px 3px rgba(0, 0, 0, 0.1);
+  background-image: linear-gradient(45deg, #f1f1f1 0%, #f7f7f7 100%);
 
   transform: ${(props) => (props.animation === "open" ? "translateX(0px)" : "translateX(-80vw)")};
   transition: all ease-out 300ms;
@@ -246,7 +249,9 @@ const PCWrapper = styled.div`
 
   background-color: rgba(0, 0, 0, 0.05);
   background-color: #f2f2f2;
-  border-right: rgba(0, 0, 0, 0.02) solid 2px;
+  border-right: rgba(0, 0, 0, 0.02) solid 1px;
+  background-color: #f1f1f1;
+  background-image: linear-gradient(45deg, #f1f1f1 0%, #f7f7f7 100%);
 `;
 
 const SideBar = { BG, MobileWrapper, PCWrapper, LogInWrapper, ProfilePic, HeaderWrapper, UserInfoWrapper, MenuWrapper };

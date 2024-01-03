@@ -49,12 +49,6 @@ const Side = () => {
     });
   };
 
-  useEffect(() => {
-    if (!user.Posts) {
-      user.refetch();
-    }
-  }, [user]);
-
   return (
     // 로그아웃 상태에서 접근시도 구현해야함. 싱글 포스트 뷰 때문에
     <SideBar.PCWrapper>

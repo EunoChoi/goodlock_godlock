@@ -271,7 +271,11 @@ const Profile = () => {
       )}
 
       <ProfileTitle ref={scrollTarget}>
-        <Title>Profile</Title>
+        <div id="title">
+          <Title>Profile</Title>
+          <span id="bar">-</span>
+          <span id="timeinfo">마지막 수정 ⋯ {moment(user?.updatedAt).fromNow()}</span>
+        </div>
 
         <ProfilePicWrapper>
           {user?.profilePic ? (
@@ -407,7 +411,6 @@ const Profile = () => {
             <span>회원 탈퇴</span>
           </button>
         </ButtonWrapper>
-        <span id="timeinfo">마지막 정보 수정 ⋯ {moment(user?.updatedAt).fromNow()}</span>
       </ProfileTitle>
       <MenuWrapper id="menuWrapper">
         {category.map((v, i) => (
@@ -708,11 +711,11 @@ const Profile = () => {
                           src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
                         />
                       )}
-                      <span>{v.nickname}</span>
+                      <span>{v?.nickname}</span>
                     </div>
-                    {isMobile || <span id="usertext">{v.usertext}</span>}
+                    {isMobile || <span id="usertext">{v?.usertext}</span>}
 
-                    <Button onClick={() => followerDeleteConfirm(v.id)}>
+                    <Button onClick={() => followerDeleteConfirm(v?.id)}>
                       <RemoveCircleOutlinedIcon color="error" />
                     </Button>
                   </ListItem>
@@ -904,12 +907,27 @@ const ProfileTitle = styled.div`
 
   margin-top: 0px;
   padding-top: 64px;
-
+  #title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #bar {
+    margin: 0 12px;
+    color: rgba(0, 0, 0, 0.4);
+    @media (orientation: portrait) {
+      margin: 0 6px;
+    }
+  }
   #timeinfo {
-    font-size: 16px;
+    font-size: 18px;
     width: 100%;
     text-align: start;
+    white-space: nowrap;
     color: rgba(0, 0, 0, 0.4);
+    @media (orientation: portrait) {
+      font-size: 16px;
+    }
   }
 
   @media (orientation: portrait) or (max-height: 480px) {
@@ -937,13 +955,10 @@ const Title = styled.span`
   text-transform: uppercase;
   /* line-height: 36px; */
 
-  color: #cf9dc9;
-  color: #bc9dcf;
-  color: #d5a8d0;
   color: rgba(0, 0, 0, 0.7);
 
   @media (orientation: portrait) or (max-height: 480px) {
-    padding-left: 5vw;
+    /* padding-left: 5vw; */
   }
   @media (orientation: landscape) and (max-height: 480px) {
     padding-left: 0;
@@ -1182,8 +1197,8 @@ const ProfilePicTitle = styled(Img)`
   /* position: absolute;
   right: 0px; */
   background-color: white;
-  width: 190px;
-  height: 190px;
+  width: 170px;
+  height: 170px;
   border-radius: 12px;
   /* box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2); */
   border: 3px solid rgba(0, 0, 0, 0.1);
@@ -1216,6 +1231,8 @@ const InfoAttribute = styled.div<{ height: number }>`
     color: rgba(0, 0, 0, 0.4);
   }
   #usertext {
+    width: 100%;
+    overflow: scroll;
     font-size: 22px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.6);
@@ -1230,6 +1247,7 @@ const InfoValue = styled.div`
   display: flex;
   align-items: center;
   width: auto;
+  max-width: 100%;
 
   input {
     width: 50%;
