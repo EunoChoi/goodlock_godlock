@@ -76,7 +76,8 @@ const useAlert = () => {
           setTimeout(() => {
             if (onCancel !== undefined) onCancel();
           }, 100);
-          ButtonClose();
+          // ButtonClose();
+          history.back();
         }}
         animation={animation}
         onTransitionEnd={() => {
@@ -95,7 +96,8 @@ const useAlert = () => {
                 setTimeout(() => {
                   if (onCancel !== undefined) onCancel();
                 }, 100);
-                ButtonClose();
+                // ButtonClose();
+                history.back();
               }}
             >
               취소
