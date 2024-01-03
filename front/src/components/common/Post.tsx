@@ -346,12 +346,7 @@ const Post = ({ postProps }: any) => {
           {user && <CommentInputForm postId={postProps?.id}></CommentInputForm>}
           <CommentWrapper ref={commentScroll}>
             {postProps?.Comments.slice(0, commentLoadLength).map((v: any, i: number) => (
-              <Comment
-                key={i + v.content + "comment"}
-                commentProps={v}
-                currentUserId={user.id}
-                postType={postProps.type}
-              ></Comment>
+              <Comment key={i + v.content + "comment"} commentProps={v}></Comment>
             ))}
           </CommentWrapper>
           {postProps?.Comments.length !== 0 && commentLoadLength < postProps?.Comments.length && (
@@ -478,6 +473,7 @@ const PostWrapper = styled.div`
   background-color: #fafafa;
 
   /* margin: 3px 10px; */
+  padding-bottom: 20px;
   margin-bottom: 30px;
   /* border-radius: 7px; */
   @media (orientation: portrait) or (max-height: 480px) {
@@ -550,8 +546,8 @@ const TextWrapper = styled.div`
 `;
 
 const ToggleWrapper = styled.div`
-  margin: 16px 20px;
-  margin-top: 5px;
+  margin: 5px 20px;
+  /* margin-top: 5px; */
 
   display: flex;
   justify-content: space-between;
@@ -578,7 +574,8 @@ const CommentWrapper = styled.div`
   }
 
   margin: 5px 20px;
-  margin-bottom: 20px;
+  margin: 0 20px;
+  /* margin-bottom: 20px; */
 
   max-height: 350px;
   overflow-y: scroll;

@@ -22,7 +22,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 moment.locale("ko");
 
-const Comment = ({ commentProps, currentUserId, postType }: any) => {
+const Comment = ({ commentProps }: any) => {
   const [isCommentEdit, setCommentEdit] = useState<boolean>(false);
   const [commentEditContent, setCommentEditContent] = useState<string>(commentProps.content);
 
@@ -34,6 +34,8 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
   const { Alert: CommentDeleteConfirm, openAlert: OpenCommentDeleteConfirm } = useAlert();
 
   const navigate = useNavigate();
+
+  const user = User.get().data;
 
   const commentRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -104,7 +106,7 @@ const Comment = ({ commentProps, currentUserId, postType }: any) => {
           <CommentTime>{moment(commentProps?.createdAt).fromNow()}</CommentTime>
         </FlexDiv>
         <FlexDiv>
-          {currentUserId === commentProps.UserId && (
+          {user?.id === commentProps.UserId && (
             <button
               onClick={(event: React.MouseEvent<HTMLElement>) => {
                 event.stopPropagation();

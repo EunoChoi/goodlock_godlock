@@ -54,8 +54,7 @@ const CommentInputArea = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  margin-bottom: 10px;
-  margin: 5px 20px;
+  margin: 20px 20px;
   padding: 0px 10px;
 
   width: auto;
