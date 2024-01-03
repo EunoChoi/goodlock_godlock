@@ -188,7 +188,7 @@ const Tips = () => {
 
         <MainPageStyle.TextWrapper_Bold>
           <CalendarMonthIcon id="icon" fontSize="large" />
-          this month
+          This Month
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={8} />
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>

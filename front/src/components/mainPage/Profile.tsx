@@ -383,9 +383,9 @@ const Profile = () => {
             </InputWrapper>
           )}
         </InfoAttribute>
-        <Userstatus>
+        {/* <Userstatus>
           Posts {user?.Posts?.length} • Followings {user?.Followings?.length} • Followers {user?.Followers?.length}
-        </Userstatus>
+        </Userstatus> */}
 
         <ButtonWrapper>
           {user?.level === 1 && (
@@ -405,10 +405,6 @@ const Profile = () => {
             }}
           >
             <span>회원 탈퇴</span>
-          </button>
-
-          <button onClick={() => logoutConfirm()}>
-            <span>로그아웃</span>
           </button>
         </ButtonWrapper>
         <span id="timeinfo">마지막 정보 수정 ⋯ {moment(user?.updatedAt).fromNow()}</span>
@@ -1114,7 +1110,7 @@ const ListTitle = styled.div`
   }
 `;
 const ButtonWrapper = styled.div`
-  margin-top: 48px;
+  margin-top: 36px;
   button {
     cursor: pointer;
     text-transform: uppercase;

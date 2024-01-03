@@ -298,8 +298,8 @@ const TextWrapper_Bold = styled.span`
   justify-content: center;
   align-items: center;
 
-  text-transform: capitalize;
-  text-transform: uppercase;
+  /* text-transform: capitalize;
+  text-transform: uppercase; */
   color: rgba(0, 0, 0, 0.65);
 
   #icon {
