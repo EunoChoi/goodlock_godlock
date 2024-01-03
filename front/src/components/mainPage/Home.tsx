@@ -154,11 +154,11 @@ const Home = () => {
   return (
     <MainPageStyle.MainEl>
       <MainPageStyle.TextWrapper ref={scrollTarget}>
-        <MainPageStyle.TextWrapper_Bold>반갑습니다.</MainPageStyle.TextWrapper_Bold>
-        <MainPageStyle.Space height={8}></MainPageStyle.Space>
-        <MainPageStyle.TextWrapper_Title>
-          {shortNickname(user?.nickname)}님 <EmojiPeopleIcon style={{ fontSize: "64px" }}></EmojiPeopleIcon>
-        </MainPageStyle.TextWrapper_Title>
+        <MainPageStyle.TextWrapper_Title>home</MainPageStyle.TextWrapper_Title>
+        <MainPageStyle.Space height={32}></MainPageStyle.Space>
+        <MainPageStyle.TextWrapper_Bold>
+          반갑습니다. {shortNickname(user?.nickname)}님 <EmojiPeopleIcon style={{ fontSize: "36px" }}></EmojiPeopleIcon>
+        </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={8}></MainPageStyle.Space>
 
         <MainPageStyle.TextWrapper_Normal>굿락갓락은 나만의 감성을 더하는</MainPageStyle.TextWrapper_Normal>

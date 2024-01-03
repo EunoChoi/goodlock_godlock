@@ -51,7 +51,6 @@ const Side = () => {
 
   useEffect(() => {
     if (!user.Posts) {
-      alert("re");
       user.refetch();
     }
   }, [user]);

@@ -91,7 +91,7 @@ const Profile = () => {
   const [usertext, setUsertext] = useState<string>(user?.usertext);
 
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["My Info", "Tip Posts", "Free Posts", "Bookmark", "Like Posts", "Followings", "Followers"];
+  const category = ["Tip Posts", "Free Posts", "Bookmark", "Like Posts", "Followings", "Followers"];
 
   //function
   const scrollToPill = () => {
@@ -230,7 +230,7 @@ const Profile = () => {
     const menuWrapper = document.getElementById("menuWrapper");
     const width = menuWrapper?.scrollWidth;
     if (width) {
-      menuWrapper?.scrollTo({ top: 0, left: (width / 7) * categoryNum - 70, behavior: "smooth" });
+      menuWrapper?.scrollTo({ top: 0, left: (width / 6) * categoryNum - 70, behavior: "smooth" });
     }
     setUsertextInputToggle(false);
     setNicknameInputToggle(false);
@@ -272,8 +272,146 @@ const Profile = () => {
 
       <ProfileTitle ref={scrollTarget}>
         <Title>Profile</Title>
-        <span>정보 수정 및 작성 글 확인이 가능합니다.</span>
-        <span>마지막 수정 ⋯ {moment(user?.updatedAt).fromNow()}</span>
+
+        <ProfilePicWrapper>
+          {user?.profilePic ? (
+            <ProfilePicTitle
+              crop={true}
+              alt="userProfilePic"
+              src={`${user?.profilePic}`}
+              altImg={user?.profilePic.replace(/\/thumb\//, "/original/")}
+            />
+          ) : (
+            <ProfilePicTitle
+              crop={true}
+              alt="userProfilePic"
+              src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+            />
+          )}
+          <Button
+            color="inherit"
+            onClick={() => {
+              history.pushState({ page: "modal" }, "", "");
+              setImageChangeModal((c) => !c);
+            }}
+          >
+            <EditIcon fontSize="small" />
+          </Button>
+        </ProfilePicWrapper>
+        <InfoAttribute height={50}>
+          {nicknameInputToggle || (
+            <InfoValue>
+              <span id="nickname">{user?.nickname}</span>
+              <Button
+                color="inherit"
+                onClick={() => {
+                  setNicknameInputToggle((c) => !c);
+                  setUsertextInputToggle(false);
+                }}
+              >
+                <EditIcon fontSize="small" />
+              </Button>
+            </InfoValue>
+          )}
+          {nicknameInputToggle && (
+            <InputWrapper fontsize={20}>
+              <div>
+                <input
+                  placeholder="닉네임 입력..."
+                  value={nickname || ""}
+                  onChange={(e) => {
+                    setNickname(e.target.value);
+                  }}
+                />
+                <button
+                  onClick={() => {
+                    setNicknameInputToggle((c) => !c);
+                  }}
+                >
+                  <CancelIcon color="error" fontSize="small" />
+                </button>
+                <button>
+                  <CheckCircleIcon fontSize="small" onClick={() => nickUpdateConfirm(nickname)} />
+                </button>
+              </div>
+            </InputWrapper>
+          )}
+        </InfoAttribute>
+
+        <InfoAttribute height={28}>
+          <InfoValue>
+            <span id="email">{user?.email}</span>
+          </InfoValue>
+        </InfoAttribute>
+
+        <InfoAttribute height={36}>
+          {usertextInputToggle || (
+            <InfoValue>
+              <span id="usertext">{user?.usertext ? user?.usertext : "-"}</span>
+              <Button
+                color="inherit"
+                onClick={() => {
+                  setUsertextInputToggle((c) => !c);
+                  setNicknameInputToggle(false);
+                }}
+              >
+                <EditIcon fontSize="small" />
+              </Button>
+            </InfoValue>
+          )}
+          {usertextInputToggle && (
+            <InputWrapper fontsize={20}>
+              <div>
+                <input
+                  placeholder="상태 메세지 입력..."
+                  value={usertext}
+                  onChange={(e) => {
+                    setUsertext(e.target.value);
+                  }}
+                />
+                <button
+                  onClick={() => {
+                    setUsertextInputToggle((c) => !c);
+                  }}
+                >
+                  <CancelIcon color="error" fontSize="small" />
+                </button>
+                <button onClick={() => usertestUpdateConfirm()}>
+                  <CheckCircleIcon fontSize="small" />
+                </button>
+              </div>
+            </InputWrapper>
+          )}
+        </InfoAttribute>
+        <Userstatus>
+          Posts {user?.Posts?.length} • Followings {user?.Followings?.length} • Followers {user?.Followers?.length}
+        </Userstatus>
+
+        <ButtonWrapper>
+          {user?.level === 1 && (
+            <button
+              onClick={() => {
+                history.pushState({ page: "modal" }, "", "");
+                setPasswordChangeModal(true);
+              }}
+            >
+              <span>비밀번호 변경</span>
+            </button>
+          )}
+          <button
+            onClick={() => {
+              history.pushState({ page: "modal" }, "", "");
+              setUserDeleteModal(true);
+            }}
+          >
+            <span>회원 탈퇴</span>
+          </button>
+
+          <button onClick={() => logoutConfirm()}>
+            <span>로그아웃</span>
+          </button>
+        </ButtonWrapper>
+        <span id="timeinfo">마지막 정보 수정 ⋯ {moment(user?.updatedAt).fromNow()}</span>
       </ProfileTitle>
       <MenuWrapper id="menuWrapper">
         {category.map((v, i) => (
@@ -294,159 +432,6 @@ const Profile = () => {
       </MenuWrapper>
 
       {categoryNum === 0 && (
-        <ContentWrapper>
-          <ContentBox width={500} padding={30}>
-            <ProfilePicWrapper>
-              {user?.profilePic ? (
-                <ProfilePic100
-                  crop={true}
-                  alt="userProfilePic"
-                  src={`${user?.profilePic}`}
-                  altImg={user?.profilePic.replace(/\/thumb\//, "/original/")}
-                />
-              ) : (
-                <ProfilePic100
-                  crop={true}
-                  alt="userProfilePic"
-                  src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
-                />
-              )}
-
-              <Button
-                color="inherit"
-                onClick={() => {
-                  history.pushState({ page: "modal" }, "", "");
-                  setImageChangeModal((c) => !c);
-                }}
-              >
-                <EditIcon />
-              </Button>
-            </ProfilePicWrapper>
-            <InfoAttribute>
-              <InfoTitle>
-                <span>닉네임</span>
-                <Button
-                  color="inherit"
-                  onClick={() => {
-                    setNicknameInputToggle((c) => !c);
-                    setUsertextInputToggle(false);
-                  }}
-                >
-                  <EditIcon />
-                </Button>
-              </InfoTitle>
-
-              {nicknameInputToggle || (
-                <InfoValue>
-                  <span>{user?.nickname}</span>
-                </InfoValue>
-              )}
-              {nicknameInputToggle && (
-                <InfoValue>
-                  <div>
-                    <input
-                      placeholder="닉네임 입력..."
-                      value={nickname || ""}
-                      onChange={(e) => {
-                        setNickname(e.target.value);
-                      }}
-                    />
-                    <Button
-                      onClick={() => {
-                        setNicknameInputToggle((c) => !c);
-                      }}
-                    >
-                      <CancelIcon color="error" />
-                    </Button>
-                    <Button onClick={() => nickUpdateConfirm(nickname)}>
-                      <CheckCircleIcon />
-                    </Button>
-                  </div>
-                </InfoValue>
-              )}
-            </InfoAttribute>
-
-            <InfoAttribute>
-              <InfoTitle>
-                <span>이메일</span>
-              </InfoTitle>
-              <InfoValue>
-                <span>{user?.email}</span>
-              </InfoValue>
-            </InfoAttribute>
-
-            <InfoAttribute>
-              <InfoTitle>
-                <span>상태 메세지</span>
-                <Button
-                  color="inherit"
-                  onClick={() => {
-                    setUsertextInputToggle((c) => !c);
-                    setNicknameInputToggle(false);
-                  }}
-                >
-                  <EditIcon />
-                </Button>
-              </InfoTitle>
-
-              {usertextInputToggle || (
-                <InfoValue>
-                  <span>{user?.usertext ? user?.usertext : "-"}</span>
-                </InfoValue>
-              )}
-              {usertextInputToggle && (
-                <InfoValue>
-                  <div>
-                    <input
-                      placeholder="상태 메세지 입력..."
-                      value={usertext}
-                      onChange={(e) => {
-                        setUsertext(e.target.value);
-                      }}
-                    />
-                    <Button
-                      onClick={() => {
-                        setUsertextInputToggle((c) => !c);
-                      }}
-                    >
-                      <CancelIcon color="error" />
-                    </Button>
-                    <Button onClick={() => usertestUpdateConfirm()}>
-                      <CheckCircleIcon />
-                    </Button>
-                  </div>
-                </InfoValue>
-              )}
-            </InfoAttribute>
-
-            <ButtonWrapper>
-              {user?.level === 1 && (
-                <Button
-                  onClick={() => {
-                    history.pushState({ page: "modal" }, "", "");
-                    setPasswordChangeModal(true);
-                  }}
-                >
-                  <span>비밀번호 변경</span>
-                </Button>
-              )}
-              <Button
-                onClick={() => {
-                  history.pushState({ page: "modal" }, "", "");
-                  setUserDeleteModal(true);
-                }}
-              >
-                <span>회원 탈퇴</span>
-              </Button>
-
-              <Button onClick={() => logoutConfirm()}>
-                <span>로그아웃</span>
-              </Button>
-            </ButtonWrapper>
-          </ContentBox>
-        </ContentWrapper>
-      )}
-      {categoryNum === 1 && (
         <ContentWrapper>
           <Posts>
             {myInfoPosts?.data?.pages[0].length === 0 && (
@@ -496,7 +481,7 @@ const Profile = () => {
           </Posts>
         </ContentWrapper>
       )}
-      {categoryNum === 2 && (
+      {categoryNum === 1 && (
         <ContentWrapper>
           <Posts>
             {myCommPosts?.data?.pages[0].length === 0 && (
@@ -546,7 +531,7 @@ const Profile = () => {
           </Posts>
         </ContentWrapper>
       )}
-      {categoryNum === 3 && (
+      {categoryNum === 2 && (
         <ContentWrapper>
           <Posts>
             {bookmarkPosts?.data?.pages[0].length === 0 && (
@@ -596,7 +581,7 @@ const Profile = () => {
           </Posts>
         </ContentWrapper>
       )}
-      {categoryNum === 4 && (
+      {categoryNum === 3 && (
         <ContentWrapper>
           <Posts>
             {likePosts?.data?.pages[0].length === 0 && (
@@ -646,7 +631,7 @@ const Profile = () => {
           </Posts>
         </ContentWrapper>
       )}
-      {categoryNum === 5 && (
+      {categoryNum === 4 && (
         <ContentWrapper>
           <ContentBox width={500} padding={0}>
             <ListTitle>
@@ -694,7 +679,7 @@ const Profile = () => {
           </ContentBox>
         </ContentWrapper>
       )}
-      {categoryNum === 6 && (
+      {categoryNum === 5 && (
         <ContentWrapper>
           <ContentBox width={500} padding={0}>
             <ListTitle>
@@ -746,6 +731,54 @@ const Profile = () => {
 };
 
 export default Profile;
+const InputWrapper = styled.div<{ fontsize: number }>`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  width: 70%;
+  @media (orientation: portrait) {
+    width: 100%;
+  }
+  height: 100%;
+
+  > div {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    border: 2px rgba(0, 0, 0, 0.4) solid;
+    border-radius: 8px;
+
+    padding-left: 8px;
+
+    height: 32px;
+    width: 100%;
+    /* margin: 6px 0; */
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 32px;
+      height: 32px;
+    }
+    input {
+      border: none;
+      outline-style: none;
+      height: 100%;
+      width: calc(100% - 64px);
+      color: rgba(0, 0, 0, 0.7);
+      font-size: ${(props) => props.fontsize + "px"};
+      /* font-size: 18px; */
+      /* background-color: rgba(0, 0, 0, 0); */
+    }
+  }
+`;
+const Userstatus = styled.span`
+  font-size: 20px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 24px;
+`;
 const Grid = styled.div`
   width: 100%;
   display: grid;
@@ -797,8 +830,8 @@ const Grid = styled.div`
   }
   @media (orientation: portrait) {
     grid-template-columns: 1fr 1fr;
-    row-gap: 4px;
-    column-gap: 4px;
+    /* row-gap: 4px;
+    column-gap: 4px; */
     margin-bottom: 4px;
     #textItem > span {
       font-size: 16px;
@@ -875,36 +908,33 @@ const ProfileTitle = styled.div`
 
   margin-top: 0px;
   padding-top: 64px;
-  > span {
-    font-size: 18px;
-    color: rgba(0, 0, 0, 0.65);
-    font-weight: 500;
-    line-height: 28px;
-  }
-  > span:nth-child(2) {
-    margin-top: 16px;
-  }
-  > span:nth-child(3) {
-    margin-bottom: 24px;
+
+  #timeinfo {
+    font-size: 16px;
+    width: 100%;
+    text-align: start;
+    color: rgba(0, 0, 0, 0.4);
   }
 
   @media (orientation: portrait) or (max-height: 480px) {
     margin-top: 48px; //header
     width: 100vw;
-    > span {
+    > * {
       padding-left: 5vw;
+      padding-right: 5vw;
     }
   }
   @media (orientation: landscape) and (max-height: 480px) {
     padding-top: 32px;
     margin-top: 0;
     width: 80%;
-    span {
+    > * {
       padding-left: 0;
+      padding-right: 0;
     }
   }
 `;
-const Title = styled.div`
+const Title = styled.span`
   font-weight: 600;
   font-weight: 700;
   font-size: 44px;
@@ -1084,6 +1114,20 @@ const ListTitle = styled.div`
   }
 `;
 const ButtonWrapper = styled.div`
+  margin-top: 48px;
+  button {
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 14px;
+    height: 36px;
+    width: 108px;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    color: rgba(0, 0, 0, 0.6);
+    transition: all 0.3s;
+    margin-right: 6px;
+  }
   span {
     font-weight: 500;
   }
@@ -1138,45 +1182,58 @@ const ProfilePic32 = styled(Img)`
 
   border: 2px solid rgba(0, 0, 0, 0.15);
 `;
-const ProfilePic100 = styled(Img)`
-  width: 100px;
-  height: 100px;
-  border-radius: 100%;
+const ProfilePicTitle = styled(Img)`
+  /* position: absolute;
+  right: 0px; */
+  background-color: white;
+  width: 190px;
+  height: 190px;
+  border-radius: 12px;
+  /* box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2); */
+  border: 3px solid rgba(0, 0, 0, 0.1);
 
-  background-color: #fff;
-
-  border: 2px solid rgba(0, 0, 0, 0.15);
+  /* @media (orientation: portrait) or (max-height: 480px) {
+    width: 200px;
+    height: 200px;
+  } */
 `;
 
-const InfoAttribute = styled.div`
+const InfoAttribute = styled.div<{ height: number }>`
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: start;
+  height: ${(props) => props.height + "px"};
 
-  margin-bottom: 24px;
-`;
-const InfoTitle = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  > span {
-    font-size: 1.5em;
-    color: rgba(0, 0, 0, 0.8);
+  #nickname {
+    font-size: 36px;
+    font-weight: 600;
+    /* text-transform: uppercase; */
+    color: rgba(0, 0, 0, 0.7);
+    margin: 6px 0;
+  }
+  #email {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.4);
+  }
+  #usertext {
+    font-size: 22px;
     font-weight: 500;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  button {
+    color: #a9a7d4;
   }
 `;
+
 const InfoValue = styled.div`
   display: -webkit-box;
   display: flex;
   align-items: center;
-  width: 100%;
-  /* padding: 10px 0px; */
-  /* height: 36px;
-  line-height: 36px; */
-  margin-top: 8px;
-  line-height: 32px;
+  width: auto;
 
   input {
     width: 50%;
@@ -1192,6 +1249,7 @@ const InfoValue = styled.div`
     font-size: 16px;
   }
   > div {
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1216,7 +1274,6 @@ const InfoValue = styled.div`
     justify-content: start;
     align-items: center;
 
-    height: 40px;
     width: 100%;
 
     font-size: 18px;
@@ -1258,13 +1315,14 @@ const Posts = styled.div`
 `;
 const ProfilePicWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: end;
 
-  padding: 10px;
-  padding-bottom: 30px;
+  padding-top: 32px;
 
+  button {
+    color: #a9a7d4;
+  }
   overflow: auto;
   * {
     flex-shrink: 0;

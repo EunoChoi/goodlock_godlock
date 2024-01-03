@@ -67,7 +67,7 @@ const SinglePostWrapper = styled.div`
   animation: ${Animation.smoothAppear} 1s ease-in-out;
 `;
 const SingePostText = styled.div`
-  width: 500px;
+  width: 550px;
   padding-top: 64px;
   /* padding-left: calc((70vw - 500px) / 2); */
   padding-bottom: 32px;

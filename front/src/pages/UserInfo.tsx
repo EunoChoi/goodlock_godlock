@@ -697,7 +697,7 @@ const UserInfoWrapper = styled.div`
     margin: 4px 0;
   }
   #usertext {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.6);
     margin-top: 4px;

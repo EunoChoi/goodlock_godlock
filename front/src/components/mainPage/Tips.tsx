@@ -161,7 +161,7 @@ const Tips = () => {
   );
 
   const shortTag = (tag: string) => {
-    if (tag?.length >= 11) return tag.slice(0, 10) + "...";
+    if (tag?.length >= 10) return tag.slice(0, 9) + "...";
     else return tag;
   };
   const makeK = (n: number | null) => {

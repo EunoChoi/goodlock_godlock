@@ -37,6 +37,7 @@ const HomeEl = styled.div`
   align-items: start;
   #posts {
     width: 500px;
+    width: 550px;
   }
   #tags {
     overflow-x: scroll !important;
@@ -44,6 +45,7 @@ const HomeEl = styled.div`
     top: 80px;
 
     width: calc(100% - 500px);
+    width: calc(100% - 550px);
     /* min-width: 120px; */
 
     /* margin-left: 36px; */
@@ -297,6 +299,7 @@ const TextWrapper_Bold = styled.span`
   align-items: center;
 
   text-transform: capitalize;
+  text-transform: uppercase;
   color: rgba(0, 0, 0, 0.65);
 
   #icon {
