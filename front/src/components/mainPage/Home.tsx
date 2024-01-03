@@ -158,11 +158,8 @@ const Home = () => {
           반갑습니다. {user?.nickname?.slice(0, 8)}님 <EmojiPeopleIcon style={{ fontSize: "36px" }}></EmojiPeopleIcon>
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={8}></MainPageStyle.Space>
-
-        <MainPageStyle.TextWrapper_Normal>
-          굿락갓락은 갤럭시&굿락 팁 공유 사이트입니다.
-        </MainPageStyle.TextWrapper_Normal>
-        <MainPageStyle.TextWrapper_Normal>나만의 감성을 공유해 보아요. :)</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>다양한 팁을 공유하는 커뮤니티입니다.</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>굿락갓락에서 팁을 자유롭게 나눠보세요. :)</MainPageStyle.TextWrapper_Normal>
 
         {topPosts?.length >= 1 && (
           <>
