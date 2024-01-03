@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import User from "../functions/reactQuery/User";
 import { useNavigate, useParams } from "react-router-dom";
 import SideBar from "../styles/SidaBar";
@@ -36,7 +36,7 @@ const Side = () => {
     return n;
   };
   const makeShortNickname = (nick: string) => {
-    if (nick?.length >= 11) return nick.slice(0, 10) + "...";
+    if (nick?.length >= 9) return nick.slice(0, 8) + "...";
     else return nick;
   };
 
@@ -48,6 +48,13 @@ const Side = () => {
       }
     });
   };
+
+  useEffect(() => {
+    if (!user.Posts) {
+      alert("re");
+      user.refetch();
+    }
+  }, [user]);
 
   return (
     // 로그아웃 상태에서 접근시도 구현해야함. 싱글 포스트 뷰 때문에

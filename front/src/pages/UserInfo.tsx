@@ -87,7 +87,7 @@ const UserInfo = () => {
   const unFollow = User.unFollow();
 
   const makeShortNickname = (nick: string) => {
-    if (nick?.length >= 11) return nick.slice(0, 10) + "...";
+    if (nick?.length >= 9) return nick.slice(0, 8) + "...";
     else return nick;
   };
 
@@ -219,11 +219,11 @@ const UserInfo = () => {
               catNum={categoryNum}
               key={"catNum" + i}
               onClick={() => {
-                window.scrollTo({
-                  top: scrollTarget.current?.scrollHeight,
-                  left: 0,
-                  behavior: "smooth"
-                });
+                // window.scrollTo({
+                //   top: scrollTarget.current?.scrollHeight,
+                //   left: 0,
+                //   behavior: "smooth"
+                // });
 
                 setTimeout(() => {
                   navigate(`/userinfo/${targetUser?.id}/cat/${i}`);
@@ -556,7 +556,7 @@ const Grid = styled.div`
     overflow: hidden;
     > span {
       width: 80% !important;
-      overflow-x: hidden !important;
+      overflow: hidden !important;
       height: auto;
 
       line-height: 1.3em;
@@ -574,6 +574,7 @@ const Grid = styled.div`
     }
   }
   @media (orientation: portrait) {
+    grid-template-columns: 1fr 1fr;
     row-gap: 4px;
     column-gap: 4px;
     margin-bottom: 4px;

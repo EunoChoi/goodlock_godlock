@@ -52,7 +52,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
     return n;
   };
   const makeShortNickname = (nick: string) => {
-    if (nick?.length >= 11) return nick.slice(0, 10) + "...";
+    if (nick?.length >= 9) return nick.slice(0, 8) + "...";
     else return nick;
   };
   const onClose = () => {

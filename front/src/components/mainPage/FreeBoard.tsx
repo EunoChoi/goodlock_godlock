@@ -166,7 +166,7 @@ const FreeBoard = () => {
         <MainPageStyle.Space height={8} />
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
-          {monthNew} Free • {monthFeed} Feed Posts
+          Free {monthNew} • Feed Posts {monthFeed}
         </MainPageStyle.TextWrapper_Normal>
 
         {topPosts?.length >= 1 && (
@@ -231,11 +231,11 @@ const FreeBoard = () => {
               navigate({
                 pathname: "/main/2"
               });
-              window.scrollTo({
-                top: scrollTarget.current?.scrollHeight,
-                left: 0,
-                behavior: "smooth"
-              });
+              // window.scrollTo({
+              //   top: scrollTarget.current?.scrollHeight,
+              //   left: 0,
+              //   behavior: "smooth"
+              // });
             }}
           >
             {v}
@@ -246,6 +246,11 @@ const FreeBoard = () => {
           toggle={toggle === 2}
           onClick={() => {
             setToggle(2);
+            // window.scrollTo({
+            //   top: scrollTarget.current?.scrollHeight,
+            //   left: 0,
+            //   behavior: "smooth"
+            // });
           }}
         >
           <form

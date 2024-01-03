@@ -193,7 +193,7 @@ const Tips = () => {
         <MainPageStyle.Space height={8} />
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
-          {monthNewInfo} Tip • {monthOngoing} Ongoing • {monthFeed} Feed Posts
+          Tip {monthNewInfo} • Ongoing {monthOngoing}• Feed Posts {monthFeed}
         </MainPageStyle.TextWrapper_Normal>
 
         {topPosts?.length >= 1 && (
@@ -258,11 +258,11 @@ const Tips = () => {
               navigate({
                 pathname: "/main/1"
               });
-              window.scrollTo({
-                top: scrollTarget.current?.scrollHeight,
-                left: 0,
-                behavior: "smooth"
-              });
+              // window.scrollTo({
+              //   top: scrollTarget.current?.scrollHeight,
+              //   left: 0,
+              //   behavior: "smooth"
+              // });
             }}
           >
             {v}
@@ -273,11 +273,11 @@ const Tips = () => {
           toggle={toggle === 3}
           onClick={() => {
             setToggle(3);
-            window.scrollTo({
-              top: scrollTarget.current?.scrollHeight,
-              left: 0,
-              behavior: "smooth"
-            });
+            // window.scrollTo({
+            //   top: scrollTarget.current?.scrollHeight,
+            //   left: 0,
+            //   behavior: "smooth"
+            // });
             setTimeout(() => {
               pillWrapperRef.current?.scrollTo({
                 top: 0,

@@ -77,11 +77,11 @@ const Gallery = () => {
           toggle={toggle}
           onClick={() => {
             setToggle(0);
-            window.scrollTo({
-              top: scrollTarget.current?.scrollHeight,
-              left: 0,
-              behavior: "smooth"
-            });
+            // window.scrollTo({
+            //   top: scrollTarget.current?.scrollHeight,
+            //   left: 0,
+            //   behavior: "smooth"
+            // });
           }}
         >
           Tip Posts
@@ -90,11 +90,11 @@ const Gallery = () => {
           toggle={toggle}
           onClick={() => {
             setToggle(1);
-            window.scrollTo({
-              top: scrollTarget.current?.scrollHeight,
-              left: 0,
-              behavior: "smooth"
-            });
+            // window.scrollTo({
+            //   top: scrollTarget.current?.scrollHeight,
+            //   left: 0,
+            //   behavior: "smooth"
+            // });
           }}
         >
           Free Posts

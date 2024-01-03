@@ -173,7 +173,7 @@ const Home = () => {
         <MainPageStyle.TextWrapper_SubBold>New</MainPageStyle.TextWrapper_SubBold>
         <MainPageStyle.TextWrapper_Normal>
           {/* {monthNewInfo?.len + monthNewComm?.len} Tip&Free Posts */}
-          {monthNewInfo + monthNewComm} All • {monthNewInfo} Tip • {monthNewComm} Free Posts
+          All {monthNewInfo + monthNewComm} • Tip {monthNewInfo} • Free Posts {monthNewComm}
         </MainPageStyle.TextWrapper_Normal>
         {/* <MainPageStyle.Space height={8} /> */}
         {/* <MainPageStyle.TextWrapper_SubBold>Share Closing</MainPageStyle.TextWrapper_SubBold>
@@ -239,7 +239,7 @@ const Home = () => {
               navigate({
                 pathname: "/main/0"
               });
-              scrollTargerheight();
+              // scrollTargerheight();
             }}
           >
             {v}
@@ -250,11 +250,7 @@ const Home = () => {
           toggle={toggle === 1}
           onClick={() => {
             setToggle(1);
-            window.scrollTo({
-              top: scrollTarget.current?.scrollHeight,
-              left: 0,
-              behavior: "smooth"
-            });
+            // scrollTargerheight();
           }}
         >
           <form

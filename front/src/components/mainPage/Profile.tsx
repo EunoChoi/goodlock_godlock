@@ -281,7 +281,7 @@ const Profile = () => {
             catNum={categoryNum}
             key={"catNum" + i}
             onClick={() => {
-              scrollToPill();
+              // scrollToPill();
 
               setTimeout(() => {
                 navigate(`/main/4/cat/${i}`);
@@ -778,7 +778,7 @@ const Grid = styled.div`
     overflow: hidden;
     > span {
       width: 80% !important;
-      overflow-x: hidden !important;
+      overflow: hidden !important;
       height: auto;
 
       line-height: 1.3em;
@@ -796,6 +796,7 @@ const Grid = styled.div`
     }
   }
   @media (orientation: portrait) {
+    grid-template-columns: 1fr 1fr;
     row-gap: 4px;
     column-gap: 4px;
     margin-bottom: 4px;
@@ -876,7 +877,7 @@ const ProfileTitle = styled.div`
   padding-top: 64px;
   > span {
     font-size: 18px;
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.65);
     font-weight: 500;
     line-height: 28px;
   }
