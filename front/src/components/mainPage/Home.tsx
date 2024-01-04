@@ -159,7 +159,7 @@ const Home = () => {
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={8}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_Normal>
-          굿락갓락은 다양한 팁을 공유하는 커뮤니티입니다.
+          굿락갓락은 갤럭시 팁을 공유하는 커뮤니티입니다.
         </MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.TextWrapper_Normal>갤럭시&굿락 팁을 자유롭게 나눠보세요. :)</MainPageStyle.TextWrapper_Normal>
 
