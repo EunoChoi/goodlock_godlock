@@ -343,11 +343,6 @@ const PostZoom = ({ postProps, setZoom }: props) => {
               </MobilePostInfo>
 
               <CustomCarousel indicator={postProps.Images.length === 0 ? false : true}>
-                {postProps.Images?.map((v: Image, i: number) => (
-                  <div key={i + v.src} onClick={() => setCrop((c) => !c)}>
-                    <PostImage crop={crop} src={v?.src.replace(/\/thumb\//, "/original/")} alt="zoom image" />
-                  </div>
-                ))}
                 <MobileText key="text">
                   <div id="content">
                     {postProps?.content?.split(/(#[^\s#]{1,15})/g).map((v: string, i: number) => {
@@ -392,6 +387,11 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                     </SubContent>
                   )}
                 </MobileText>
+                {postProps.Images?.map((v: Image, i: number) => (
+                  <div key={i + v.src} onClick={() => setCrop((c) => !c)}>
+                    <PostImage crop={crop} src={v?.src.replace(/\/thumb\//, "/original/")} alt="zoom image" />
+                  </div>
+                ))}
               </CustomCarousel>
               <MobilePostMenu>
                 <button
