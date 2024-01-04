@@ -33,8 +33,8 @@ module.exports = (sequelize, DataTypes) => { //sequelize는 시퀄라이즈 라�
   }, {
     //모델 세팅 값 입력
     //한글 포함
-    charset: 'utf8',
-    collate: 'utf8_general_ci',
+    charset: 'utf8mb4',
+    collate: 'utf8mb4_unicode_ci',
 
     //한글 포함 이모티콘까지
     //charset: 'utf8mb4', 
