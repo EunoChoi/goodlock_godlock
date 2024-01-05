@@ -88,7 +88,7 @@ const Post = ({ postProps }: any) => {
 
   //댓글 작성시 스크롤 탑
   useEffect(() => {
-    commentScroll.current?.scrollTo({ top: 0, behavior: "smooth" });
+    commentScroll.current?.scrollTo({ top: commentScroll.current.scrollHeight, behavior: "smooth" });
   }, [postProps?.Comments.length]);
 
   const navigate = useNavigate();
@@ -411,7 +411,7 @@ const CommentWrapper = styled.div`
   width: 100%;
   background-color: #fff;
 
-  padding-bottom: 20px;
+  padding-bottom: 32px;
 
   bottom: 0;
   right: 0;
@@ -427,11 +427,13 @@ const CommentWrapper = styled.div`
     width: 70%;
   }
   @media (orientation: portrait) or (max-height: 480px) {
+    padding-bottom: 20px;
     > * {
       width: 92%;
     }
   }
   @media (orientation: landscape) and (max-height: 480px) {
+    padding-bottom: 20px;
     height: 100vh;
   }
 `;

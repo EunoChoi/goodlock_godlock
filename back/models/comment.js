@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
   Comment.associate = (db) => {
     db.Comment.belongsTo(db.User);
     db.Comment.belongsTo(db.Post);
+
+    //reply
+    db.Comment.belongsToMany(db.Comment, { through: 'Reply', as: 'ReplyParent', foreignKey: 'ReplyChildId' });
+    db.Comment.belongsToMany(db.Comment, { through: 'Reply', as: 'ReplyChild', foreignKey: 'ReplyParentId' });
   };
 
   return Comment;

@@ -570,8 +570,8 @@ const Grid = styled.div`
   }
   @media (orientation: portrait) {
     grid-template-columns: 1fr 1fr;
-    row-gap: 4px;
-    column-gap: 4px;
+    /* row-gap: 4px;
+    column-gap: 4px; */
     margin-bottom: 4px;
     #textItem > span {
       font-size: 16px;
@@ -944,6 +944,10 @@ const Posts = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: center;
+
+  .infinite-scroll-component__outerdiv {
+    width: 100%;
+  }
 
   padding-top: 4px;
 

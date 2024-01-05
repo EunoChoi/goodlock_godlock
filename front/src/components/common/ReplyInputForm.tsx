@@ -7,11 +7,12 @@ import Comment from "../../functions/reactQuery/Comment";
 
 //mui
 import SendIcon from "@mui/icons-material/Send";
+import Reply from "../../functions/reactQuery/Reply";
 
-const ReplyInputForm = ({ postId }: { postId: number }) => {
+const ReplyInputForm = ({ commentId }: { commentId: number }) => {
   const [content, setContent] = useState("");
 
-  const addComment = Comment.add();
+  const addReply = Reply.add();
 
   return (
     <form
@@ -19,8 +20,8 @@ const ReplyInputForm = ({ postId }: { postId: number }) => {
         e.preventDefault();
         if (content.length > 60 || content.length < 5) toast.warning("답글은 최소 5자 최대 60자 입력이 가능합니다.");
         else
-          addComment.mutate(
-            { postId, content },
+          addReply.mutate(
+            { commentId, content },
             {
               onSuccess: () => {
                 setContent("");
@@ -38,8 +39,8 @@ const ReplyInputForm = ({ postId }: { postId: number }) => {
           }}
         ></CommentInput>
 
-        <CommentSendButton disabled={addComment.isLoading ? true : false}>
-          {addComment.isLoading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
+        <CommentSendButton disabled={addReply.isLoading ? true : false}>
+          {addReply.isLoading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
         </CommentSendButton>
       </CommentInputArea>
     </form>
@@ -55,6 +56,8 @@ const CommentInputArea = styled.div`
   align-items: center;
 
   padding: 0px 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 
   width: auto;
   height: 50px;

@@ -19,16 +19,14 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import User from "../../functions/reactQuery/User";
 import CircularProgress from "@mui/material/CircularProgress";
-import ReplyInputForm from "./ReplyInputForm";
-import Reply from "./Reply";
+import ReplyQuery from "../../functions/reactQuery/Reply";
 
 moment.locale("ko");
 
-const Comment = ({ commentProps }: any) => {
+const Reply = ({ replyProps }: any) => {
   const [isCommentEdit, setCommentEdit] = useState<boolean>(false);
-  const [isReplyOpen, setReplyOpen] = useState<boolean>(false);
 
-  const [commentEditContent, setCommentEditContent] = useState<string>(commentProps.content);
+  const [commentEditContent, setCommentEditContent] = useState<string>(replyProps.content);
 
   const [morePop, setMorePop] = useState<null | HTMLElement>(null);
 
@@ -45,10 +43,13 @@ const Comment = ({ commentProps }: any) => {
   useEffect(() => {
     commentRef.current?.focus();
   }, [isCommentEdit]);
+  useEffect(() => {
+    setCommentEditContent(replyProps.content);
+  }, [replyProps]);
 
   //useMutation
-  const editComment = CommentFunction.edit();
-  const deleteComment = CommentFunction.delete();
+  const editReply = ReplyQuery.edit();
+  const deleteReply = ReplyQuery.delete();
 
   return (
     <CommentBox
@@ -81,7 +82,7 @@ const Comment = ({ commentProps }: any) => {
               OpenCommentDeleteConfirm({
                 mainText: "댓글을 삭제 하시겠습니까?",
                 onSuccess: () => {
-                  deleteComment.mutate({ postId: commentProps.PostId, commentId: commentProps.id });
+                  deleteReply.mutate({ replyId: replyProps.id });
                 }
               });
             }}
@@ -93,24 +94,24 @@ const Comment = ({ commentProps }: any) => {
       <CommentInfo>
         <FlexDiv
           onClick={() => {
-            navigate(`/userinfo/${commentProps?.User?.id}/cat/0`);
+            navigate(`/userinfo/${replyProps?.User?.id}/cat/0`);
           }}
         >
-          {commentProps?.User?.profilePic ? (
+          {replyProps?.User?.profilePic ? (
             <ProfilePic
               crop={true}
               alt="profilePic"
-              src={`${commentProps?.User?.profilePic}`}
-              altImg={`${commentProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
+              src={`${replyProps?.User?.profilePic}`}
+              altImg={`${replyProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
             />
           ) : (
             <ProfilePic crop={true} alt="profilePic" src="/img/defaultProfilePic.png" />
           )}
-          <UserNickname>{commentProps?.User?.nickname?.slice(0, 8)}</UserNickname>
+          <UserNickname>{replyProps?.User?.nickname?.slice(0, 8)}</UserNickname>
         </FlexDiv>
         <FlexDiv>
-          <CommentTime>{moment(commentProps?.createdAt).fromNow()}</CommentTime>
-          {user?.id === commentProps.UserId && (
+          <CommentTime>{moment(replyProps?.createdAt).fromNow()}</CommentTime>
+          {user?.id === replyProps.UserId && (
             <button
               onClick={(event: React.MouseEvent<HTMLElement>) => {
                 event.stopPropagation();
@@ -139,10 +140,9 @@ const Comment = ({ commentProps }: any) => {
             if (commentEditContent.length > 60 || commentEditContent.length < 5)
               toast.warning("댓글은 최소 5자 최대 60자 입력이 가능합니다.");
             else {
-              editComment.mutate(
+              editReply.mutate(
                 {
-                  postId: commentProps.PostId,
-                  commentId: commentProps.id,
+                  replyId: replyProps.id,
                   content: commentEditContent
                 },
                 {
@@ -150,7 +150,7 @@ const Comment = ({ commentProps }: any) => {
                     setCommentEdit(false);
                   },
                   onError: () => {
-                    setCommentEditContent(commentProps?.content);
+                    setCommentEditContent(replyProps?.content);
                   }
                 }
               );
@@ -159,59 +159,28 @@ const Comment = ({ commentProps }: any) => {
         >
           <input ref={commentRef} value={commentEditContent} onChange={(e) => setCommentEditContent(e.target.value)} />
 
-          <CommentEditButton disabled={editComment.isLoading ? true : false}>
-            {editComment.isLoading ? <CircularProgress size={24} color="inherit" /> : <CheckCircleIcon />}
+          <CommentEditButton disabled={editReply.isLoading ? true : false}>
+            {editReply.isLoading ? <CircularProgress size={24} color="inherit" /> : <CheckCircleIcon />}
           </CommentEditButton>
 
           <CommentEditButton
             onClick={() => {
               setCommentEdit(false);
-              setCommentEditContent(commentProps?.content);
+              setCommentEditContent(replyProps?.content);
             }}
           >
             <CancelIcon color="error" />
           </CommentEditButton>
         </CommentEdit>
       ) : (
-        <CommentText onClick={() => setReplyOpen((c) => !c)}>{commentProps?.content}</CommentText>
-      )}
-
-      {commentProps?.ReplyChild?.length >= 1 && (
-        <ReplyBtn>
-          <button onClick={() => setReplyOpen((c) => !c)}>{commentProps?.ReplyChild?.length}개의 답글</button>
-        </ReplyBtn>
-      )}
-
-      {isReplyOpen && (
-        <>
-          <RelayWrapper>{user && <ReplyInputForm commentId={commentProps?.id}></ReplyInputForm>}</RelayWrapper>
-          <RelayWrapper>
-            {commentProps?.ReplyChild?.map((v: any, i: number) => (
-              <Reply key={commentProps?.id + i} replyProps={v} />
-            ))}
-          </RelayWrapper>
-        </>
+        <CommentText>{replyProps?.content}</CommentText>
       )}
     </CommentBox>
   );
 };
 
-export default Comment;
-const RelayWrapper = styled.div`
-  width: 100%;
-  padding-left: 20px;
-`;
-const ReplyBtn = styled.div`
-  width: auto;
-  font-size: 16px;
-  color: rgba(0, 0, 0, 0.6);
-  /* margin-top: 8px; */
-  button {
-    margin-right: 12px;
-  }
+export default Reply;
 
-  cursor: pointer;
-`;
 const ProfilePic = styled(Img)`
   width: 32px;
   height: 32px;
@@ -271,9 +240,9 @@ const CommentBox = styled.div`
   display: flex;
   flex-direction: column;
 
-  padding: 10px 0px;
+  padding: 4px 0px;
   /* border-top: 1px rgba(0, 0, 0, 0.05) solid;
-  border-bottom: 1px rgba(0, 0, 0, 0.05) solid; */
+  border-bottom: 1px rgba(43, 31, 31, 0.05) solid; */
 `;
 const CommentInfo = styled.div`
   display: flex;

@@ -106,7 +106,7 @@ router.get("/single", async (req, res) => {
         id
       }],
       order: [
-        [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        [Comment, 'createdAt', 'ASC'], //불러온 comment도 정렬
       ],
       include: [
         {
@@ -127,6 +127,16 @@ router.get("/single", async (req, res) => {
             {
               model: User, //댓글의 작성자
               attributes: ['id', 'nickname', 'profilePic'],
+            },
+            {
+              model: Comment, //대댓글
+              as: 'ReplyChild',
+              include: [
+                {
+                  model: User, //대댓글의 작성자
+                  attributes: ['id', 'nickname', 'profilePic'],
+                }
+              ],
             }
           ],
         }
@@ -150,7 +160,7 @@ router.get("/", async (req, res) => {
       // limit: 10,
       order: [
         ['createdAt', 'DESC'],
-        [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        [Comment, 'createdAt', 'ASC'], //불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],
       include: [
@@ -172,6 +182,16 @@ router.get("/", async (req, res) => {
             {
               model: User, //댓글의 작성자
               attributes: ['id', 'nickname', 'profilePic'],
+            },
+            {
+              model: Comment, //대댓글
+              as: 'ReplyChild',
+              include: [
+                {
+                  model: User, //대댓글의 작성자
+                  attributes: ['id', 'nickname', 'profilePic'],
+                }
+              ],
             }
           ],
         }
@@ -205,7 +225,7 @@ router.get("/activinfo", async (req, res) => {
       }],
       order: [
         ['createdAt', 'DESC'],
-        [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        [Comment, 'createdAt', 'ASC'], //불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],
       include: [
@@ -227,6 +247,16 @@ router.get("/activinfo", async (req, res) => {
             {
               model: User, //댓글의 작성자
               attributes: ['id', 'nickname', 'profilePic'],
+            },
+            {
+              model: Comment, //대댓글
+              as: 'ReplyChild',
+              include: [
+                {
+                  model: User, //대댓글의 작성자
+                  attributes: ['id', 'nickname', 'profilePic'],
+                }
+              ],
             }
           ],
         }
@@ -285,10 +315,10 @@ router.get("/month/top", tokenCheck, async (req, res) => {
         {
           model: Image, //게시글의 이미지
         },
-        {
-          model: Comment, //게시글의 이미지
-          attributes: ['id']
-        },
+        // {
+        //   model: Comment, 
+        //   attributes: ['id']
+        // },
       ],
       order: [[sequelize.col("LikeCount"), "DESC"], [sequelize.literal('rand()')]]
     });
@@ -469,7 +499,7 @@ router.get("/feed", tokenCheck, async (req, res) => {
       }],
       order: [
         ['createdAt', 'DESC'],
-        [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        [Comment, 'createdAt', 'ASC'], //불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],
       include: [
@@ -491,6 +521,16 @@ router.get("/feed", tokenCheck, async (req, res) => {
             {
               model: User, //댓글의 작성자
               attributes: ['id', 'nickname', 'profilePic'],
+            },
+            {
+              model: Comment, //대댓글
+              as: 'ReplyChild',
+              include: [
+                {
+                  model: User, //대댓글의 작성자
+                  attributes: ['id', 'nickname', 'profilePic'],
+                }
+              ],
             }
           ],
         }
@@ -517,31 +557,26 @@ router.get("/my", tokenCheck, async (req, res) => {
       // limit: 10,
       order: [
         ['createdAt', 'DESC'],
-        [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        // [Comment, 'createdAt', 'ASC'], //불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],
       include: [
-        {
-          model: User,//게시글 작성자
-          attributes: ['id', 'nickname', 'profilePic', 'email'],
-        },
-        {
-          model: User, //좋아요 누른 사람
-          as: 'Likers', //모델에서 가져온대로 설정
-          attributes: ['id', 'nickname'],
-        },
+        // {
+        //   model: User,//게시글 작성자
+        //   attributes: ['id', 'nickname', 'profilePic', 'email'],
+        // },
         {
           model: Image, //게시글의 이미지
         },
-        {
-          model: Comment, //게시글에 달린 댓글
-          include: [
-            {
-              model: User, //댓글의 작성자
-              attributes: ['id', 'nickname', 'profilePic'],
-            }
-          ],
-        }
+        // {
+        //   model: Comment, //게시글에 달린 댓글
+        //   include: [
+        //     {
+        //       model: User, //댓글의 작성자
+        //       attributes: ['id', 'nickname', 'profilePic'],
+        //     }
+        //   ],
+        // }
       ],
     });
 
@@ -571,7 +606,7 @@ router.get("/liked", tokenCheck, async (req, res) => {
       // limit: 10,
       order: [
         ['createdAt', 'DESC'],
-        [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        // [Comment, 'createdAt', 'ASC'], //불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],
       include: [
@@ -587,15 +622,15 @@ router.get("/liked", tokenCheck, async (req, res) => {
         {
           model: Image, //게시글의 이미지
         },
-        {
-          model: Comment, //게시글에 달린 댓글
-          include: [
-            {
-              model: User, //댓글의 작성자
-              attributes: ['id', 'nickname', 'profilePic'],
-            }
-          ],
-        }
+        // {
+        //   model: Comment, //게시글에 달린 댓글
+        //   include: [
+        //     {
+        //       model: User, //댓글의 작성자
+        //       attributes: ['id', 'nickname', 'profilePic'],
+        //     }
+        //   ],
+        // }
       ],
     });
 
@@ -620,7 +655,7 @@ router.get("/search", async (req, res) => {
       }],
       order: [
         ['createdAt', 'DESC'],
-        [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        [Comment, 'createdAt', 'ASC'], //불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],
       include: [
@@ -642,6 +677,16 @@ router.get("/search", async (req, res) => {
             {
               model: User, //댓글의 작성자
               attributes: ['id', 'nickname', 'profilePic'],
+            },
+            {
+              model: Comment, //대댓글
+              as: 'ReplyChild',
+              include: [
+                {
+                  model: User, //대댓글의 작성자
+                  attributes: ['id', 'nickname', 'profilePic'],
+                }
+              ],
             }
           ],
         }
@@ -669,31 +714,31 @@ router.get("/user", tokenCheck, async (req, res) => {
       // limit: 10,
       order: [
         ['createdAt', 'DESC'],
-        [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        // [Comment, 'createdAt', 'ASC'], //불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],
       include: [
-        {
-          model: User,//게시글 작성자
-          attributes: ['id', 'nickname', 'profilePic', 'email'],
-        },
-        {
-          model: User, //좋아요 누른 사람
-          as: 'Likers', //모델에서 가져온대로 설정
-          attributes: ['id', 'nickname'],
-        },
+        // {
+        //   model: User,//게시글 작성자
+        //   attributes: ['id', 'nickname', 'profilePic', 'email'],
+        // },
+        // {
+        //   model: User, //좋아요 누른 사람
+        //   as: 'Likers', //모델에서 가져온대로 설정
+        //   attributes: ['id', 'nickname'],
+        // },
         {
           model: Image, //게시글의 이미지
         },
-        {
-          model: Comment, //게시글에 달린 댓글
-          include: [
-            {
-              model: User, //댓글의 작성자
-              attributes: ['id', 'nickname', 'profilePic'],
-            }
-          ],
-        }
+        // {
+        //   model: Comment, //게시글에 달린 댓글
+        //   include: [
+        //     {
+        //       model: User, //댓글의 작성자
+        //       attributes: ['id', 'nickname', 'profilePic'],
+        //     }
+        //   ],
+        // }
       ],
     });
 
@@ -724,31 +769,31 @@ router.get("/user/liked", tokenCheck, async (req, res) => {
       // limit: 10,
       order: [
         ['createdAt', 'DESC'],
-        [Comment, 'createdAt', 'DESC'], //불러온 comment도 정렬
+        // [Comment, 'createdAt', 'ASC'], //불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],
       include: [
-        {
-          model: User,//게시글 작성자
-          attributes: ['id', 'nickname', 'profilePic', 'email'],
-        },
-        {
-          model: User, //좋아요 누른 사람
-          as: 'Likers', //모델에서 가져온대로 설정
-          attributes: ['id', 'nickname'],
-        },
+        // {
+        //   model: User,//게시글 작성자
+        //   attributes: ['id', 'nickname', 'profilePic', 'email'],
+        // },
+        // {
+        //   model: User, //좋아요 누른 사람
+        //   as: 'Likers', //모델에서 가져온대로 설정
+        //   attributes: ['id', 'nickname'],
+        // },
         {
           model: Image, //게시글의 이미지
         },
-        {
-          model: Comment, //게시글에 달린 댓글
-          include: [
-            {
-              model: User, //댓글의 작성자
-              attributes: ['id', 'nickname', 'profilePic'],
-            }
-          ],
-        }
+        // {
+        //   model: Comment, //게시글에 달린 댓글
+        //   include: [
+        //     {
+        //       model: User, //댓글의 작성자
+        //       attributes: ['id', 'nickname', 'profilePic'],
+        //     }
+        //   ],
+        // }
       ],
     });
 
@@ -904,7 +949,7 @@ router.delete("/:postId", tokenCheck, async (req, res) => {
 })
 
 
-//add, edit, delete comment
+//comment - add, edit, delete
 router.post("/:postId/comment", tokenCheck, async (req, res) => {
   try {
     const postId = req.params.postId;
@@ -972,6 +1017,76 @@ router.patch("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
     console.error(e);
   }
 })
+
+//Reply - add, edit, delete
+router.post("comment/:commentId/reply", tokenCheck, async (req, res) => {
+  try {
+    const commentId = req.params.commentId;
+    const currentComment = await Comment.findOne(
+      { where: { id: commentId } }
+    );
+    if (!currentComment) {
+      return res.status(403).json("존재하지 않는 댓글입니다.");
+    }
+
+    const comment = await Comment.create({
+      content: req.body.content,
+      commentId: commentId,
+      UserId: req.currentUserId,
+    });
+
+    return setTimeout(() => {
+      res.status(201).json(comment);
+    }, 1000);
+  }
+  catch (e) {
+    console.error(e);
+  }
+});
+// router.delete("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
+//   try {
+//     const postId = req.params.postId;
+//     const commentId = req.params.commentId;
+
+//     const comment = await Comment.findOne({
+//       where: { id: commentId, PostId: postId, UserId: req.currentUserId }
+//     });
+//     if (!comment) return res.status(403).json("대상이 올바르지 않거나 자신의 댓글이 아닙니다.");
+
+//     await Comment.destroy({
+//       where: { id: commentId, PostId: postId, UserId: req.currentUserId }
+//     });
+//   } catch (e) {
+//     console.error(e);
+//   }
+//   res.status(200).json("comment delete success");
+// })
+// router.patch("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
+//   try {
+//     const postId = req.params.postId;
+//     const commentId = req.params.commentId;
+
+//     //comment 확인
+//     const comment = await Comment.findOne({
+//       where: { id: commentId, PostId: postId, UserId: req.currentUserId }
+//     });
+//     if (!comment) return res.status(403).json("대상이 올바르지 않거나 자신의 댓글이 아닙니다.");
+
+//     //comment 수정
+//     await Comment.update({
+//       content: req.body.content,
+//     }, {
+//       where: { id: commentId, PostId: postId, UserId: req.currentUserId }
+//     }
+//     );
+
+//     return setTimeout(() => {
+//       res.status(200).json("post edit success");
+//     }, 1000);
+//   } catch (e) {
+//     console.error(e);
+//   }
+// })
 
 
 //post like, unlike
