@@ -19,11 +19,13 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import User from "../../functions/reactQuery/User";
 import CircularProgress from "@mui/material/CircularProgress";
+import ReplyInputForm from "./ReplyInputForm";
 
 moment.locale("ko");
 
-const Comment = ({ commentProps }: any) => {
+const Comment = ({ commentProps, isReply }: any) => {
   const [isCommentEdit, setCommentEdit] = useState<boolean>(false);
+  const [isReplyOpen, setReplyOpen] = useState<boolean>(false);
   const [commentEditContent, setCommentEditContent] = useState<string>(commentProps.content);
 
   const [morePop, setMorePop] = useState<null | HTMLElement>(null);
@@ -55,7 +57,7 @@ const Comment = ({ commentProps }: any) => {
     >
       {createPortal(<CommentDeleteConfirm />, document.getElementById("modal_root") as HTMLElement)}
 
-      <Popper open={open} anchorEl={morePop} placement="top-end">
+      <Popper style={{ zIndex: 5000 }} open={open} anchorEl={morePop} placement="top-end">
         <EditPopup>
           <Button
             size="small"
@@ -102,10 +104,10 @@ const Comment = ({ commentProps }: any) => {
           ) : (
             <ProfilePic crop={true} alt="profilePic" src="/img/defaultProfilePic.png" />
           )}
-          <UserNickname>{commentProps?.User?.nickname}</UserNickname>
-          <CommentTime>{moment(commentProps?.createdAt).fromNow()}</CommentTime>
+          <UserNickname>{commentProps?.User?.nickname?.slice(0, 8)}</UserNickname>
         </FlexDiv>
         <FlexDiv>
+          <CommentTime>{moment(commentProps?.createdAt).fromNow()}</CommentTime>
           {user?.id === commentProps.UserId && (
             <button
               onClick={(event: React.MouseEvent<HTMLElement>) => {
@@ -171,14 +173,35 @@ const Comment = ({ commentProps }: any) => {
       ) : (
         <CommentText>{commentProps?.content}</CommentText>
       )}
+
+      {isReply || (
+        <>
+          <ReplyOpenButton onClick={() => setReplyOpen((c) => !c)}>100개의 답글 보기</ReplyOpenButton>
+          {isReplyOpen && (
+            <RelayWrapper>{user && <ReplyInputForm postId={commentProps?.id}></ReplyInputForm>}</RelayWrapper>
+          )}
+        </>
+      )}
     </CommentBox>
   );
 };
 
 export default Comment;
+const RelayWrapper = styled.div`
+  width: 100%;
+  padding: 10px 0;
+  padding-left: 20px;
+`;
+const ReplyOpenButton = styled.span`
+  width: auto;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 8px;
+  cursor: pointer;
+`;
 const ProfilePic = styled(Img)`
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   margin-right: 10px;
   border-radius: 50px;
   background-color: white;
@@ -261,6 +284,7 @@ const CommentText = styled.span`
   display: flex;
   justify-content: start;
   padding-top: 10px;
+  font-size: 20px;
   /* padding-bottom: 0px; */
 `;
 const CommentTime = styled.span`

@@ -622,7 +622,7 @@ const PostZoomBG = styled.div<{ animation: string }>`
 
   overflow: hidden;
 
-  z-index: 1002;
+  z-index: 4002;
   position: fixed;
   left: 0;
   top: 0;

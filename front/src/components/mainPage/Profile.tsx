@@ -305,7 +305,7 @@ const Profile = () => {
         <InfoAttribute height={50}>
           {nicknameInputToggle || (
             <InfoValue>
-              <span id="nickname">{user?.nickname}</span>
+              <span id="nickname">{user?.nickname?.slice(0, 8)}</span>
               <Button
                 color="inherit"
                 onClick={() => {

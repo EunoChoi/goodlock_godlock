@@ -347,7 +347,7 @@ const LeftWrapper = styled.div`
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
 
-  z-index: 100;
+  z-index: 4000;
 `;
 const RightWrapper = styled.div`
   margin-left: 280px;

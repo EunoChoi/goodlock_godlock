@@ -8,7 +8,7 @@ import Comment from "../../functions/reactQuery/Comment";
 //mui
 import SendIcon from "@mui/icons-material/Send";
 
-const CommentInputForm = ({ postId }: { postId: number }) => {
+const ReplyInputForm = ({ postId }: { postId: number }) => {
   const [content, setContent] = useState("");
 
   const addComment = Comment.add();
@@ -17,7 +17,7 @@ const CommentInputForm = ({ postId }: { postId: number }) => {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        if (content.length > 60 || content.length < 5) toast.warning("댓글은 최소 5자 최대 60자 입력이 가능합니다.");
+        if (content.length > 60 || content.length < 5) toast.warning("답글은 최소 5자 최대 60자 입력이 가능합니다.");
         else
           addComment.mutate(
             { postId, content },
@@ -31,7 +31,7 @@ const CommentInputForm = ({ postId }: { postId: number }) => {
     >
       <CommentInputArea>
         <CommentInput
-          placeholder="댓글을 입력하세요."
+          placeholder="답글을 입력하세요."
           value={content}
           onChange={(e) => {
             setContent(e.currentTarget.value);
@@ -46,7 +46,7 @@ const CommentInputForm = ({ postId }: { postId: number }) => {
   );
 };
 
-export default CommentInputForm;
+export default ReplyInputForm;
 
 const CommentInputArea = styled.div`
   display: -webkit-box;
@@ -54,9 +54,6 @@ const CommentInputArea = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  /* margin: 20px;
-  margin-top: 0; */
-  margin-top: 12px;
   padding: 0px 10px;
 
   width: auto;

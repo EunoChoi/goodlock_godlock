@@ -31,6 +31,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import LinkIcon from "@mui/icons-material/Link";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import PostFunction from "../../functions/reactQuery/Post";
 import User from "../../functions/reactQuery/User";
@@ -97,11 +98,52 @@ const Post = ({ postProps }: any) => {
     setZoom(false);
   }, [postProps.id]);
 
+  //댓글 창 열렸을때 스크롤 방지
+  useEffect(() => {
+    if (isCommentOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
+  }, [isCommentOpen]);
+
   return (
     <PostWrapper onClick={() => setMorePop(null)}>
       {createPortal(<PostDeleteConfirm></PostDeleteConfirm>, document.getElementById("modal_root") as HTMLElement)}
       {createPortal(
         <>{isZoom && <PostZoom setZoom={setZoom} postProps={postProps} />}</>,
+        document.getElementById("front_component_root") as HTMLElement
+      )}
+      {createPortal(
+        <>
+          {isCommentOpen && (
+            <CommentBG
+              onClick={(e) => {
+                e.stopPropagation();
+                setCommentOpen((c) => !c);
+                setCommentLoadLength(5);
+              }}
+            >
+              <CommentWrapper onClick={(e) => e.stopPropagation()}>
+                <button
+                  id="close"
+                  onClick={() => {
+                    setCommentOpen((c) => !c);
+                    setCommentLoadLength(5);
+                  }}
+                >
+                  <ArrowDropDownIcon fontSize="inherit" />
+                </button>
+
+                <Comments ref={commentScroll}>
+                  {postProps?.Comments.length === 0 && <span id="noComment">댓글이 존재하지 않습니다. :(</span>}
+                  {postProps?.Comments.map((v: any, i: number) => (
+                    <Comment key={i + v.content + "comment"} commentProps={v}></Comment>
+                  ))}
+                </Comments>
+
+                {user && <CommentInputForm postId={postProps?.id}></CommentInputForm>}
+              </CommentWrapper>
+            </CommentBG>
+          )}
+        </>,
         document.getElementById("front_component_root") as HTMLElement
       )}
 
@@ -177,7 +219,7 @@ const Post = ({ postProps }: any) => {
           ) : (
             <ProfilePic crop={true} alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
           )}
-          <span>{postProps?.User?.nickname}</span>
+          <span>{postProps?.User?.nickname?.slice(0, 8)}</span>
         </div>
         <span>{moment(postProps?.createdAt).fromNow()}</span>
       </PostInfoWrapper>
@@ -340,40 +382,82 @@ const Post = ({ postProps }: any) => {
           )}
         </FlexDiv>
       </ToggleWrapper>
-
-      {isCommentOpen && (
-        <>
-          {user && <CommentInputForm postId={postProps?.id}></CommentInputForm>}
-          <CommentWrapper ref={commentScroll}>
-            {postProps?.Comments.slice(0, commentLoadLength).map((v: any, i: number) => (
-              <Comment key={i + v.content + "comment"} commentProps={v}></Comment>
-            ))}
-          </CommentWrapper>
-          {postProps?.Comments.length !== 0 && commentLoadLength < postProps?.Comments.length && (
-            <More>
-              <button
-                color="info"
-                onClick={() => {
-                  if (commentLoadLength < postProps?.Comments.length) {
-                    setCommentLoadLength((c) => c + 5);
-                  }
-                  setTimeout(() => {
-                    commentScroll.current?.scrollTo({ top: commentScroll.current.scrollHeight, behavior: "smooth" });
-                  }, 0);
-                }}
-              >
-                더 보기 [{postProps?.Comments.length - commentLoadLength}]
-              </button>
-            </More>
-          )}
-        </>
-      )}
     </PostWrapper>
   );
 };
 
 export default Post;
 
+const CommentWrapper = styled.div`
+  #noComment {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 22px;
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: 500;
+    height: 100%;
+  }
+  #close {
+    width: auto;
+    font-size: 48px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  height: 70vh;
+  /* max-height: 70vh; */
+
+  width: 100%;
+  background-color: #fff;
+
+  padding-bottom: 20px;
+
+  bottom: 0;
+  right: 0;
+
+  box-shadow: 0px -3px 5px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+
+  > * {
+    width: 70%;
+  }
+  @media (orientation: portrait) or (max-height: 480px) {
+    > * {
+      width: 92%;
+    }
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    height: 100vh;
+  }
+`;
+const CommentBG = styled.div`
+  z-index: 3000;
+
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+
+  position: fixed;
+  bottom: 0;
+  right: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: end;
+
+  height: 100%;
+  width: calc(100% - 280px);
+  @media (orientation: portrait) or (max-height: 480px) {
+    width: 100%;
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 100%;
+  }
+`;
 const Hashtag = styled.span`
   color: #5e89c7;
   /* font-weight: 500; */
@@ -566,18 +650,16 @@ const ToggleButton = styled.button`
   }
 `;
 
-const CommentWrapper = styled.div`
+const Comments = styled.div`
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
 
-  margin: 5px 20px;
   margin: 0 20px;
-  /* margin-bottom: 20px; */
+  height: 100%;
 
-  max-height: 350px;
   overflow-y: scroll;
 `;
 

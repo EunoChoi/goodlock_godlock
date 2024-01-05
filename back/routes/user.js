@@ -128,7 +128,8 @@ router.post("/login/social", async (req, res) => {
   try {
 
     const email = req.body.email;
-    const nickname = `NEW${new Date().getTime()}`;
+    // const nickname = `NEW${new Date().getTime()}`;
+    const nickname = email;
     const password = process.env.SOCIAL_PW;
     const profilePic = req.body.profilePic;
 
