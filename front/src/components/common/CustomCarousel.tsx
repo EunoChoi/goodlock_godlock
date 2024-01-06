@@ -68,11 +68,8 @@ const CoustomCarousel = ({ children, indicator }: any) => {
 export default CoustomCarousel;
 
 const CarouselWrapper = styled(Carousel)`
-  #imageBox {
-    @media (orientation: landscape) and (max-height: 480px) {
-      display: flex;
-
-      height: 100vh;
+  @media (orientation: landscape) and (max-height: 480px) {
+    .carousel-slider {
       height: calc(var(--vh, 1vh) * 100);
     }
   }

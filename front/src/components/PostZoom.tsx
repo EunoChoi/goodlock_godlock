@@ -478,6 +478,7 @@ const MobilePostMenu = styled.div`
   padding: 0 12px;
 
   background-color: #c8daf3;
+  background-color: whitesmoke;
 
   border-top: 2px solid rgba(0, 0, 0, 0.1);
   #close {
@@ -523,13 +524,16 @@ const MobilePostMenu = styled.div`
     left: 0;
     bottom: 0;
     width: 200px;
-    height: 70%;
+    height: calc(var(--vh, 1vh) * 70);
     padding: 20px 0;
 
     background-color: whitesmoke;
     border-right: 2px solid rgba(0, 0, 0, 0.05);
     > * {
       margin: 20px;
+    }
+    > *:nth-child(2) {
+      order: 2;
     }
     span {
       font-size: 14px !important;
@@ -571,6 +575,11 @@ const SubContent = styled.div`
     display: flex;
     justify-content: start;
     align-items: center;
+  }
+
+  @media (orientation: landscape) and (max-height: 480px) {
+    padding: 12px 64px;
+    padding-bottom: 24px;
   }
 `;
 const PostStartEnd = styled.div`
@@ -636,7 +645,7 @@ const PostImage = styled(Img)`
     flex-grow: 1;
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    height: 100%;
+    height: calc(var(--vh, 1vh) * 100 - 30px);
   }
 `;
 
@@ -943,10 +952,10 @@ const MobilePostInfo = styled.div`
       width: 100%;
     }
     > *:nth-child(2) {
-      margin-top: 12px;
+      margin-top: 24px;
     }
 
     width: 200px;
-    height: 30%;
+    height: calc(var(--vh, 1vh) * 30);
   }
 `;

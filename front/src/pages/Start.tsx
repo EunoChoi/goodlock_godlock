@@ -144,6 +144,9 @@ const Title = styled.span`
       }
     }
   }
+
+  @media (orientation: landscape) and (max-height: 480px) {
+  }
 `;
 
 const BG = styled.div`
@@ -220,6 +223,13 @@ const StartWrapper = styled.div`
     width: 100vw;
     height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 100vw;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    padding-top: 0;
+    justify-content: center;
   }
 
   animation: ${Animation.smoothAppear} 1s;
