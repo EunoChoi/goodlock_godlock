@@ -122,7 +122,7 @@ const CommentBox = styled.div`
   }
 
   margin: 0 20px;
-  height: 100%;
+  height: auto;
 
   overflow-y: scroll;
 `;
@@ -151,8 +151,9 @@ const CommentWrapper = styled.div<{ animation?: "open" | "close" }>`
 
   width: 100%;
   width: 50vw;
-  height: 80vh;
-  /* height: 700px; */
+  min-height: 200px;
+  max-height: 80vh;
+
   /* height: calc(var(--vh, 1vh) * 80); */
   padding-bottom: 32px;
 
@@ -167,7 +168,7 @@ const CommentWrapper = styled.div<{ animation?: "open" | "close" }>`
 
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
 
   > * {
@@ -175,6 +176,7 @@ const CommentWrapper = styled.div<{ animation?: "open" | "close" }>`
   }
   @media (orientation: portrait) or (max-height: 480px) {
     padding-bottom: 20px;
+    max-width: 500px;
     width: 100%;
     > * {
       width: 90%;
@@ -183,7 +185,7 @@ const CommentWrapper = styled.div<{ animation?: "open" | "close" }>`
   @media (orientation: landscape) and (max-height: 480px) {
     width: 100%;
     padding-bottom: 20px;
-    height: 90vh;
+    max-height: 90vh;
     /* height: calc(var(--vh, 1vh) * 90); */
   }
 `;
