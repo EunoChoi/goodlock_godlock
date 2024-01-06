@@ -181,10 +181,8 @@ const Tips = () => {
 
         <MainPageStyle.Space height={16}></MainPageStyle.Space>
 
-        <MainPageStyle.TextWrapper_Normal>
-          팁과 설정을 공유하고 배울 수 있는 게시판입니다.
-        </MainPageStyle.TextWrapper_Normal>
-        <MainPageStyle.TextWrapper_Normal>GTS를 이용하면 간편하게 공유할 수 있어요!</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>팁과 설정을 공유하고 배우는 게시판입니다.</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>GTS와 드랍십을 활용해보세요!</MainPageStyle.TextWrapper_Normal>
 
         <MainPageStyle.Space height={48}></MainPageStyle.Space>
 

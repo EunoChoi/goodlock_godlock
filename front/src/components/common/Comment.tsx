@@ -186,6 +186,7 @@ const Comment = ({ commentProps }: any) => {
         <>
           <RelayWrapper>{user && <ReplyInputForm commentId={commentProps?.id}></ReplyInputForm>}</RelayWrapper>
           <RelayWrapper>
+            <Space />
             {commentProps?.ReplyChild?.map((v: any, i: number) => (
               <Reply key={commentProps?.id + i} replyProps={v} />
             ))}
@@ -197,6 +198,9 @@ const Comment = ({ commentProps }: any) => {
 };
 
 export default Comment;
+const Space = styled.div`
+  margin-bottom: 10px;
+`;
 const RelayWrapper = styled.div`
   width: 100%;
   padding-left: 20px;

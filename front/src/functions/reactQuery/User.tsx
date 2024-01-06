@@ -118,15 +118,15 @@ const User = {
       {
         onSuccess: () => {
           queryClient.invalidateQueries(["user"]);
-          setTimeout(() => {
-            navigate("/main/0");
-            // window.location.reload();
-          }, 500);
+          // setTimeout(() => {
+          // navigate("/main/0");
+          // window.location.reload();
+          // }, 500);
         },
         onError: (err: CustomError) => {
           console.log(err);
           toast.error(err.response?.data?.message);
-          navigate("/");
+          // navigate("/");
           console.log("로그인 중 에러 발생");
         }
       }
