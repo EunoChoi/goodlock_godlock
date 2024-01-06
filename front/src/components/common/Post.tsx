@@ -7,8 +7,6 @@ import { toast } from "react-toastify";
 import Clipboard from "react-clipboard.js";
 
 //components
-import Comment from "./Comment";
-import CommentInputForm from "./CommentInputForm";
 import PostEditPopup from "./PostEditPopup";
 import PostZoom from "../PostZoom";
 import Animation from "../../styles/Animation";
@@ -31,11 +29,11 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import LinkIcon from "@mui/icons-material/Link";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import PostFunction from "../../functions/reactQuery/Post";
 import User from "../../functions/reactQuery/User";
 import { createPortal } from "react-dom";
+import Comments from "./Comments";
 
 interface Image {
   src: string;
@@ -47,7 +45,6 @@ const Post = ({ postProps }: any) => {
 
   const user = User.get().data;
 
-  const [commentLoadLength, setCommentLoadLength] = useState<number>(5);
   const [isPostEdit, setPostEdit] = useState<boolean>(false);
   const [isCommentOpen, setCommentOpen] = useState<boolean>(false);
   const [morePop, setMorePop] = useState<null | HTMLElement>(null);
@@ -58,8 +55,6 @@ const Post = ({ postProps }: any) => {
 
   const postHaveDate = postProps?.start && postProps?.end;
   const postHaveLink = postProps?.link && true;
-
-  const commentScroll = useRef<null | HTMLDivElement>(null);
 
   const { Alert: PostDeleteConfirm, openAlert: openDeleteConfirm } = useAlert();
 
@@ -86,11 +81,6 @@ const Post = ({ postProps }: any) => {
     else document.body.style.overflow = "auto";
   }, [isPostEdit]);
 
-  //댓글 작성시 스크롤 탑
-  useEffect(() => {
-    commentScroll.current?.scrollTo({ top: commentScroll.current.scrollHeight, behavior: "smooth" });
-  }, [postProps?.Comments.length]);
-
   const navigate = useNavigate();
 
   //관심 상태 포스트 줌 상태에서 좋아요 해제면 다음 게시글이 줌되는 오류 해결
@@ -112,38 +102,7 @@ const Post = ({ postProps }: any) => {
         document.getElementById("front_component_root") as HTMLElement
       )}
       {createPortal(
-        <>
-          {isCommentOpen && (
-            <CommentBG
-              onClick={(e) => {
-                e.stopPropagation();
-                setCommentOpen((c) => !c);
-                setCommentLoadLength(5);
-              }}
-            >
-              <CommentWrapper onClick={(e) => e.stopPropagation()}>
-                <button
-                  id="close"
-                  onClick={() => {
-                    setCommentOpen((c) => !c);
-                    setCommentLoadLength(5);
-                  }}
-                >
-                  <ArrowDropDownIcon fontSize="inherit" />
-                </button>
-
-                <Comments ref={commentScroll}>
-                  {postProps?.Comments.length === 0 && <span id="noComment">댓글이 존재하지 않습니다. :(</span>}
-                  {postProps?.Comments.map((v: any, i: number) => (
-                    <Comment key={i + v.content + "comment"} commentProps={v}></Comment>
-                  ))}
-                </Comments>
-
-                {user && <CommentInputForm postId={postProps?.id}></CommentInputForm>}
-              </CommentWrapper>
-            </CommentBG>
-          )}
-        </>,
+        <>{isCommentOpen && <Comments postProps={postProps} setCommentOpen={setCommentOpen} />}</>,
         document.getElementById("front_component_root") as HTMLElement
       )}
 
@@ -293,7 +252,7 @@ const Post = ({ postProps }: any) => {
             <span>{postProps?.Likers?.length}</span>
           </ToggleButton>
         )}
-        {postProps.type === 1 && (
+        {postProps.type !== 0 && (
           <FlexDiv>
             {/* like toggle */}
             <ToggleButton
@@ -305,41 +264,17 @@ const Post = ({ postProps }: any) => {
                 }
               }}
             >
-              {isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />}
+              {postProps.type === 1 && isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />}
+              {postProps.type === 2 && isLiked ? <FavoriteIcon style={{ color: "#D5A8D0" }} /> : <FavoriteBorderIcon />}
               <span>{postProps?.Likers?.length}</span>
             </ToggleButton>
             {/* comment toggle */}
             <ToggleButton
               onClick={() => {
-                setCommentOpen((c) => !c);
-                setCommentLoadLength(5);
-              }}
-            >
-              <MessageIcon />
-              <span>{postProps?.Comments?.length}</span>
-            </ToggleButton>
-          </FlexDiv>
-        )}
-        {postProps.type === 2 && (
-          <FlexDiv>
-            {/* like toggle */}
-            <ToggleButton
-              onClick={() => {
-                if (!isLiked) {
-                  like.mutate(postProps.id);
-                } else {
-                  disLike.mutate(postProps.id);
-                }
-              }}
-            >
-              {isLiked ? <FavoriteIcon style={{ color: "#D5A8D0" }} /> : <FavoriteBorderIcon />}
-              <span>{postProps?.Likers?.length}</span>
-            </ToggleButton>
-            {/* comment toggle */}
-            <ToggleButton
-              onClick={() => {
-                setCommentOpen((c) => !c);
-                setCommentLoadLength(5);
+                setCommentOpen(true);
+                setTimeout(() => {
+                  history.pushState({ page: "modal" }, "", "");
+                }, 100);
               }}
             >
               <MessageIcon />
@@ -388,78 +323,6 @@ const Post = ({ postProps }: any) => {
 
 export default Post;
 
-const CommentWrapper = styled.div`
-  #noComment {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-size: 22px;
-    color: rgba(0, 0, 0, 0.6);
-    font-weight: 500;
-    height: 100%;
-  }
-  #close {
-    width: auto;
-    font-size: 48px;
-    color: rgba(0, 0, 0, 0.6);
-  }
-  height: 70vh;
-  /* max-height: 70vh; */
-
-  width: 100%;
-  background-color: #fff;
-
-  padding-bottom: 32px;
-
-  bottom: 0;
-  right: 0;
-
-  box-shadow: 0px -3px 5px rgba(0, 0, 0, 0.1);
-
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-
-  > * {
-    width: 70%;
-  }
-  @media (orientation: portrait) or (max-height: 480px) {
-    padding-bottom: 20px;
-    > * {
-      width: 92%;
-    }
-  }
-  @media (orientation: landscape) and (max-height: 480px) {
-    padding-bottom: 20px;
-    height: 100vh;
-  }
-`;
-const CommentBG = styled.div`
-  z-index: 3000;
-
-  background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(8px);
-
-  position: fixed;
-  bottom: 0;
-  right: 0;
-
-  display: flex;
-  justify-content: center;
-  align-items: end;
-
-  height: 100%;
-  width: calc(100% - 280px);
-  @media (orientation: portrait) or (max-height: 480px) {
-    width: 100%;
-  }
-  @media (orientation: landscape) and (max-height: 480px) {
-    width: 100%;
-  }
-`;
 const Hashtag = styled.span`
   color: #5e89c7;
   /* font-weight: 500; */
@@ -650,19 +513,6 @@ const ToggleButton = styled.button`
     /* font-weight: 600; */
     /* color: grey; */
   }
-`;
-
-const Comments = styled.div`
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
-  }
-
-  margin: 0 20px;
-  height: 100%;
-
-  overflow-y: scroll;
 `;
 
 const ProfilePic = styled(Img)`

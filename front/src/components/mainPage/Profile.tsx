@@ -661,7 +661,7 @@ const Profile = () => {
                         />
                       )}
 
-                      <span>{v.nickname}</span>
+                      <span>{v.nickname?.slice(0, 8)}</span>
                     </div>
                     {isMobile || <span id="usertext">{v.usertext}</span>}
 
@@ -708,7 +708,7 @@ const Profile = () => {
                           src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
                         />
                       )}
-                      <span>{v?.nickname}</span>
+                      <span>{v?.nickname?.slice(0, 8)}</span>
                     </div>
                     {isMobile || <span id="usertext">{v?.usertext}</span>}
 

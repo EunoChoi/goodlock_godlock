@@ -461,7 +461,7 @@ const UserInfo = () => {
                             src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
                           />
                         )}
-                        <span>{v.nickname}</span>
+                        <span>{v.nickname?.slice(0, 8)}</span>
                       </div>
                       {isMobile || <span id="usertext">{v.usertext}</span>}
                     </ListItem>
@@ -503,7 +503,7 @@ const UserInfo = () => {
                             src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
                           />
                         )}
-                        <span>{v.nickname}</span>
+                        <span>{v.nickname?.slice(0, 8)}</span>
                       </div>
                       {isMobile || <span id="usertext">{v.usertext}</span>}
                     </ListItem>
@@ -926,6 +926,12 @@ const ListItem = styled.div`
   }
   > button {
     min-width: 0;
+  }
+  @media (orientation: portrait) or (max-height: 480px) {
+    > div {
+      width: 100%;
+      justify-content: space-between;
+    }
   }
 `;
 

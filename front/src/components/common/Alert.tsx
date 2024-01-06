@@ -28,28 +28,23 @@ const useAlert = () => {
     const [animation, setAnimation] = useState<"open" | "close" | "">("");
     const { push, pop, modalStack } = useModalStack();
     const { browser } = useBrowserCheck();
+    const [buttonClose, setButtonClose] = useState(false);
 
     const [timer, setTimer] = useState<NodeJS.Timeout>();
 
     const ButtonClose = () => {
       setAnimation("close");
-      setTimer(
-        setTimeout(() => {
-          history.back();
-        }, 300)
-      );
+      setButtonClose(true);
     };
 
     useEffect(() => {
       if (modalStack[modalStack.length - 1] === "#alert") {
         window.onpopstate = () => {
-          // history.go(1);
-
           console.log("pop: alert");
+
           setTimeout(() => {
             if (onCancel !== undefined) onCancel();
           }, 200);
-          setAnimation("close");
 
           if (browser === "Safari") setOpen(false);
           else setAnimation("close");
@@ -76,12 +71,17 @@ const useAlert = () => {
           setTimeout(() => {
             if (onCancel !== undefined) onCancel();
           }, 100);
-          // ButtonClose();
-          history.back();
+          ButtonClose();
+          // history.back();
         }}
         animation={animation}
         onTransitionEnd={() => {
-          if (animation === "close") {
+          if (animation === "close" && buttonClose) {
+            history.back();
+            setTimeout(() => {
+              setOpen(false);
+            }, 100);
+          } else if (animation === "close") {
             setOpen(false);
           }
         }}
@@ -96,8 +96,8 @@ const useAlert = () => {
                 setTimeout(() => {
                   if (onCancel !== undefined) onCancel();
                 }, 100);
-                // ButtonClose();
-                history.back();
+                ButtonClose();
+                // history.back();
               }}
             >
               취소
