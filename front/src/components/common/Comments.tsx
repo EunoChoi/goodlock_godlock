@@ -152,7 +152,7 @@ const CommentWrapper = styled.div<{ animation?: "open" | "close" }>`
   width: 100%;
   width: 50vw;
   height: 80vh;
-  height: 700px;
+  /* height: 700px; */
   /* height: calc(var(--vh, 1vh) * 80); */
   padding-bottom: 32px;
 

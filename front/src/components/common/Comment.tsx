@@ -57,6 +57,7 @@ const Comment = ({ commentProps, idx, replyOpenIdx, setReplyOpenIdx }: any) => {
         const target = e.currentTarget;
         setTimeout(() => {
           target?.scrollIntoView({ behavior: "smooth" });
+          // target?.scrollIntoView(false);
         }, 100);
 
         setMorePop(null);
