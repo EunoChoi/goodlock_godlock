@@ -176,7 +176,7 @@ const CommentWrapper = styled.div<{ animation?: "open" | "close" }>`
   }
   @media (orientation: portrait) or (max-height: 480px) {
     padding-bottom: 20px;
-    max-height: 600px;
+    max-height: 550px;
     width: 100%;
     > * {
       width: 90%;
@@ -185,8 +185,8 @@ const CommentWrapper = styled.div<{ animation?: "open" | "close" }>`
   @media (orientation: landscape) and (max-height: 480px) {
     width: 100%;
     padding-bottom: 20px;
-    max-height: 90vh;
-    /* height: calc(var(--vh, 1vh) * 90); */
+    /* max-height: 90vh; */
+    max-height: calc(var(--vh, 1vh) * 90);
   }
 `;
 const CommentBG = styled.div<{ animation?: "open" | "close" }>`

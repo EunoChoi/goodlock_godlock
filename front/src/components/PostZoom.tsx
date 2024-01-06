@@ -126,7 +126,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                 )}
               </Link>
               <div>
-                <span id="nickname">{postProps.User.nickname}</span>
+                <span id="nickname">{postProps.User.nickname?.slice(0, 8)}</span>
                 <span id="email">{postProps.User.email}</span>
               </div>
               <span id="time">{moment(postProps?.createdAt).fromNow()}</span>
@@ -236,7 +236,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       />
                     )}
                   </Link>
-                  <span>{postProps.User.nickname}</span>
+                  <span>{postProps.User.nickname?.slice(0, 8)}</span>
                 </div>
                 <span>{moment(postProps?.createdAt).fromNow()}</span>
               </PCImagePost_Info>
@@ -337,7 +337,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                       />
                     )}
                   </Link>
-                  <Nickname>{postProps.User.nickname}</Nickname>
+                  <Nickname>{postProps.User.nickname?.slice(0, 8)}</Nickname>
                 </div>
                 <span>{moment(postProps?.createdAt).fromNow()}</span>
               </MobilePostInfo>
@@ -388,7 +388,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                   )}
                 </MobileText>
                 {postProps.Images?.map((v: Image, i: number) => (
-                  <div key={i + v.src} onClick={() => setCrop((c) => !c)}>
+                  <div id="imageBox" key={i + v.src} onClick={() => setCrop((c) => !c)}>
                     <PostImage crop={crop} src={v?.src.replace(/\/thumb\//, "/original/")} alt="zoom image" />
                   </div>
                 ))}
@@ -512,6 +512,29 @@ const MobilePostMenu = styled.div`
       font-weight: 500;
     }
   }
+
+  @media (orientation: landscape) and (max-height: 480px) {
+    flex-direction: column-reverse;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 200px;
+    height: 70%;
+    padding: 20px 0;
+
+    background-color: whitesmoke;
+    border-right: 2px solid rgba(0, 0, 0, 0.05);
+    > * {
+      margin: 20px;
+    }
+    span {
+      font-size: 14px !important;
+    }
+  }
 `;
 
 const Nickname = styled.span`
@@ -611,6 +634,9 @@ const PostImage = styled(Img)`
     height: calc(var(--vh, 1vh) * 100 - 64px - 40px - 30px);
     margin-bottom: 30px;
     flex-grow: 1;
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    height: 100%;
   }
 `;
 
@@ -848,6 +874,10 @@ const MobilePost = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media (orientation: landscape) and (max-height: 480px) {
+    flex-direction: row;
+  }
 `;
 const MobileText = styled.div`
   width: 100%;
@@ -877,6 +907,14 @@ const MobileText = styled.div`
     font-size: 1.2em;
     line-height: 1.3em;
   }
+
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: calc(100vw - 200px);
+    height: 100vh;
+    #content {
+      padding: 24px 64px;
+    }
+  }
 `;
 const MobilePostInfo = styled.div`
   //component height = 64px
@@ -892,5 +930,23 @@ const MobilePostInfo = styled.div`
     display: flex;
     justify-content: start;
     align-items: center;
+  }
+
+  @media (orientation: landscape) and (max-height: 480px) {
+    background-color: whitesmoke;
+    border-right: 2px solid rgba(0, 0, 0, 0.05);
+    flex-direction: column;
+    justify-content: center;
+
+    flex-shrink: 0;
+    > *:first-child {
+      width: 100%;
+    }
+    > *:nth-child(2) {
+      margin-top: 12px;
+    }
+
+    width: 200px;
+    height: 30%;
   }
 `;

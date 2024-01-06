@@ -105,7 +105,7 @@ const MobileHeaderWrapper = styled.div`
   @media (orientation: landscape) and (max-height: 480px) {
     flex-direction: column;
     justify-content: center;
-    align-items: start;
+    align-items: center;
     padding: 0;
 
     position: fixed;
@@ -115,12 +115,9 @@ const MobileHeaderWrapper = styled.div`
       font-size: 20px !important;
     }
 
-    align-items: center;
-
     background-color: #e3ecf9;
     background-color: whitesmoke;
     border-right: 2px solid rgba(0, 0, 0, 0.05);
-
     width: 20vw;
     height: 100vh;
     /* box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2); */
@@ -135,10 +132,10 @@ const HeaderMobileLand = styled.div<{ currentPage: number | undefined }>`
   font-size: 18px;
 
   color: rgba(0, 0, 0, 0.6);
-  width: 100%;
+  width: auto;
   height: 70vh;
 
-  padding-left: 8px;
+  /* padding-left: 8px; */
 
   span:nth-child(${(props) => props.currentPage}) {
     color: rgba(0, 0, 0, 0.55);
@@ -147,7 +144,7 @@ const HeaderMobileLand = styled.div<{ currentPage: number | undefined }>`
   }
   span {
     font-weight: 500;
-    margin: 8px;
+    margin: 8px 0;
   }
   @media (orientation: landscape) and (max-height: 480px) {
     display: flex;

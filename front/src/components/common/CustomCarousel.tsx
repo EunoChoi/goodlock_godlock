@@ -67,7 +67,16 @@ const CoustomCarousel = ({ children, indicator }: any) => {
 
 export default CoustomCarousel;
 
-const CarouselWrapper = styled(Carousel)``;
+const CarouselWrapper = styled(Carousel)`
+  #imageBox {
+    @media (orientation: landscape) and (max-height: 480px) {
+      display: flex;
+
+      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
+    }
+  }
+`;
 const CarouselBtn = styled.button<{ left: number | null; right: number | null }>`
   display: flex;
   justify-content: center;
