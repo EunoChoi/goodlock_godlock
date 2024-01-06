@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { RefObject, useRef, useState } from "react";
 import styled from "styled-components";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -9,9 +9,8 @@ import Comment from "../../functions/reactQuery/Comment";
 import SendIcon from "@mui/icons-material/Send";
 import Reply from "../../functions/reactQuery/Reply";
 
-const ReplyInputForm = ({ commentId }: { commentId: number }) => {
+const ReplyInputForm = ({ commentId, commentRef }: { commentId: number; commentRef: RefObject<HTMLDivElement> }) => {
   const [content, setContent] = useState("");
-  const inputWrapperRef = useRef<HTMLDivElement>(null);
 
   const addReply = Reply.add();
 
@@ -31,12 +30,12 @@ const ReplyInputForm = ({ commentId }: { commentId: number }) => {
           );
       }}
     >
-      <CommentInputArea ref={inputWrapperRef}>
+      <CommentInputArea>
         <CommentInput
           onClick={() => {
             setTimeout(() => {
-              inputWrapperRef.current?.scrollIntoView({ behavior: "smooth" });
-            }, 400);
+              commentRef.current?.scrollIntoView({ behavior: "smooth" });
+            }, 100);
           }}
           placeholder="답글을 입력하세요."
           value={content}
@@ -66,7 +65,7 @@ const CommentInputArea = styled.div`
   /* margin-bottom: 10px; */
 
   width: auto;
-  height: 50px;
+  height: 40px;
   border: 2px rgba(0, 0, 0, 0.1) solid;
   border-radius: 7px;
 `;

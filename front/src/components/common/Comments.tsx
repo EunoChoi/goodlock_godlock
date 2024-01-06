@@ -10,7 +10,12 @@ import User from "../../functions/reactQuery/User";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-const Comments = ({ postProps, setCommentOpen }: any) => {
+interface props {
+  postProps: any;
+  setCommentsOpen: (b: boolean) => void;
+}
+
+const Comments = ({ postProps, setCommentsOpen }: props) => {
   const [animation, setAnimation] = useState<"open" | "close">("close");
 
   const commentScroll = useRef<null | HTMLDivElement>(null);
@@ -19,6 +24,9 @@ const Comments = ({ postProps, setCommentOpen }: any) => {
   const { push, pop, modalStack } = useModalStack();
   const { browser } = useBrowserCheck();
   const [buttonClose, setButtonClose] = useState(false);
+
+  //하나 열리면 나머지 닫히게하기 위해서 comments 컴포넌트에서 state 생성
+  const [replyOpenIdx, setReplyOpenIdx] = useState<number | null>(null);
 
   const ButtonClose = () => {
     setAnimation("close");
@@ -34,7 +42,7 @@ const Comments = ({ postProps, setCommentOpen }: any) => {
     if (modalStack[modalStack.length - 1] === "#comments") {
       window.onpopstate = () => {
         console.log("pop: comments");
-        if (browser === "Safari") setCommentOpen(false);
+        if (browser === "Safari") setCommentsOpen(false);
         else setAnimation("close");
       };
     }
@@ -66,10 +74,10 @@ const Comments = ({ postProps, setCommentOpen }: any) => {
           if (animation === "close" && buttonClose) {
             history.back();
             setTimeout(() => {
-              setCommentOpen(false);
+              setCommentsOpen(false);
             }, 100);
           } else if (animation === "close" && !buttonClose) {
-            setCommentOpen(false);
+            setCommentsOpen(false);
           }
         }
       }}
@@ -88,7 +96,13 @@ const Comments = ({ postProps, setCommentOpen }: any) => {
         <CommentBox ref={commentScroll}>
           {postProps?.Comments.length === 0 && <span id="noComment">댓글이 존재하지 않습니다. :(</span>}
           {postProps?.Comments.map((v: any, i: number) => (
-            <Comment key={i + v.content + "comment"} commentProps={v}></Comment>
+            <Comment
+              key={i + v.content + "comment"}
+              commentProps={v}
+              idx={i}
+              replyOpenIdx={replyOpenIdx}
+              setReplyOpenIdx={setReplyOpenIdx}
+            ></Comment>
           ))}
         </CommentBox>
 
@@ -148,7 +162,7 @@ const CommentWrapper = styled.div<{ animation?: "open" | "close" }>`
   bottom: 0;
   right: 0;
 
-  box-shadow: 0px -3px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
 
   display: flex;
   flex-direction: column;

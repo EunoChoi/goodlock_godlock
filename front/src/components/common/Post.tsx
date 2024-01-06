@@ -46,7 +46,7 @@ const Post = ({ postProps }: any) => {
   const user = User.get().data;
 
   const [isPostEdit, setPostEdit] = useState<boolean>(false);
-  const [isCommentOpen, setCommentOpen] = useState<boolean>(false);
+  const [isCommentsOpen, setCommentsOpen] = useState<boolean>(false);
   const [morePop, setMorePop] = useState<null | HTMLElement>(null);
   const [isZoom, setZoom] = useState<boolean>(false);
 
@@ -90,9 +90,9 @@ const Post = ({ postProps }: any) => {
 
   //댓글 창 열렸을때 스크롤 방지
   useEffect(() => {
-    if (isCommentOpen) document.body.style.overflow = "hidden";
+    if (isCommentsOpen) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "auto";
-  }, [isCommentOpen]);
+  }, [isCommentsOpen]);
 
   return (
     <PostWrapper onClick={() => setMorePop(null)}>
@@ -102,7 +102,7 @@ const Post = ({ postProps }: any) => {
         document.getElementById("front_component_root") as HTMLElement
       )}
       {createPortal(
-        <>{isCommentOpen && <Comments postProps={postProps} setCommentOpen={setCommentOpen} />}</>,
+        <>{isCommentsOpen && <Comments postProps={postProps} setCommentsOpen={setCommentsOpen} />}</>,
         document.getElementById("front_component_root") as HTMLElement
       )}
 
@@ -275,7 +275,7 @@ const Post = ({ postProps }: any) => {
             {/* comment toggle */}
             <ToggleButton
               onClick={() => {
-                setCommentOpen(true);
+                setCommentsOpen(true);
                 setTimeout(() => {
                   history.pushState({ page: "modal" }, "", "");
                 }, 100);

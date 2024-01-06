@@ -92,20 +92,26 @@ const Reply = ({ replyProps }: any) => {
         </EditPopup>
       </Popper>
       <CommentInfo>
-        <FlexDiv
-          onClick={() => {
-            navigate(`/userinfo/${replyProps?.User?.id}/cat/0`);
-          }}
-        >
+        <FlexDiv>
           {replyProps?.User?.profilePic ? (
             <ProfilePic
+              onClick={() => {
+                navigate(`/userinfo/${replyProps?.User?.id}/cat/0`);
+              }}
               crop={true}
               alt="profilePic"
               src={`${replyProps?.User?.profilePic}`}
               altImg={`${replyProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
             />
           ) : (
-            <ProfilePic crop={true} alt="profilePic" src="/img/defaultProfilePic.png" />
+            <ProfilePic
+              onClick={() => {
+                navigate(`/userinfo/${replyProps?.User?.id}/cat/0`);
+              }}
+              crop={true}
+              alt="profilePic"
+              src="/img/defaultProfilePic.png"
+            />
           )}
           <UserNickname>{replyProps?.User?.nickname?.slice(0, 8)}</UserNickname>
         </FlexDiv>

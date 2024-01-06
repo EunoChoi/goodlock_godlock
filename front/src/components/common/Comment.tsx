@@ -24,9 +24,8 @@ import Reply from "./Reply";
 
 moment.locale("ko");
 
-const Comment = ({ commentProps }: any) => {
+const Comment = ({ commentProps, idx, replyOpenIdx, setReplyOpenIdx }: any) => {
   const [isCommentEdit, setCommentEdit] = useState<boolean>(false);
-  const [isReplyOpen, setReplyOpen] = useState<boolean>(false);
 
   const [commentEditContent, setCommentEditContent] = useState<string>(commentProps.content);
 
@@ -42,8 +41,9 @@ const Comment = ({ commentProps }: any) => {
   const user = User.get().data;
 
   const commentRef = useRef<HTMLInputElement>(null);
+  const commentInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    commentRef.current?.focus();
+    commentInputRef.current?.focus();
   }, [isCommentEdit]);
 
   //useMutation
@@ -52,7 +52,13 @@ const Comment = ({ commentProps }: any) => {
 
   return (
     <CommentBox
-      onClick={() => {
+      ref={commentRef}
+      onClick={(e) => {
+        const target = e.currentTarget;
+        setTimeout(() => {
+          target?.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+
         setMorePop(null);
         clearTimeout(timer);
       }}
@@ -91,20 +97,26 @@ const Comment = ({ commentProps }: any) => {
         </EditPopup>
       </Popper>
       <CommentInfo>
-        <FlexDiv
-          onClick={() => {
-            navigate(`/userinfo/${commentProps?.User?.id}/cat/0`);
-          }}
-        >
+        <FlexDiv>
           {commentProps?.User?.profilePic ? (
             <ProfilePic
+              onClick={() => {
+                navigate(`/userinfo/${commentProps?.User?.id}/cat/0`);
+              }}
               crop={true}
               alt="profilePic"
               src={`${commentProps?.User?.profilePic}`}
               altImg={`${commentProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
             />
           ) : (
-            <ProfilePic crop={true} alt="profilePic" src="/img/defaultProfilePic.png" />
+            <ProfilePic
+              onClick={() => {
+                navigate(`/userinfo/${commentProps?.User?.id}/cat/0`);
+              }}
+              crop={true}
+              alt="profilePic"
+              src="/img/defaultProfilePic.png"
+            />
           )}
           <UserNickname>{commentProps?.User?.nickname?.slice(0, 8)}</UserNickname>
         </FlexDiv>
@@ -157,7 +169,11 @@ const Comment = ({ commentProps }: any) => {
             }
           }}
         >
-          <input ref={commentRef} value={commentEditContent} onChange={(e) => setCommentEditContent(e.target.value)} />
+          <input
+            ref={commentInputRef}
+            value={commentEditContent}
+            onChange={(e) => setCommentEditContent(e.target.value)}
+          />
 
           <CommentEditButton disabled={editComment.isLoading ? true : false}>
             {editComment.isLoading ? <CircularProgress size={24} color="inherit" /> : <CheckCircleIcon />}
@@ -173,18 +189,36 @@ const Comment = ({ commentProps }: any) => {
           </CommentEditButton>
         </CommentEdit>
       ) : (
-        <CommentText onClick={() => setReplyOpen((c) => !c)}>{commentProps?.content}</CommentText>
+        <CommentText
+          onClick={() => {
+            if (replyOpenIdx === idx) {
+              setReplyOpenIdx(null);
+            } else setReplyOpenIdx(idx);
+          }}
+        >
+          {commentProps?.content}
+        </CommentText>
       )}
 
       {commentProps?.ReplyChild?.length >= 1 && (
         <ReplyBtn>
-          <button onClick={() => setReplyOpen((c) => !c)}>{commentProps?.ReplyChild?.length}개의 답글</button>
+          <button
+            onClick={() => {
+              if (replyOpenIdx === idx) {
+                setReplyOpenIdx(null);
+              } else setReplyOpenIdx(idx);
+            }}
+          >
+            {commentProps?.ReplyChild?.length}개의 답글
+          </button>
         </ReplyBtn>
       )}
 
-      {isReplyOpen && (
+      {replyOpenIdx === idx && (
         <>
-          <RelayWrapper>{user && <ReplyInputForm commentId={commentProps?.id}></ReplyInputForm>}</RelayWrapper>
+          <RelayWrapper>
+            {user && <ReplyInputForm commentRef={commentRef} commentId={commentProps?.id}></ReplyInputForm>}
+          </RelayWrapper>
           <RelayWrapper>
             <Space />
             {commentProps?.ReplyChild?.map((v: any, i: number) => (
