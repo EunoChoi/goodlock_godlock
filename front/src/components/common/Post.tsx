@@ -333,10 +333,16 @@ const Hashtag = styled.span`
 `;
 
 const Image = styled(Img)`
-  width: 100% !important;
-  height: 330px !important;
+  width: 100%;
+  height: 330px;
 
   transition: all ease-in-out 1s;
+  @media (orientation: portrait) {
+    height: 250px;
+  }
+  @media (orientation: landscape) and (max-height: 480px) {
+    height: 300px;
+  }
 `;
 
 const SubContentWrapper = styled.div`

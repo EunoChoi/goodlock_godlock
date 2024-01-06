@@ -42,6 +42,7 @@ const FreeBoard = () => {
 
   const isMobile = IsMobile();
 
+  const [postCountOpen, setPostCountOpen] = useState<boolean>(false);
   const scrollTarget = useRef<HTMLDivElement>(null);
   const [toggle, setToggle] = useState<number>(0);
   const pillSub = ["All", "Feed"];
@@ -161,15 +162,20 @@ const FreeBoard = () => {
         <MainPageStyle.TextWrapper_Normal>서로에게 따뜻한 마음과 존중을 보여주세요 :)</MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.Space height={48}></MainPageStyle.Space>
 
-        <MainPageStyle.TextWrapper_Bold>
+        <MainPageStyle.TextWrapper_Bold onClick={() => setPostCountOpen((c) => !c)}>
           <CalendarMonthIcon id="icon" fontSize="large" />
           This Month
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={8} />
-        <MainPageStyle.TextWrapper_SubBold>New Upload</MainPageStyle.TextWrapper_SubBold>
-        <MainPageStyle.TextWrapper_Normal>
-          Free {monthNew} • Feed Posts {monthFeed}
-        </MainPageStyle.TextWrapper_Normal>
+
+        {postCountOpen && (
+          <>
+            <MainPageStyle.TextWrapper_SubBold>New Upload</MainPageStyle.TextWrapper_SubBold>
+            <MainPageStyle.TextWrapper_Normal>
+              Free {monthNew} • Feed Posts {monthFeed}
+            </MainPageStyle.TextWrapper_Normal>
+          </>
+        )}
 
         {topPosts?.length >= 1 && (
           <>

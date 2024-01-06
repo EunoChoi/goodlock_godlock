@@ -106,6 +106,7 @@ router.get("/single", async (req, res) => {
         id
       }],
       order: [
+        [Comment, 'createdAt', 'ASC'],
         [Comment, { model: Comment, as: 'ReplyChild' }, 'createdAt', 'ASC'],//grand child order!!!//불러온 comment도 정렬
       ],
       include: [
@@ -193,6 +194,7 @@ router.get("/", async (req, res) => {
       ],
       order: [
         ['createdAt', 'DESC'],
+        [Comment, 'createdAt', 'ASC'],
         [Comment, { model: Comment, as: 'ReplyChild' }, 'createdAt', 'ASC'],//grand child order!!!//불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],
@@ -225,6 +227,7 @@ router.get("/activinfo", async (req, res) => {
       }],
       order: [
         ['createdAt', 'DESC'],
+        [Comment, 'createdAt', 'ASC'],
         [Comment, { model: Comment, as: 'ReplyChild' }, 'createdAt', 'ASC'],//grand child order!!!//불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],
@@ -499,6 +502,7 @@ router.get("/feed", tokenCheck, async (req, res) => {
       }],
       order: [
         ['createdAt', 'DESC'],
+        [Comment, 'createdAt', 'ASC'],
         [Comment, { model: Comment, as: 'ReplyChild' }, 'createdAt', 'ASC'],//grand child order!!!//불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],
@@ -655,6 +659,7 @@ router.get("/search", async (req, res) => {
       }],
       order: [
         ['createdAt', 'DESC'],
+        [Comment, 'createdAt', 'ASC'],
         [Comment, { model: Comment, as: 'ReplyChild' }, 'createdAt', 'ASC'],//grand child order!!!//불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],

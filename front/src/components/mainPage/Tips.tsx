@@ -43,6 +43,7 @@ const Tips = () => {
 
   const isMobile = IsMobile();
 
+  const [postCountOpen, setPostCountOpen] = useState<boolean>(false);
   const [toggle, setToggle] = useState<number>(0);
   const [searchInfo, setSearchInfo] = useState<string>("");
   const pillSub = ["All", "Ongoing", "Feed"];
@@ -186,15 +187,20 @@ const Tips = () => {
 
         <MainPageStyle.Space height={48}></MainPageStyle.Space>
 
-        <MainPageStyle.TextWrapper_Bold>
+        <MainPageStyle.TextWrapper_Bold onClick={() => setPostCountOpen((c) => !c)}>
           <CalendarMonthIcon id="icon" fontSize="large" />
           This Month
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={8} />
-        <MainPageStyle.TextWrapper_SubBold>New Upload</MainPageStyle.TextWrapper_SubBold>
-        <MainPageStyle.TextWrapper_Normal>
-          Tip {monthNewInfo} • Ongoing {monthOngoing}• Feed Posts {monthFeed}
-        </MainPageStyle.TextWrapper_Normal>
+
+        {postCountOpen && (
+          <>
+            <MainPageStyle.TextWrapper_SubBold>New Upload</MainPageStyle.TextWrapper_SubBold>
+            <MainPageStyle.TextWrapper_Normal>
+              Tip {monthNewInfo} • Ongoing {monthOngoing}• Feed Posts {monthFeed}
+            </MainPageStyle.TextWrapper_Normal>
+          </>
+        )}
 
         {topPosts?.length >= 1 && (
           <>
