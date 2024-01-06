@@ -138,6 +138,7 @@ const CommentWrapper = styled.div<{ animation?: "open" | "close" }>`
   width: 100%;
   width: 50vw;
   height: 80vh;
+  height: calc(var(--vh, 1vh) * 80);
   padding-bottom: 32px;
 
   border-top-left-radius: 16px;
@@ -168,6 +169,7 @@ const CommentWrapper = styled.div<{ animation?: "open" | "close" }>`
     width: 100%;
     padding-bottom: 20px;
     height: 90vh;
+    height: calc(var(--vh, 1vh) * 90);
   }
 `;
 const CommentBG = styled.div<{ animation?: "open" | "close" }>`

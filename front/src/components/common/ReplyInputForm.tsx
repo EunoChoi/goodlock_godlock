@@ -34,7 +34,9 @@ const ReplyInputForm = ({ commentId }: { commentId: number }) => {
       <CommentInputArea ref={inputWrapperRef}>
         <CommentInput
           onFocus={() => {
-            inputWrapperRef.current?.scrollIntoView({ behavior: "smooth" });
+            setTimeout(() => {
+              inputWrapperRef.current?.scrollIntoView({ behavior: "smooth" });
+            }, 400);
           }}
           placeholder="답글을 입력하세요."
           value={content}
