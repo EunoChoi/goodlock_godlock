@@ -264,8 +264,12 @@ const Post = ({ postProps }: any) => {
                 }
               }}
             >
-              {postProps.type === 1 && isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />}
-              {postProps.type === 2 && isLiked ? <FavoriteIcon style={{ color: "#D5A8D0" }} /> : <FavoriteBorderIcon />}
+              {postProps.type === 1 && (
+                <>{isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />}</>
+              )}
+              {postProps.type === 2 && (
+                <>{isLiked ? <FavoriteIcon style={{ color: "#D5A8D0" }} /> : <FavoriteBorderIcon />}</>
+              )}
               <span>{postProps?.Likers?.length}</span>
             </ToggleButton>
             {/* comment toggle */}
