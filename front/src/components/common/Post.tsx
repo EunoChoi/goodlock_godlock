@@ -294,8 +294,8 @@ const Post = ({ postProps }: any) => {
             data-clipboard-text={`${BASE_URL}/postview/${postProps.id}`}
           >
             <ToggleButton>
-              <LinkIcon fontSize="medium" />
-              <span>URL</span>
+              <LinkIcon id="link" fontSize="medium" />
+              {/* <span>URL</span> */}
             </ToggleButton>
           </Clipboard>
 
@@ -510,6 +510,7 @@ const ToggleButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+
   span {
     margin-left: 4px;
     margin-right: 12px;

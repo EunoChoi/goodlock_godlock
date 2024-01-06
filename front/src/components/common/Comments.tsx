@@ -134,13 +134,15 @@ const CommentWrapper = styled.div<{ animation?: "open" | "close" }>`
     font-size: 36px;
     color: rgba(0, 0, 0, 0.6);
   }
-  height: 80vh;
-  /* max-height: 70vh; */
 
   width: 100%;
-  background-color: #fff;
-
+  width: 50vw;
+  height: 80vh;
   padding-bottom: 32px;
+
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  background-color: #fff;
 
   bottom: 0;
   right: 0;
@@ -153,17 +155,19 @@ const CommentWrapper = styled.div<{ animation?: "open" | "close" }>`
   align-items: center;
 
   > * {
-    width: 70%;
+    width: 80%;
   }
   @media (orientation: portrait) or (max-height: 480px) {
     padding-bottom: 20px;
+    width: 100%;
     > * {
-      width: 92%;
+      width: 90%;
     }
   }
   @media (orientation: landscape) and (max-height: 480px) {
+    width: 100%;
     padding-bottom: 20px;
-    height: 100vh;
+    height: 90vh;
   }
 `;
 const CommentBG = styled.div<{ animation?: "open" | "close" }>`
@@ -171,7 +175,7 @@ const CommentBG = styled.div<{ animation?: "open" | "close" }>`
   opacity: ${(props) => (props.animation === "open" ? "1" : "0")};
   transition: all ease-in-out 0.3s;
 
-  z-index: 3000;
+  z-index: 5000;
 
   background-color: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(8px);
@@ -186,6 +190,7 @@ const CommentBG = styled.div<{ animation?: "open" | "close" }>`
 
   height: 100%;
   width: calc(100% - 280px);
+  width: 100%;
   @media (orientation: portrait) or (max-height: 480px) {
     width: 100%;
   }

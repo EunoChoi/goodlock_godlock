@@ -266,7 +266,7 @@ const CommentText = styled.span`
   display: flex;
   justify-content: start;
   padding: 10px 0;
-  font-size: 20px;
+  font-size: 18px;
   /* padding-bottom: 0px; */
 `;
 const CommentTime = styled.span`
