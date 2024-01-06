@@ -388,7 +388,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
                   )}
                 </MobileText>
                 {postProps.Images?.map((v: Image, i: number) => (
-                  <div id="imageBox" key={i + v.src} onClick={() => setCrop((c) => !c)}>
+                  <div key={i + v.src} onClick={() => setCrop((c) => !c)}>
                     <PostImage crop={crop} src={v?.src.replace(/\/thumb\//, "/original/")} alt="zoom image" />
                   </div>
                 ))}
@@ -522,9 +522,9 @@ const MobilePostMenu = styled.div`
 
     position: fixed;
     left: 0;
-    bottom: 0;
+    top: 76px;
     width: 200px;
-    height: calc(var(--vh, 1vh) * 70);
+    height: calc(var(--vh, 1vh) * 100 - 76px);
     padding: 20px 0;
 
     background-color: whitesmoke;
@@ -551,6 +551,10 @@ const Nickname = styled.span`
   width: 100%;
   padding: 8px;
   font-size: 1.2em !important;
+
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: auto;
+  }
 `;
 
 //share range, link component
@@ -578,8 +582,9 @@ const SubContent = styled.div`
   }
 
   @media (orientation: landscape) and (max-height: 480px) {
-    padding: 12px 64px;
-    padding-bottom: 24px;
+    padding: 0 64px;
+    padding-top: 12px;
+    /* padding-bottom: 24px; */
   }
 `;
 const PostStartEnd = styled.div`
@@ -920,6 +925,7 @@ const MobileText = styled.div`
   @media (orientation: landscape) and (max-height: 480px) {
     width: calc(100vw - 200px);
     height: 100vh;
+    height: calc(var(--vh, 1vh) * 100 - 30px);
     #content {
       padding: 24px 64px;
     }
@@ -944,18 +950,42 @@ const MobilePostInfo = styled.div`
   @media (orientation: landscape) and (max-height: 480px) {
     background-color: whitesmoke;
     border-right: 2px solid rgba(0, 0, 0, 0.05);
-    flex-direction: column;
-    justify-content: center;
+    align-items: start;
+    justify-content: space-between;
 
+    width: 100%;
+
+    padding: 20px 6px;
     flex-shrink: 0;
     > *:first-child {
-      width: 100%;
+      * {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      width: auto;
+      height: 36px;
+      span {
+        font-weight: 500;
+        font-size: 18px !important;
+      }
+      img {
+        height: 32px;
+        width: 32px;
+      }
     }
     > *:nth-child(2) {
-      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      height: 36px;
+
+      font-size: 14px !important;
     }
 
     width: 200px;
-    height: calc(var(--vh, 1vh) * 30);
+    /* height: calc(var(--vh, 1vh) * 30); */
+    height: 30vh;
+    height: 100vh;
   }
 `;

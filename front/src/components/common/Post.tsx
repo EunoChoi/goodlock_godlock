@@ -440,7 +440,8 @@ const PostWrapper = styled.div`
     /* height: auto; */
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    /* width: 400px; */
+    /* width: 480px; */
+    max-width: 100%;
     width: 100%;
   }
 `;

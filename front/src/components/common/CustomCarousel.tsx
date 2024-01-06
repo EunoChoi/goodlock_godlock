@@ -70,7 +70,8 @@ export default CoustomCarousel;
 const CarouselWrapper = styled(Carousel)`
   @media (orientation: landscape) and (max-height: 480px) {
     .carousel-slider {
-      height: calc(var(--vh, 1vh) * 100);
+      /* height: calc(var(--vh, 1vh) * 100); */
+      height: auto;
     }
   }
 `;

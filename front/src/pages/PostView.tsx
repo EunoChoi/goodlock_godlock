@@ -67,6 +67,10 @@ const SinglePostWrapper = styled.div`
   align-items: center;
 
   animation: ${Animation.smoothAppear} 1s ease-in-out;
+
+  @media (orientation: landscape) and (max-height: 480px) {
+    width: 80%;
+  }
 `;
 const SingePostText = styled.div`
   width: 550px;
@@ -87,7 +91,8 @@ const SingePostText = styled.div`
     padding-top: 100px;
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    width: 400px;
+    /* width: 480px; */
+    width: 100%;
     padding-top: 60px;
   }
 `;

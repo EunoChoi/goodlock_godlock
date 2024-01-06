@@ -114,7 +114,11 @@ const TextBox = styled.div`
     margin: 48px 0;
   }
   @media (orientation: landscape) and (max-height: 480px) {
-    margin: 36px 0;
+    margin: 24px 0;
+    span {
+      font-size: 20px;
+      line-height: 24px;
+    }
   }
 `;
 
@@ -133,6 +137,9 @@ const Title = styled.span`
       @media (orientation: portrait) or (max-height: 480px) {
         font-size: 72px;
       }
+      @media (orientation: landscape) and (max-height: 480px) {
+        font-size: 58px;
+      }
     }
     span:nth-child(2) {
       /* font-family: OAGothic-ExtraBold; */
@@ -142,10 +149,10 @@ const Title = styled.span`
       @media (orientation: portrait) or (max-height: 480px) {
         font-size: 52px;
       }
+      @media (orientation: landscape) and (max-height: 480px) {
+        font-size: 42px;
+      }
     }
-  }
-
-  @media (orientation: landscape) and (max-height: 480px) {
   }
 `;
 

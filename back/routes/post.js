@@ -158,11 +158,6 @@ router.get("/", async (req, res) => {
         type
       }],
       // limit: 10,
-      order: [
-        ['createdAt', 'DESC'],
-        [Comment, 'createdAt', 'ASC'], //불러온 comment도 정렬
-        [Image, 'id', 'ASC'],
-      ],
       include: [
         {
           model: User,//게시글 작성자
@@ -186,6 +181,9 @@ router.get("/", async (req, res) => {
             {
               model: Comment, //대댓글
               as: 'ReplyChild',
+              // order: [
+              //   [{ model: Comment, as: 'ReplyChild' }, 'createdAt', 'DESC'],
+              // ],
               include: [
                 {
                   model: User, //대댓글의 작성자
@@ -195,6 +193,12 @@ router.get("/", async (req, res) => {
             }
           ],
         }
+      ],
+      order: [
+        ['createdAt', 'DESC'],
+        //grand child order!!!
+        [Comment, { model: Comment, as: 'ReplyChild' }, 'createdAt', 'ASC'], //불러온 comment도 정렬
+        [Image, 'id', 'ASC'],
       ],
     });
 

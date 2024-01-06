@@ -177,6 +177,7 @@ const CommentWrapper = styled.div<{ animation?: "open" | "close" }>`
   @media (orientation: portrait) or (max-height: 480px) {
     padding-bottom: 20px;
     max-height: 550px;
+    max-height: 80%;
     width: 100%;
     > * {
       width: 90%;
