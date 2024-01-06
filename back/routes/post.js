@@ -106,7 +106,7 @@ router.get("/single", async (req, res) => {
         id
       }],
       order: [
-        [Comment, 'createdAt', 'ASC'], //불러온 comment도 정렬
+        [Comment, { model: Comment, as: 'ReplyChild' }, 'createdAt', 'ASC'],//grand child order!!!//불러온 comment도 정렬
       ],
       include: [
         {
@@ -181,9 +181,6 @@ router.get("/", async (req, res) => {
             {
               model: Comment, //대댓글
               as: 'ReplyChild',
-              // order: [
-              //   [{ model: Comment, as: 'ReplyChild' }, 'createdAt', 'DESC'],
-              // ],
               include: [
                 {
                   model: User, //대댓글의 작성자
@@ -196,8 +193,7 @@ router.get("/", async (req, res) => {
       ],
       order: [
         ['createdAt', 'DESC'],
-        //grand child order!!!
-        [Comment, { model: Comment, as: 'ReplyChild' }, 'createdAt', 'ASC'], //불러온 comment도 정렬
+        [Comment, { model: Comment, as: 'ReplyChild' }, 'createdAt', 'ASC'],//grand child order!!!//불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],
     });
@@ -229,7 +225,7 @@ router.get("/activinfo", async (req, res) => {
       }],
       order: [
         ['createdAt', 'DESC'],
-        [Comment, 'createdAt', 'ASC'], //불러온 comment도 정렬
+        [Comment, { model: Comment, as: 'ReplyChild' }, 'createdAt', 'ASC'],//grand child order!!!//불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],
       include: [
@@ -503,7 +499,7 @@ router.get("/feed", tokenCheck, async (req, res) => {
       }],
       order: [
         ['createdAt', 'DESC'],
-        [Comment, 'createdAt', 'ASC'], //불러온 comment도 정렬
+        [Comment, { model: Comment, as: 'ReplyChild' }, 'createdAt', 'ASC'],//grand child order!!!//불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],
       include: [
@@ -659,7 +655,7 @@ router.get("/search", async (req, res) => {
       }],
       order: [
         ['createdAt', 'DESC'],
-        [Comment, 'createdAt', 'ASC'], //불러온 comment도 정렬
+        [Comment, { model: Comment, as: 'ReplyChild' }, 'createdAt', 'ASC'],//grand child order!!!//불러온 comment도 정렬
         [Image, 'id', 'ASC'],
       ],
       include: [
