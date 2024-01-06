@@ -32,11 +32,11 @@ const ReplyInputForm = ({ commentId, commentRef }: { commentId: number; commentR
     >
       <CommentInputArea>
         <CommentInput
-          onClick={() => {
-            setTimeout(() => {
-              commentRef.current?.scrollIntoView({ behavior: "smooth" });
-            }, 100);
-          }}
+          // onClick={() => {
+          //   setTimeout(() => {
+          //     commentRef.current?.scrollIntoView({ behavior: "smooth" });
+          //   }, 100);
+          // }}
           placeholder="답글을 입력하세요."
           value={content}
           onChange={(e) => {
