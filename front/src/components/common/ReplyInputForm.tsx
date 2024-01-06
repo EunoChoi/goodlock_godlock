@@ -33,7 +33,7 @@ const ReplyInputForm = ({ commentId }: { commentId: number }) => {
     >
       <CommentInputArea ref={inputWrapperRef}>
         <CommentInput
-          onFocus={() => {
+          onClick={() => {
             setTimeout(() => {
               inputWrapperRef.current?.scrollIntoView({ behavior: "smooth" });
             }, 400);
