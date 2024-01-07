@@ -193,7 +193,7 @@ const Tips = () => {
         </MainPageStyle.TextWrapper_Bold>
         <MainPageStyle.Space height={8} />
 
-        {postCountOpen && (
+        {(postCountOpen || topPosts?.length === 0) && (
           <>
             <MainPageStyle.TextWrapper_SubBold>New Upload</MainPageStyle.TextWrapper_SubBold>
             <MainPageStyle.TextWrapper_Normal>
