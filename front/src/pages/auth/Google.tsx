@@ -15,6 +15,10 @@ const Google = () => {
 
   const code = new URL(window.location.href).searchParams.get("code");
 
+  useEffect(() => {
+    if (socialLogIn.isError) navigate("/");
+  }, [socialLogIn]);
+
   if (code) {
     // console.log(code);
     try {

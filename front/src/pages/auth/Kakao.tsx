@@ -14,6 +14,10 @@ const Kakao = () => {
   const REDIRECT_URI = process.env.REACT_APP_BASE_URL + "/auth/kakao";
   const code = new URL(window.location.href).searchParams.get("code");
 
+  useEffect(() => {
+    if (socialLogIn.isError) navigate("/");
+  }, [socialLogIn]);
+
   if (code) {
     try {
       axios
