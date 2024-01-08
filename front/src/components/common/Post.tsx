@@ -95,233 +95,246 @@ const Post = ({ postProps }: any) => {
   }, [isCommentsOpen]);
 
   return (
-    <PostWrapper onClick={() => setMorePop(null)}>
-      {createPortal(<PostDeleteConfirm></PostDeleteConfirm>, document.getElementById("modal_root") as HTMLElement)}
-      {createPortal(
-        <>{isZoom && <PostZoom setZoom={setZoom} postProps={postProps} />}</>,
-        document.getElementById("front_component_root") as HTMLElement
-      )}
-      {createPortal(
-        <>{isCommentsOpen && <Comments postProps={postProps} setCommentsOpen={setCommentsOpen} />}</>,
-        document.getElementById("front_component_root") as HTMLElement
-      )}
-
-      <Popper open={open} anchorEl={morePop} placement="top-end">
-        <EditPopup>
-          <Button
-            size="small"
-            color="inherit"
-            onClick={() => {
-              setMorePop(null);
-              clearTimeout(timer);
-
-              history.pushState({ page: "modal" }, "", "");
-              setPostEdit(true);
-            }}
-          >
-            <EditIcon />
-          </Button>
-          <Button
-            size="small"
-            color="error"
-            onClick={() => {
-              setMorePop(null);
-              clearTimeout(timer);
-              openDeleteConfirm({
-                mainText: "게시글을 삭제 하시겠습니까?",
-                onSuccess: () => {
-                  deletePost.mutate(postProps?.id);
-                }
-              });
-            }}
-          >
-            <DeleteForeverIcon />
-          </Button>
-        </EditPopup>
-      </Popper>
-
-      {/* 포스트 수정 팝업 */}
-      {isPostEdit ? (
-        <PostEditPopup
-          setPostEdit={setPostEdit}
-          postProps={{
-            type: postProps.type,
-            id: postProps.id,
-            content: postProps.content,
-            images: postProps.Images,
-            start: postProps?.start,
-            end: postProps?.end,
-            link: postProps?.link
-          }}
-        />
-      ) : null}
-
-      <PostInfoWrapper>
-        <div
-          onClick={() => {
-            navigate(`/userinfo/${postProps?.User?.id}/cat/0`);
-
-            window.scrollTo({
-              top: 0,
-              left: 0,
-              behavior: "smooth"
-            });
-          }}
-        >
-          {postProps?.User?.profilePic ? (
-            <ProfilePic
-              crop={true}
-              alt="userProfilePic"
-              src={`${postProps?.User?.profilePic}`}
-              altImg={`${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
-            />
-          ) : (
-            <ProfilePic crop={true} alt="userProfilePic" src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`} />
+    <>
+      {postProps.UserId && (
+        <PostWrapper onClick={() => setMorePop(null)}>
+          {createPortal(<PostDeleteConfirm></PostDeleteConfirm>, document.getElementById("modal_root") as HTMLElement)}
+          {createPortal(
+            <>{isZoom && <PostZoom setZoom={setZoom} postProps={postProps} />}</>,
+            document.getElementById("front_component_root") as HTMLElement
           )}
-          <span>{postProps?.User?.nickname?.slice(0, 8)}</span>
-        </div>
-        <span>{moment(postProps?.createdAt).fromNow()}</span>
-      </PostInfoWrapper>
+          {createPortal(
+            <>{isCommentsOpen && <Comments postProps={postProps} setCommentsOpen={setCommentsOpen} />}</>,
+            document.getElementById("front_component_root") as HTMLElement
+          )}
 
-      <CoustomCarousel indicator={postProps.Images.length === 1 ? false : true}>
-        {postProps.Images?.map((v: Image, i: number) => (
-          <div
-            key={i}
+          <Popper open={open} anchorEl={morePop} placement="top-end">
+            <EditPopup>
+              <Button
+                size="small"
+                color="inherit"
+                onClick={() => {
+                  setMorePop(null);
+                  clearTimeout(timer);
+
+                  history.pushState({ page: "modal" }, "", "");
+                  setPostEdit(true);
+                }}
+              >
+                <EditIcon />
+              </Button>
+              <Button
+                size="small"
+                color="error"
+                onClick={() => {
+                  setMorePop(null);
+                  clearTimeout(timer);
+                  openDeleteConfirm({
+                    mainText: "게시글을 삭제 하시겠습니까?",
+                    onSuccess: () => {
+                      deletePost.mutate(postProps?.id);
+                    }
+                  });
+                }}
+              >
+                <DeleteForeverIcon />
+              </Button>
+            </EditPopup>
+          </Popper>
+
+          {/* 포스트 수정 팝업 */}
+          {isPostEdit ? (
+            <PostEditPopup
+              setPostEdit={setPostEdit}
+              postProps={{
+                type: postProps.type,
+                id: postProps.id,
+                content: postProps.content,
+                images: postProps.Images,
+                start: postProps?.start,
+                end: postProps?.end,
+                link: postProps?.link
+              }}
+            />
+          ) : null}
+
+          <PostInfoWrapper>
+            <div
+              onClick={() => {
+                navigate(`/userinfo/${postProps?.User?.id}/cat/0`);
+
+                window.scrollTo({
+                  top: 0,
+                  left: 0,
+                  behavior: "smooth"
+                });
+              }}
+            >
+              {postProps?.User?.profilePic ? (
+                <ProfilePic
+                  crop={true}
+                  alt="userProfilePic"
+                  src={`${postProps?.User?.profilePic}`}
+                  altImg={`${postProps?.User?.profilePic.replace(/\/thumb\//, "/original/")}`}
+                />
+              ) : (
+                <ProfilePic
+                  crop={true}
+                  alt="userProfilePic"
+                  src={`${process.env.PUBLIC_URL}/img/defaultProfilePic.png`}
+                />
+              )}
+              <span>{postProps?.User?.nickname?.slice(0, 8)}</span>
+            </div>
+            <span>{moment(postProps?.createdAt).fromNow()}</span>
+          </PostInfoWrapper>
+
+          <CoustomCarousel indicator={postProps.Images.length === 1 ? false : true}>
+            {postProps.Images?.map((v: Image, i: number) => (
+              <div
+                key={i}
+                onClick={() => {
+                  history.pushState({ page: "modal" }, "", "");
+                  setZoom(true);
+                }}
+              >
+                <Image
+                  crop={true}
+                  src={`${v?.src}`}
+                  alt="img"
+                  altImg={`${v?.src.replace(/\/thumb\//, "/original/")}`}
+                />
+              </div>
+            ))}
+          </CoustomCarousel>
+
+          <TextWrapper
             onClick={() => {
               history.pushState({ page: "modal" }, "", "");
               setZoom(true);
             }}
           >
-            <Image crop={true} src={`${v?.src}`} alt="img" altImg={`${v?.src.replace(/\/thumb\//, "/original/")}`} />
-          </div>
-        ))}
-      </CoustomCarousel>
-
-      <TextWrapper
-        onClick={() => {
-          history.pushState({ page: "modal" }, "", "");
-          setZoom(true);
-        }}
-      >
-        {postProps?.content?.split(/(#[^\s#]{1,15})/g).map((v: string, i: number) => {
-          if (v.match(/(#[^\s#]{1,15})/)) {
-            return <Hashtag key={i}>{v}</Hashtag>;
-          }
-          return v;
-        })}
-      </TextWrapper>
-      {(postHaveDate || postHaveLink) && (
-        <SubContentWrapper>
-          {postHaveDate && (
-            <PostStartEnd>
-              <span>
-                <CalendarMonthIcon />
-              </span>
-              <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
-              <span>~</span>
-              <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
-            </PostStartEnd>
-          )}
-
-          {postHaveLink && (
-            <PostLink>
-              <InsertLinkIcon />
-              <span>
-                <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
-                  {makeCorectUrl(postProps?.link)}
-                </a>
-              </span>
-            </PostLink>
-          )}
-        </SubContentWrapper>
-      )}
-
-      {/* 토글 버튼(좋아요, 댓글창, 수정, 삭제) */}
-      <ToggleWrapper>
-        {postProps.type === 0 && (
-          <ToggleButton
-            onClick={() => {
-              if (!isLiked) {
-                like.mutate(postProps.id);
-              } else {
-                disLike.mutate(postProps.id);
+            {postProps?.content?.split(/(#[^\s#]{1,15})/g).map((v: string, i: number) => {
+              if (v.match(/(#[^\s#]{1,15})/)) {
+                return <Hashtag key={i}>{v}</Hashtag>;
               }
-            }}
-          >
-            {isLiked ? <FavoriteIcon style={{ color: "#D5A8D0" }} /> : <FavoriteBorderIcon />}
-            <span>{postProps?.Likers?.length}</span>
-          </ToggleButton>
-        )}
-        {postProps.type !== 0 && (
-          <FlexDiv>
-            {/* like toggle */}
-            <ToggleButton
-              onClick={() => {
-                if (!isLiked) {
-                  like.mutate(postProps.id);
-                } else {
-                  disLike.mutate(postProps.id);
-                }
-              }}
-            >
-              {postProps.type === 1 && (
-                <>{isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />}</>
+              return v;
+            })}
+          </TextWrapper>
+          {(postHaveDate || postHaveLink) && (
+            <SubContentWrapper>
+              {postHaveDate && (
+                <PostStartEnd>
+                  <span>
+                    <CalendarMonthIcon />
+                  </span>
+                  <span>{moment(postProps?.start).format("YY.MM.DD")}</span>
+                  <span>~</span>
+                  <span>{moment(postProps?.end).format("YY.MM.DD")}</span>
+                </PostStartEnd>
               )}
-              {postProps.type === 2 && (
-                <>{isLiked ? <FavoriteIcon style={{ color: "#D5A8D0" }} /> : <FavoriteBorderIcon />}</>
+
+              {postHaveLink && (
+                <PostLink>
+                  <InsertLinkIcon />
+                  <span>
+                    <a target="_blank" href={makeCorectUrl(postProps?.link)} rel="noreferrer">
+                      {makeCorectUrl(postProps?.link)}
+                    </a>
+                  </span>
+                </PostLink>
               )}
-              <span>{postProps?.Likers?.length}</span>
-            </ToggleButton>
-            {/* comment toggle */}
-            <ToggleButton
-              onClick={() => {
-                setCommentsOpen(true);
-                setTimeout(() => {
-                  history.pushState({ page: "modal" }, "", "");
-                }, 100);
-              }}
-            >
-              <MessageIcon />
-              <span>{postProps?.Comments?.length}</span>
-            </ToggleButton>
-          </FlexDiv>
-        )}
-
-        <FlexDiv>
-          <Clipboard
-            onSuccess={() => toast.success("공유 URL이 클립보드에 복사되었습니다.")}
-            component="a"
-            data-clipboard-text={`${BASE_URL}/postview/${postProps.id}`}
-          >
-            <ToggleButton>
-              <LinkIcon id="link" fontSize="medium" />
-              {/* <span>URL</span> */}
-            </ToggleButton>
-          </Clipboard>
-
-          {isMyPost && (
-            <ToggleButton
-              onClick={(event: React.MouseEvent<HTMLElement>) => {
-                event.stopPropagation();
-                if (!morePop) {
-                  setMorePop(event.currentTarget);
-                  setTimer(
-                    setTimeout(() => {
-                      setMorePop(null);
-                    }, 1500)
-                  );
-                } else {
-                  setMorePop(null);
-                  clearTimeout(timer);
-                }
-              }}
-            >
-              <MoreVertIcon />
-            </ToggleButton>
+            </SubContentWrapper>
           )}
-        </FlexDiv>
-      </ToggleWrapper>
-    </PostWrapper>
+
+          {/* 토글 버튼(좋아요, 댓글창, 수정, 삭제) */}
+          <ToggleWrapper>
+            {postProps.type === 0 && (
+              <ToggleButton
+                onClick={() => {
+                  if (!isLiked) {
+                    like.mutate(postProps.id);
+                  } else {
+                    disLike.mutate(postProps.id);
+                  }
+                }}
+              >
+                {isLiked ? <FavoriteIcon style={{ color: "#D5A8D0" }} /> : <FavoriteBorderIcon />}
+                <span>{postProps?.Likers?.length}</span>
+              </ToggleButton>
+            )}
+            {postProps.type !== 0 && (
+              <FlexDiv>
+                {/* like toggle */}
+                <ToggleButton
+                  onClick={() => {
+                    if (!isLiked) {
+                      like.mutate(postProps.id);
+                    } else {
+                      disLike.mutate(postProps.id);
+                    }
+                  }}
+                >
+                  {postProps.type === 1 && (
+                    <>{isLiked ? <BookmarkIcon style={{ color: "#a9aed4" }} /> : <BookmarkBorderIcon />}</>
+                  )}
+                  {postProps.type === 2 && (
+                    <>{isLiked ? <FavoriteIcon style={{ color: "#D5A8D0" }} /> : <FavoriteBorderIcon />}</>
+                  )}
+                  <span>{postProps?.Likers?.length}</span>
+                </ToggleButton>
+                {/* comment toggle */}
+                <ToggleButton
+                  onClick={() => {
+                    setCommentsOpen(true);
+                    setTimeout(() => {
+                      history.pushState({ page: "modal" }, "", "");
+                    }, 100);
+                  }}
+                >
+                  <MessageIcon />
+                  <span>{postProps?.Comments?.length}</span>
+                </ToggleButton>
+              </FlexDiv>
+            )}
+
+            <FlexDiv>
+              <Clipboard
+                onSuccess={() => toast.success("공유 URL이 클립보드에 복사되었습니다.")}
+                component="a"
+                data-clipboard-text={`${BASE_URL}/postview/${postProps.id}`}
+              >
+                <ToggleButton>
+                  <LinkIcon id="link" fontSize="medium" />
+                  {/* <span>URL</span> */}
+                </ToggleButton>
+              </Clipboard>
+
+              {isMyPost && (
+                <ToggleButton
+                  onClick={(event: React.MouseEvent<HTMLElement>) => {
+                    event.stopPropagation();
+                    if (!morePop) {
+                      setMorePop(event.currentTarget);
+                      setTimer(
+                        setTimeout(() => {
+                          setMorePop(null);
+                        }, 1500)
+                      );
+                    } else {
+                      setMorePop(null);
+                      clearTimeout(timer);
+                    }
+                  }}
+                >
+                  <MoreVertIcon />
+                </ToggleButton>
+              )}
+            </FlexDiv>
+          </ToggleWrapper>
+        </PostWrapper>
+      )}
+    </>
   );
 };
 
