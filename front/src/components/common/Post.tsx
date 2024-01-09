@@ -87,7 +87,6 @@ const Post = ({ postProps }: any) => {
   useEffect(() => {
     setZoom(false);
   }, [postProps.id]);
-
   //댓글 창 열렸을때 스크롤 방지
   useEffect(() => {
     if (isCommentsOpen) document.body.style.overflow = "hidden";
@@ -310,7 +309,7 @@ const Post = ({ postProps }: any) => {
                 </ToggleButton>
               </Clipboard>
 
-              {isMyPost && (
+              {(isMyPost || user?.level === 10) && (
                 <ToggleButton
                   onClick={(event: React.MouseEvent<HTMLElement>) => {
                     event.stopPropagation();

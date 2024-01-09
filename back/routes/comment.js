@@ -119,13 +119,22 @@ router.delete("/reply/:replyId", tokenCheck, async (req, res) => {
   try {
     const replyId = req.params.replyId;
 
-    const comment = await Comment.findOne({
-      where: { id: replyId, UserId: req.currentUserId }
+    //current user
+    const currentUser = await User.findOne({
+      where: { id: req.currentUserId },
     });
-    if (!comment) return res.status(403).json("대상이 올바르지 않거나 자신의 댓글이 아닙니다.");
+
+    const reply = await Comment.findOne({
+      where: { id: replyId }
+    });
+
+    if (!reply) return res.status(403).json("게시글이 올바르지 않습니다.");
+    if (reply && (reply.UserId !== req.currentUserId) && (currentUser.level !== 10)) {
+      return res.status(403).json("다른 사람의 게시글 입니다.");
+    }
 
     await Comment.destroy({
-      where: { id: replyId, UserId: req.currentUserId }
+      where: { id: replyId }
     });
   } catch (e) {
     console.error(e);
@@ -136,17 +145,26 @@ router.patch("/reply/:replyId", tokenCheck, async (req, res) => {
   try {
     const replyId = req.params.replyId;
 
-    //comment 확인
-    const comment = await Comment.findOne({
-      where: { id: replyId, UserId: req.currentUserId }
+    //current user
+    const currentUser = await User.findOne({
+      where: { id: req.currentUserId },
     });
-    if (!comment) return res.status(403).json("대상이 올바르지 않거나 자신의 댓글이 아닙니다.");
+
+    //reply 확인
+    const reply = await Comment.findOne({
+      where: { id: replyId }
+    });
+
+    if (!reply) return res.status(403).json("게시글이 올바르지 않습니다.");
+    if (reply && (reply.UserId !== req.currentUserId) && (currentUser.level !== 10)) {
+      return res.status(403).json("다른 사람의 게시글 입니다.");
+    }
 
     //comment 수정
     await Comment.update({
       content: req.body.content,
     }, {
-      where: { id: replyId, UserId: req.currentUserId }
+      where: { id: replyId }
     }
     );
 

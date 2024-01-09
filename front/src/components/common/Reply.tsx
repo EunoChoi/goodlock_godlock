@@ -117,7 +117,7 @@ const Reply = ({ replyProps }: any) => {
         </FlexDiv>
         <FlexDiv>
           <CommentTime>{moment(replyProps?.createdAt).fromNow()}</CommentTime>
-          {user?.id === replyProps.UserId && (
+          {(user?.id === replyProps.UserId || user?.level === 10) && (
             <button
               onClick={(event: React.MouseEvent<HTMLElement>) => {
                 event.stopPropagation();

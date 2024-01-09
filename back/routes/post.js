@@ -868,9 +868,14 @@ router.patch("/:postId", tokenCheck, async (req, res) => {
   try {
     const postId = req.params.postId;
 
+    //current user
+    const currentUser = await User.findOne({
+      where: { id: req.currentUserId },
+    });
+
     //수정 요청된 post가 로그인 유저의 post 인지 확인
     const post = await Post.findOne({
-      where: { id: postId, UserId: req.currentUserId },
+      where: { id: postId },
       include: [
         {
           model: Hashtag,
@@ -879,7 +884,10 @@ router.patch("/:postId", tokenCheck, async (req, res) => {
       ]
     });
 
-    if (!post) return res.status(403).json("자신의 게시글이 아닙니다.");
+    if (!post) return res.status(403).json("게시글이 올바르지 않습니다.");
+    if (post && post.UserId !== req.currentUserId && currentUser.level !== 10) {
+      return res.status(403).json("다른 사람의 게시글 입니다.");
+    }
 
 
     // 현재 로그인된 유저의 id와 포스트 text로 post 모델의 요소 생성
@@ -889,7 +897,7 @@ router.patch("/:postId", tokenCheck, async (req, res) => {
       end: req.body.end,
       link: req.body.link
     }, {
-      where: { id: postId, UserId: req.currentUserId }
+      where: { id: postId }
     }
     );
 
@@ -939,18 +947,28 @@ router.delete("/:postId", tokenCheck, async (req, res) => {
   try {
     const postId = req.params.postId;
 
-    const post = await Post.findOne({
-      where: { id: postId, UserId: req.currentUserId }
+    //current user
+    const currentUser = await User.findOne({
+      where: { id: req.currentUserId },
     });
-    if (!post) return res.status(403).json("게시글이 존재하지 않거나 자신의 게시글이 아닙니다.");
+    //selected post
+    const post = await Post.findOne({
+      where: { id: postId }
+    });
+
+    if (!post) return res.status(403).json("게시글이 올바르지 않습니다.");
+    if (post && post.UserId !== req.currentUserId && currentUser.level !== 10) {
+      return res.status(403).json("다른 사람의 게시글 입니다.");
+    }
+    console.log(post);
 
     await Post.destroy({
-      where: { id: postId, UserId: req.currentUserId }
+      where: { id: postId }
     });
   } catch (e) {
     console.error(e);
   }
-  res.status(200).json("post edit success");
+  res.status(200).json("post delete success");
 })
 
 
@@ -983,13 +1001,22 @@ router.delete("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
     const postId = req.params.postId;
     const commentId = req.params.commentId;
 
-    const comment = await Comment.findOne({
-      where: { id: commentId, PostId: postId, UserId: req.currentUserId }
+    //current user
+    const currentUser = await User.findOne({
+      where: { id: req.currentUserId },
     });
-    if (!comment) return res.status(403).json("대상이 올바르지 않거나 자신의 댓글이 아닙니다.");
+
+    const comment = await Comment.findOne({
+      where: { id: commentId, PostId: postId }
+    });
+
+    if (!comment) return res.status(403).json("게시글이 올바르지 않습니다.");
+    if (comment && (comment.UserId !== req.currentUserId) && (currentUser.level !== 10)) {
+      return res.status(403).json("다른 사람의 게시글 입니다.");
+    }
 
     await Comment.destroy({
-      where: { id: commentId, PostId: postId, UserId: req.currentUserId }
+      where: { id: commentId, PostId: postId }
     });
   } catch (e) {
     console.error(e);
@@ -1001,17 +1028,26 @@ router.patch("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
     const postId = req.params.postId;
     const commentId = req.params.commentId;
 
+    //current user
+    const currentUser = await User.findOne({
+      where: { id: req.currentUserId },
+    });
+
     //comment 확인
     const comment = await Comment.findOne({
-      where: { id: commentId, PostId: postId, UserId: req.currentUserId }
+      where: { id: commentId, PostId: postId }
     });
-    if (!comment) return res.status(403).json("대상이 올바르지 않거나 자신의 댓글이 아닙니다.");
+
+    if (!comment) return res.status(403).json("게시글이 올바르지 않습니다.");
+    if (comment && (comment.UserId !== req.currentUserId) && (currentUser.level !== 10)) {
+      return res.status(403).json("다른 사람의 게시글 입니다.");
+    }
 
     //comment 수정
     await Comment.update({
       content: req.body.content,
     }, {
-      where: { id: commentId, PostId: postId, UserId: req.currentUserId }
+      where: { id: commentId, PostId: postId }
     }
     );
 
