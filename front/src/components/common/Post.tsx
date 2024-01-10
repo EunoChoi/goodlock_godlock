@@ -389,7 +389,7 @@ const PostLink = styled.div`
   span {
     width: 100%;
     overflow: scroll;
-
+    white-space: nowrap;
     color: #5974af;
     text-decoration-line: underline;
     margin-left: 4px;
