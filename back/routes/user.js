@@ -352,7 +352,7 @@ router.patch("/edit/nickname", tokenCheck, async (req, res) => {
 router.patch("/edit/usertext", tokenCheck, async (req, res) => {
   try {
     const userId = req.currentUserId;
-    const usertext = req.body.usertext;
+    let usertext = req.body.usertext;
 
     const user = await User.findOne({
       where: { id: userId }
@@ -361,10 +361,13 @@ router.patch("/edit/usertext", tokenCheck, async (req, res) => {
 
     let level = user.level;
     if (!user) return res.status(401).json("올바르지 않은 user 입니다.");
-    if (usertext === process.env.ADMIN) level = 10;
+    if (usertext === process.env.ADMIN) {
+      level = 10;
+      usertext = "hi admin :)";
+    }
 
     await User.update({
-      usertext: usertext,
+      usertext,
       level
     }, {
       where: { id: userId }
