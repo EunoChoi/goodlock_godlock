@@ -91,7 +91,7 @@ const Profile = () => {
   const [usertext, setUsertext] = useState<string>(user?.usertext);
 
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["Tip Posts", "Free Posts", "Bookmark", "Like Posts", "Followings", "Followers"];
+  const category = ["Tip Posts", "Free Posts", "Bookmark", "Like", "Followings", "Followers"];
 
   //function
   const scrollToPill = () => {

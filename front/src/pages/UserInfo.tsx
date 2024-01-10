@@ -57,7 +57,7 @@ const UserInfo = () => {
 
   const navigate = useNavigate();
   const scrollTarget = useRef<HTMLDivElement>(null);
-  const category = ["Tip Posts", "Free Posts", "Bookmark", "Like Posts", "Followings", "Followers"];
+  const category = ["Tip Posts", "Free Posts", "Bookmark", "Like", "Followings", "Followers"];
 
   const { Alert: FollowConfirm, openAlert: openFollowConfirm } = useAlert();
   const { Alert: UnFollowConfirm, openAlert: openUnFollowConfirm } = useAlert();
