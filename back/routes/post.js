@@ -103,7 +103,8 @@ router.get("/single", async (req, res) => {
     const where = {};
     const SinglePost = await Post.findOne({
       where: [{
-        id
+        id,
+        UserId: { [Op.is]: !null },
       }],
       order: [
         [Comment, 'createdAt', 'ASC'],
@@ -156,7 +157,8 @@ router.get("/", async (req, res) => {
     const where = {};
     const Posts = await Post.findAll({
       where: [{
-        type
+        type,
+        UserId: { [Op.is]: !null },
       }],
       // limit: 10,
       include: [
@@ -220,6 +222,7 @@ router.get("/activinfo", async (req, res) => {
     const Posts = await Post.findAll({
       where: [{
         type: 1,
+        UserId: { [Op.is]: !null },
         [Op.or]: [
           { end: { [Op.gte]: today } },
           { end: null }
@@ -288,6 +291,7 @@ router.get("/month/top", tokenCheck, async (req, res) => {
     const Posts = await Post.findAll({
       where: [{
         type,
+        UserId: { [Op.is]: !null },
         [Op.and]: [
           { createdAt: { [Op.gte]: rangeStart } },
           { createdAt: { [Op.lte]: rangeEnd } }
@@ -351,6 +355,7 @@ router.get("/month/new", tokenCheck, async (req, res) => {
     const Posts = await Post.findAndCountAll({
       where: [{
         type,
+        UserId: { [Op.is]: !null },
         [Op.and]: [
           { createdAt: { [Op.gte]: rangeStart } },
           { createdAt: { [Op.lte]: rangeEnd } }
@@ -393,6 +398,7 @@ router.get("/month/likeEnd", tokenCheck, async (req, res) => {
         attributes: ['id'],
         where: [{
           type: 1,
+          UserId: { [Op.is]: !null },
           id: { [Op.in]: likedPosts.map(v => v.id) },
           [Op.and]: [
             { end: { [Op.gte]: rangeStart } },
@@ -461,6 +467,7 @@ router.get("/month/activeinfo", async (req, res) => {
     const Posts = await Post.findAndCountAll({
       where: [{
         type: 1,
+        UserId: { [Op.is]: !null },
         [Op.and]: [
           { createdAt: { [Op.gte]: rangeStart } },
           { createdAt: { [Op.lte]: rangeEnd } }
@@ -605,6 +612,7 @@ router.get("/liked", tokenCheck, async (req, res) => {
     const Posts = await Post.findAll({
       where: [{
         type,
+        UserId: { [Op.is]: !null },
         id: { [Op.in]: likedPosts.map(v => v.id) }
       }],
       // limit: 10,
@@ -653,6 +661,7 @@ router.get("/search", async (req, res) => {
     const Posts = await Post.findAll({
       where: [{
         type: type,
+        UserId: { [Op.is]: !null },
         content: {
           [Op.like]: "%" + `${search}` + "%"
         }
@@ -1060,76 +1069,6 @@ router.patch("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
     console.error(e);
   }
 })
-
-//Reply - add, edit, delete
-router.post("comment/:commentId/reply", tokenCheck, async (req, res) => {
-  try {
-    const commentId = req.params.commentId;
-    const currentComment = await Comment.findOne(
-      { where: { id: commentId } }
-    );
-    if (!currentComment) {
-      return res.status(403).json("존재하지 않는 댓글입니다.");
-    }
-
-    const comment = await Comment.create({
-      content: req.body.content,
-      commentId: commentId,
-      UserId: req.currentUserId,
-    });
-
-    return setTimeout(() => {
-      res.status(201).json(comment);
-    }, 1000);
-  }
-  catch (e) {
-    console.error(e);
-  }
-});
-// router.delete("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
-//   try {
-//     const postId = req.params.postId;
-//     const commentId = req.params.commentId;
-
-//     const comment = await Comment.findOne({
-//       where: { id: commentId, PostId: postId, UserId: req.currentUserId }
-//     });
-//     if (!comment) return res.status(403).json("대상이 올바르지 않거나 자신의 댓글이 아닙니다.");
-
-//     await Comment.destroy({
-//       where: { id: commentId, PostId: postId, UserId: req.currentUserId }
-//     });
-//   } catch (e) {
-//     console.error(e);
-//   }
-//   res.status(200).json("comment delete success");
-// })
-// router.patch("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
-//   try {
-//     const postId = req.params.postId;
-//     const commentId = req.params.commentId;
-
-//     //comment 확인
-//     const comment = await Comment.findOne({
-//       where: { id: commentId, PostId: postId, UserId: req.currentUserId }
-//     });
-//     if (!comment) return res.status(403).json("대상이 올바르지 않거나 자신의 댓글이 아닙니다.");
-
-//     //comment 수정
-//     await Comment.update({
-//       content: req.body.content,
-//     }, {
-//       where: { id: commentId, PostId: postId, UserId: req.currentUserId }
-//     }
-//     );
-
-//     return setTimeout(() => {
-//       res.status(200).json("post edit success");
-//     }, 1000);
-//   } catch (e) {
-//     console.error(e);
-//   }
-// })
 
 
 //post like, unlike
