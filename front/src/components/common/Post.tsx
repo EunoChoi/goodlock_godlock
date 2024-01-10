@@ -385,7 +385,11 @@ const PostLink = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
+  width: 100%;
   span {
+    width: 100%;
+    overflow: scroll;
+
     color: #5974af;
     text-decoration-line: underline;
     margin-left: 4px;
