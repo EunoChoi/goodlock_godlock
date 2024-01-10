@@ -813,11 +813,14 @@ router.get("/user/liked", tokenCheck, async (req, res) => {
 router.post("/", tokenCheck, async (req, res) => {
   try {
     //현재 로그인된 유저의 id와 포스트 text로 post 모델의 요소 생성
-    console.log(req.body);
-    const { type, UserId } = req.body;
+    const { type } = req.body;
+    const userId = req.currentUserId;
+
     if (type === 0) {
       const user = await User.findOne({
-        id: UserId
+        where: {
+          id: userId
+        }
       })
       if (user.level !== 10) {
         return res.status(400).json("유저 레벨이 올바르지 않습니다.");
@@ -873,7 +876,6 @@ router.patch("/:postId", tokenCheck, async (req, res) => {
       where: { id: req.currentUserId },
     });
 
-    //수정 요청된 post가 로그인 유저의 post 인지 확인
     const post = await Post.findOne({
       where: { id: postId },
       include: [
