@@ -387,6 +387,9 @@ const PostLink = styled.div`
   align-items: center;
   width: 100%;
   span {
+    display: flex;
+    justify-content: start;
+    align-items: center;
     width: 100%;
     overflow: scroll;
     white-space: nowrap;
