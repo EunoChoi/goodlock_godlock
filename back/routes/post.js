@@ -109,6 +109,7 @@ router.get("/single", async (req, res) => {
       order: [
         [Comment, 'createdAt', 'ASC'],
         [Comment, { model: Comment, as: 'ReplyChild' }, 'createdAt', 'ASC'],//grand child order!!!//불러온 comment도 정렬
+        [Image, 'id', 'ASC'],
       ],
       include: [
         {
