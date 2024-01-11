@@ -439,6 +439,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
 export default PostZoom;
 
 const Hashtag = styled.span`
+  cursor: pointer;
   color: #5e89c7;
   /* font-weight: 500; */
 `;
