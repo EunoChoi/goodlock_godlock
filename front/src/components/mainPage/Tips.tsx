@@ -68,6 +68,7 @@ const Tips = () => {
       }, 200);
     }
   }, [search]);
+
   useEffect(() => {
     const hash = decodeURI(window.location.hash);
     if (hash) {

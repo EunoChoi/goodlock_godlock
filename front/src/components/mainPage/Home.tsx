@@ -55,6 +55,7 @@ const Home = () => {
   const tipHashtag = Hashtag.get({ type: 1, limit: 5 }).data;
   const freeHashtag = Hashtag.get({ type: 2, limit: 5 }).data;
 
+  //검색
   const { search } = useLocation();
   useEffect(() => {
     if (search) {
@@ -75,29 +76,50 @@ const Home = () => {
     }
   }, [search]);
 
-  const scrollTargerheight = () => {
-    window.scrollTo({
-      top: scrollTarget.current?.scrollHeight,
-      left: 0,
-      behavior: "smooth"
-    });
-  };
+  //태그 클릭
+  useEffect(() => {
+    const hash = decodeURI(window.location.hash);
+    if (hash) {
+      console.log(decodeURI(window.location.hash));
+      setTimeout(() => {
+        setToggle(1);
+        setSearchNotice(hash);
+        window.scrollTo({
+          top: scrollTarget.current?.scrollHeight,
+          left: 0,
+          behavior: "smooth"
+        });
+      }, 100);
+      setTimeout(() => {
+        searchNoticePosts.refetch();
+      }, 200);
+    }
+  }, [window.location.hash]);
+
+  //scroll when pill click
+  // const scrollTargerheight = () => {
+  //   window.scrollTo({
+  //     top: scrollTarget.current?.scrollHeight,
+  //     left: 0,
+  //     behavior: "smooth"
+  //   });
+  // };
 
   //this month
-  const monthNewInfo = useQuery(
-    ["month/new/1"],
-    () => Axios.get("post/month/new", { params: { type: 1 } }).then((v) => v.data),
-    {
-      // staleTime: 60 * 1000
-    }
-  ).data;
-  const monthNewComm = useQuery(
-    ["month/new/2"],
-    () => Axios.get("post/month/new", { params: { type: 2 } }).then((v) => v.data),
-    {
-      // staleTime: 60 * 1000
-    }
-  ).data;
+  // const monthNewInfo = useQuery(
+  //   ["month/new/1"],
+  //   () => Axios.get("post/month/new", { params: { type: 1 } }).then((v) => v.data),
+  //   {
+  //     // staleTime: 60 * 1000
+  //   }
+  // ).data;
+  // const monthNewComm = useQuery(
+  //   ["month/new/2"],
+  //   () => Axios.get("post/month/new", { params: { type: 2 } }).then((v) => v.data),
+  //   {
+  //     // staleTime: 60 * 1000
+  //   }
+  // ).data;
 
   const topPosts = useQuery(["topPosts-all"], () =>
     Axios.get("post/month/top", { params: { type: [1, 2] } }).then((v) => v.data)
