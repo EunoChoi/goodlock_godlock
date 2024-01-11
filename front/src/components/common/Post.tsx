@@ -502,6 +502,7 @@ const PostInfoWrapper = styled.div`
 `;
 
 const TextWrapper = styled.div`
+  cursor: pointer;
   //줄바꿈 표시
   white-space: pre-wrap;
   overflow-wrap: break-word;

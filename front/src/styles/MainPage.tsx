@@ -35,6 +35,9 @@ const HomeEl = styled.div`
   display: flex;
   justify-content: center;
   align-items: start;
+  #tagItem {
+    cursor: pointer;
+  }
   #posts {
     width: 500px;
     width: 550px;
@@ -363,6 +366,7 @@ const TextWrapper_Normal = styled.span`
   }
 `;
 const TopWrapper = styled.div`
+  cursor: pointer;
   display: flex;
   justify-content: start;
   align-items: center;

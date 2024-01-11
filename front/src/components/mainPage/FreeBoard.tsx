@@ -367,6 +367,7 @@ const FreeBoard = () => {
             <span className="subTitle">Free Posts</span>
             {freeHashtag?.map((v: { id: number; name: string }) => (
               <span
+                id="tagItem"
                 key={v?.id}
                 onClick={() => {
                   navigate(`/main/2/search/#${encodeURI(v?.name)}`);

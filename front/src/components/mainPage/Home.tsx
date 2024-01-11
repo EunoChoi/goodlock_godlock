@@ -353,6 +353,7 @@ const Home = () => {
             <span className="subTitle">Tip Posts</span>
             {tipHashtag?.map((v: { id: number; name: string }) => (
               <span
+                id="tagItem"
                 key={v?.id}
                 onClick={() => {
                   navigate(`/main/1/search/#${encodeURI(v?.name)}`);
@@ -367,6 +368,7 @@ const Home = () => {
             <span className="subTitle">Free Posts</span>
             {freeHashtag?.map((v: { id: number; name: string }) => (
               <span
+                id="tagItem"
                 key={v?.id}
                 onClick={() => {
                   navigate(`/main/2/search/#${encodeURI(v?.name)}`);
