@@ -840,6 +840,7 @@ const PCText = styled.div`
   padding: 16px 0;
 
   font-size: 1.2em;
+  font-size: 20px;
   overflow-y: scroll;
   overflow-wrap: break-word;
   white-space: pre-wrap;
@@ -927,6 +928,7 @@ const MobileText = styled.div`
 
     /* font-weight: 500; */
     font-size: 1.2em;
+    font-size: 20px;
     line-height: 1.3em;
   }
 

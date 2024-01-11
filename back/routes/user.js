@@ -30,7 +30,7 @@ router.post("/register", async (req, res) => {
           , pass: process.env.AUTH_PW
         }
       });
-      await transporter.sendMail({
+      transporter.sendMail({
         from: 'goodlockgodlock@gmail.com',
         to: registerInfo.email,
         subject: '굿락갓락에 오신 것을 환영합니다.',
@@ -157,7 +157,7 @@ router.post("/login/social", async (req, res) => {
             , pass: process.env.AUTH_PW
           }
         });
-        await transporter.sendMail({
+        transporter.sendMail({
           from: 'goodlockgodlock@gmail.com',
           to: email,
           subject: '굿락갓락에 오신 것을 환영합니다.',
