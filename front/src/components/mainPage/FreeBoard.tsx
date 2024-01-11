@@ -156,10 +156,8 @@ const FreeBoard = () => {
       <MainPageStyle.TextWrapper ref={scrollTarget}>
         <MainPageStyle.TextWrapper_Title>Free Board</MainPageStyle.TextWrapper_Title>
         <MainPageStyle.Space height={16}></MainPageStyle.Space>
-        <MainPageStyle.TextWrapper_Normal>
-          자유 주제로 이야기를 나눌 수 있는 게시판입니다.
-        </MainPageStyle.TextWrapper_Normal>
-        <MainPageStyle.TextWrapper_Normal>서로에게 따뜻한 마음과 존중을 보여주세요 :)</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>자유 주제로 이야기를 나누는 게시판입니다.</MainPageStyle.TextWrapper_Normal>
+        <MainPageStyle.TextWrapper_Normal>서로에게 존중과 배려를 보여주세요 :)</MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.Space height={48}></MainPageStyle.Space>
 
         <MainPageStyle.TextWrapper_Bold onClick={() => setPostCountOpen((c) => !c)}>
