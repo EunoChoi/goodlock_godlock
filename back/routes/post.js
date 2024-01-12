@@ -832,7 +832,7 @@ router.post("/", tokenCheck, async (req, res) => {
       }
     })
     if (user && user.level === 0) {
-      return res.status(400).json("게스트 유저 입니다.");
+      return res.status(400).json("게스트 유저는 불가능합니다.");
     }
     if (user && type === 0 && user.level !== 10) {
       return res.status(400).json("admin 유저가 아닙니다.");
@@ -997,7 +997,7 @@ router.post("/:postId/comment", tokenCheck, async (req, res) => {
       }
     })
     if (user && user.level === 0) {
-      return res.status(400).json("게스트 유저 입니다.");
+      return res.status(400).json("게스트 유저는 불가능합니다.");
     }
 
     const currentPost = await Post.findOne(
@@ -1093,7 +1093,7 @@ router.patch("/:postId/like", tokenCheck, async (req, res) => {
       }
     })
     if (user && user.level === 0) {
-      return res.status(400).json("게스트 유저 입니다.");
+      return res.status(400).json("게스트 유저는 불가능합니다.");
     }
 
     const postId = req.params.postId;
@@ -1126,7 +1126,7 @@ router.delete("/:postId/like", tokenCheck, async (req, res) => {
       }
     })
     if (user && user.level === 0) {
-      return res.status(400).json("게스트 유저 입니다.");
+      return res.status(400).json("게스트 유저는 불가능합니다.");
     }
 
     const postId = req.params.postId;
