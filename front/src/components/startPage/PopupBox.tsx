@@ -162,7 +162,7 @@ const SNSButtonWrapper = styled.div`
     text-transform: capitalize;
     font-size: 14px;
     color: rgba(0, 0, 0, 0.6);
-    margin-top: 4px;
+    margin-top: 8px;
   }
 `;
 
