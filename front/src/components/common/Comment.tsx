@@ -211,6 +211,7 @@ const Comment = ({ commentProps, idx, replyOpenIdx, setReplyOpenIdx }: any) => {
           >
             {commentProps?.ReplyChild?.length}개의 답글
           </button>
+          {/* <Space /> */}
         </ReplyBtn>
       )}
 
@@ -220,7 +221,7 @@ const Comment = ({ commentProps, idx, replyOpenIdx, setReplyOpenIdx }: any) => {
             {user && <ReplyInputForm commentRef={commentRef} commentId={commentProps?.id}></ReplyInputForm>}
           </RelayWrapper>
           <RelayWrapper>
-            <Space />
+            {commentProps?.ReplyChild.length >= 1 && <Space />}
             {commentProps?.ReplyChild?.map((v: any, i: number) => (
               <Reply key={commentProps?.id + i} replyProps={v} />
             ))}
