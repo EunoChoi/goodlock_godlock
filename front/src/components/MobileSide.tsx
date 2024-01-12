@@ -229,15 +229,17 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                         <PhotoRoundedIcon />
                         Gallery
                       </button>
-                      <button
-                        onClick={() => {
-                          navigate("/main/4/cat/0");
-                          onClose();
-                        }}
-                      >
-                        <PersonRoundedIcon />
-                        Profile
-                      </button>
+                      {user?.level !== 0 && (
+                        <button
+                          onClick={() => {
+                            navigate("/main/4/cat/0");
+                            onClose();
+                          }}
+                        >
+                          <PersonRoundedIcon />
+                          Profile
+                        </button>
+                      )}
                     </div>
                     <div>
                       <button
