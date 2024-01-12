@@ -128,8 +128,8 @@ router.post("/login/social", async (req, res) => {
   try {
 
     const email = req.body.email;
-    // const nickname = `NEW${new Date().getTime()}`;
-    const nickname = email;
+    const nickname = `[social]${new Date().getTime()}`;
+    // const nickname = email;
     const password = process.env.SOCIAL_PW;
     const profilePic = req.body.profilePic;
 
@@ -141,7 +141,14 @@ router.post("/login/social", async (req, res) => {
     if (!isEmailExist) {
       //회원가입 
       console.log("가입되어있지 않음, 회원가입 진행 중...");
-      const newUser = await userController.register({ email, password, nickname, profilePic, level: 2 });
+      const newUser = await userController.register({
+        email,
+        password,
+        nickname,
+        profilePic,
+        level: 2,
+        usertext: "간편 로그인 완료, 닉네임을 새로 설정해주세요 :)",
+      });
       // console.log(newUser);
 
       if (newUser) {
@@ -183,6 +190,75 @@ router.post("/login/social", async (req, res) => {
         });
         console.log("회원가입 메일 발송");
 
+        //로그인
+        console.log("로그인 진행 중...");
+        const user = await userController.login({ email, password });
+        if (user.status === 200) {
+          res.cookie("accessToken", user.accessToken, {
+            secure: false,
+            httpOnly: true,
+          })
+          res.cookie("refreshToken", user.refreshToken, {
+            secure: false,
+            httpOnly: true,
+          })
+          res.status(200).json("로그인 성공, 토큰 발급 완료");
+        }
+        else {
+          res.status(user.status).json({ message: user.message });
+        }
+      }
+    }
+    //이메일이 존재한 경우 -> 로그인 시도
+    else {
+      console.log("간편가입 되어있음, 로그인 진행 중...");
+      const user = await userController.login({ email, password });
+      if (user.status === 200) {
+        res.cookie("accessToken", user.accessToken, {
+          secure: false,
+          httpOnly: true,
+        })
+        res.cookie("refreshToken", user.refreshToken, {
+          secure: false,
+          httpOnly: true,
+        })
+        res.status(200).json("로그인 성공, 토큰 발급 완료");
+      }
+      else {
+        return res.status(user.status).json({ message: "일반 계정으로 가입된 계정입니다." });
+      }
+    }
+    return res.status(401).json({ errr: "error" });
+
+  }
+  catch (error) {
+    console.error(error);
+  }
+})
+//게스트 로그인
+router.post("/login/guest", async (req, res) => {
+  try {
+
+    const email = 'guest';
+    const password = process.env.SOCIAL_PW;
+    const isEmailExist = await User.findOne({
+      where: { email: "guest" }
+    });
+
+    //가입되어있지 않은 경우 -> 회원가입
+    if (!isEmailExist) {
+      //회원가입 
+      console.log("게스트 유저 없음, 게스트 유저 생성 중...");
+      const newUser = await userController.register({
+        email,
+        password,
+        nickname: email,
+        usertext: "게시글 작성은 로그인이 필요합니다.",
+        level: 0
+      });
+
+      //생성 완료
+      if (newUser) {
         //로그인
         console.log("로그인 진행 중...");
         const user = await userController.login({ email, password });

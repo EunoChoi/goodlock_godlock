@@ -8,6 +8,12 @@ const userController = {
   register: async (data) => {
     let message;
     const { email, nickname, password, profilePic, level } = data;
+    let { usertext } = data;
+
+    if (!usertext) {
+      usertext = "-"
+    }
+
     const isEmailExist = await User.findOne({
       where: { email }
     });
@@ -41,7 +47,7 @@ const userController = {
       const newUser = await User.create(
         {
           level,
-          usertext: "상태메세지를 입력하세요.",
+          usertext,
           email,
           profilePic,
           nickname,
