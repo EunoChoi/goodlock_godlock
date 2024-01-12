@@ -193,7 +193,7 @@ const Images = styled.div`
     background-color: rgba(255, 255, 255, 0.7); */
   }
 
-  @media (orientation: portrait) and (max-width: 480px) {
+  @media (orientation: portrait) or (max-height: 480px) {
     width: 92vw;
   }
   @media (orientation: landscape) and (max-height: 480px) {
