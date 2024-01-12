@@ -1087,6 +1087,15 @@ router.patch("/:postId/comment/:commentId", tokenCheck, async (req, res) => {
 //post like, unlike
 router.patch("/:postId/like", tokenCheck, async (req, res) => {
   try {
+    const user = await User.findOne({
+      where: {
+        id: req.currentUserId
+      }
+    })
+    if (user && user.level === 0) {
+      return res.status(400).json("게스트 유저 입니다.");
+    }
+
     const postId = req.params.postId;
 
     const isMyPost = await Post.findOne(
@@ -1111,6 +1120,15 @@ router.patch("/:postId/like", tokenCheck, async (req, res) => {
 })
 router.delete("/:postId/like", tokenCheck, async (req, res) => {
   try {
+    const user = await User.findOne({
+      where: {
+        id: req.currentUserId
+      }
+    })
+    if (user && user.level === 0) {
+      return res.status(400).json("게스트 유저 입니다.");
+    }
+
     const postId = req.params.postId;
 
     const isMyPost = await Post.findOne(
