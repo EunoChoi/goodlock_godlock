@@ -6,6 +6,9 @@ const db = require("../models/index.js");
 const Image = db.Image;
 const Post = db.Post;
 
+const Op = db.Sequelize.Op;
+
+
 
 //images
 router.get("/", async (req, res) => {
@@ -18,10 +21,11 @@ router.get("/", async (req, res) => {
       ],
       include: [{
         model: Post,
-        attributes: ['type'],
-        where: {
-          type
-        }
+        attributes: ['type', 'UserId'],
+        where: [{
+          type,
+          UserId: { [Op.is]: !null },
+        }]
       }],
     });
     if (!Images) {
