@@ -81,6 +81,7 @@ const SingePostText = styled.div`
   color: rgba(0, 0, 0, 0.75);
   font-size: 44px;
   span {
+    text-transform: uppercase;
     color: rgba(0, 0, 0, 0.7);
     font-weight: 600;
   }
