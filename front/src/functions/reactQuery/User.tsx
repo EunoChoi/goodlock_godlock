@@ -132,6 +132,28 @@ const User = {
       }
     );
   },
+  guestLogIn: () => {
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
+
+    return useMutation(() => Axios.post("user/login/guest"), {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["user"]);
+        // setTimeout(() => {
+        // navigate("/main/0");
+        // window.location.reload();
+        // }, 500);
+
+        location.replace("/main/0");
+      },
+      onError: (err: CustomError) => {
+        console.log(err);
+        toast.error(err.response?.data?.message);
+        // navigate("/");
+        console.log("로그인 중 에러 발생");
+      }
+    });
+  },
   logout: () => {
     const queryClient = useQueryClient();
 

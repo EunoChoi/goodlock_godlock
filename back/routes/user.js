@@ -253,7 +253,7 @@ router.post("/login/guest", async (req, res) => {
         email,
         password,
         nickname: email,
-        usertext: "게시글 작성은 로그인이 필요합니다.",
+        usertext: "게스트 유저로 로그인 되었습니다.",
         level: 0
       });
 

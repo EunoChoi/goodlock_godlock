@@ -91,35 +91,37 @@ const Side = () => {
               <span id="usertext">{user?.usertext}</span>
             </div>
 
-            <Stack direction="row" divider={<Divider orientation="vertical" />} spacing={1} justifyContent="center">
-              <button
-                className="info_box"
-                onClick={() => {
-                  navigate("/main/4/cat/0");
-                }}
-              >
-                <span>{makeK(user?.Posts?.length)}</span>
-                <span>Posts</span>
-              </button>
-              <button
-                className="info_box"
-                onClick={() => {
-                  navigate("/main/4/cat/4");
-                }}
-              >
-                <span>{makeK(user?.Followings?.length)}</span>
-                <span>Followings</span>
-              </button>
-              <button
-                className="info_box"
-                onClick={() => {
-                  navigate("/main/4/cat/5");
-                }}
-              >
-                <span>{makeK(user?.Followers?.length)}</span>
-                <span>Followers</span>
-              </button>
-            </Stack>
+            {user?.level !== 0 && (
+              <Stack direction="row" divider={<Divider orientation="vertical" />} spacing={1} justifyContent="center">
+                <button
+                  className="info_box"
+                  onClick={() => {
+                    navigate("/main/4/cat/0");
+                  }}
+                >
+                  <span>{makeK(user?.Posts?.length)}</span>
+                  <span>Posts</span>
+                </button>
+                <button
+                  className="info_box"
+                  onClick={() => {
+                    navigate("/main/4/cat/4");
+                  }}
+                >
+                  <span>{makeK(user?.Followings?.length)}</span>
+                  <span>Followings</span>
+                </button>
+                <button
+                  className="info_box"
+                  onClick={() => {
+                    navigate("/main/4/cat/5");
+                  }}
+                >
+                  <span>{makeK(user?.Followers?.length)}</span>
+                  <span>Followers</span>
+                </button>
+              </Stack>
+            )}
           </SideBar.UserInfoWrapper>
           <SideBar.MenuWrapper currentPage={currentPage + 1}>
             <Stack divider={<Divider orientation="horizontal" />} spacing={2} justifyContent="center">
@@ -156,14 +158,16 @@ const Side = () => {
                   <PhotoRoundedIcon />
                   Gallery
                 </button>
-                <button
-                  onClick={() => {
-                    navigate("/main/4/cat/0");
-                  }}
-                >
-                  <PersonRoundedIcon />
-                  Profile
-                </button>
+                {user.level !== 0 && (
+                  <button
+                    onClick={() => {
+                      navigate("/main/4/cat/0");
+                    }}
+                  >
+                    <PersonRoundedIcon />
+                    Profile
+                  </button>
+                )}
               </div>
               <div>
                 <button

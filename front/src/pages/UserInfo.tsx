@@ -68,6 +68,9 @@ const UserInfo = () => {
     () => Axios.get("user/info", { params: { id } }).then((res) => res.data),
     {
       onSuccess: (res) => {
+        if (res.level === 0) {
+          history.back();
+        }
         if (res.id === user.id) {
           console.log("내 페이지");
           navigate("/main/4/cat/0");

@@ -826,16 +826,18 @@ router.post("/", tokenCheck, async (req, res) => {
     const { type } = req.body;
     const userId = req.currentUserId;
 
-    if (type === 0) {
-      const user = await User.findOne({
-        where: {
-          id: userId
-        }
-      })
-      if (user.level !== 10) {
-        return res.status(400).json("유저 레벨이 올바르지 않습니다.");
+    const user = await User.findOne({
+      where: {
+        id: userId
       }
+    })
+    if (user && user.level === 0) {
+      return res.status(400).json("게스트 유저 입니다.");
     }
+    if (user && type === 0 && user.level !== 10) {
+      return res.status(400).json("admin 유저가 아닙니다.");
+    }
+
     const post = await Post.create({
       type: req.body.type,
       content: req.body.content,
@@ -988,6 +990,16 @@ router.delete("/:postId", tokenCheck, async (req, res) => {
 router.post("/:postId/comment", tokenCheck, async (req, res) => {
   try {
     const postId = req.params.postId;
+
+    const user = await User.findOne({
+      where: {
+        id: req.currentUserId
+      }
+    })
+    if (user && user.level === 0) {
+      return res.status(400).json("게스트 유저 입니다.");
+    }
+
     const currentPost = await Post.findOne(
       { where: { id: postId } }
     );

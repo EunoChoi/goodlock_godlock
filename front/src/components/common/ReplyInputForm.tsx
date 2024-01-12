@@ -8,47 +8,54 @@ import Comment from "../../functions/reactQuery/Comment";
 //mui
 import SendIcon from "@mui/icons-material/Send";
 import Reply from "../../functions/reactQuery/Reply";
+import User from "../../functions/reactQuery/User";
 
 const ReplyInputForm = ({ commentId, commentRef }: { commentId: number; commentRef: RefObject<HTMLDivElement> }) => {
   const [content, setContent] = useState("");
 
   const addReply = Reply.add();
+  const user = User.get().data;
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (content.length > 60 || content.length < 5) toast.warning("답글은 최소 5자 최대 60자 입력이 가능합니다.");
-        else
-          addReply.mutate(
-            { commentId, content },
-            {
-              onSuccess: () => {
-                setContent("");
-              }
-            }
-          );
-      }}
-    >
-      <CommentInputArea>
-        <CommentInput
-          // onClick={() => {
-          //   setTimeout(() => {
-          //     commentRef.current?.scrollIntoView({ behavior: "smooth" });
-          //   }, 100);
-          // }}
-          placeholder="답글을 입력하세요."
-          value={content}
-          onChange={(e) => {
-            setContent(e.currentTarget.value);
+    <>
+      {user.level !== 0 && (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (content.length > 60 || content.length < 5)
+              toast.warning("답글은 최소 5자 최대 60자 입력이 가능합니다.");
+            else
+              addReply.mutate(
+                { commentId, content },
+                {
+                  onSuccess: () => {
+                    setContent("");
+                  }
+                }
+              );
           }}
-        ></CommentInput>
+        >
+          <CommentInputArea>
+            <CommentInput
+              // onClick={() => {
+              //   setTimeout(() => {
+              //     commentRef.current?.scrollIntoView({ behavior: "smooth" });
+              //   }, 100);
+              // }}
+              placeholder="답글을 입력하세요."
+              value={content}
+              onChange={(e) => {
+                setContent(e.currentTarget.value);
+              }}
+            ></CommentInput>
 
-        <CommentSendButton disabled={addReply.isLoading ? true : false}>
-          {addReply.isLoading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
-        </CommentSendButton>
-      </CommentInputArea>
-    </form>
+            <CommentSendButton disabled={addReply.isLoading ? true : false}>
+              {addReply.isLoading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
+            </CommentSendButton>
+          </CommentInputArea>
+        </form>
+      )}
+    </>
   );
 };
 

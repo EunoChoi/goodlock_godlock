@@ -152,14 +152,7 @@ const Profile = () => {
       });
     }
   };
-  const logoutConfirm = () => {
-    openLogoutConfirm({
-      mainText: "로그아웃 하시겠습니까?",
-      onSuccess: () => {
-        logout.mutate();
-      }
-    });
-  };
+
   const unFollowConfirm = (userId: number) => {
     openUnFollowConfirm({
       mainText: "언팔로우 하시겠습니까?",
@@ -241,6 +234,12 @@ const Profile = () => {
     if (imageChangeModal) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "auto";
   }, [imageChangeModal]);
+
+  useEffect(() => {
+    if (user.level === 0) {
+      history.back();
+    }
+  }, [user.level]);
 
   useEffect(() => {
     if (categoryNum >= 0 && categoryNum <= 6) {
@@ -1220,6 +1219,7 @@ const InfoAttribute = styled.div<{ height: number }>`
 
   #nickname {
     font-size: 36px;
+    line-height: 44px;
     font-weight: 600;
     /* text-transform: uppercase; */
     color: rgba(0, 0, 0, 0.7);

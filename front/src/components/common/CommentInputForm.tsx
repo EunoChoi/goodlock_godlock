@@ -7,42 +7,51 @@ import Comment from "../../functions/reactQuery/Comment";
 
 //mui
 import SendIcon from "@mui/icons-material/Send";
+import User from "../../functions/reactQuery/User";
 
 const CommentInputForm = ({ postId }: { postId: number }) => {
   const [content, setContent] = useState("");
+  const user = User.get().data;
 
   const addComment = Comment.add();
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (content.length > 60 || content.length < 5) toast.warning("댓글은 최소 5자 최대 60자 입력이 가능합니다.");
-        else
-          addComment.mutate(
-            { postId, content },
-            {
-              onSuccess: () => {
-                setContent("");
-              }
-            }
-          );
-      }}
-    >
-      <CommentInputArea>
-        <CommentInput
-          placeholder="댓글을 입력하세요."
-          value={content}
-          onChange={(e) => {
-            setContent(e.currentTarget.value);
+    <>
+      {user?.level !== 0 ? (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (content.length > 60 || content.length < 5)
+              toast.warning("댓글은 최소 5자 최대 60자 입력이 가능합니다.");
+            else
+              addComment.mutate(
+                { postId, content },
+                {
+                  onSuccess: () => {
+                    setContent("");
+                  }
+                }
+              );
           }}
-        ></CommentInput>
+        >
+          <CommentInputArea>
+            <CommentInput
+              placeholder="댓글을 입력하세요."
+              value={content}
+              onChange={(e) => {
+                setContent(e.currentTarget.value);
+              }}
+            ></CommentInput>
 
-        <CommentSendButton disabled={addComment.isLoading ? true : false}>
-          {addComment.isLoading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
-        </CommentSendButton>
-      </CommentInputArea>
-    </form>
+            <CommentSendButton disabled={addComment.isLoading ? true : false}>
+              {addComment.isLoading ? <CircularProgress size={24} color="inherit" /> : <SendIcon />}
+            </CommentSendButton>
+          </CommentInputArea>
+        </form>
+      ) : (
+        <span></span>
+      )}
+    </>
   );
 };
 

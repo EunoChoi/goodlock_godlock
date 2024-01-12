@@ -7,6 +7,8 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import IsMobile from "../../functions/IsMobile";
 import { useModalStack } from "../../store/modalStack";
 import { useBrowserCheck } from "../../store/borowserCheck";
+import PersonIcon from "@mui/icons-material/Person";
+import User from "../../functions/reactQuery/User";
 
 interface AppLayoutProps {
   setPopupOpen: (b: boolean) => void;
@@ -32,6 +34,8 @@ const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayou
 
   const [timer, setTimer] = useState<NodeJS.Timeout>();
 
+  const guestlogin = User.guestLogIn();
+
   const ButtonClose = () => {
     setAnimation("close");
     setTimer(
@@ -56,6 +60,13 @@ const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayou
     window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${REDIRECT_URI_NAVER}&state=${NAVER_STATE_CODE}`;
     // 권한 재동의 필요시
     // window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${REDIRECT_URI_NAVER}&state=${NAVER_STATE_CODE}&auth_type=reprompt`;
+  };
+
+  const guestLogin = () => {
+    guestlogin.mutate();
+    //geust login api request
+    //request success
+    //location.replace("/main/0");
   };
 
   useEffect(() => {
@@ -96,17 +107,33 @@ const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayou
           {children}
           <LogInSignUp.Bar />
           <SNSLoginWrapper>
-            <SNSLoginButton color="white" onClick={() => googleLogin()}>
-              <Logo src={`${process.env.PUBLIC_URL}/img/google.png`} alt="google" />
-            </SNSLoginButton>
+            <SNSButtonWrapper>
+              <SNSLoginButton color="white" onClick={() => googleLogin()}>
+                <Logo src={`${process.env.PUBLIC_URL}/img/google.png`} alt="google" />
+              </SNSLoginButton>
+              <span>google</span>
+            </SNSButtonWrapper>
 
-            <SNSLoginButton color="#FAE100" onClick={() => kakaoLogin()}>
-              <Logo src={`${process.env.PUBLIC_URL}/img/kakao.png`} alt="kakao" />
-            </SNSLoginButton>
+            <SNSButtonWrapper>
+              <SNSLoginButton color="#FAE100" onClick={() => kakaoLogin()}>
+                <Logo src={`${process.env.PUBLIC_URL}/img/kakao.png`} alt="kakao" />
+              </SNSLoginButton>
+              <span>kakao</span>
+            </SNSButtonWrapper>
 
-            <SNSLoginButton color="#02C73C" onClick={() => naverLogin()}>
-              <Logo src={`${process.env.PUBLIC_URL}/img/naver.png`} alt="naver" />
-            </SNSLoginButton>
+            <SNSButtonWrapper>
+              <SNSLoginButton color="#02C73C" onClick={() => naverLogin()}>
+                <Logo src={`${process.env.PUBLIC_URL}/img/naver.png`} alt="naver" />
+              </SNSLoginButton>
+              <span>naver</span>
+            </SNSButtonWrapper>
+
+            <SNSButtonWrapper>
+              <SNSLoginButton color="rgba(0,0,0,0.05)" onClick={() => guestLogin()}>
+                <PersonIcon id="guestIcon" />
+              </SNSLoginButton>
+              <span>guest</span>
+            </SNSButtonWrapper>
           </SNSLoginWrapper>
         </LogInSignUp.Box>
         {isMobile && (
@@ -120,6 +147,24 @@ const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayou
 };
 
 export default PopupBox;
+
+const SNSButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  #guestIcon {
+    color: rgba(0, 0, 0, 0.6);
+  }
+  > span {
+    font-weight: 500;
+    text-transform: capitalize;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.6);
+    margin-top: 4px;
+  }
+`;
 
 const SNSLoginWrapper = styled.div`
   width: 100%;
@@ -144,7 +189,7 @@ const SNSLoginButton = styled.button<{ color: string }>`
 
   background-color: ${(props) => props.color};
   color: black;
-  margin: 0 8px;
+  margin: 0 10px;
   /* box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1); */
 `;
 const Logo = styled.img`
