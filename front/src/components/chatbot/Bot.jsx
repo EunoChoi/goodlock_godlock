@@ -27,7 +27,7 @@ const Bot = () => {
   const steps = [
     {
       id: "1",
-      message: "안녕하세요. 굿락갓락입니다.",
+      message: `안녕하세요. ${user?.nickname}님`,
       trigger: "1-1"
     },
     {
