@@ -349,6 +349,7 @@ const LeftWrapper = styled.div`
 
   z-index: 4000;
   z-index: 1000;
+  z-index: 500;
 `;
 const RightWrapper = styled.div`
   margin-left: 280px;
