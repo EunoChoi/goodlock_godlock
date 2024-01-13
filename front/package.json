@@ -25,7 +25,6 @@
     "prettier": "^2.8.8",
     "react": "^18.2.0",
     "react-clipboard.js": "^2.0.16",
-    "react-confirm-alert": "^3.0.6",
     "react-datepicker": "^4.18.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.46.1",

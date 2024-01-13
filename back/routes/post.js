@@ -323,10 +323,10 @@ router.get("/month/top", tokenCheck, async (req, res) => {
         {
           model: Image, //게시글의 이미지
         },
-        // {
-        //   model: Comment, 
-        //   attributes: ['id']
-        // },
+        {
+          model: Comment,
+          attributes: ['id']
+        },
       ],
       order: [[sequelize.col("LikeCount"), "DESC"], [sequelize.literal('rand()')]]
     });
