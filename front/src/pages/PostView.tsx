@@ -77,13 +77,13 @@ const SingePostText = styled.div`
   padding-top: 64px;
   /* padding-left: calc((70vw - 500px) / 2); */
   padding-bottom: 32px;
-
   color: rgba(0, 0, 0, 0.75);
-  font-size: 44px;
+
   span {
+    font-size: 44px;
+    font-weight: 700;
     text-transform: uppercase;
     color: rgba(0, 0, 0, 0.7);
-    font-weight: 600;
   }
 
   @media (orientation: portrait) {
