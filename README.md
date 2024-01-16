@@ -32,7 +32,8 @@
 ### 🧰 기술 스택
 **Front-End**
 <div>
-<span style="text-transform: uppercase; background-color: #5ed2f3; color: white; font-size: 14px; padding: 4px 16px; border-radius: 12px;">react</span>
+	 <img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white" />
+	<span style="text-transform: uppercase; background-color: #5ed2f3; color: white; font-size: 14px; padding: 4px 16px; border-radius: 12px;">react</span>
 <span style="text-transform: uppercase; background-color: #2f73bf; color: white; font-size: 14px; padding: 4px 16px; border-radius: 12px;">typescript</span>
 <span style="text-transform: uppercase; background-color: #244bdd; color: white; font-size: 14px; padding: 4px 16px; border-radius: 12px;">css</span>
 <span style="text-transform: uppercase; background-color: #244bdd; color: white; font-size: 14px; padding: 4px 16px; border-radius: 12px;">mui</span>
