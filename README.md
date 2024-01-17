@@ -80,10 +80,9 @@
 ---
 ### 💡 주요 기능 미리보기
 
-![[signup.png]]
+<img width="898" alt="signup" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/8d55d5d2-fe8b-41b0-b3fe-8fc442c7fd4f">
 
-
-![[Pasted image 20240113154831.png]]
+<img width="898" alt="login" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/120fb694-2f56-492d-ba55-c055dcd62926">
 
 - **SignUp & LogIn**
 
@@ -95,7 +94,7 @@
 
  <br />
 
-![[home.png]]
+<img width="898" alt="home" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/58f3ce4e-c1ac-4734-9349-d074992d322a">
 
 - **Main Page(Home, Tip Board, Free Board)**
 
@@ -108,7 +107,7 @@
  <br />
  
 
-![[gallery 1.png]]
+<img width="898" alt="gallery" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/f824af38-ab4c-40bf-b06f-9ca20a80aa26">
 
 - **Gallery Page**
   
@@ -119,7 +118,7 @@
  <br />
  
 
-![[profile.png]]
+<img width="898" alt="profile" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/e23b636c-767e-465a-b9f5-6555a59d6fd8">
 
 - **Profile Page**
   
@@ -135,7 +134,7 @@
 <br />
 
 
-![[otherUserInfo.png]]
+<img width="898" alt="otherUserInfo" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/c650137a-2379-4009-878c-3a3bbda8bb61">
 
 - **Other User Info Page**
   
@@ -149,7 +148,7 @@
  <br />
  
 
-![[sidebar.png]]
+<img width="690" alt="sidebar" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/a9ebcc56-2b6b-478d-9767-7ada56026df6">
 
 - **Sidebar(Mobile)**
   
@@ -166,9 +165,11 @@
  <br />
  
 
-![[postAdd.png]]
-![[postCancel 1.png]]
-![[postAddImage.png]]
+<img width="898" alt="postAdd" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/a42ffc0b-fa1e-4e7d-b1ed-a6ab42b740ec">
+
+<img width="898" alt="postCancel" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/ac66728c-3065-4e1f-9f3b-11276944edf7">
+
+<img width="898" alt="postAddImage" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/a714f71b-7526-4c19-89dd-3b2e5acb93fd">
 
 - **Add Post**
   
@@ -183,7 +184,7 @@
 
 <br />
 
-![]
+<img width="898" alt="zoom" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/d4248730-b873-44ee-b23d-04e4d9dd4806">
 
 - **Post Zoom**
   
@@ -191,10 +192,11 @@
 	> 💡 포스트 줌 컴포넌트의 이미지를 클릭하면 크롭된 이미지를 확인 가능합니다. (css : objext-fit : contain -> cover)<br />
  	> 💡 다양한 환경 Ui 최적화 (데스크탑 이미지+텍스트, 데스크탑 텍스트, 모바일, 모바일(가로)<br />
   	> -> carousel 형태로 이미지가 보여집니다. 모바일 환경의 경우 텍스트 또한 carousel에 포함되어 나타납니다.<br /><br />
- 	> 🔧 이미지 줌, 아웃 기능 구현 예정...
-	
+ 	> 🔧 이미지 줌, 아웃 기능 구현 예정... <br />
 
-![[moretoggle.png]]
+ <br />
+
+<img width="1008" alt="moretoggle" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/375434d0-3385-46ca-af19-6e3dfb8a1d67">
 
 - **Post More Popup**
   
@@ -204,7 +206,7 @@
 <br />
 
 
-![[comment.png]]
+<img width="898" alt="comment" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/117389b7-25a6-4ba2-95be-038b3a8d3b6e">
 
  - **Comment List**
    
@@ -217,7 +219,7 @@
 <br />
 
 
-![[chatbot.png]]
+<img width="898" alt="chatbot" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/72f6b2b2-24a3-404e-b659-e4ba5178e47e">
 
 - **Simple Chatbot**
   
@@ -232,7 +234,7 @@
 <br />
 
 
-![[admin.png]]
+![admin](https://github.com/EunoChoi/goodlock_godlock/assets/64246481/c894460c-b7ad-4600-9de4-3f6471fce368)
 
 - **admin page**
   
