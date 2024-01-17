@@ -42,7 +42,7 @@
  
 <div>
 	
-![React](https://img.shields.io/badge/React.js-5ed2f3?style=flat&logo=React&logoColor=white)
+![React](https://img.shields.io/badge/React-5ed2f3?style=flat&logo=React&logoColor=white)
 ![typescript](https://img.shields.io/badge/TypeScript-2f73bf?style=flat&logo=typescript&logoColor=white)
 ![css3](https://img.shields.io/badge/CSS-244bdd?style=flat&logo=css3&logoColor=white)
 ![mui](https://img.shields.io/badge/MUI-244bdd?style=flat&logo=mui&logoColor=white)
