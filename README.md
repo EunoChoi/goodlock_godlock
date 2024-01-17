@@ -42,37 +42,37 @@
  
 <div>
 	
-![react](https://img.shields.io/badge/React-5ed2f3?style=flat&logo=React&logoColor=white)
-![react](https://img.shields.io/badge/typescript-2f73bf?style=flat&logo=typescript&logoColor=white)
-![react](https://img.shields.io/badge/css-244bdd?style=flat&logo=React&logoColor=white)
-![react](https://img.shields.io/badge/mui-244bdd?style=flat&logo=React&logoColor=white)
+![React](https://img.shields.io/badge/React.js-5ed2f3?style=flat&logo=React&logoColor=white)
+![typescript](https://img.shields.io/badge/TypeScript-2f73bf?style=flat&logo=typescript&logoColor=white)
+![css3](https://img.shields.io/badge/CSS-244bdd?style=flat&logo=css3&logoColor=white)
+![mui](https://img.shields.io/badge/MUI-244bdd?style=flat&logo=mui&logoColor=white)
 
 </div>
 
 **Back-End**
 <div>
 
-![react](https://img.shields.io/badge/node-ebd81b?style=flat&logo=React&logoColor=white)
-![react](https://img.shields.io/badge/express-7ab800?style=flat&logo=typescript&logoColor=white)
-![react](https://img.shields.io/badge/mysql-01718b?style=flat&logo=React&logoColor=white)
-![react](https://img.shields.io/badge/sequelize-0ca9e7?style=flat&logo=React&logoColor=white)
+![nodedotjs](https://img.shields.io/badge/Node.js-ebd81b?style=flat&logo=nodedotjs&logoColor=white)
+![express](https://img.shields.io/badge/Express.js-7ab800?style=flat&logo=express&logoColor=white)
+![mysql](https://img.shields.io/badge/MySQL-01718b?style=flat&logo=mysql&logoColor=white)
+![sequelize](https://img.shields.io/badge/Sequelize-0ca9e7?style=flat&logo=sequelize&logoColor=white)
 
 </div>
 
 **State Management**
 <div>
 
-![react](https://img.shields.io/badge/reactQuery-f73e51?style=flat&logo=React&logoColor=white)
-![react](https://img.shields.io/badge/zustand-453837?style=flat&logo=typescript&logoColor=white)
+![reactquery](https://img.shields.io/badge/ReactQuery-f73e51?style=flat&logo=reactquery&logoColor=white)
+![zustand](https://img.shields.io/badge/Zustand-453837?style=flat&logo=&logoColor=white)
 
 </div>
 
 **Server**
 <div>
 
-![react](https://img.shields.io/badge/ec2-ed8233?style=flat&logo=typescript&logoColor=white)
-![react](https://img.shields.io/badge/s3-da5141?style=flat&logo=React&logoColor=white)
-![react](https://img.shields.io/badge/lambda-d26214?style=flat&logo=React&logoColor=white)
+![amazonec2](https://img.shields.io/badge/ec2-ed8233?style=flat&logo=amazonec2&logoColor=white)
+![amazons3](https://img.shields.io/badge/s3-da5141?style=flat&logo=amazons3&logoColor=white)
+![awslambda](https://img.shields.io/badge/lambda-d26214?style=flat&logo=awslambda&logoColor=white)
 
 </div>
 
@@ -187,16 +187,19 @@
 
 - **Post Zoom**
   
-	> 포스트 클릭시 확대된 화면으로 볼 수 있습니다. <br />
-	> 클릭시 contain -> cover로 변경 <br />
-	> 데스크탑 이미지+텍스트, 데스크탑 텍스트, 모바일 세로, 모바일 가로<br />
-	> 모두 다름 <br />
+	> 포스트 카드는 텍스트를 제한된 길이의 텍스트만 보여줍니다. 포스트 카드의 텍스트나 이미지를 클릭하면 모든 텍스트와 확대된 이미지가 보여줍니다. <br /><br />
+	> 💡 포스트 줌 컴포넌트의 이미지를 클릭하면 크롭된 이미지를 확인 가능합니다. (css : objext-fit : contain -> cover)<br />
+ 	> 💡 다양한 환경 Ui 최적화 (데스크탑 이미지+텍스트, 데스크탑 텍스트, 모바일, 모바일(가로)<br />
+  	> -> carousel 형태로 이미지가 보여집니다. 모바일 환경의 경우 텍스트 또한 carousel에 포함되어 나타납니다.<br /><br />
+ 	> 🔧 이미지 줌, 아웃 기능 구현 예정...
+	
 
 ![[moretoggle.png]]
 
 - **Post More Popup**
   
-	> 자신의 포스트의 경우 more 버튼이 나타납니다. more 버튼 클릭 시 수정, 삭제 버튼을 품은 팝업이 나타나면 일정 시간 이후 팝업이 자동으로 닫힙니다.
+	> 자신의 포스트의 경우 more 버튼이 나타납니다. <br />
+ 	> more 버튼 클릭 시 수정, 삭제 버튼을 품은 팝업창이 나타나며 일정 시간 이후 자동으로 닫힙니다.
 
 <br />
 
@@ -207,8 +210,8 @@
    
 	> 포스트의 댓글 아이콘을 클릭해서 댓글 목록을 열 수 있습니다. 댓글들은 포스트와 다르게 오름차순으로 정렬되어 나타납니다. (최근 댓글이 아래로) <br />
 	> 배경 블러 및 화살표를 클릭, 뒤로가기 제스처로 댓글 목록을 닫을 수 있습니다. <br /><br />
-	> 💡 로그인 상태에선 댓글 입력창이 나타나 댓글 입력이 가능합니다.
-	> 💡 로그인 상태에선 댓글 클릭 시 답글 입력창이 나타나 답글 입력이 가능합니다.
+	> 💡 로그인 상태에선 댓글 입력창이 나타나 댓글 입력이 가능합니다. <br />
+	> 💡 로그인 상태에선 댓글 클릭 시 답글 입력창이 나타나 답글 입력이 가능합니다. <br />
 
 
 <br />
