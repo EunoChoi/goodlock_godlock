@@ -186,7 +186,11 @@
 
 <br />
 
-<img width="898" alt="zoom" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/d4248730-b873-44ee-b23d-04e4d9dd4806">
+<img width="657" alt="zoom(pc)" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/a65923a0-91ae-40fe-a1f4-285623b0888c">
+
+<img width="657" alt="zoom(mobileland)" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/c3b053de-7d02-42ea-8250-19f0eac63db1">
+
+<img width="644" alt="zoom(mobileport)" src="https://github.com/EunoChoi/goodlock_godlock/assets/64246481/e9ae4cf8-ba10-45be-b190-543bbe0cdaba">
 
 - **Post Zoom**
   
