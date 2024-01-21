@@ -27,7 +27,7 @@
 - **개발 회고 (velog)**
 
 	<div>
-		<a>🔗 https://</a> <br />
+		<a src="https://velog.io/@eunocode/%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98">🔗 https://velog.io/@eunocode/%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98</a> <br />
 		<a>🔗 https://</a> <br />
 		<a>🔗 https://</a> <br />
 		<a>🔗 https://</a> <br />
