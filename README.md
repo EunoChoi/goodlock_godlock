@@ -28,13 +28,7 @@
 
 	<div>
 		🔗 https://velog.io/@eunocode/%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98
-			
-		<a>🔗 https://</a> <br />
-		<a>🔗 https://</a> <br />
-		<a>🔗 https://</a> <br />
-		<a>🔗 https://</a> <br />
-		<a>🔗 https://</a> <br />
-		<a>🔗 https://</a> <br />
+
 	</div>
 
 
