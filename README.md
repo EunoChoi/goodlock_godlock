@@ -27,8 +27,8 @@
 - **개발 회고 (velog)**
 
 	<div>
-		🔗 https://velog.io/@eunocode/%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98 <br />
-		🔗 https://velog.io/@eunocode/굿락갓락이미지순서문제해결
+		🔗 https://velog.io/@eunocode/굿락갓락-이미지-onError-무한루프-해결 <br />
+		🔗 https://velog.io/@eunocode/굿락갓락이미지순서문제해결 <br />
 	</div>
 
 
