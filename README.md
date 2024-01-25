@@ -29,6 +29,7 @@
 	<div>
 		🔗 https://velog.io/@eunocode/굿락갓락-이미지-onError-무한루프-해결 <br />
 		🔗 https://velog.io/@eunocode/굿락갓락이미지순서문제해결 <br />
+		🔗 https://velog.io/@eunocode/굿락갓락-애니메이션 <br />
 	</div>
 
 
