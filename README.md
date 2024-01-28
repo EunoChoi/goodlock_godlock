@@ -31,6 +31,7 @@
 		🔗 https://velog.io/@eunocode/굿락갓락이미지순서문제해결 <br />
 		🔗 https://velog.io/@eunocode/굿락갓락-애니메이션 <br />
 		🔗 https://velog.io/@eunocode/굿락갓락-뒤로가기언마운트 <br />
+		🔗 https://velog.io/@eunocode/굿락갓락-애니메이션 <br />
 	</div>
 
 
