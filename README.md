@@ -33,7 +33,6 @@
 		🔗 https://velog.io/@eunocode/굿락갓락-포스트-작성-나가기-방지-처리 <br />
 		🔗 https://velog.io/@eunocode/굿락갓락-JWT-로그인-처리 <br />
 		🔗 https://velog.io/@eunocode/굿락갓락-소셜-로그인-처리 <br />
-		
 		🔗 https://velog.io/@eunocode/굿락갓락-애니메이션-구현-1<br />
 		🔗 https://velog.io/@eunocode/굿락갓락-애니메이션-2-뒤로가기,언마운트-조합 <br />
 		🔗 https://velog.io/@eunocode/굿락갓락-애니메이션-3-사파리-환경-최적화 <br />
