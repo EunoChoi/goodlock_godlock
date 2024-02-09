@@ -89,18 +89,13 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         <MobileWrapper>
           {mobileSideOpen && <MobileSide setMobileSideOpen={setMobileSideOpen} />}
 
-          {mobileButtonVisible && (
-            <BotWrapper>
-              <Bot />
-            </BotWrapper>
-          )}
-
-          <ButtonWrapper isPostInputOpen={isPostInputOpen}>
+          <ButtonWrapper>
             {goTopButton && (
               <button id="mobileTop" color="inherit" onClick={() => scrollTop()}>
                 <ArrowUpwardIcon fontSize="medium" />
               </button>
             )}
+
             {
               //user level이 10이상이여야 공지사항 작성이 가능
               mobileButtonVisible && isAdminPostOk && (
@@ -113,6 +108,11 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               <button id="mobileAddPost" color="inherit" onClick={() => InputEditOpen()}>
                 <PostAddIcon fontSize="medium" />
               </button>
+            )}
+            {mobileButtonVisible && (
+              <BotWrapper>
+                <Bot />
+              </BotWrapper>
             )}
             {isMobile && (
               <button
@@ -132,9 +132,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         </MobileWrapper>
       ) : (
         <PcWrapper>
-          <BotWrapper>
-            <Bot />
-          </BotWrapper>
           <ButtonWrapper isPostInputOpen={isPostInputOpen}>
             {goTopButton && (
               <button color="inherit" onClick={() => scrollTop()}>
@@ -154,17 +151,9 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                 <PostAddIcon fontSize="medium" />
               </button>
             )}
-            {isMobile && (
-              <button
-                id="menuButton"
-                color="inherit"
-                onClick={() => {
-                  sideOpen();
-                }}
-              >
-                <MenuIcon fontSize="medium" />
-              </button>
-            )}
+            <BotWrapper>
+              <Bot />
+            </BotWrapper>
           </ButtonWrapper>
           <LeftWrapper>
             <PCSide />
@@ -185,19 +174,18 @@ const BotWrapper = styled.div`
     display: none !important;
   }
   .rsc-float-button {
+    position: static;
+
     animation: ${Animation.smoothAppear} 0.3s ease-in-out;
 
     width: 48px;
     height: 48px;
+    margin-top: 6px;
 
     background-color: #f3e0f1 !important;
 
     transition: 0.3s ease-in-out all;
 
-    @media (orientation: portrait) {
-      right: 18px;
-      bottom: calc(24px + 48px + 6px);
-    }
     @media (hover: hover) and (pointer: fine) {
       &:hover {
         background-color: #c7d7ff !important;
@@ -230,7 +218,7 @@ const BotWrapper = styled.div`
   }
 `;
 
-const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
+const ButtonWrapper = styled.div<{ isPostInputOpen?: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -238,20 +226,17 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
 
   z-index: 999;
   position: fixed;
-  bottom: calc(32px + 48px + 12px);
+  bottom: calc(32px);
   right: 32px;
+
   @media (orientation: portrait) {
     right: 18px;
     bottom: calc(24px);
   }
-  @media (orientation: landscape) and (max-height: 480px) {
-    bottom: calc(36px);
-  }
+
   #mobileTop {
-    /* margin-bottom: calc(48px + 6px); */
   }
   #mobileAddPost {
-    margin-bottom: calc(48px + 6px);
   }
   #menuButton {
     @media (orientation: landscape) and (max-height: 480px) {
@@ -271,7 +256,7 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
     height: 48px;
 
     padding: 0px;
-    margin-top: 12px;
+    margin-top: 6px;
     border-radius: 100px;
 
     @media (orientation: portrait) and (max-width: 480px) {
@@ -285,24 +270,6 @@ const ButtonWrapper = styled.div<{ isPostInputOpen: boolean }>`
     /* background-color: #d5dbf0; */
     background-color: #f3e0f1;
     /* background-color: #dfbadc; */
-  }
-  > button:nth-child(1) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    display: ${(props) => props.isPostInputOpen && "none"};
-  }
-  > button:nth-child(2) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    display: ${(props) => props.isPostInputOpen && "none"};
-  }
-  > button:nth-child(3) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    display: ${(props) => props.isPostInputOpen && "none"};
   }
 `;
 const Children = styled.div`
