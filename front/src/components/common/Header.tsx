@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
+import User from "../../functions/reactQuery/User";
+
 //mui
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import LightbulbRoundedIcon from "@mui/icons-material/LightbulbRounded";
@@ -13,6 +15,7 @@ import ExtensionIcon from "@mui/icons-material/Extension";
 import ForumIcon from "@mui/icons-material/Forum";
 
 const Header = () => {
+  const user = User.get().data;
   const { type } = useParams();
   let currentPage = type ? parseInt(type) : -1;
   if (window.location.pathname.split("/")[1] === "profile") currentPage = 4;
@@ -63,11 +66,13 @@ const Header = () => {
             <PhotoRoundedIcon></PhotoRoundedIcon>Gallery
           </LinkCenter>
         </span>
-        <span>
-          <LinkCenter to="/main/4/cat/0">
-            <PersonRoundedIcon></PersonRoundedIcon>Profile
-          </LinkCenter>
-        </span>
+        {user.level !== 0 && (
+          <span>
+            <LinkCenter to="/main/4/cat/0">
+              <PersonRoundedIcon></PersonRoundedIcon>Profile
+            </LinkCenter>
+          </span>
+        )}
       </HeaderMobileLand>
     </MobileHeaderWrapper>
   );
@@ -79,6 +84,7 @@ const LinkCenter = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: 600;
   * {
     margin-right: 8px;
   }

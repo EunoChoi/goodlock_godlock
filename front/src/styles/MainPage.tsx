@@ -354,7 +354,7 @@ const TextWrapper_Bold_Color = styled.span`
 const TextWrapper_Normal = styled.span`
   font-size: 18px;
   font-size: 16px;
-  line-height: 28px;
+  line-height: 24px;
   font-weight: 500;
 
   display: flex;

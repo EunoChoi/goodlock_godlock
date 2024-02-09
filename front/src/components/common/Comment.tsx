@@ -211,7 +211,6 @@ const Comment = ({ commentProps, idx, replyOpenIdx, setReplyOpenIdx }: any) => {
           >
             {commentProps?.ReplyChild?.length}개의 답글
           </button>
-          {/* <Space /> */}
         </ReplyBtn>
       )}
 
@@ -337,9 +336,11 @@ const CommentText = styled.span`
   justify-content: start;
   padding: 10px 0;
   font-size: 18px;
+  font-size: 16px;
   /* padding-bottom: 0px; */
 `;
 const CommentTime = styled.span`
   font-size: 1.1em;
+  font-size: 16px;
   color: rgba(0, 0, 0, 0.6);
 `;

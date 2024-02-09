@@ -544,7 +544,8 @@ const ToggleButton = styled.button`
     margin-left: 4px;
     margin-right: 12px;
     font-size: 1.3em;
-    /* font-weight: 600; */
+    font-size: 16px;
+    font-weight: 500;
     /* color: grey; */
   }
 `;

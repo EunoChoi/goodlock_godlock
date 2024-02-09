@@ -217,20 +217,22 @@ const MenuWrapper = styled.div<{ currentPage: number | undefined; animation?: st
 
   #buttons {
     button {
+      /* width: 100%; */
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
 
       margin: 8px 0;
       * {
-        margin-right: 8px;
+        margin-right: 20px;
       }
 
       font-weight: 600;
-      font-size: 18px;
-      color: rgba(0, 0, 0, 0.7);
+      font-size: 17px;
+      /* font-size: 16px; */
+      color: rgba(0, 0, 0, 0.65);
 
-      padding: 0 10px;
+      padding: 0 20px;
       opacity: 1;
       opacity: ${(props) => props.animation === "" && "0"};
       opacity: ${(props) => props.animation === "open" && "1"};
@@ -257,7 +259,7 @@ const MenuWrapper = styled.div<{ currentPage: number | undefined; animation?: st
       color: #d5a8d0;
     }
     #logout {
-      padding: 0 10px;
+      padding: 0 20px;
       transition-delay: 700ms;
       color: rgba(0, 0, 0, 0.7);
     }

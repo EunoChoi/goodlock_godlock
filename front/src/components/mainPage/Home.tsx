@@ -179,7 +179,7 @@ const Home = () => {
         <MainPageStyle.TextWrapper_Bold>
           반갑습니다. {user?.nickname?.slice(0, 8)}님 <EmojiPeopleIcon style={{ fontSize: "36px" }}></EmojiPeopleIcon>
         </MainPageStyle.TextWrapper_Bold>
-        <MainPageStyle.Space height={8}></MainPageStyle.Space>
+        <MainPageStyle.Space height={24}></MainPageStyle.Space>
         <MainPageStyle.TextWrapper_Normal>굿락갓락은 갤럭시 팁 공유 커뮤니티입니다.</MainPageStyle.TextWrapper_Normal>
         <MainPageStyle.TextWrapper_Normal>갤럭시&굿락 팁을 자유롭게 나눠보세요. :)</MainPageStyle.TextWrapper_Normal>
 
