@@ -186,28 +186,33 @@ const UserInfo = () => {
             Posts {targetUser?.Posts?.length} • Followings {targetUser?.Followings?.length} • Followers{" "}
             {targetUser?.Followers?.length}
           </span>
-          {isFollowed ? (
-            <FollowButton
-              onClick={() => {
-                openUnFollowConfirm({
-                  mainText: "언팔로우 하시겠습니까?",
-                  onSuccess: () => unFollow.mutate({ userId: targetUser?.id })
-                });
-              }}
-            >
-              unfollow
-            </FollowButton>
-          ) : (
-            <FollowButton
-              onClick={() => {
-                openFollowConfirm({
-                  mainText: "팔로우 하시겠습니까?",
-                  onSuccess: () => follow.mutate({ userId: targetUser?.id })
-                });
-              }}
-            >
-              follow
-            </FollowButton>
+
+          {user.level !== 0 && (
+            <>
+              {isFollowed ? (
+                <FollowButton
+                  onClick={() => {
+                    openUnFollowConfirm({
+                      mainText: "언팔로우 하시겠습니까?",
+                      onSuccess: () => unFollow.mutate({ userId: targetUser?.id })
+                    });
+                  }}
+                >
+                  unfollow
+                </FollowButton>
+              ) : (
+                <FollowButton
+                  onClick={() => {
+                    openFollowConfirm({
+                      mainText: "팔로우 하시겠습니까?",
+                      onSuccess: () => follow.mutate({ userId: targetUser?.id })
+                    });
+                  }}
+                >
+                  follow
+                </FollowButton>
+              )}
+            </>
           )}
         </UserInfoWrapper>
 
@@ -683,26 +688,26 @@ const UserInfoWrapper = styled.div`
   #nickname {
     /* text-transform: uppercase; */
 
-    font-size: 44px;
+    font-size: 40px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.7);
     margin: 12px 0;
   }
   #email {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.4);
     margin: 4px 0;
   }
   #usertext {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.6);
     margin-top: 4px;
     margin-bottom: 24px;
   }
   #userstate {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.65);
     margin-bottom: 48px;
@@ -711,7 +716,7 @@ const UserInfoWrapper = styled.div`
     width: 92vw;
     margin-top: 36px;
     #userstate {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
       color: rgba(0, 0, 0, 0.65);
       margin-bottom: 40px;
@@ -732,8 +737,9 @@ const FollowButton = styled.button`
   text-transform: uppercase;
 
   font-size: 14px;
+  font-weight: 600;
   height: 36px;
-  width: 108px;
+  width: 96px;
   border: 3px rgba(0, 0, 0, 0.6) solid;
   border-radius: 6px;
 

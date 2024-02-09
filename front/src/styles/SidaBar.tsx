@@ -110,7 +110,7 @@ const UserInfoWrapper = styled.div<{ animation?: string }>`
   opacity: 1;
   opacity: ${(props) => props.animation === "" && "0"};
   opacity: ${(props) => props.animation === "open" && "1"};
-  transition: 600ms ease-in-out all;
+  transition: 1000ms ease-in-out all;
 
   width: 100%;
   height: 40%;

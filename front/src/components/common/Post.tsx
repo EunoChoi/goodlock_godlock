@@ -512,6 +512,7 @@ const TextWrapper = styled.div`
 
   line-height: 1.3em;
   font-size: 18px;
+  font-size: 16px;
 
   margin: 28px 20px;
 
@@ -522,6 +523,7 @@ const TextWrapper = styled.div`
 
   @media (orientation: portrait) or (max-height: 480px) {
     font-size: 1.1em;
+    font-size: 16px;
   }
 `;
 

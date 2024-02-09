@@ -10,13 +10,11 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import moment from "moment";
 import "moment/locale/ko";
-import Img from "../common/Img";
-
-import useAlert from "../common/Alert";
 
 //components
-import Post from "../common/Post";
 import ProfileChangePopup from "../common/ProfileChangePopup";
+import Img from "../common/Img";
+import useAlert from "../common/Alert";
 
 //style
 import Animation from "../../styles/Animation";
@@ -36,7 +34,6 @@ import User from "../../functions/reactQuery/User";
 import UserDeleteConfirm from "../UserDeleteConfirm";
 import PasswordChangeConfirm from "../PasswordChangeConfirm";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useModalStack } from "../../store/modalStack";
 import IsMobile from "../../functions/IsMobile";
 
 interface userProps {
@@ -317,7 +314,7 @@ const Profile = () => {
             </InfoValue>
           )}
           {nicknameInputToggle && (
-            <InputWrapper fontsize={20}>
+            <InputWrapper fontsize={16}>
               <div>
                 <input
                   placeholder="닉네임 입력..."
@@ -363,7 +360,7 @@ const Profile = () => {
             </InfoValue>
           )}
           {usertextInputToggle && (
-            <InputWrapper fontsize={20}>
+            <InputWrapper fontsize={16}>
               <div>
                 <input
                   placeholder="상태 메세지 입력..."
@@ -926,7 +923,7 @@ const ProfileTitle = styled.div`
     white-space: nowrap;
     color: rgba(0, 0, 0, 0.4);
     @media (orientation: portrait) {
-      font-size: 16px;
+      font-size: 14px;
     }
   }
 
@@ -1084,7 +1081,8 @@ const EmptyNoti = styled.div`
   /* font-weight: 600; */
   span {
     margin-top: 20px;
-    font-size: 24px;
+    font-size: 18px;
+    font-weight: 600;
   }
 `;
 const EmptyUserNoti = styled.div`
@@ -1131,7 +1129,7 @@ const ButtonWrapper = styled.div`
     text-transform: uppercase;
     font-size: 14px;
     height: 36px;
-    width: 108px;
+    width: 96px;
     border: 2px solid rgba(0, 0, 0, 0.5);
     border-radius: 6px;
     margin-bottom: 12px;
@@ -1139,7 +1137,7 @@ const ButtonWrapper = styled.div`
     transition: all 0.3s;
     margin-right: 6px;
     span {
-      font-weight: 500;
+      font-weight: 600;
     }
   }
 `;
@@ -1217,27 +1215,6 @@ const InfoAttribute = styled.div<{ height: number }>`
   align-items: start;
   height: ${(props) => props.height + "px"};
 
-  #nickname {
-    font-size: 36px;
-    line-height: 44px;
-    font-weight: 600;
-    /* text-transform: uppercase; */
-    color: rgba(0, 0, 0, 0.7);
-  }
-  #email {
-    font-size: 20px;
-    line-height: 24px;
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.4);
-  }
-  #usertext {
-    width: 100%;
-    overflow: scroll;
-    font-size: 22px;
-    line-height: 26px;
-    font-weight: 500;
-    color: rgba(0, 0, 0, 0.6);
-  }
   button {
     color: #a9a7d4;
   }
@@ -1300,6 +1277,27 @@ const InfoValue = styled.div`
     &::-webkit-scrollbar {
       display: none; /* Chrome, Safari, Opera*/
     }
+  }
+  #nickname {
+    font-size: 32px;
+    line-height: 44px;
+    font-weight: 600;
+    /* text-transform: uppercase; */
+    color: rgba(0, 0, 0, 0.7);
+  }
+  #email {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.4);
+  }
+  #usertext {
+    width: 100%;
+    overflow: scroll;
+    font-size: 18px;
+    line-height: 26px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.6);
   }
 `;
 
