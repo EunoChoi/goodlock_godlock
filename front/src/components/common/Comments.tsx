@@ -138,7 +138,7 @@ const CommentWrapper = styled.div<{ animation?: "open" | "close" }>`
     justify-content: center;
     align-items: center;
 
-    font-size: 20px;
+    font-size: 16px;
     color: rgba(0, 0, 0, 0.6);
     font-weight: 500;
     height: 100%;

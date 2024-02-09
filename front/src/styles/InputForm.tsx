@@ -73,7 +73,7 @@ const TextArea = styled.textarea`
   background-color: #fff;
   /* border-radius: 7px 7px 0px 0px; */
 
-  font-size: 1.1em;
+  font-size: 18px;
 
   border: none;
   &:focus {

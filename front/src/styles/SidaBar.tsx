@@ -163,6 +163,8 @@ const UserInfoWrapper = styled.div<{ animation?: string }>`
     color: rgba(0, 0, 0, 0.35);
   }
   #usertext {
+    text-align: center;
+
     font-size: 16px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.5);
@@ -171,9 +173,6 @@ const UserInfoWrapper = styled.div<{ animation?: string }>`
     white-space: nowrap;
     overflow-x: scroll;
     /* text-overflow: ellipsis; */
-
-    text-align: center;
-    text-align: start;
   }
   .info_box {
     width: 33%;
