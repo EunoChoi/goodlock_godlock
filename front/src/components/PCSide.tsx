@@ -125,6 +125,7 @@ const Side = () => {
           </SideBar.UserInfoWrapper>
           <SideBar.MenuWrapper currentPage={currentPage + 1}>
             <Stack divider={<Divider orientation="horizontal" />} spacing={2} justifyContent="center">
+              <div></div>
               <div id="buttons">
                 <button
                   onClick={() => {
@@ -169,7 +170,7 @@ const Side = () => {
                   </button>
                 )}
               </div>
-              <div>
+              <div id="buttons">
                 <button
                   id="logout"
                   onClick={() => {

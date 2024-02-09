@@ -245,9 +245,7 @@ router.post("/login/guest", async (req, res) => {
       where: { email: "guest" }
     });
 
-    //가입되어있지 않은 경우 -> 회원가입
     if (!isEmailExist) {
-      //회원가입 
       console.log("게스트 유저 없음, 게스트 유저 생성 중...");
       const newUser = await userController.register({
         email,

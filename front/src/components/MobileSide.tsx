@@ -119,7 +119,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
             </SideBar.HeaderWrapper>
             {user && (
               <>
-                <SideBar.UserInfoWrapper>
+                <SideBar.UserInfoWrapper animation={sideBarAnimation}>
                   <div
                     onClick={() => {
                       navigate("/main/4/cat/0");
@@ -190,8 +190,9 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                     </Stack>
                   )}
                 </SideBar.UserInfoWrapper>
-                <SideBar.MenuWrapper currentPage={currentPage + 1}>
+                <SideBar.MenuWrapper currentPage={currentPage + 1} animation={sideBarAnimation}>
                   <Stack divider={<Divider orientation="horizontal" />} spacing={2} justifyContent="center">
+                    <div></div>
                     <div id="buttons">
                       <button
                         onClick={() => {
@@ -241,7 +242,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                         </button>
                       )}
                     </div>
-                    <div>
+                    <div id="buttons">
                       <button
                         id="logout"
                         onClick={() => {

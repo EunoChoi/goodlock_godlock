@@ -70,8 +70,8 @@ const LogInWrapper = styled.div`
 `;
 
 const ProfilePic = styled(Img)`
-  width: 108px;
-  height: 108px;
+  width: 96px;
+  height: 96px;
 
   border-radius: 100%;
   border: 2px solid rgba(0, 0, 0, 0.1);
@@ -106,12 +106,16 @@ const HeaderWrapper = styled.div`
     }
   }
 `;
-const UserInfoWrapper = styled.div`
-  width: 100%;
-  height: 45%;
-  /* border: 1px solid white; */
+const UserInfoWrapper = styled.div<{ animation?: string }>`
+  opacity: 1;
+  opacity: ${(props) => props.animation === "" && "0"};
+  opacity: ${(props) => props.animation === "open" && "1"};
+  transition: 600ms ease-in-out all;
 
-  padding: 0 20px;
+  width: 100%;
+  height: 40%;
+
+  padding: 0 30px;
 
   display: flex;
   flex-direction: column;
@@ -121,6 +125,7 @@ const UserInfoWrapper = styled.div`
   #info_text_box {
     margin: 16px 0;
     display: flex;
+    width: 100%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -132,7 +137,7 @@ const UserInfoWrapper = styled.div`
   }
 
   #nickname {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 600;
 
     max-width: 100%;
@@ -158,11 +163,17 @@ const UserInfoWrapper = styled.div`
     color: rgba(0, 0, 0, 0.35);
   }
   #usertext {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.5);
 
+    width: 100%;
+    white-space: nowrap;
+    overflow-x: scroll;
+    /* text-overflow: ellipsis; */
+
     text-align: center;
+    text-align: start;
   }
   .info_box {
     width: 33%;
@@ -172,46 +183,28 @@ const UserInfoWrapper = styled.div`
     align-items: center;
     span:first-child {
       font-weight: 600;
-      font-size: 18px;
+      font-size: 16px;
 
       color: rgba(0, 0, 0, 0.7);
     }
     span:nth-child(2) {
       font-weight: 500;
-      font-size: 13px;
+      font-size: 12px;
 
       color: rgba(0, 0, 0, 0.5);
     }
   }
 `;
-const MenuWrapper = styled.div<{ currentPage: number | undefined }>`
+const MenuWrapper = styled.div<{ currentPage: number | undefined; animation?: string }>`
   width: 100%;
-  height: 45%;
-  /* border: 1px solid white; */
+  height: 50%;
 
-  padding: 0 40px;
+  padding: 0 30px;
+  padding-top: 16px;
 
   display: flex;
   justify-content: center;
-  align-items: center;
-
-  #buttons {
-    button {
-      transition: 0.2s ease-in-out all;
-    }
-    button:hover {
-      scale: 1.1;
-    }
-    button:nth-child(${(props) => props.currentPage}) {
-      color: #d5a8d0;
-    }
-  }
-  #logout {
-    transition: 0.2s ease-in-out all;
-  }
-  #logout:hover {
-    scale: 1.1;
-  }
+  align-items: start;
 
   div {
     width: 100%;
@@ -220,19 +213,52 @@ const MenuWrapper = styled.div<{ currentPage: number | undefined }>`
     flex-direction: column;
     justify-content: center;
     align-items: start;
+  }
+
+  #buttons {
     button {
       display: flex;
       justify-content: center;
       align-items: center;
-
-      font-weight: 600;
-      font-size: 18px;
 
       margin: 8px 0;
       * {
         margin-right: 8px;
       }
 
+      font-weight: 600;
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.7);
+
+      padding: 0 10px;
+      opacity: 1;
+      opacity: ${(props) => props.animation === "" && "0"};
+      opacity: ${(props) => props.animation === "open" && "1"};
+
+      transition: 450ms ease-in-out all;
+    }
+    button:nth-child(1) {
+      transition-delay: 200ms;
+    }
+    button:nth-child(2) {
+      transition-delay: 300ms;
+    }
+    button:nth-child(3) {
+      transition-delay: 400ms;
+    }
+    button:nth-child(4) {
+      transition-delay: 500ms;
+    }
+    button:nth-child(5) {
+      transition-delay: 600ms;
+    }
+
+    button:nth-child(${(props) => props.currentPage}) {
+      color: #d5a8d0;
+    }
+    #logout {
+      padding: 0 10px;
+      transition-delay: 700ms;
       color: rgba(0, 0, 0, 0.7);
     }
   }
@@ -254,6 +280,15 @@ const PCWrapper = styled.div`
   background-image: linear-gradient(45deg, #f1f1f1 0%, #f7f7f7 100%);
 `;
 
-const SideBar = { BG, MobileWrapper, PCWrapper, LogInWrapper, ProfilePic, HeaderWrapper, UserInfoWrapper, MenuWrapper };
+const SideBar = {
+  BG,
+  MobileWrapper,
+  PCWrapper,
+  LogInWrapper,
+  ProfilePic,
+  HeaderWrapper,
+  UserInfoWrapper,
+  MenuWrapper
+};
 
 export default SideBar;
