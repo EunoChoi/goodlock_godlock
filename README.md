@@ -27,6 +27,7 @@
 - **개발 회고 (velog)**
 
 	<div>
+		🔗 https://velog.io/@eunocode/series/굿락갓락 <br />
 		🔗 https://velog.io/@eunocode/굿락갓락-이미지-onError-무한루프-해결 <br />
 		🔗 https://velog.io/@eunocode/굿락갓락-이미지순서-문제해결 <br />
 		🔗 https://velog.io/@eunocode/굿락갓락-뒤로가기시-컴포넌트-언마운트-처리 <br />
