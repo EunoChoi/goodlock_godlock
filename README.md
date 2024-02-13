@@ -24,18 +24,13 @@
 
 	🔗 https://goodlock.site
 
-- **개발 회고 (velog)**
-
-
-	[🔗 굿락갓락 시리즈](https://velog.io/@eunocode/series/굿락갓락) <br />
-	[🔗 이미지 onError 무한루프 해결](https://velog.io/@eunocode/굿락갓락-이미지-onError-무한루프-해결) <br />
-
-	[🔗 이미지순서 문제 해결](https://velog.io/@eunocode/굿락갓락-이미지순서-문제해결) <br />
-	[🔗 뒤로가기 언마운트 구현](https://velog.io/@eunocode/굿락갓락-뒤로가기시-컴포넌트-언마운트-처리) <br />
-	[🔗 포스트 작성중 나가기 방지](https://velog.io/@eunocode/굿락갓락-나가기-방지-구현) <br />
-
-	[🔗 애니메이션 1 - 언마운트](https://velog.io/@eunocode/굿락갓락-애니메이션-1-언마운트)<br />
-	[🔗 애니메이션 2 - 사파리 환경 최적화](https://velog.io/@eunocode/굿락갓락-애니메이션-2-사파리-환경-최적화) <br />
+- **[개발 회고 (velog)](https://velog.io/@eunocode/series/굿락갓락)** <br /><br />
+[🔗 이미지 onError 무한루프 해결](https://velog.io/@eunocode/굿락갓락-이미지-onError-무한루프-해결) <br />
+[🔗 이미지순서 문제 해결](https://velog.io/@eunocode/굿락갓락-이미지순서-문제해결) <br />
+[🔗 뒤로가기 언마운트 구현](https://velog.io/@eunocode/굿락갓락-뒤로가기시-컴포넌트-언마운트-처리) <br />
+[🔗 포스트 작성중 나가기 방지](https://velog.io/@eunocode/굿락갓락-나가기-방지-구현) <br />
+[🔗 애니메이션 1 - 언마운트](https://velog.io/@eunocode/굿락갓락-애니메이션-1-언마운트)<br />
+[🔗 애니메이션 2 - 사파리 환경 최적화](https://velog.io/@eunocode/굿락갓락-애니메이션-2-사파리-환경-최적화) <br />
  
 <!-- 
 🔗 https://velog.io/@eunocode/굿락갓락-로그인-처리-로컬(JWT) <br />
