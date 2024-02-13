@@ -31,7 +31,7 @@
 		🔗 https://velog.io/@eunocode/굿락갓락-이미지-onError-무한루프-해결 <br />
 		🔗 https://velog.io/@eunocode/굿락갓락-이미지순서-문제해결 <br />
 		🔗 https://velog.io/@eunocode/굿락갓락-뒤로가기시-컴포넌트-언마운트-처리 <br />
-		🔗 https://velog.io/@eunocode/굿락갓락-포스트-작성-나가기-방지-처리 <br />
+		🔗 https://velog.io/@eunocode/굿락갓락-나가기-방지-구현 <br />
 		<!-- 
 		🔗 https://velog.io/@eunocode/굿락갓락-로그인-처리-로컬(JWT) <br />
 		🔗 https://velog.io/@eunocode/굿락갓락-로그인-처리-소셜 <br />
