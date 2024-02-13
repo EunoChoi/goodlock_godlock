@@ -20,15 +20,15 @@ const UserDeleteConfirm = ({ setUserDeleteModal }: setStateProps) => {
   const user = User.get().data;
   const confirmWord = "회원 탈퇴";
 
-  const [timer, setTimer] = useState<NodeJS.Timeout>();
+  // const [timer, setTimer] = useState<NodeJS.Timeout>();
 
   const ButtonClose = () => {
     setAnimation("close");
-    setTimer(
-      setTimeout(() => {
-        history.back();
-      }, 300)
-    );
+    // setTimer(
+    //   setTimeout(() => {
+    //     history.back();
+    //   }, 300)
+    // );
   };
 
   const userDeleteConfirm = () => {
@@ -56,7 +56,7 @@ const UserDeleteConfirm = ({ setUserDeleteModal }: setStateProps) => {
   useEffect(() => {
     push("#deleteUser");
     setAnimation("open");
-    clearTimeout(timer);
+    // clearTimeout(timer);
 
     return () => {
       window.onpopstate = null;

@@ -110,7 +110,7 @@ const UserInfoWrapper = styled.div<{ animation?: string }>`
   opacity: 1;
   opacity: ${(props) => props.animation === "" && "0"};
   opacity: ${(props) => props.animation === "open" && "1"};
-  transition: 1000ms ease-in-out all;
+  transition: 800ms ease-in-out all;
 
   width: 100%;
   height: 40%;
@@ -236,22 +236,22 @@ const MenuWrapper = styled.div<{ currentPage: number | undefined; animation?: st
       opacity: ${(props) => props.animation === "" && "0"};
       opacity: ${(props) => props.animation === "open" && "1"};
 
-      transition: 450ms ease-in-out all;
+      transition: 400ms ease-in-out all;
     }
     button:nth-child(1) {
-      transition-delay: 200ms;
+      transition-delay: 100ms;
     }
     button:nth-child(2) {
-      transition-delay: 300ms;
+      transition-delay: 200ms;
     }
     button:nth-child(3) {
-      transition-delay: 400ms;
+      transition-delay: 300ms;
     }
     button:nth-child(4) {
-      transition-delay: 500ms;
+      transition-delay: 400ms;
     }
     button:nth-child(5) {
-      transition-delay: 600ms;
+      transition-delay: 500ms;
     }
 
     button:nth-child(${(props) => props.currentPage}) {
@@ -259,7 +259,7 @@ const MenuWrapper = styled.div<{ currentPage: number | undefined; animation?: st
     }
     #logout {
       padding: 0 20px;
-      transition-delay: 700ms;
+      transition-delay: 600ms;
       color: rgba(0, 0, 0, 0.7);
     }
   }

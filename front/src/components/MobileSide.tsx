@@ -35,7 +35,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
   const logout = User.logout();
 
   const [sideBarAnimation, setAnimation] = useState<"open" | "close" | "">("");
-  const [timer, setTimer] = useState<NodeJS.Timeout>();
+  // const [timer, setTimer] = useState<NodeJS.Timeout>();
 
   const { type } = useParams();
   const currentPage = type ? parseInt(type) : -1;
@@ -58,11 +58,11 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
 
   const ButtonClose = () => {
     setAnimation("close");
-    setTimer(
-      setTimeout(() => {
-        history.back();
-      }, 300)
-    );
+    // setTimer(
+    //   setTimeout(() => {
+    //     history.back();
+    //   }, 300)
+    // );
   };
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
   useEffect(() => {
     push("#sidebar");
     setAnimation("open");
-    clearTimeout(timer);
+    // clearTimeout(timer);
 
     return () => {
       window.onpopstate = null;

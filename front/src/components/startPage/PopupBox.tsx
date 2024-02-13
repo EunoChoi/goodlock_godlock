@@ -32,17 +32,17 @@ const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayou
   const REDIRECT_URI_NAVER = process.env.REACT_APP_BASE_URL + "/auth/naver";
   const NAVER_STATE_CODE = process.env.REACT_APP_NAVER_STATE_CODE;
 
-  const [timer, setTimer] = useState<NodeJS.Timeout>();
+  // const [timer, setTimer] = useState<NodeJS.Timeout>();
 
   const guestlogin = User.guestLogIn();
 
   const ButtonClose = () => {
     setAnimation("close");
-    setTimer(
-      setTimeout(() => {
-        history.back();
-      }, 300)
-    );
+    // setTimer(
+    //   setTimeout(() => {
+    //     history.back();
+    //   }, 300)
+    // );
   };
 
   //google login
@@ -84,7 +84,7 @@ const PopupBox: React.FC<AppLayoutProps> = ({ setPopupOpen, children }: AppLayou
   useEffect(() => {
     push("#loginForm");
     setAnimation("open");
-    clearTimeout(timer);
+    // clearTimeout(timer);
     return () => {
       window.onpopstate = null;
       pop();

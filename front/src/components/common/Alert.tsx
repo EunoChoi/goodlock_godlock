@@ -30,7 +30,7 @@ const useAlert = () => {
     const { browser } = useBrowserCheck();
     const [buttonClose, setButtonClose] = useState(false);
 
-    const [timer, setTimer] = useState<NodeJS.Timeout>();
+    // const [timer, setTimer] = useState<NodeJS.Timeout>();
 
     const ButtonClose = () => {
       setAnimation("close");
@@ -57,7 +57,7 @@ const useAlert = () => {
         setAnimation("open");
       }, 50);
       push("#alert");
-      clearTimeout(timer);
+      // clearTimeout(timer);
       return () => {
         window.onpopstate = null;
         pop();

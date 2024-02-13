@@ -21,15 +21,15 @@ const PasswordChangeConfirm = ({ setPasswordChangeModal }: setStateProps) => {
   const user = User.get().data;
   const [passwordConfirm, setPasswordConfirm] = useState<boolean>(false);
 
-  const [timer, setTimer] = useState<NodeJS.Timeout>();
+  // const [timer, setTimer] = useState<NodeJS.Timeout>();
 
   const ButtonClose = () => {
     setAnimation("close");
-    setTimer(
-      setTimeout(() => {
-        history.back();
-      }, 300)
-    );
+    // setTimer(
+    //   setTimeout(() => {
+    //     history.back();
+    //   }, 300)
+    // );
   };
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const PasswordChangeConfirm = ({ setPasswordChangeModal }: setStateProps) => {
   useEffect(() => {
     push("#pwChange");
     setAnimation("open");
-    clearTimeout(timer);
+    // clearTimeout(timer);
     return () => {
       window.onpopstate = null;
       pop();

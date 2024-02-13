@@ -40,15 +40,15 @@ const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
   const editProfilePic = User.editPic();
   const uploadImage = Upload.images();
 
-  const [timer, setTimer] = useState<NodeJS.Timeout>();
+  // const [timer, setTimer] = useState<NodeJS.Timeout>();
 
   const ButtonClose = () => {
     setAnimation("close");
-    setTimer(
-      setTimeout(() => {
-        history.back();
-      }, 300)
-    );
+    // setTimer(
+    //   setTimeout(() => {
+    //     history.back();
+    //   }, 300)
+    // );
   };
 
   //로컬에서 이미지 에러 처리
@@ -84,7 +84,7 @@ const ProfileChangePopup = ({ setImageChangeModal }: setStateProps) => {
   useEffect(() => {
     push("#profilePicUpdate");
     setAnimation("open");
-    clearTimeout(timer);
+    // clearTimeout(timer);
 
     return () => {
       window.onpopstate = null;

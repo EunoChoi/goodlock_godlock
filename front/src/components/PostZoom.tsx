@@ -58,15 +58,15 @@ const PostZoom = ({ postProps, setZoom }: props) => {
   const isLiked = postProps?.Likers?.find((v: any) => v.id === user?.id);
 
   const navigate = useNavigate();
-  const [timer, setTimer] = useState<NodeJS.Timeout>();
+  // const [timer, setTimer] = useState<NodeJS.Timeout>();
 
   const ButtonClose = () => {
     setAnimation("close");
-    setTimer(
-      setTimeout(() => {
-        history.back();
-      }, 300)
-    );
+    // setTimer(
+    //   setTimeout(() => {
+    //     history.back();
+    //   }, 300)
+    // );
   };
 
   useEffect(() => {
@@ -85,7 +85,7 @@ const PostZoom = ({ postProps, setZoom }: props) => {
   useEffect(() => {
     setAnimation("open");
     push("#zoom");
-    clearTimeout(timer);
+    // clearTimeout(timer);
     return () => {
       window.onpopstate = null;
       pop();
