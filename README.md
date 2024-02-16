@@ -25,6 +25,8 @@
 	🔗 https://goodlock.site
 
 - **[개발 회고 (velog)](https://velog.io/@eunocode/series/굿락갓락)** <br /><br />
+[🔗 회원가입(로컬,구글,카카오,네이버)+이메일 인증](https://velog.io/@eunocode/굿락갓락-회원가입-이메일인증) <br />
+[🔗 jwt](https://velog.io/@eunocode/) <br />
 [🔗 이미지 onError 무한루프 해결](https://velog.io/@eunocode/굿락갓락-이미지-onError-무한루프-해결) <br />
 [🔗 이미지순서 문제 해결](https://velog.io/@eunocode/굿락갓락-이미지순서-문제해결) <br />
 [🔗 뒤로가기 언마운트 구현](https://velog.io/@eunocode/굿락갓락-뒤로가기시-컴포넌트-언마운트-처리) <br />
