@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => { //sequelize는 시퀄라이즈 라�
     usertext: {
       type: DataTypes.STRING(100),
       allowNull: true
+    },
+    refreshToken: {
+      type: DataTypes.STRING(300),
+      allowNull: true
     }
   }, {
     //모델 세팅 값 입력

@@ -92,18 +92,24 @@ const userController = {
       email: user.email,
       id: user.id,
     }, process.env.ACCESS_KEY, {
-      expiresIn: '15m',
-      issuer: 'narang',
+      expiresIn: '1m',
+      issuer: 'godlock',
     });
 
     // refresh Token 발급
     const refreshToken = jwt.sign({
-      email: user.email,
-      id: user.id,
+      refreshToken: "refreshToken",
+      expiresIn: "180"
     }, process.env.REFRECH_KEY, {
-      expiresIn: '60m',
-      issuer: 'narang',
+      expiresIn: '180m',
+      issuer: 'godlock',
     })
+
+    await User.update({
+      refreshToken: refreshToken
+    }, {
+      where: { id: user.id }
+    });
 
     return { status: 200, accessToken, refreshToken };
   }
