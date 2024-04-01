@@ -26,9 +26,9 @@
 
 - **[개발 회고 (velog)](https://velog.io/@eunocode/series/굿락갓락)** <br /><br />
 [🔗 회원가입 구현(로컬,구글,카카오,네이버)+이메일 인증](https://velog.io/@eunocode/굿락갓락-회원가입-이메일인증) <br />
-[🔗 로그인 구현(Json Web Token)](https://velog.io/@eunocode/굿락갓락-로그인-구현-JWT) <br /><br />
+[🔗 로그인 구현(Json Web Token)](https://velog.io/@eunocode/굿락갓락-로그인-구현-JWT) <br />
 [🔗 이미지 onError 무한루프 문제 해결](https://velog.io/@eunocode/굿락갓락-이미지-onError-무한루프-해결) <br />
-[🔗 이미지 순서 문제 해결](https://velog.io/@eunocode/굿락갓락-이미지순서-문제해결) <br /><br />
+[🔗 이미지 순서 문제 해결](https://velog.io/@eunocode/굿락갓락-이미지순서-문제해결) <br />
 [🔗 뒤로가기 언마운트 구현](https://velog.io/@eunocode/굿락갓락-뒤로가기시-컴포넌트-언마운트-처리) <br />
 [🔗 포스트 작성중 나가기 방지](https://velog.io/@eunocode/굿락갓락-나가기-방지-구현) <br />
 [🔗 애니메이션 1 - 언마운트](https://velog.io/@eunocode/굿락갓락-애니메이션-1-언마운트)<br />
