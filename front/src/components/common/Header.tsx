@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 import User from "../../functions/reactQuery/User";
@@ -18,7 +18,11 @@ const Header = () => {
   const user = User.get().data;
   const { type } = useParams();
   let currentPage = type ? parseInt(type) : -1;
+  const navigate = useNavigate();
+
   if (window.location.pathname.split("/")[1] === "profile") currentPage = 4;
+
+  console.log(user?.lever);
 
   return (
     <MobileHeaderWrapper>
@@ -46,32 +50,48 @@ const Header = () => {
       </HeaderLocation>
 
       <HeaderMobileLand currentPage={currentPage + 1}>
-        <span>
-          <LinkCenter to="/main/0">
-            <HomeRoundedIcon></HomeRoundedIcon>Home
-          </LinkCenter>
-        </span>
-        <span>
-          <LinkCenter to="/main/1">
-            <LightbulbRoundedIcon></LightbulbRoundedIcon>Tip Post
-          </LinkCenter>
-        </span>
-        <span>
-          <LinkCenter to="/main/2">
-            <PeopleRoundedIcon></PeopleRoundedIcon>Free Board
-          </LinkCenter>
-        </span>
-        <span>
-          <LinkCenter to="/main/3">
-            <PhotoRoundedIcon></PhotoRoundedIcon>Gallery
-          </LinkCenter>
-        </span>
-        {user.level !== 0 && (
-          <span>
-            <LinkCenter to="/main/4/cat/0">
-              <PersonRoundedIcon></PersonRoundedIcon>Profile
-            </LinkCenter>
-          </span>
+        {user && (
+          <>
+            <span>
+              <LinkCenter to="/main/0">
+                <HomeRoundedIcon></HomeRoundedIcon>Home
+              </LinkCenter>
+            </span>
+            <span>
+              <LinkCenter to="/main/1">
+                <LightbulbRoundedIcon></LightbulbRoundedIcon>Tip Post
+              </LinkCenter>
+            </span>
+            <span>
+              <LinkCenter to="/main/2">
+                <PeopleRoundedIcon></PeopleRoundedIcon>Free Board
+              </LinkCenter>
+            </span>
+            <span>
+              <LinkCenter to="/main/3">
+                <PhotoRoundedIcon></PhotoRoundedIcon>Gallery
+              </LinkCenter>
+            </span>
+            {user.level !== 0 && (
+              <span>
+                <LinkCenter to="/main/4/cat/0">
+                  <PersonRoundedIcon></PersonRoundedIcon>Profile
+                </LinkCenter>
+              </span>
+            )}
+          </>
+        )}
+        {user || (
+          <NeedLogin>
+            <span>로그인이 필요합니다.</span>
+            <button
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              로그인
+            </button>
+          </NeedLogin>
         )}
       </HeaderMobileLand>
     </MobileHeaderWrapper>
@@ -80,6 +100,28 @@ const Header = () => {
 
 export default Header;
 
+const NeedLogin = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  button {
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.7);
+
+    padding: 4px 16px;
+
+    border: 2px solid rgba(0, 0, 0, 0.05);
+    border-radius: 50px;
+    background-color: #c7d7ff;
+
+    margin-top: 24px;
+  }
+  span {
+    font-size: 16px;
+  }
+`;
 const LinkCenter = styled(Link)`
   display: flex;
   justify-content: center;
