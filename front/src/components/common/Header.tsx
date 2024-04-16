@@ -78,6 +78,8 @@ const Header = () => {
                   </button>
                 )}
 
+                <Bar />
+
                 <button
                   onClick={() => {
                     openLogoutConfirm({
@@ -137,6 +139,13 @@ const Header = () => {
 };
 
 export default Header;
+
+const Bar = styled.span`
+  height: 1px;
+  width: 100%;
+  background-color: rgba(99, 107, 116, 0.21);
+  margin: 12px 0;
+`;
 
 const LandMobileHeaderWrapper = styled.div`
   position: fixed;
