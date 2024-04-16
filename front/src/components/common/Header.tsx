@@ -166,6 +166,8 @@ const HeaderMenu = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: start;
+
+  margin-top: 16px;
 `;
 const LoginMenu = styled.div<{ currentPage: number | undefined }>`
   display: flex;
