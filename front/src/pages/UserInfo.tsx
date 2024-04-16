@@ -83,6 +83,14 @@ const UserInfo = () => {
     }
   );
 
+  //function
+  const scrollToPill = () => {
+    window.scrollTo({
+      top: scrollTarget.current?.scrollHeight,
+      left: 0,
+      behavior: "smooth"
+    });
+  };
   const isFollowed = targetUser?.Followers?.find((v: any) => v.id === user.id);
 
   //useMutation
@@ -150,6 +158,13 @@ const UserInfo = () => {
       const width = menuWrapper?.scrollWidth;
       if (width) {
         menuWrapper?.scrollTo({ top: 0, left: (width / 6) * categoryNum - 70, behavior: "smooth" });
+      }
+
+      const height = scrollTarget.current?.scrollHeight;
+      console.log(height, window.scrollY);
+
+      if (height && height < window?.scrollY) {
+        scrollToPill();
       }
     } else {
       navigate("/404");
@@ -441,7 +456,7 @@ const UserInfo = () => {
           <ContentWrapper>
             <ContentBox>
               <ListTitle>
-                <Badge badgeContent={user?.Followings?.length} color="info" max={999} showZero>
+                <Badge badgeContent={targetUser?.Followings?.length} color="info" max={999} showZero>
                   <InsertEmoticonRoundedIcon fontSize="large" color="inherit" />
                 </Badge>
                 <div>Followings</div>
@@ -483,7 +498,7 @@ const UserInfo = () => {
           <ContentWrapper>
             <ContentBox>
               <ListTitle>
-                <Badge badgeContent={user?.Followers?.length} color="info" max={999} showZero>
+                <Badge badgeContent={targetUser?.Followers?.length} color="info" max={999} showZero>
                   <InsertEmoticonOutlinedIcon fontSize="large" />
                 </Badge>
                 <div>Followers</div>
@@ -806,18 +821,18 @@ const ContentWrapper = styled.div`
   width: 100%;
   height: auto;
   //pill wrapper : 68px
-  min-height: calc(100vh - 68px);
+  min-height: calc(100vh - 80px);
 
   padding-bottom: 24px;
   @media (orientation: portrait) or (max-height: 480px) {
     //haeder height : 48px
     //pill wrapper : 68px
-    min-height: calc(100vh - 48px - 68px);
+    min-height: calc(100vh - 48px - 80px);
   }
   @media (orientation: landscape) and (max-height: 480px) {
     width: 400px;
     width: 100%;
-    min-height: calc(100vh - 68px);
+    min-height: calc(100vh - 80px);
   }
 `;
 const ContentBox = styled.div`

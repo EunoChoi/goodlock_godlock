@@ -50,12 +50,14 @@ const Tips = () => {
   const pillWrapperRef = useRef<HTMLInputElement>(null);
 
   const { search } = useLocation();
+
+  //검색
   useEffect(() => {
     if (search) {
       console.log(search);
       const query = decodeURI(search.split("?search=")[1]);
       setTimeout(() => {
-        setToggle(3);
+        // setToggle(3);
         setSearchInfo(query);
         window.scrollTo({
           top: scrollTarget.current?.scrollHeight,
@@ -69,6 +71,7 @@ const Tips = () => {
     }
   }, [search]);
 
+  //태그 클릭
   useEffect(() => {
     const hash = decodeURI(window.location.hash);
     if (hash) {
@@ -94,6 +97,19 @@ const Tips = () => {
       }, 500);
     }
   }, [window.location.hash]);
+
+  //scroll when pill click
+  const scrollTargerheight = () => {
+    const height = scrollTarget.current?.scrollHeight;
+
+    if (height && height < window?.scrollY) {
+      window.scrollTo({
+        top: scrollTarget.current?.scrollHeight,
+        left: 0,
+        behavior: "smooth"
+      });
+    }
+  };
 
   const tipHashtag = Hashtag.get({ type: 1, limit: 10 }).data;
 
@@ -265,11 +281,7 @@ const Tips = () => {
               navigate({
                 pathname: "/main/1"
               });
-              // window.scrollTo({
-              //   top: scrollTarget.current?.scrollHeight,
-              //   left: 0,
-              //   behavior: "smooth"
-              // });
+              scrollTargerheight();
             }}
           >
             {v}

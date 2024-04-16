@@ -62,7 +62,7 @@ const Home = () => {
       console.log(search);
       const query = decodeURI(search.split("?search=")[1]);
       setTimeout(() => {
-        setToggle(1);
+        // setToggle(1);
         setSearchNotice(query);
         window.scrollTo({
           top: scrollTarget.current?.scrollHeight,
@@ -97,13 +97,17 @@ const Home = () => {
   }, [window.location.hash]);
 
   //scroll when pill click
-  // const scrollTargerheight = () => {
-  //   window.scrollTo({
-  //     top: scrollTarget.current?.scrollHeight,
-  //     left: 0,
-  //     behavior: "smooth"
-  //   });
-  // };
+  const scrollTargerheight = () => {
+    const height = scrollTarget.current?.scrollHeight;
+
+    if (height && height < window?.scrollY) {
+      window.scrollTo({
+        top: scrollTarget.current?.scrollHeight,
+        left: 0,
+        behavior: "smooth"
+      });
+    }
+  };
 
   //this month
   // const monthNewInfo = useQuery(
@@ -254,7 +258,7 @@ const Home = () => {
               navigate({
                 pathname: "/main/0"
               });
-              // scrollTargerheight();
+              scrollTargerheight();
             }}
           >
             {v}

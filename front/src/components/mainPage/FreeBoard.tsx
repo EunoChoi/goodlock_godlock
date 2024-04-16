@@ -53,7 +53,7 @@ const FreeBoard = () => {
     const query = decodeURI(search.split("?search=")[1]);
     if (search) {
       setTimeout(() => {
-        setToggle(2);
+        // setToggle(2);
         setSearchComm(query);
         window.scrollTo({
           top: scrollTarget.current?.scrollHeight,
@@ -84,6 +84,19 @@ const FreeBoard = () => {
       }, 200);
     }
   }, [window.location.hash]);
+
+  //scroll when pill click
+  const scrollTargerheight = () => {
+    const height = scrollTarget.current?.scrollHeight;
+
+    if (height && height < window?.scrollY) {
+      window.scrollTo({
+        top: scrollTarget.current?.scrollHeight,
+        left: 0,
+        behavior: "smooth"
+      });
+    }
+  };
 
   const freeHashtag = Hashtag.get({ type: 2, limit: 10 }).data;
 
@@ -237,11 +250,7 @@ const FreeBoard = () => {
               navigate({
                 pathname: "/main/2"
               });
-              // window.scrollTo({
-              //   top: scrollTarget.current?.scrollHeight,
-              //   left: 0,
-              //   behavior: "smooth"
-              // });
+              scrollTargerheight();
             }}
           >
             {v}

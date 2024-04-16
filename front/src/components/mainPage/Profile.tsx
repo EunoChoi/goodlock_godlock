@@ -244,7 +244,13 @@ const Profile = () => {
     } else {
       navigate("/404");
     }
-    // scrollTop();
+    const height = scrollTarget.current?.scrollHeight;
+    console.log(height, window.scrollY);
+
+    if (height && height < window?.scrollY) {
+      scrollToPill();
+    }
+
     return () => {
       //
     };
