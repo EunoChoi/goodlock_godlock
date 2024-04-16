@@ -242,16 +242,16 @@ const MenuWrapper = styled.div<{ currentPage: number | undefined; animation?: st
       transition-delay: 100ms;
     }
     button:nth-child(2) {
-      transition-delay: 200ms;
+      transition-delay: 150ms;
     }
     button:nth-child(3) {
-      transition-delay: 300ms;
+      transition-delay: 200ms;
     }
     button:nth-child(4) {
-      transition-delay: 400ms;
+      transition-delay: 250ms;
     }
     button:nth-child(5) {
-      transition-delay: 500ms;
+      transition-delay: 300ms;
     }
 
     button:nth-child(${(props) => props.currentPage}) {
@@ -259,7 +259,7 @@ const MenuWrapper = styled.div<{ currentPage: number | undefined; animation?: st
     }
     #logout {
       padding: 0 20px;
-      transition-delay: 600ms;
+      transition-delay: 350ms;
       color: rgba(0, 0, 0, 0.7);
     }
   }
