@@ -149,7 +149,7 @@ const Bar = styled.span`
 
 const LandMobileHeaderWrapper = styled.div`
   position: fixed;
-  z-index: 999;
+  z-index: 980;
   top: 0px;
 
   display: flex;
@@ -228,7 +228,7 @@ const LogoutMenu = styled.div`
 `;
 const PortMobileHeaderWrapper = styled.div`
   position: fixed;
-  z-index: 999;
+  z-index: 980;
   top: 0px;
 
   display: flex;
