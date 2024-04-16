@@ -164,7 +164,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                           onClose();
                         }}
                       >
-                        <span>{makeK(user?.Posts?.length)}</span>
+                        <span>{user?.Posts?.length ? makeK(user?.Posts?.length) : "-"}</span>
                         <span>Posts</span>
                       </button>
                       <button
@@ -174,7 +174,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                           onClose();
                         }}
                       >
-                        <span>{makeK(user?.Followings?.length)}</span>
+                        <span>{user?.Followings?.length ? makeK(user?.Followings?.length) : "-"}</span>
                         <span>Followings</span>
                       </button>
                       <button
@@ -184,7 +184,7 @@ const MobileSide = ({ setMobileSideOpen }: Props) => {
                           onClose();
                         }}
                       >
-                        <span>{makeK(user?.Followers?.length)}</span>
+                        <span>{user?.Followers?.length ? makeK(user?.Followers?.length) : "-"}</span>
                         <span>Followers</span>
                       </button>
                     </Stack>

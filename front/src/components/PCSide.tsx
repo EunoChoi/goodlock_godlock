@@ -99,7 +99,7 @@ const Side = () => {
                     navigate("/main/4/cat/0");
                   }}
                 >
-                  <span>{makeK(user?.Posts?.length)}</span>
+                  <span>{user?.Posts?.length ? makeK(user?.Posts?.length) : "-"}</span>
                   <span>Posts</span>
                 </button>
                 <button
@@ -108,7 +108,7 @@ const Side = () => {
                     navigate("/main/4/cat/4");
                   }}
                 >
-                  <span>{makeK(user?.Followings?.length)}</span>
+                  <span>{user?.Followings?.length ? makeK(user?.Followings?.length) : "-"}</span>
                   <span>Followings</span>
                 </button>
                 <button
@@ -117,7 +117,7 @@ const Side = () => {
                     navigate("/main/4/cat/5");
                   }}
                 >
-                  <span>{makeK(user?.Followers?.length)}</span>
+                  <span>{user?.Followers?.length ? makeK(user?.Followers?.length) : "-"}</span>
                   <span>Followers</span>
                 </button>
               </Stack>
