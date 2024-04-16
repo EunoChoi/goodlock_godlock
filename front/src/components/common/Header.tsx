@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { createPortal } from "react-dom";
 
 import User from "../../functions/reactQuery/User";
+import useAlert from "./Alert";
+import IsLandscape from "../../functions/IsLandscape";
 
 //mui
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
@@ -14,97 +17,184 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import ExtensionIcon from "@mui/icons-material/Extension";
 import ForumIcon from "@mui/icons-material/Forum";
 
+import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
+
+//mobile header
 const Header = () => {
+  const isLandscape = IsLandscape();
+
   const user = User.get().data;
+  const logout = User.logout();
+
   const { type } = useParams();
   let currentPage = type ? parseInt(type) : -1;
   const navigate = useNavigate();
 
+  const { Alert: LogoutConfirm, openAlert: openLogoutConfirm } = useAlert();
+
   if (window.location.pathname.split("/")[1] === "profile") currentPage = 4;
 
-  console.log(user?.lever);
-
   return (
-    <MobileHeaderWrapper>
-      <HeaderLogoMobile
-        onClick={() => {
-          window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: "smooth"
-          });
-        }}
-      >
-        <ExtensionIcon fontSize="inherit" />
-        <Link to="/main/0">
-          <span>God Lock</span>
-        </Link>
-      </HeaderLogoMobile>
+    <>
+      {createPortal(<LogoutConfirm />, document.getElementById("modal_root") as HTMLElement)}
+      {isLandscape && (
+        <LandMobileHeaderWrapper>
+          <HeaderLogo
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "smooth"
+              });
+            }}
+          >
+            <ExtensionIcon fontSize="inherit" />
+            <span onClick={() => navigate("/main/0")}>God Lock</span>
+          </HeaderLogo>
+          <HeaderMenu>
+            {user && ( //로그인 + 게스트 로그인
+              <LoginMenu currentPage={currentPage + 1}>
+                <button onClick={() => navigate("/main/0")}>
+                  <HomeRoundedIcon />
+                  <span>Home</span>
+                </button>
+                <button onClick={() => navigate("/main/1")}>
+                  <LightbulbRoundedIcon />
+                  <span>Tip Post</span>
+                </button>
+                <button onClick={() => navigate("/main/2")}>
+                  <PeopleRoundedIcon />
+                  <span>Free Board</span>
+                </button>
+                <button onClick={() => navigate("/main/3")}>
+                  <PhotoRoundedIcon />
+                  <span>Gallery</span>
+                </button>
 
-      <HeaderLocation>
-        {currentPage === 0 && <HomeRoundedIcon fontSize="inherit" />}
-        {currentPage === 1 && <LightbulbRoundedIcon fontSize="inherit" />}
-        {currentPage === 2 && <ForumIcon fontSize="inherit" />}
-        {currentPage === 3 && <PhotoRoundedIcon fontSize="inherit" />}
-        {currentPage === 4 && <PersonRoundedIcon fontSize="inherit" />}
-      </HeaderLocation>
+                {user.level !== 0 && (
+                  <button onClick={() => navigate("/main/4/cat/0")}>
+                    <PersonRoundedIcon />
+                    <span>Profile</span>
+                  </button>
+                )}
 
-      <HeaderMobileLand currentPage={currentPage + 1}>
-        {user && (
-          <>
-            <span>
-              <LinkCenter to="/main/0">
-                <HomeRoundedIcon></HomeRoundedIcon>Home
-              </LinkCenter>
-            </span>
-            <span>
-              <LinkCenter to="/main/1">
-                <LightbulbRoundedIcon></LightbulbRoundedIcon>Tip Post
-              </LinkCenter>
-            </span>
-            <span>
-              <LinkCenter to="/main/2">
-                <PeopleRoundedIcon></PeopleRoundedIcon>Free Board
-              </LinkCenter>
-            </span>
-            <span>
-              <LinkCenter to="/main/3">
-                <PhotoRoundedIcon></PhotoRoundedIcon>Gallery
-              </LinkCenter>
-            </span>
-            {user.level !== 0 && (
-              <span>
-                <LinkCenter to="/main/4/cat/0">
-                  <PersonRoundedIcon></PersonRoundedIcon>Profile
-                </LinkCenter>
-              </span>
+                <button
+                  onClick={() => {
+                    openLogoutConfirm({
+                      mainText: "로그아웃 하시겠습니까?",
+                      onSuccess: () => {
+                        logout.mutate();
+                      }
+                    });
+                  }}
+                >
+                  <ExitToAppRoundedIcon />
+                  <span>Logout</span>
+                </button>
+              </LoginMenu>
             )}
-          </>
-        )}
-        {user || (
-          <NeedLogin>
-            <span>로그인이 필요합니다.</span>
-            <button
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              로그인
-            </button>
-          </NeedLogin>
-        )}
-      </HeaderMobileLand>
-    </MobileHeaderWrapper>
+            {!user && ( //로그아웃 상태 접근(only postView page)
+              <LogoutMenu>
+                <span>로그인이 필요합니다.</span>
+                <button
+                  onClick={() => {
+                    navigate("/");
+                  }}
+                >
+                  로그인
+                </button>
+              </LogoutMenu>
+            )}
+          </HeaderMenu>
+        </LandMobileHeaderWrapper>
+      )}
+      {!isLandscape && (
+        <PortMobileHeaderWrapper>
+          <HeaderLogo
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "smooth"
+              });
+            }}
+          >
+            <ExtensionIcon fontSize="inherit" />
+            <span onClick={() => navigate("/main/0")}>God Lock</span>
+          </HeaderLogo>
+
+          <HeaderLocation>
+            {currentPage === 0 && <HomeRoundedIcon fontSize="inherit" />}
+            {currentPage === 1 && <LightbulbRoundedIcon fontSize="inherit" />}
+            {currentPage === 2 && <ForumIcon fontSize="inherit" />}
+            {currentPage === 3 && <PhotoRoundedIcon fontSize="inherit" />}
+            {currentPage === 4 && <PersonRoundedIcon fontSize="inherit" />}
+          </HeaderLocation>
+        </PortMobileHeaderWrapper>
+      )}
+    </>
   );
 };
 
 export default Header;
 
-const NeedLogin = styled.div`
+const LandMobileHeaderWrapper = styled.div`
+  position: fixed;
+  z-index: 999;
+  top: 0px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: whitesmoke;
+  border-right: 2px solid rgba(0, 0, 0, 0.05);
+  width: 20vw;
+  height: 100vh;
+`;
+const HeaderMenu = styled.div`
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+`;
+const LoginMenu = styled.div<{ currentPage: number | undefined }>`
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
+
+  width: auto;
+  height: 70vh;
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: rgba(0, 0, 0, 0.6);
+    margin: 8px 0;
+
+    span {
+      font-size: 18px;
+      font-weight: 600;
+      padding-left: 8px;
+    }
+  }
+
+  button:nth-child(${(props) => props.currentPage}) {
+    color: #d5a8d0;
+  }
+`;
+const LogoutMenu = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  width: auto;
+  height: 70vh;
+
   button {
     font-size: 16px;
     font-weight: 500;
@@ -120,22 +210,16 @@ const NeedLogin = styled.div`
   }
   span {
     font-size: 16px;
+    color: rgba(0, 0, 0, 0.6);
+    margin: 8px 0;
+    font-weight: 500;
   }
 `;
-const LinkCenter = styled(Link)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 600;
-  * {
-    margin-right: 8px;
-  }
-`;
-
-const MobileHeaderWrapper = styled.div`
+const PortMobileHeaderWrapper = styled.div`
   position: fixed;
   z-index: 999;
   top: 0px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -145,58 +229,6 @@ const MobileHeaderWrapper = styled.div`
   padding: 0 4vw;
 
   background-color: #fff;
-
-  @media (orientation: portrait) and (max-width: 480px) {
-    /* background-color: white; */
-  }
-
-  @media (orientation: landscape) and (max-height: 480px) {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
-
-    position: fixed;
-    z-index: 999;
-    top: 0px;
-    > span {
-      font-size: 20px !important;
-    }
-
-    background-color: #e3ecf9;
-    background-color: whitesmoke;
-    border-right: 2px solid rgba(0, 0, 0, 0.05);
-    width: 20vw;
-    height: 100vh;
-    /* box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2); */
-  }
-`;
-
-const HeaderMobileLand = styled.div<{ currentPage: number | undefined }>`
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
-  font-size: 18px;
-
-  color: rgba(0, 0, 0, 0.6);
-  width: auto;
-  height: 70vh;
-
-  /* padding-left: 8px; */
-
-  span:nth-child(${(props) => props.currentPage}) {
-    color: rgba(0, 0, 0, 0.55);
-    color: #d5a8d0;
-    font-weight: 600;
-  }
-  span {
-    font-weight: 500;
-    margin: 8px 0;
-  }
-  @media (orientation: landscape) and (max-height: 480px) {
-    display: flex;
-  }
 `;
 
 const HeaderLocation = styled.div`
@@ -208,26 +240,19 @@ const HeaderLocation = styled.div`
   color: rgba(0, 0, 0, 0.4);
   font-size: 22px;
   font-weight: 600;
-
-  @media (orientation: landscape) and (max-height: 480px) {
-    display: none;
-  }
 `;
-const HeaderLogoMobile = styled.span`
+const HeaderLogo = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
   color: #d5a8d0;
+  font-size: 20px;
   span {
     margin-left: 4px;
     font-family: OAGothic-ExtraBold;
-    color: rgba(0, 0, 0, 0.7);
+    color: rgba(0, 0, 0, 0.6);
 
     font-size: 20px;
     font-weight: 600;
-  }
-
-  @media (orientation: landscape) and (max-height: 480px) {
-    margin-left: 0;
   }
 `;
