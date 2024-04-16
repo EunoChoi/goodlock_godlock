@@ -40,6 +40,10 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const isUserPostOk: boolean = user?.level !== 0 && (postType === 1 || postType === 2) ? true : false;
   const isAdminPostOk: boolean = postType === 0 && user?.level >= level && user?.level !== 0 ? true : false;
 
+  //height
+  const MOBILE_BUTTON_VISIBLE_HEIGHT = 0; //chatbot, post button;
+  const GOTOP_BUTTON_VISIBLE_HEIGHT = 720;
+
   const sideOpen = () => {
     history.pushState({ page: "modal" }, "", "");
     setMobileSideOpen(true);
@@ -58,12 +62,12 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   useEffect(() => {
     const handleScroll = async () => {
-      if (window.scrollY > 48) {
+      if (window.scrollY > MOBILE_BUTTON_VISIBLE_HEIGHT) {
         setMobileButtonVisible(true);
       } else {
         setMobileButtonVisible(false);
       }
-      if (window.scrollY > 2000) {
+      if (window.scrollY > GOTOP_BUTTON_VISIBLE_HEIGHT) {
         setGoTopButton(true);
       } else {
         setGoTopButton(false);
