@@ -48,6 +48,19 @@ const Gallery = () => {
     }
   );
 
+  //scroll when pill click
+  const scrollTargerheight = () => {
+    const height = scrollTarget.current?.scrollHeight;
+
+    if (height && height < window?.scrollY) {
+      window.scrollTo({
+        top: scrollTarget.current?.scrollHeight,
+        left: 0,
+        behavior: "smooth"
+      });
+    }
+  };
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -77,11 +90,7 @@ const Gallery = () => {
           toggle={toggle}
           onClick={() => {
             setToggle(0);
-            // window.scrollTo({
-            //   top: scrollTarget.current?.scrollHeight,
-            //   left: 0,
-            //   behavior: "smooth"
-            // });
+            scrollTargerheight();
           }}
         >
           Tip Posts
@@ -90,11 +99,7 @@ const Gallery = () => {
           toggle={toggle}
           onClick={() => {
             setToggle(1);
-            // window.scrollTo({
-            //   top: scrollTarget.current?.scrollHeight,
-            //   left: 0,
-            //   behavior: "smooth"
-            // });
+            scrollTargerheight();
           }}
         >
           Free Posts
