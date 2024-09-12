@@ -14,12 +14,6 @@
 	굿락갓락은 갤럭시와 굿락에 관한 팁을 공유하는 커뮤니티입니다. <br />
 	이미지와 텍스트를 통해 커스텀 팁을 전달하고 굿락 GTS와 드랍십 기능을 활용하여 쉽게 공유할 수 있도록 도와줍니다.
 
-- **관련 문서**
-
-	🔗 Front-end README.md
-	<br />
-	🔗 Back-end README.md
-
 - **서비스 URL**
 
 	🔗 https://goodlock.site
