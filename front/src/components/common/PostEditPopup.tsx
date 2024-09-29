@@ -181,8 +181,10 @@ const PostEditPopup = ({ setPostEdit, postProps }: props) => {
     setAnimation("open");
     inputRef.current?.focus();
     push("#editpost");
+    window.document.body.style.overflow = "hidden";
     return () => {
       window.onpopstate = null;
+      window.document.body.style.overflow = "auto";
       pop();
     };
   }, []);

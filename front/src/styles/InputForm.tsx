@@ -54,6 +54,7 @@ const InputWrapper = styled.div<{ animation: string }>`
     top: 0;
 
     height: calc(var(--vh, 1vh) * 100);
+    height: 100dvh;
     width: 100%;
 
     background-color: #fff;

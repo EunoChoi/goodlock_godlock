@@ -106,6 +106,24 @@ const Post = ({ postProps }: any) => {
             <>{isCommentsOpen && <Comments postProps={postProps} setCommentsOpen={setCommentsOpen} />}</>,
             document.getElementById("front_component_root") as HTMLElement
           )}
+          {/* 포스트 수정 팝업 */}
+          {createPortal(
+            isPostEdit ? (
+              <PostEditPopup
+                setPostEdit={setPostEdit}
+                postProps={{
+                  type: postProps.type,
+                  id: postProps.id,
+                  content: postProps.content,
+                  images: postProps.Images,
+                  start: postProps?.start,
+                  end: postProps?.end,
+                  link: postProps?.link
+                }}
+              />
+            ) : null,
+            document.getElementById("front_component_root") as HTMLElement
+          )}
 
           <Popper open={open} anchorEl={morePop} placement="top-end">
             <EditPopup>
@@ -140,22 +158,6 @@ const Post = ({ postProps }: any) => {
               </Button>
             </EditPopup>
           </Popper>
-
-          {/* 포스트 수정 팝업 */}
-          {isPostEdit ? (
-            <PostEditPopup
-              setPostEdit={setPostEdit}
-              postProps={{
-                type: postProps.type,
-                id: postProps.id,
-                content: postProps.content,
-                images: postProps.Images,
-                start: postProps?.start,
-                end: postProps?.end,
-                link: postProps?.link
-              }}
-            />
-          ) : null}
 
           <PostInfoWrapper>
             <div

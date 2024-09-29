@@ -160,8 +160,10 @@ const InputPopup = ({ setPostInputOpen }: props) => {
     setAnimation("open");
     inputRef.current?.focus();
     push("#addpost");
+    window.document.body.style.overflow = "hidden";
     return () => {
       window.onpopstate = null;
+      window.document.body.style.overflow = "auto";
       pop();
     };
   }, []);
