@@ -26,6 +26,7 @@ const GlobalStyle = createGlobalStyle`
   span, div, button{
    font-family: Pretendard;
    font-weight: 400;
+   color: #656565;
   }
   
   html{
