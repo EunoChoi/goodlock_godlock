@@ -19,16 +19,16 @@ const AuthRoute = ({ accessType, component }: AuthRouteProps) => {
   }
   if (accessType === "login") {
     //need login auth page
-    const { isSuccess, isError, isLoading } = User.getForAuth();
+    const { isSuccess, isError, isLoading, failureCount } = User.getForAuth();
 
     if (isSuccess) {
       return <>{component}</>;
-    } else if (isError) {
+    } else if (failureCount >= 2) {
       console.log("유저 정보를 불러오지 못했습니다.");
       navigate("/");
-      setTimeout(() => {
-        toast.error("로그인이 필요합니다.");
-      }, 100);
+      // setTimeout(() => {
+      //   toast.error("로그인이 필요합니다.");
+      // }, 100);
     } else if (isLoading) {
       return <Loading />;
     }
