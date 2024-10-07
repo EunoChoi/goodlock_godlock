@@ -35,6 +35,7 @@
 
 <br />
 
+
 ### 2. 프로젝트 기술 스택
 
 
@@ -58,16 +59,19 @@
   
 	![reactquery](https://img.shields.io/badge/ReactQuery-f73e51?style=flat&logo=reactquery&logoColor=white)
 	![zustand](https://img.shields.io/badge/Zustand-453837?style=flat&logo=&logoColor=white)
-  
-- **Server**
+
+
+- **Server & Security**
   
 	![amazonec2](https://img.shields.io/badge/EC2-ed8233?style=flat&logo=amazonec2&logoColor=white)
 	![amazons3](https://img.shields.io/badge/S3-da5141?style=flat&logo=amazons3&logoColor=white)
 	![awslambda](https://img.shields.io/badge/Lambda-d26214?style=flat&logo=awslambda&logoColor=white)
-	![NginX](https://img.shields.io/badge/NginX-da5141?style=flat&logo=amazons3&logoColor=white)
-	![Certbot](https://img.shields.io/badge/Certbot-da5141?style=flat&logo=amazons3&logoColor=white)
+	![NginX](https://img.shields.io/badge/NginX-green?style=flat&logo=nginx&logoColor=white)
+	![letsEncrypt](https://img.shields.io/badge/Let's_Encrypt-blue.svg?logo=let%E2%80%99s-encrypt)
+
 
 <br />
+
 
 ### 3. 프로젝트 미리보기
 
@@ -78,12 +82,14 @@
 <img width="1080" alt="glgl_readme_2" src="https://github.com/user-attachments/assets/f4423726-4837-485e-8afd-7e27b6625c0c">
 <h4 align=center > Tablet & Desktop</h4>
 
+- 더 많은 프로젝트 정보 및 이미지는 노션 페이지 참조 [🔗](https://eunonote.notion.site/FE-Developer-7fe46851557d45038a8b756146d98929?pvs=4)
 
 <br />
 
+
 ### 4. 프로젝트 구조
 
-<img width="1080" alt="everstamp 구조" src="https://github.com/user-attachments/assets/acd9fbd5-621b-4981-b8f6-edce5240fcb4">
+<img width="1080" alt="glgl_structure" src="https://github.com/user-attachments/assets/f1e6efa4-80c5-41d8-a172-631e3325823a">
 
 #### front
 
@@ -165,7 +171,7 @@ back
 - [ ] 앱 환경 구축
 	- [ ] PWA(웹앱) 기능 추가
 - [ ] 앱 최적화
-	- [ ] 광고 차단 프로그램 버그 수정 
+	- [x] 광고 차단 프로그램 버그 수정 
 	- [ ] Styled Component 코드 정리
  	- [ ] 리렌더링 최적화
 
