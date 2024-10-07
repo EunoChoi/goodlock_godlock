@@ -95,42 +95,38 @@
 
 ```
 front
-├── public/
+├── public
+│   ├── img/
 ├── src
-│   ├── Axios/
-│   ├── app
-│   │   ├── (error)/
-│   │   ├── api/
-│   │   ├── app
-│   │   │   ├── (afterLogin)
-│   │   │   │   ├── @modal/
-│   │   │   │   ├── calendar/
-│   │   │   │   ├── habit/
-│   │   │   │   ├── layout.tsx
-│   │   │   │   ├── list/
-│   │   │   │   └── setting/
-│   │   │   │   ├── inter
-│   │   │   │   │   ├── habitInfo/
-│   │   │   │   │   ├── habitOrder/
-│   │   │   │   │   ├── input
-│   │   │   │   │   │   ├── addDiary/
-│   │   │   │   │   │   ├── addHabit/
-│   │   │   │   │   │   ├── editDiary/
-│   │   │   │   │   │   └── editHabit/
-│   │   │   │   │   └── zoom/
-│   │   │   └── page.tsx
-│   │   ├── globals.css
-│   │   ├── layout.tsx
-│   │   ├── not-found.tsx
-│   │   ├── offline/
-│   │   └── page.tsx
-│   ├── auth.ts
-│   ├── component/
-│   ├── fonts/
-│   ├── function/
-│   ├── middleware.ts
-│   └── style/
+│   ├── App.tsx
+│   ├── apis/
+│   ├── components
+│   │   ├── AppLayout.tsx
+│   │   ├── AuthRoute.tsx
+│   │   ├── MobileSide.tsx
+│   │   ├── PCSide.tsx
+│   │   ├── PasswordChangeConfirm.tsx
+│   │   ├── PostZoom.tsx
+│   │   ├── UserDeleteConfirm.tsx
+│   │   ├── chatbot/
+│   │   ├── common/
+│   │   ├── mainPage/
+│   │   └── startPage/
+│   ├── functions/
+│   ├── index.tsx
+│   ├── pages
+│   │   ├── Loading.tsx
+│   │   ├── Main.tsx
+│   │   ├── NotFound.tsx
+│   │   ├── PostView.tsx
+│   │   ├── Start.tsx
+│   │   ├── UserInfo.tsx
+│   │   └── auth/
+│   ├── store/
+│   └── styles/
+├── tsconfig.json
 ├── README.md
+├── package-lock.json
 └── package.json
 ```
 
@@ -141,26 +137,28 @@ back
 ├── app.js
 ├── config
 │   └── config.js
-├── function
-│   ├── decrypt.js
-│   └── encrypt.js
+├── controller
+│   └── userController.js
 ├── middleware
 │   └── tokenCheck.js
-├── migrations/
 ├── models
-│   ├── diary.js
-│   ├── habit.js
+│   ├── comment.js
+│   ├── hashtag.js
 │   ├── image.js
 │   ├── index.js
+│   ├── post.js
 │   └── user.js
+├── package-lock.json
 ├── package.json
-├── pnpm-lock.yaml
 ├── routes
-│   ├── diary.js
-│   ├── habit.js
+│   ├── auth.js
+│   ├── bot.js
+│   ├── comment.js
+│   ├── hashtag.js
 │   ├── image.js
+│   ├── post.js
 │   └── user.js
-└── seeders
+└── uploads/
 ```
 
 <br />
