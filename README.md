@@ -1,4 +1,4 @@
-<img width="1080" alt="glglmain" src="https://github.com/user-attachments/assets/eef791ed-1a8f-41c8-a80b-5062cd3014b5">
+<img width="1080" alt="glglmain" src="https://github.com/user-attachments/assets/0ad04659-fecc-4272-b627-b7e2e726a9aa">
 
 ### 1. 프로젝트 개요
 - **프로젝트 명**
@@ -26,7 +26,7 @@
 	- **안내 챗봇** : 기본적인 사이트 이용 방법을 안내
 
 
-- **[개발 회고 (velog)](https://velog.io/@eunocode/series/굿락갓락)**
+- **개발 회고 (velog)**
 	- [🔗 회원가입 구현(로컬,구글,카카오,네이버)+이메일 인증](https://velog.io/@eunocode/굿락갓락-회원가입-이메일인증)
 	- [🔗 로그인 구현(Json Web Token)](https://velog.io/@eunocode/굿락갓락-로그인-구현-JWT)
 	- [🔗 이미지 onError 무한루프 문제 해결](https://velog.io/@eunocode/굿락갓락-이미지-onError-무한루프-해결)
