@@ -109,6 +109,7 @@ const MainEl = styled.div`
   align-items: center;
 
   animation: ${Animation.smoothAppear} 0.5s ease-in-out;
+  margin-bottom: 144px;
 `;
 
 const Pill = {

@@ -60,6 +60,8 @@ export default Img;
 const ImgSC = styled.img<{ crop: boolean }>`
   object-fit: ${(props) => (props.crop ? "cover" : "contain")};
 
+  image-orientation: none;
+
   -ms-user-select: none;
   -moz-user-select: -moz-none;
   -khtml-user-select: none;
