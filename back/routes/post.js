@@ -39,7 +39,7 @@ AWS.config.update({
   region: 'ap-northeast-2'
 })
 
-console.log(process.env.S3_ACCESS_KEY_ID);
+// console.log(process.env.S3_ACCESS_KEY_ID);
 
 //로컬 멀터
 /* const upload = multer({
@@ -75,7 +75,7 @@ let s3 = new S3Client({
 const upload = multer({
   storage: multerS3({
     s3: s3,
-    bucket: 'moseoree-s3',
+    bucket: 'glgl-images',
     key(req, file, cb) {
       cb(null, `original/${Date.now()}_${path.basename(file.originalname).split(' ').join('')}`)
     }
