@@ -52,7 +52,8 @@ const User = {
   getForAuth: () => {
     return useQuery(["user"], () => Axios.get("user/current").then((res) => res.data), {
       refetchOnMount: false,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
+      retry: 3
     });
   },
   delete: () => {
