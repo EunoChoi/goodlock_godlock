@@ -30,7 +30,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const [goTopButton, setGoTopButton] = useState<boolean>(false);
 
   const [mobileSideOpen, setMobileSideOpen] = useState<boolean>(false);
-  const [mobileButtonVisible, setMobileButtonVisible] = useState<boolean>(false);
+  const [mobileButtonVisible, setMobileButtonVisible] = useState<boolean>(true);
 
   //공지사항 작성 가능 레벨
   const level = 10;
@@ -62,11 +62,11 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   useEffect(() => {
     const handleScroll = async () => {
-      if (window.scrollY > MOBILE_BUTTON_VISIBLE_HEIGHT) {
-        setMobileButtonVisible(true);
-      } else {
-        setMobileButtonVisible(false);
-      }
+      // if (window.scrollY > MOBILE_BUTTON_VISIBLE_HEIGHT) {
+      //   setMobileButtonVisible(true);
+      // } else {
+      //   setMobileButtonVisible(false);
+      // }
       if (window.scrollY > GOTOP_BUTTON_VISIBLE_HEIGHT) {
         setGoTopButton(true);
       } else {
