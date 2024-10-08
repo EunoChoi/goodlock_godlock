@@ -33,7 +33,7 @@ router.post("/mail", async (req, res) => {
           <div style="font-size: 24px;margin-top: 8px;margin-bottom: 20px;font-weight: 600;">굿락갓락, ${email} 회원님의 문의 내역</div>
           <div style="font-size: 16px;line-height: 24px;margin-bottom: 20px;">${text}</div>
         </div>
-        <img src="https://moseoree-s3.s3.ap-northeast-2.amazonaws.com/mainImage.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
+        <img src="https://github.com/user-attachments/assets/0ad04659-fecc-4272-b627-b7e2e726a9aa" style="margin-top: 40px; width: 100%;object-fit: contain;">
       </div>  
       `
   });
@@ -58,7 +58,7 @@ router.post("/mail", async (req, res) => {
             <div style="font-size: 16px;margin-top: 20px;margin-bottom: 20px;font-weight: 500;">문의 내용 : ${text}</div>
           </div>
         </div>
-        <img src="https://moseoree-s3.s3.ap-northeast-2.amazonaws.com/mainImage.png" style="margin-top: 40px; width: 100%;object-fit: contain;">
+        <img src="https://github.com/user-attachments/assets/0ad04659-fecc-4272-b627-b7e2e726a9aa" style="margin-top: 40px; width: 100%;object-fit: contain;">
       </div>  
       `
   });
