@@ -6,7 +6,7 @@
 	나만의 감성 더하기, **굿락갓락**
 
 - **서비스 제공**
-  - 웹사이트 :  [goodlock.site 🔗](https://goodlock.site)
+  - 웹사이트 :  [glgl.site 🔗](https://glgl.site) (goodlock.site -> glgl.site로 변경되었습니다.)
 - **프로젝트 설명**
   
 	‘굿락갓락’은 갤럭시 디바이스의 커스텀 설정 앱인 ‘Goodlock’에 대한 팁을 공유하는 커뮤니티입니다. 팁 게시판에서 나만의 Goodlock 활용법을 작성하고, 게시글 북마크 및 유저 팔로우 기능으로 마음에 드는 게시글을 모아 쉽게 확인하세요.
